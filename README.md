@@ -1,0 +1,2 @@
+# ErArk
+Era/Arknights/ErArk
