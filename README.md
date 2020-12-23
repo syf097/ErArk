@@ -1,2 +1,3 @@
 # ErArk
-Era/Arknights/ErArk
+Era系列的明日方舟同人游戏，文字模拟系引擎
+进度通知群：453276615
