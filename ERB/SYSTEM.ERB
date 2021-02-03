@@ -1,0 +1,310 @@
+﻿;_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/#
+;
+;	Module:BASIC
+;	新游戏启动初始化，日常流程，SAVE/LOAD系统
+;
+;_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/#
+
+;=======================================================
+;回合经过
+;=======================================================
+@ROUND_PASS
+
+;----------------------自动保存--------------------------
+CALL CUSTOM_AUTOSAVE
+CALL EMPTY_LINES, 17
+ALIGNMENT CENTER
+DRAWLINE
+PRINTL 【已自动保存】
+DRAWLINE
+ALIGNMENT LEFT
+CALL EMPTY_LINES, 17
+WAIT
+
+JUMP SHOW_MAINMENU
+
+;=======================================================
+;S/L系统
+;=======================================================
+@EVENTLOAD
+
+GETMILLISECOND
+FLAG:游戏开始时间 = RESULT
+;PRINTFORM {FLAG:游戏开始时间}
+
+@TITLE_LOADGAME
+#LOCALSIZE 2
+#DIM SELECT_DATA, 1
+
+LOADGLOBAL
+
+SELECT_DATA = -1
+
+$START
+
+DRAWLINE
+IF SELECT_DATA == -1
+	PRINTL 请选择要操作的存档
+ELSE
+	PRINTL 请选择要进行的操作
+ENDIF
+DRAWLINE
+
+LOCAL:1 = GLOBAL:上一次操作存档页面 * 20
+FOR LOCAL, LOCAL:1, LOCAL:1 + 20
+	SIF LOCAL == LASTLOAD_NO && GLOBAL:进入游戏时读取存档 == 0
+		SETCOLOR COLOR("aqua")
+	SIF LOCAL == SELECT_DATA
+		SETCOLOR COLOR("PINK")
+	CHKDATA LOCAL
+	IF !RESULT
+		PRINTFORM [{LOCAL,3}] %RESULTS%
+		IF LOCAL == SELECT_DATA
+			PRINTL ☆
+		ELSE
+			PRINTL
+		ENDIF
+	ELSE
+		PRINTFORML [{LOCAL,3}] ----
+	ENDIF
+	RESETCOLOR
+NEXT
+
+DRAWLINE
+PRINTFORMLC \@ GLOBAL:上一次操作存档页面 == 0 ? %" " * 16% # [1000] 上一页\@ 
+PRINTFORMLC [1001] 返回
+PRINTFORMLC \@ GLOBAL:上一次操作存档页面 == GLOBAL:最大存档页面 ? %" " * 16% # [1002] 下一页\@ 
+PRINTL
+PRINTFORMLC %" " * 16%
+PRINTBUTTONLC "[2000] 加载存档",2000
+IF GLOBAL:进入游戏时读取存档
+	PRINTBUTTONLC "[3000] 删除存档",3000
+ENDIF
+
+$INPUT_LOOP
+INPUT
+IF RESULT == 1001
+	IF GLOBAL:0 == 0
+		RETURN 0
+	ELSE
+		RETURN -1
+	ENDIF
+ELSEIF RESULT == 1000 && GLOBAL:上一次操作存档页面 > 0
+	GLOBAL:上一次操作存档页面 -= 1
+	GOTO START
+ELSEIF RESULT == 1002 && GLOBAL:上一次操作存档页面 < GLOBAL:最大存档页面
+	GLOBAL:上一次操作存档页面 += 1
+	GOTO START
+ELSEIF RESULT == 2000
+	IF SELECT_DATA >= 0
+		GLOBAL:进入游戏时读取存档 = 0
+		GLOBAL:当前存档位置 = SELECT_DATA
+		GLOBAL:本次启动已检测版本 = 0
+		SAVEGLOBAL
+		LOADDATA SELECT_DATA
+		RETURN 0
+	ELSE
+		PRINTW 未选中任何存档
+		GOTO START
+	ENDIF
+ELSEIF RESULT == 3000 && GLOBAL:进入游戏时读取存档 == 0
+	CLEARLINE 1
+	GOTO INPUT_LOOP
+ELSEIF RESULT == 3000 && GLOBAL:进入游戏时读取存档
+	IF SELECT_DATA >= 0
+		PRINTFORML 确认要删除{SELECT_DATA}号存档吗？
+		
+		IF RESULT == 0
+			DELDATA SELECT_DATA
+			SELECT_DATA = -1
+			GOTO START
+		ELSE
+			GOTO START
+		ENDIF
+	ELSE
+		PRINTW 未选中任何存档
+		GOTO START
+	ENDIF
+ENDIF
+
+LOCAL = RESULT
+CHKDATA LOCAL
+IF RESULT
+	CLEARLINE 1
+	GOTO INPUT_LOOP
+ELSE
+	SELECT_DATA = LOCAL
+	GOTO START
+ENDIF
+
+@TITLE_SAVEGAME
+#LOCALSIZE 2
+#DIM PAGE, 1
+LOADGLOBAL
+PAGE = GLOBAL:上一次操作存档页面
+$START
+LOCAL:1 = PAGE * 20
+FOR LOCAL, LOCAL:1 , LOCAL:1 + 20
+	SIF LOCAL == LASTLOAD_NO
+		SETCOLOR COLOR("aqua")
+	CHKDATA LOCAL
+	IF !RESULT
+		PRINTFORML [{LOCAL,3}] %RESULTS%
+	ELSE
+		PRINTFORML [{LOCAL,3}] ----
+	ENDIF
+	RESETCOLOR
+NEXT
+PRINTFORMLC \@ PAGE == 0 ? %" " * 16% # [1000] 上一页\@ 
+PRINTFORMLC [1001] 返回
+PRINTFORMLC \@ PAGE == 9 ? %" " * 16% # [1002] 下一页\@
+PRINTL 
+PRINTFORML [1003]保存游戏名称\@STRLENS(SAVESTR:0)? 变更 (%SAVESTR:0%) # 输入\@
+$INPUT_LOOP
+INPUT
+IF RESULT == 1001
+	RETURN 0
+ELSEIF RESULT == 1000 && PAGE > 0
+	PAGE -= 1
+	GOTO START
+ELSEIF RESULT == 1002 && PAGE < 9
+	PAGE += 1
+	GOTO START
+ELSEIF RESULT == 1003
+	PRINTL 请输入游戏名称
+	INPUTS
+	SAVESTR:0 = %RESULTS%
+	PRINTFORML 已经将本次游戏命名为%SAVESTR:0%保存
+	GOTO START
+ENDIF
+
+IF RESULT < 0 || RESULT > 199
+	CLEARLINE 1
+	PRINTW 无效的存档位置
+	GOTO INPUT_LOOP
+ENDIF
+
+LOCAL = RESULT
+CHKDATA LOCAL
+IF !RESULT
+	PRINTL 该存档已经存在。是否覆盖？
+	CALL INPUT_YN,,,"横排"
+	IF RESULT == 1
+		CLEARLINE 1
+		GOTO START
+	ENDIF
+ENDIF
+GLOBAL:1 = PAGE
+SAVEGLOBAL
+SAVEDATA LOCAL, SAVETEXT()
+
+RETURN 0
+
+@SYSTEM_AUTOSAVE
+;SAVEDATA 999, SAVETEXT()
+
+@CUSTOM_AUTOSAVE
+SAVEDATA GLOBAL:当前存档位置, SAVETEXT()
+;=======================================================
+;保存遊戲資料顯示
+;=======================================================
+@SAVETEXT
+#FUNCTIONS
+#LOCALSSIZE 1
+#LOCALSIZE 1
+LOCALS = 
+GETTIME
+LOCALS += RESULTS
+
+LOCAL = DAY
+
+IF LOCAL % 48 == 0
+	LOCALS += @" 第{LOCAL/48}年"
+ELSE
+	LOCALS += @" 第{LOCAL/48+1}年"
+ENDIF
+
+LOCAL = LOCAL-(LOCAL/48)*48
+
+IF LOCAL == 0
+	LOCALS += @"12月"
+ELSEIF LOCAL % 4 == 0
+	LOCALS += @"{LOCAL/4}月"
+ELSE
+	LOCALS += @"{LOCAL/4+1}月"
+ENDIF
+
+LOCAL = LOCAL-(LOCAL/4)*4
+
+IF LOCAL == 0
+	LOCALS += @"4周，"
+ELSE
+	LOCALS += @"{LOCAL}周，"
+ENDIF
+
+GETMILLISECOND
+FLAG:游戏进行时间 += RESULT - FLAG:游戏开始时间
+FLAG:游戏开始时间 = RESULT
+LOCALS  += @" 【{MIN(FLAG:游戏进行时间 / 1000 / 60 / 60, 9999)}:"
+IF FLAG:游戏进行时间 / 1000 / 60 / 60 > 9999
+	LOCALS  += "59】"
+ELSEIF (FLAG:游戏进行时间 / 1000 / 60) % 60 < 10
+	LOCALS  += @"0{(FLAG:游戏进行时间 / 1000 / 60) % 60}】"
+ELSE
+	LOCALS  += @"{(FLAG:游戏进行时间 / 1000 / 60) % 60}】"
+ENDIF
+
+RETURNF LOCALS
+
+;=======================================================
+;设定新游戏存档位置
+;=======================================================
+@SET_SAVE_ORDER
+#LOCALSIZE 1
+
+LOADGLOBAL
+LOCAL = 0
+
+WHILE LOCAL >= 0
+	CHKDATA LOCAL
+	IF RESULT
+		GLOBAL:当前存档位置 = LOCAL
+		SAVEGLOBAL
+		RETURN 0
+	ENDIF
+	LOCAL += 1
+WEND
+;=======================================================
+;检测存档
+;=======================================================
+@CHECK_SAVE_DATA
+#LOCALSIZE 2
+#DIM BAR_LOCATION, 1
+
+;CLEARLINE 1
+ALIGNMENT CENTER
+PRINTL 检测存档中……
+
+LOADGLOBAL
+LOCAL:1 = 0
+BAR_LOCATION = 0
+FOR LOCAL,0,1000
+	CHKDATA LOCAL
+	IF !RESULT
+		LOCAL:1 += 1
+	ENDIF
+NEXT
+GLOBAL:存档数量 = LOCAL:1
+
+GLOBAL:最大存档页面 = 0
+FOR LOCAL,0,50
+	FOR LOCAL:1,0,20
+		CHKDATA (LOCAL*20+LOCAL:1)
+		IF !RESULT && LOCAL > GLOBAL:最大存档页面
+			GLOBAL:最大存档页面 = LOCAL
+		ENDIF
+	NEXT
+NEXT
+
+SAVEGLOBAL
+CLEARLINE 2

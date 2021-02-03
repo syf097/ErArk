@@ -1,0 +1,83 @@
+﻿;_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/#
+;
+;	Module:BASIC
+;	一切的原点
+;	2017/9/26
+;
+;_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/#
+@SYSTEM_TITLE
+
+CALL CHECK_SAVE_DATA
+
+LOADGLOBAL
+
+$SHOW_BEGIN_SCENE
+GLOBAL:进入游戏时读取存档 = 0
+SAVEGLOBAL
+
+
+ALIGNMENT CENTER
+CALL PRINT_BRAND
+
+PRINT 名称：era·test
+FONTSTYLE 4
+FONTSTYLE 0
+PRINTL
+PRINTL 版本：5w31
+PRINTL
+PRINTL 作者＆程序：syf097
+PRINTL
+DRAWLINE
+PRINTL
+PRINTL [0] 载入游戏
+PRINTL [1] 新建游戏
+PRINTL
+
+ALIGNMENT LEFT
+REDRAW 1
+$INPUT_LOOP
+INPUT
+IF RESULT == 1
+	IF GLOBAL:存档数量 == 1000
+		PRINTW 存档数量已达上限
+		GOTO SHOW_BEGIN_SCENE
+	ELSE
+		CLEARLINE LINECOUNT
+		RESETDATA
+		BEGIN FIRST
+	ENDIF
+ELSEIF RESULT == 0
+	GLOBAL:0 = 1
+	SAVEGLOBAL
+	CALL TITLE_LOADGAME
+	SIF RESULT == -1
+		GOTO SHOW_BEGIN_SCENE
+ELSE
+	CLEARLINE 1
+	GOTO INPUT_LOOP
+ENDIF
+
+@PRINT_BRAND
+
+PRINTL
+PRINTL
+PRINTL
+PRINTL 　　　　　　　　　　　　　　　　　　　　　■■■■　　　■■■　　　■■■■■■　　　　■■■■■■■　　　
+PRINTL 　　　　　　　　　　　　　　　　　　　　　　■■　　　　　■■　　■■　　　　■■　　　　■■　　　■■　　
+PRINTL 　　　　　　　　　　　　　　　　　　　　　　■■　　　　■■　　■■　　　　　　■■　　　■■　　　　■■　
+PRINTL 　　　　　　　　　　　　　　　　　　　　　　■■　　　■■　　　■■　　　　　　　■　　　■■　　　　■■　
+PRINTL 　　　　　　　　　　　　　　　　　　　　　　■■　　■■　　　■■　　　　　　　　　　　　■■　　　■■　　
+PRINTL 　　■■■■　　■■　■■　■■■■■　　　■■■■■　　　　■■　　　　　　　　　　　　■■■■■■■　　
+PRINTL 　■　　　　■　　■■■　■　　　　　■　　■■■■　　　　　■■　　■■■■■■■■　　■■　　　　■■　
+PRINTL ■　　　　　　■　■■　　　■■■■■■　　■■　■■　　　　■■　　　　　　　　■■　　■■　　　　　■■
+PRINTL ■■■■■■■■　■　　　■■　　　　■　　■■　　■■　　　　■■　　　　　　　■■　　■■　　　　　■■
+PRINTL ■　　　　　　　　■　　　■　　　　　■　　■■　　　■■　　　■■　　　　　　　■■　　■■　　　　　■■
+PRINTL 　■　　　　■　　■　　　■　　　　■■　　■■　　　　■■　　　■■　　　　　■■■　　■■　　　　■■　
+PRINTL 　　■■■■　　　■　　　　■■■■　■　■■■■　　■■■■　　　■■■■■■■　■　■■■■■■■■　　
+PRINTL
+
+@EVENTFIRST
+ADDCHARA 0
+ADDCHARA 1
+ADDCHARA 2
+BEGIN SHOP
