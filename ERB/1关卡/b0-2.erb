@@ -1,7 +1,7 @@
-﻿@B01
+﻿@B02
 #DIM CONST HEIGHT=2
 #DIM CONST WEIGHT=7
-#DIM DYNAMIC HEALTH=30
+#DIM DYNAMIC HEALTH=3
 #DIM COUNT2
 #DIM COUNT3
 #DIM STACK
@@ -13,7 +13,7 @@
 ;initialize
 ;=================
 ALIGNMENT CENTER
-PRINTW 关卡0-1
+PRINTW 关卡0-2
 PRINTL 教学关卡
 ALIGNMENT LEFT
 PRINTL 敌人每回合将会从左往右移动一个，部署干员阻挡他们
@@ -32,7 +32,7 @@ FOR COUNT2,0,20
         NEXT
     NEXT
 NEXT
-ENEMYLEFT=3
+ENEMYLEFT=7
 ROUND=0
 COST=7
 CALL SELECTSQUAD
@@ -62,6 +62,26 @@ SELECTCASE ROUND
         WEND
         ENEMY:1:6:COUNT=1
         ENEMYH:1:6:COUNT=500
+    CASE 6
+        WHILE ENEMY:1:6:COUNT!=0
+            COUNT++
+        WEND
+        ENEMY:1:6:COUNT=2
+        ENEMYH:1:6:COUNT=1000
+    CASE 7
+        WHILE ENEMY:1:6:COUNT!=0
+            COUNT++
+        WEND
+        ENEMY:1:6:COUNT=2
+        ENEMYH:1:6:COUNT=1000
+    CASE 9
+        WHILE ENEMY:1:6:COUNT!=0
+            COUNT++
+        WEND
+        ENEMY:1:6:COUNT=2
+        ENEMYH:1:6:COUNT=1000
+        ENEMY:1:6:(COUNT+1)=2
+        ENEMYH:1:6:(COUNT+1)=1000
 ENDSELECT
 $INPUT_LOOP
 ;================
@@ -73,7 +93,7 @@ DRAWLINE -
 FOR COUNT2,0,HEIGHT
     ;render operator
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B01(COUNT,COUNT2)
+        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                                  ;ADJUST
         IF RESULT==-1
             PRINTFORM [{COUNT+COUNT2*WEIGHT}]可部署           
         ELSE
@@ -108,10 +128,10 @@ PRINT [900]下一步
 INPUT
 POINTER=RESULT
 IF RESULT<HEIGHT*WEIGHT
-    CALL GETOPERATOR_B01(RESULT%WEIGHT,RESULT/WEIGHT)
+    CALL GETOPERATOR_B02(RESULT%WEIGHT,RESULT/WEIGHT)                                       ;ADJUST                           
     IF RESULT==-1;
-        CALL SELECTOP_B01(1)
-        IF RESULT!=999
+        CALL SELECTOP_B02(1)
+        IF RESULT!=999                                                                      ;ADJUST
         IF COST>BASE:RESULT:9
             PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
             PRINTW
@@ -122,7 +142,7 @@ IF RESULT<HEIGHT*WEIGHT
         ENDIF
         ENDIF
     ELSE
-        CALL CONFOP_B01(RESULT)
+        CALL CONFOP_B02(RESULT)                                                             ;ADJUST
     ENDIF
 ELSE
     SIF RESULT==900
@@ -136,7 +156,7 @@ $ROUNDCAL
 ;=================
 FOR COUNT2,0,HEIGHT
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B01(COUNT,COUNT2)
+        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                  ;ADJUST
         IF RESULT!=-1
             CALLFORM ATTACK_{RESULT-1}(COUNT2,COUNT)      
         ENDIF
@@ -173,7 +193,7 @@ FOR COUNT2,0,HEIGHT
                     ENDIF
                 NEXT
                 ;cal block number
-                CALL GETOPERATOR_B01(COUNT,COUNT2)
+                CALL GETOPERATOR_B02(COUNT,COUNT2)                              ;ADJUST
                 BLOCK=0
                 FOR COUNT3,0,20
                     SIF ENEMY:COUNT2:COUNT:COUNT3!=0
@@ -242,16 +262,16 @@ IF LEVEL_A==0
     PRINTL 获得源石1
 ENDIF
 ALIGNMENT LEFT
-SIF LEVEL_A<1
-LEVEL_A=1
-RESETCOLOR
+SIF LEVEL_A<2                                   ;ADJUST
+LEVEL_A=2                                       ;ADJUST
+RESETCOLOR  
 RETURN
 
 
 ;=================
 ;config operator
 ;=================
-@CONFOP_B01,ARG
+@CONFOP_B02,ARG                                 ;ADJUST
 PRINTL [0]撤退
 PRINTL [1]使用技能（未做完）
 PRINTL [999]返回
@@ -267,7 +287,7 @@ ENDSELECT
 ;=================
 ;select operator
 ;=================
-@SELECTOP_B01,ARG=1
+@SELECTOP_B02,ARG=1                             ;ADJUST
 DRAWLINE =
 FOR COUNT, 0, 11
     IF SQUAD:COUNT!=0
@@ -287,7 +307,7 @@ SIF RESULT==999
     RETURN 999
 RETURN SQUAD:RESULT
 
-@GETOPERATOR_B01(ARG:0,ARG:1)
+@GETOPERATOR_B02(ARG:0,ARG:1)               ;ADJUST
 #DIM COUNT3
 #DIM POS 
 POS=ARG:0+ARG:1*7
