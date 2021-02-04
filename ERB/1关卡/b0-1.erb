@@ -1,12 +1,7 @@
-﻿@EVENTSHOP
-
-@SHOW_SHOP 
+﻿@B01
 #DIM CONST HEIGHT=2
 #DIM CONST WEIGHT=7
 #DIM DYNAMIC HEALTH=30
-#DIM DYNAMIC ENEMY,2,7,20
-#DIM DYNAMIC ENEMYH,2,7,20
-#DIMS DYNAMIC ENEMYS,2,20
 #DIM COUNT2
 #DIM COUNT3
 #DIM STACK
@@ -18,8 +13,19 @@
 ;=================
 PRINTW 关卡0-1
 FOR COUNT, 0, CHARANUM
-    BASE:COUNT:22=-1;
+    BASE:COUNT:12=-1;
 NEXT
+FOR COUNT2,0,20
+    FOR STACK,0,20
+        FOR COUNT,0,20
+            ENEMYS:COUNT2:STACK= 
+            ENEMY:COUNT2:COUNT:STACK=0
+            ENEMYH:COUNT2:COUNT:STACK=0            
+        NEXT
+    NEXT
+NEXT
+ROUND=0
+CALL SELECTSQUAD
 $ROUNDSTART
 ROUND++
 ;================
@@ -95,7 +101,8 @@ IF RESULT<HEIGHT*WEIGHT
         CALL SELECTOP(1)
         IF RESULT!=999
         PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
-        BASE:RESULT:22=POINTER
+        PRINTW
+        BASE:RESULT:12=POINTER
         ENDIF
     ELSE
         CALL CONFOP(RESULT)
@@ -108,28 +115,65 @@ GOTO INPUT_LOOP
 
 $ROUNDCAL
 ;=================
-;enemy forward
+;operator action
+;=================
+FOR COUNT2,0,HEIGHT
+    FOR COUNT,0,WEIGHT
+        CALL GETOPERATOR_B01(COUNT+COUNT2*WEIGHT)
+        IF RESULT!=-1
+            CALLFORM ATTACK_{RESULT-1}(COUNT2,COUNT)      
+        ENDIF
+    NEXT
+NEXT
+
+
+
+
+;=================
+;enemy action
 ;=================
 FOR COUNT2,0,HEIGHT
     FOR STACK,0,20
         FOR COUNT,0,WEIGHT
             IF ENEMY:COUNT2:COUNT:STACK==0
 
-            ELSE ;cal block number
+            ELSE 
+                ;health
+                IF ENEMYH:COUNT2:COUNT:STACK<=0
+                    PRINTFORML %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%倒下了               
+                    ENEMY:COUNT2:COUNT:STACK=0
+                    ENEMYH:COUNT2:COUNT:STACK=0
+                    IF ENEMY:COUNT2:COUNT:(STACK+1)!=0
+                        ENEMY:COUNT2:COUNT:STACK=ENEMY:COUNT2:COUNT:(STACK+1)
+                        ENEMYH:COUNT2:COUNT:STACK=ENEMYH:COUNT2:COUNT:(STACK+1)
+                        ENEMY:COUNT2:COUNT:(STACK+1)=0
+                        ENEMYH:COUNT2:COUNT:(STACK+1)=0
+                    ENDIF
+                    CONTINUE
+                ENDIF 
+                ;attack
+
+                ;cal block number
                 CALL GETOPERATOR_B01(COUNT+COUNT2*WEIGHT)
                 BLOCK=0
                 FOR COUNT3,0,20
                     SIF ENEMY:COUNT2:COUNT:COUNT3!=0
                     BLOCK++
                 NEXT
-                IF RESULT==-1||BASE:RESULT:27<BLOCK ;FORWARD
+                IF RESULT==-1||BASE:RESULT:10<BLOCK ;FORWARD
                     IF COUNT==0 ;LOSE ONE
                         PRINTFORML 一个%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%进入了蓝门
                         HEALTH-=1
                         IF HEALTH>0
                             PRINTFORML 你手撕了%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%，你还能手撕{HEALTH}次
                             ENEMY:COUNT2:COUNT:STACK=0
-                            ENEMYH:COUNT2:COUNT:STACK=0                            
+                            ENEMYH:COUNT2:COUNT:STACK=0
+                            IF ENEMY:COUNT2:COUNT:(STACK+1)!=0
+                                ENEMY:COUNT2:COUNT:STACK=ENEMY:COUNT2:COUNT:(STACK+1)
+                                ENEMYH:COUNT2:COUNT:STACK=ENEMYH:COUNT2:COUNT:(STACK+1)
+                                ENEMY:COUNT2:COUNT:(STACK+1)=0
+                                ENEMYH:COUNT2:COUNT:(STACK+1)=0
+                    ENDIF                            
                             PRINTW
                         ELSE
                             PRINTL 作战失败
@@ -161,8 +205,8 @@ PRINTL [999]返回
 INPUT
 SELECTCASE RESULT
     CASE 0
-        BASE:ARG:22=-1
-        BASE:ARG:25=BASE:ARG:26
+        BASE:ARG:12=-1
+        ;BASE:ARG:25=BASE:ARG:26 ;重置冷却
     CASE 1
     CASE 999
         RETURN
@@ -172,21 +216,23 @@ ENDSELECT
 ;=================
 @SELECTOP,ARG=1
 DRAWLINE =
-FOR COUNT, 0, CHARANUM
-    SIF BASE:COUNT:24<4 && BASE:COUNT:22==-1;
-        PRINTFORML [{COUNT}]%CALLNAME:COUNT%
+FOR COUNT, 0, 11
+    SIF SQUAD:COUNT!=0
+        PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%
 NEXT
 DRAWLINE =
 PRINTL [999]返回
 INPUT
-RETURN RESULT
+SIF RESULT==999
+    RETURN 999
+RETURN SQUAD:RESULT
 
 @GETOPERATOR_B01(ARG)
 #DIM COUNT3
 SIF ARG<0
     RETURN -1
 FOR COUNT3, 0, CHARANUM
-    SIF BASE:COUNT3:22==ARG
+    SIF BASE:COUNT3:12==ARG
         RETURN COUNT3
 NEXT
 RETURN -1
