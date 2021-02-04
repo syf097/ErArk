@@ -8,12 +8,20 @@
 #DIM POINTER
 #DIM ROUND
 #DIM BLOCK
+#DIM ENEMYLEFT
 ;=================
 ;initialize
 ;=================
+ALIGNMENT CENTER
 PRINTW 关卡0-1
+PRINTL 教学关卡
+ALIGNMENT LEFT
+PRINTL 敌人每回合将会从左往右移动一个，部署干员阻挡他们
+PRINTW 请将夜刀部署至10号位
 FOR COUNT, 0, CHARANUM
     BASE:COUNT:12=-1;
+    BASE:COUNT:15=BASE:COUNT:13
+    BASE:COUNT:14=0
 NEXT
 FOR COUNT2,0,20
     FOR STACK,0,20
@@ -24,10 +32,13 @@ FOR COUNT2,0,20
         NEXT
     NEXT
 NEXT
+ENEMYLEFT=3
 ROUND=0
+COST=7
 CALL SELECTSQUAD
 $ROUNDSTART
 ROUND++
+COST+=2
 ;================
 ;spawn enemy
 ;================
@@ -38,34 +49,35 @@ SELECTCASE ROUND
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=1000
+        ENEMYH:1:6:COUNT=500
     CASE 3
         WHILE ENEMY:1:6:COUNT!=0
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=1000
+        ENEMYH:1:6:COUNT=500
     CASE 4
         WHILE ENEMY:1:6:COUNT!=0
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=1000
+        ENEMYH:1:6:COUNT=500
 ENDSELECT
 $INPUT_LOOP
 ;================
 ;drawmap
 ;================
 CLEARLINE 100
+PRINTFORML 剩余生命值{HEALTH}剩余敌人数{ENEMYLEFT}部署费用{COST}
 DRAWLINE -
 FOR COUNT2,0,HEIGHT
     ;render operator
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B01(COUNT+COUNT2*WEIGHT)
+        CALL GETOPERATOR_B01(COUNT,COUNT2)
         IF RESULT==-1
             PRINTFORM [{COUNT+COUNT2*WEIGHT}]可部署           
         ELSE
-            PRINTFORM [{COUNT+COUNT2*WEIGHT}]%CALLNAME:RESULT%       
+            PRINTFORM [{COUNT+COUNT2*WEIGHT}]%CALLNAME:RESULT%%"("%{BASE:RESULT:15}%")"%       
         ENDIF
     NEXT
     PRINTFORM \n
@@ -96,16 +108,21 @@ PRINT [900]下一步
 INPUT
 POINTER=RESULT
 IF RESULT<HEIGHT*WEIGHT
-    CALL GETOPERATOR_B01(RESULT)
+    CALL GETOPERATOR_B01(RESULT%WEIGHT,RESULT/WEIGHT)
     IF RESULT==-1;
-        CALL SELECTOP(1)
+        CALL SELECTOP_B01(1)
         IF RESULT!=999
-        PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
-        PRINTW
-        BASE:RESULT:12=POINTER
+        IF COST>BASE:RESULT:9
+            PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
+            PRINTW
+            BASE:RESULT:12=POINTER
+            COST-=BASE:RESULT:9
+        ELSE
+            PRINTW 费用不足
+        ENDIF
         ENDIF
     ELSE
-        CALL CONFOP(RESULT)
+        CALL CONFOP_B01(RESULT)
     ENDIF
 ELSE
     SIF RESULT==900
@@ -119,15 +136,12 @@ $ROUNDCAL
 ;=================
 FOR COUNT2,0,HEIGHT
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B01(COUNT+COUNT2*WEIGHT)
+        CALL GETOPERATOR_B01(COUNT,COUNT2)
         IF RESULT!=-1
             CALLFORM ATTACK_{RESULT-1}(COUNT2,COUNT)      
         ENDIF
     NEXT
 NEXT
-
-
-
 
 ;=================
 ;enemy action
@@ -135,12 +149,12 @@ NEXT
 FOR COUNT2,0,HEIGHT
     FOR STACK,0,20
         FOR COUNT,0,WEIGHT
-            IF ENEMY:COUNT2:COUNT:STACK==0
-
-            ELSE 
+            IF ENEMY:COUNT2:COUNT:STACK!=0
                 ;health
                 IF ENEMYH:COUNT2:COUNT:STACK<=0
-                    PRINTFORML %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%倒下了               
+                    PRINTFORML %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%倒下了
+                    PRINTW
+                    ENEMYLEFT--            
                     ENEMY:COUNT2:COUNT:STACK=0
                     ENEMYH:COUNT2:COUNT:STACK=0
                     IF ENEMY:COUNT2:COUNT:(STACK+1)!=0
@@ -152,9 +166,20 @@ FOR COUNT2,0,HEIGHT
                     CONTINUE
                 ENDIF 
                 ;attack
-
+                CALLFORM ENEMY_ATTACK_{ENEMY:COUNT2:COUNT:STACK}("B01",COUNT,COUNT2)
+                FOR  COUNT3,2,CHARANUM
+                    SIF BASE:COUNT3:14>0
+                        BASE:COUNT3:14--                ;剩余部署时间减少
+                    IF BASE:COUNT3:15<=0
+                        PRINTFORMW %CALLNAME:COUNT3%倒下了
+                        PRINTW
+                        BASE:COUNT3:14=BASE:COUNT3:8
+                        BASE:COUNT3:12=-1
+                        BASE:COUNT3:15=BASE:COUNT3:13
+                    ENDIF
+                NEXT
                 ;cal block number
-                CALL GETOPERATOR_B01(COUNT+COUNT2*WEIGHT)
+                CALL GETOPERATOR_B01(COUNT,COUNT2)
                 BLOCK=0
                 FOR COUNT3,0,20
                     SIF ENEMY:COUNT2:COUNT:COUNT3!=0
@@ -164,6 +189,7 @@ FOR COUNT2,0,HEIGHT
                     IF COUNT==0 ;LOSE ONE
                         PRINTFORML 一个%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%进入了蓝门
                         HEALTH-=1
+                        ENEMYLEFT--
                         IF HEALTH>0
                             PRINTFORML 你手撕了%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%，你还能手撕{HEALTH}次
                             ENEMY:COUNT2:COUNT:STACK=0
@@ -173,11 +199,10 @@ FOR COUNT2,0,HEIGHT
                                 ENEMYH:COUNT2:COUNT:STACK=ENEMYH:COUNT2:COUNT:(STACK+1)
                                 ENEMY:COUNT2:COUNT:(STACK+1)=0
                                 ENEMYH:COUNT2:COUNT:(STACK+1)=0
-                    ENDIF                            
+                            ENDIF                            
                             PRINTW
                         ELSE
-                            PRINTL 作战失败
-                            ;GOTO LOOSE   
+                            GOTO LOOSE   
                         ENDIF 
                     ELSE
                         COUNT3=0
@@ -194,11 +219,39 @@ FOR COUNT2,0,HEIGHT
         NEXT
     NEXT
 NEXT
+SIF ENEMYLEFT==0
+        GOTO  VICTORY  
 GOTO ROUNDSTART
+
+$LOOSE
+SETCOLOR 0x241CED
+ALIGNMENT CENTER
+PRINTL 作战失败
+RESETCOLOR
+ALIGNMENT LEFT
+RETURN
+
+$VICTORY
+SETCOLOR 0x62ED47
+ALIGNMENT CENTER
+PRINTL 作战成功
+MONEY+=750
+PRINTFORMW 获得龙门币750
+IF LEVEL_A==0
+    MONEY:1+=1
+    PRINTL 获得源石1
+ENDIF
+ALIGNMENT LEFT
+SIF LEVEL_A<1
+LEVEL_A=1
+RESETCOLOR
+RETURN
+
+
 ;=================
 ;config operator
 ;=================
-@CONFOP,ARG
+@CONFOP_B01,ARG
 PRINTL [0]撤退
 PRINTL [1]使用技能（未做完）
 PRINTL [999]返回
@@ -206,7 +259,7 @@ INPUT
 SELECTCASE RESULT
     CASE 0
         BASE:ARG:12=-1
-        ;BASE:ARG:25=BASE:ARG:26 ;重置冷却
+        BASE:ARG:14=BASE:ARG:8 ;重置冷却
     CASE 1
     CASE 999
         RETURN
@@ -214,11 +267,18 @@ ENDSELECT
 ;=================
 ;select operator
 ;=================
-@SELECTOP,ARG=1
+@SELECTOP_B01,ARG=1
 DRAWLINE =
 FOR COUNT, 0, 11
-    SIF SQUAD:COUNT!=0
-        PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%
+    IF SQUAD:COUNT!=0
+        IF BASE:(SQUAD:COUNT):12==-1
+            IF BASE:(SQUAD:COUNT):14==0
+                PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%
+            ELSE
+                PRINTFORML [冷却中]%CALLNAME:(SQUAD:COUNT)%
+            ENDIF
+        ENDIF
+    ENDIF
 NEXT
 DRAWLINE =
 PRINTL [999]返回
@@ -227,12 +287,14 @@ SIF RESULT==999
     RETURN 999
 RETURN SQUAD:RESULT
 
-@GETOPERATOR_B01(ARG)
+@GETOPERATOR_B01(ARG:0,ARG:1)
 #DIM COUNT3
-SIF ARG<0
+#DIM POS 
+POS=ARG:0+ARG:1*7
+SIF POS<0
     RETURN -1
 FOR COUNT3, 0, CHARANUM
-    SIF BASE:COUNT3:12==ARG
+    SIF BASE:COUNT3:12==POS
         RETURN COUNT3
 NEXT
 RETURN -1
