@@ -1,0 +1,45 @@
+﻿@SELECTSQUAD,ARG=10
+;==================================================
+$DRAWSQUAD
+;==================================================
+PRINTL □ 选择成员 □---------------------------------------------------------
+FOR COUNT,0,ARG
+    IF SQUAD:COUNT==0
+        PRINTFORML [{COUNT}]可选择
+    ELSE
+        PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%  {BASE:(SQUAD:COUNT):10}
+    ENDIF
+NEXT
+IF ARG<10
+    FOR COUNT,ARG,10
+        PRINTFORM  [X]不可选择
+    NEXT
+ENDIF
+PRINTL [999]确认
+
+INPUT
+LOCAL=RESULT
+IF RESULT<ARG
+    CLEARLINE 100
+    PRINTL □ 选择干员 □---------------------------------------------------------
+    FOR COUNT,2,CHARANUM
+        IF BASE:COUNT:11==0 
+            PRINTFORML [{COUNT}]%CALLNAME:COUNT%    {BASE:COUNT:10}
+        ELSE
+            PRINTFORML [已在编队中]%CALLNAME:COUNT%    {BASE:COUNT:10}
+        ENDIF    
+    NEXT
+    PRINT [999]返回  [900]撤下
+    INPUT
+    IF RESULT<CHARANUM
+        SQUAD:LOCAL=RESULT
+        BASE:(SQUAD:LOCAL):11=0 
+        BASE:RESULT:11=1  
+    ELSEIF RESULT==900
+        BASE:(SQUAD:LOCAL):11=0       
+        SQUAD:LOCAL=0   
+    ENDIF
+    GOTO DRAWSQUAD
+ELSEIF RESULT==999
+    RETURN
+ENDIF

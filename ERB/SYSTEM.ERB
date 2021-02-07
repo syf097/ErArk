@@ -1,0 +1,206 @@
+﻿@EVENTFIRST
+;开始时的初始化
+#DIM CHARA, 1
+#DIM ID_OF_NEWCHARA
+#DIM TEMP
+#DIM HAIRCOLOR
+#DIM CHARACTER
+ADDCHARA 0
+HAIRCOLOR = -1
+CHARACTER = 1
+
+CALL FIRST_SETTING
+
+TARGET = -1
+BOUGHT = -1
+
+DAY:0 = 1096 * 365 +357
+DAY:1 = 12
+DAY:2 = 23
+
+ALIGNMENT CENTER
+PRINTL 巴别塔的恶灵，
+PRINTL 冷酷，无情，真正的战争狂人
+PRINTL 棋局之上落子，兑子，视生命的重量若无物
+PRINTL 如同笼罩在战场之上的恶灵般搅动局势
+PRINTL 
+PRINTL 但那是，曾经的你
+PRINTL 
+PRINTL 从石棺中恢复意识的博士，失去了宝贵的记忆
+PRINTL 罗德岛的干员们出生入死地才将你从正处于暴乱中的切尔诺伯格救出
+PRINTL 迫于整合运动的围攻施压，博士潜在的指挥才能被迫施展开来
+PRINTL 从青涩到娴熟，只流转了短短数小时便跨过他人的数十年
+PRINTL 战术指挥、工业制造、外交联络、基建管理...
+;他/她分离
+PRINTL 博士抵达了他忠诚的罗德岛，数不尽的工作在等着他
+PRINTL 
+PRINTL 这里，是世界线β
+PRINTL 尚未彻底褪去‘恶灵本性’的博士
+PRINTL 依然可靠和足以信赖，可那心底涌动的邪念...
+PRINTL 沸腾不止
+PRINTL 
+
+ALIGNMENT LEFT
+WAIT
+DRAWLINE
+
+PRINTW 整合运动的袭击，导致了2个小队的彻底消亡
+PRINTW 博士的回归对于罗德岛的干员们是一剂有效的强心针
+PRINTW 重新建立起信任不是件简单的事
+PRINTW 凯尔希限制了你大部分人事调用权限
+PRINTL 	
+;具备成建制的干员，进行加载初始小队
+IF FLAG:501 == 0
+	PRINTW 代号A4，包含一个行动组与行动预备组
+	PRINTW 一共九人，整备完毕，等候着命令
+	
+	CALL ADD_INIT_SQUARD
+	PRINTL 	
+ELSE
+	PRINTW 阿米娅握住了你的手，用暖意的微笑振奋你的内心
+	PRINTW 从零开始并不可怕
+ENDIF
+
+PRINTW ………
+PRINTW ……
+PRINTW …
+PRINTW 
+PRINTL …
+PRINTL ……
+PRINTL ………
+;随机干员
+;CALL RAND_CHARA_MAKE
+BEGIN SHOP
+
+
+@EVENTTURNEND
+
+BEGIN SHOP
+
+;加载处理
+@EVENTLOAD
+LOADGLOBAL
+
+;角色名初始化
+CALL CHARA_NAME_INIT
+;EX素质名初始化
+CALL EX_TALENTNAME_INIT
+
+IF LASTLOAD_NO == 999
+	CALL MAOUNET
+	BEGIN SHOP
+ENDIF
+SIF LASTLOAD_NO >= 1000 && LASTLOAD_NO < 1020
+	CALL INPORT_B
+
+CALL DATA_FIX
+;---------------------------------------
+@FIRST_SETTING
+;---------------------------------------
+#DIM DOCSEX
+CFLAG:0:16 = -1
+IF !RESULT
+$INPUT_LOOP
+DRAWLINE
+PRINT [0] 博士性別 ： 
+IF DOCSEX == 0
+	PRINTL 男性
+ELSEIF DOCSEX == 1
+	PRINTL 女性
+ELSE
+	PRINTL 扶她
+ENDIF
+
+PRINT [1] 初始干员 ： 
+
+IF FLAG:501 == 1
+	PRINTL 从零开始
+ELSEIF FLAG:501 == 0
+	PRINTL 剧情建制
+ENDIF
+
+DRAWLINE
+PRINTL [100] 决定
+
+INPUT
+CLEARLINE 1
+IF RESULT == 0
+	;博士性別
+	PRINTL [0] 男性  [1] 女性  [2] 扶她
+	INPUT
+	
+	IF RESULT == 0
+		TALENT:0:1 = 1
+		TALENT:0:122 = 1
+		TALENT:0:121 = 0
+		TALENT:0:100 = 0
+		CFLAG:0:16 = -1
+		DOCSEX = 0
+	ELSEIF RESULT == 1
+		TALENT:0:1 = 0
+		TALENT:0:122 = 0
+		TALENT:0:121 = 0
+		TALENT:0:100 = 0
+		CFLAG:0:16 = -1
+		DOCSEX = 1
+	ELSEIF RESULT == 2
+		TALENT:0:1 = 1
+		TALENT:0:122 = 0
+		TALENT:0:121 = 1
+		TALENT:0:100 = 0
+		CFLAG:0:16 = -1
+		DOCSEX = 2
+	ENDIF
+ELSEIF RESULT == 1
+	PRINTL [0] 从零开始  [1] 剧情建制
+	INPUT
+	
+	SIF RESULT >= 0 && RESULT <= 1
+		FLAG:501 = RESULT
+	
+ELSEIF RESULT == 100
+	RETURN 0
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+GOTO INPUT_LOOP
+ELSEIF RESULT
+$INPUT_LOOP2
+IF RESULT == 1
+ELSE
+	GOTO INPUT_LOOP2
+ENDIF
+
+GOTO INPUT_LOOP2
+ENDIF
+;========================================================
+;
+;;========================================================
+@SAVEINFO
+
+LOCALS = 第{DAY+1,2}日
+PUTFORM %LOCALS,11% 
+
+SIF FLAG:1 >= 0
+	TARGET = FLAG:1
+SIF FLAG:2 >= 0
+	ASSI = FLAG:2
+
+	PUTFORM LV{CFLAG:MASTER:9,4,RIGHT}
+	
+IF TARGET >= 1
+	PUTFORM  目标:%SAVESTR:TARGET,14,LEFT% 
+ELSE
+	PUTFORM %"",24%
+ENDIF
+
+SIF STRLENS(CSTR:MASTER:99) > 0
+	PUTFORM 『%CSTR:MASTER:99%』
+
+;====================================================
+@ADD_INIT_SQUARD
+;====================================================
+ADDCHARA 1
+ADDCHARA 2
+ADDCHARA 3
