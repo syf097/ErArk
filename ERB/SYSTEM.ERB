@@ -44,11 +44,6 @@ ALIGNMENT LEFT
 WAIT
 DRAWLINE
 
-PRINTW 整合运动的袭击，导致了2个小队的彻底消亡
-PRINTW 博士的回归对于罗德岛的干员们是一剂有效的强心针
-PRINTW 重新建立起信任不是件简单的事
-PRINTW 凯尔希限制了你大部分人事调用权限
-PRINTL 	
 ;具备成建制的干员，进行加载初始小队
 IF FLAG:501 == 0
 	PRINTW 代号A4，包含一个行动组与行动预备组
@@ -152,11 +147,8 @@ IF RESULT == 0
 		DOCSEX = 2
 	ENDIF
 ELSEIF RESULT == 1
-<<<<<<< HEAD
-	;初期奴隷
-=======
->>>>>>> upstream/main
-	PRINTL [0] 从零开始  [1] 剧情建制
+
+	PRINTL [1] 从零开始  [0] 剧情建制
 	INPUT
 	
 	SIF RESULT >= 0 && RESULT <= 1
