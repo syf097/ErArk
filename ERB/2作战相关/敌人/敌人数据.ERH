@@ -1,0 +1,5 @@
+﻿
+                ;         源石虫，整合士兵
+#DIMS ENEMY_NAME= "平民", "源石虫", "整合士兵"
+#DIM ENEMY_ATTACK= 0, 100,    200
+#DIM ENEMY_HP=     1, 500,    1000

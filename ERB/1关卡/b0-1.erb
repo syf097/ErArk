@@ -49,19 +49,19 @@ SELECTCASE ROUND
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=500
+        ENEMYH:1:6:COUNT=ENEMY_HP:1
     CASE 3
         WHILE ENEMY:1:6:COUNT!=0
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=500
+        ENEMYH:1:6:COUNT=ENEMY_HP:1
     CASE 4
         WHILE ENEMY:1:6:COUNT!=0
             COUNT++
         WEND
         ENEMY:1:6:COUNT=1
-        ENEMYH:1:6:COUNT=500
+        ENEMYH:1:6:COUNT=ENEMY_HP:1
 ENDSELECT
 $INPUT_LOOP
 ;================
@@ -160,7 +160,7 @@ FOR COUNT2,0,HEIGHT
                     CONTINUE
                 ENDIF 
                 ;attack
-                CALLFORM ENEMY_ATTACK_{ENEMY:COUNT2:COUNT:STACK}("B01",COUNT,COUNT2)
+                CALL ENEMY_ATTACK("B01",COUNT,COUNT2,ENEMY:COUNT2:COUNT:STACK)
                 FOR  COUNT3,2,CHARANUM
                     SIF BASE:COUNT3:14>0
                         BASE:COUNT3:14--                ;剩余部署时间减少
