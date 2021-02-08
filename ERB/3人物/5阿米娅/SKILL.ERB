@@ -1,0 +1,33 @@
+﻿@战术咏唱_阿米娅,ARG
+#DIM  COUNT2
+#DIM STATIC BUFF_NUM
+#DIM STATIC ACTIVED
+LOCAL=FINDCHARA(NO,5)
+IF ARG==1
+    IF BASE:LOCAL:技力<3
+        PRINTW 技力不足3点
+    ELSE
+        BASE:LOCAL:技能剩余时间=5
+        FOR COUNT2,0,100
+            SIF BUFF:LOCAL:COUNT2==""
+            BREAK
+        NEXT
+        BUFF:5:COUNT2=战术咏唱_阿米娅
+        BUFF_NUM=COUNT2
+        ACTIVED==1
+        PRINTW 阿米娅攻击变为150%
+    ENDIF
+ELSE
+    IF ARG==2&&ACTIVED
+        BUFF:LOCAL:BUFF_NUM=
+        BUFF_NUM=0
+        ACTIVED=0
+    ELSEIF BASE:LOCAL:技能剩余时间==0&&ACTIVED
+        BUFF:LOCAL:BUFF_NUM=
+        BUFF_NUM=0
+        ACTIVED=0
+        PRINTW 阿米娅技能结束
+    ENDIF
+ENDIF
+
+@精神爆发,ARG

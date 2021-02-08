@@ -6,7 +6,6 @@
 #DIM COUNT3
 #DIM STACK
 #DIM POINTER
-#DIM ROUND
 #DIM BLOCK
 #DIM ENEMYLEFT
 ;=================
@@ -22,6 +21,8 @@ FOR COUNT, 0, CHARANUM
     BASE:COUNT:12=-1;
     BASE:COUNT:15=BASE:COUNT:13
     BASE:COUNT:14=0
+    BASE:COUNT:17=0
+    BASE:COUNT:18=0
 NEXT
 FOR COUNT2,0,20
     FOR STACK,0,20
@@ -93,7 +94,7 @@ DRAWLINE -
 FOR COUNT2,0,HEIGHT
     ;render operator
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                                  ;ADJUST
+        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                                  ;MODIFY
         IF RESULT==-1
             PRINTFORM [{COUNT+COUNT2*WEIGHT}]可部署           
         ELSE
@@ -128,21 +129,22 @@ PRINT [900]下一步
 INPUT
 POINTER=RESULT
 IF RESULT<HEIGHT*WEIGHT
-    CALL GETOPERATOR_B02(RESULT%WEIGHT,RESULT/WEIGHT)                                       ;ADJUST                           
+    CALL GETOPERATOR_B02(RESULT%WEIGHT,RESULT/WEIGHT)                                       ;MODIFY                           
     IF RESULT==-1;
         CALL SELECTOP_B02(1)
-        IF RESULT!=999                                                                      ;ADJUST
+        IF RESULT!=999                                                                      ;MODIFY
         IF COST>BASE:RESULT:9
             PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
             PRINTW
             BASE:RESULT:12=POINTER
+            BASE:RESULT:17=0
             COST-=BASE:RESULT:9
         ELSE
             PRINTW 费用不足
         ENDIF
         ENDIF
     ELSE
-        CALL CONFOP_B02(RESULT)                                                             ;ADJUST
+        CALL CONFOP_B02(POINTER%WEIGHT,POINTER/WEIGHT,RESULT)                                                             ;MODIFY
     ENDIF
 ELSE
     SIF RESULT==900
@@ -156,9 +158,15 @@ $ROUNDCAL
 ;=================
 FOR COUNT2,0,HEIGHT
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                  ;ADJUST
-        IF RESULT!=-1
-            CALLFORM ATTACK_{RESULT-1}(COUNT2,COUNT)      
+        CALL GETOPERATOR_B02(COUNT,COUNT2)          ;MODIFY
+        LOCAL=RESULT
+        IF LOCAL!=-1
+            BASE:LOCAL:18++
+            SIF BASE:LOCAL:17>0
+            BASE:LOCAL:17--            
+            LOCAL=NO:LOCAL
+            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT)   
+            CALLFORM SKILL_{LOCAL}(COUNT2,COUNT,0)     
         ENDIF
     NEXT
 NEXT
@@ -180,8 +188,7 @@ FOR COUNT2,0,HEIGHT
                     CONTINUE
                 ENDIF 
                 ;attack
-                ;CALLFORM ENEMY_ATTACK_{ENEMY:COUNT2:COUNT:STACK}("B01",COUNT,COUNT2)
-                CALL ENEMY_ATTACK("B01",COUNT,COUNT2,ENEMY:COUNT2:COUNT:STACK)
+                CALL ENEMY_ATTACK("B02",COUNT,COUNT2,ENEMY:COUNT2:COUNT:STACK)              ;MODIFY
 
                 FOR  COUNT3,2,CHARANUM
                     SIF BASE:COUNT3:14>0
@@ -192,10 +199,11 @@ FOR COUNT2,0,HEIGHT
                         BASE:COUNT3:14=BASE:COUNT3:8
                         BASE:COUNT3:12=-1
                         BASE:COUNT3:15=BASE:COUNT3:13
+                        CALLFORM SKILL_{NO:COUNT3}(COUNT2,COUNT,2) ;DEACTIVE SKILL
                     ENDIF
                 NEXT
                 ;cal block number
-                CALL GETOPERATOR_B02(COUNT,COUNT2)                              ;ADJUST
+                CALL GETOPERATOR_B02(COUNT,COUNT2)                              ;MODIFY
                 BLOCK=0
                 FOR COUNT3,0,20
                     SIF ENEMY:COUNT2:COUNT:COUNT3!=0
@@ -246,26 +254,28 @@ SIF ENEMYLEFT==0
 GOTO ROUNDSTART
 
 $LOOSE
+CALL DEACTIVE_SKILL
 SETCOLOR 0x241CED
 ALIGNMENT CENTER
-PRINTL 作战失败
+PRINTW 作战失败
 RESETCOLOR
 ALIGNMENT LEFT
 RETURN
 
 $VICTORY
+CALL DEACTIVE_SKILL
 SETCOLOR 0x62ED47
 ALIGNMENT CENTER
-PRINTL 作战成功
+PRINTW 作战成功
 MONEY+=750
 PRINTFORMW 获得龙门币750
 IF LEVEL_A==0
     MONEY:1+=1
-    PRINTL 获得源石1
+    PRINTW 获得源石1
 ENDIF
 ALIGNMENT LEFT
-SIF LEVEL_A<2                                   ;ADJUST
-LEVEL_A=2                                       ;ADJUST
+SIF LEVEL_A<2                                   ;MODIFY
+LEVEL_A=2                                       ;MODIFY
 RESETCOLOR  
 RETURN
 
@@ -273,23 +283,24 @@ RETURN
 ;=================
 ;config operator
 ;=================
-@CONFOP_B02,ARG                                 ;ADJUST
+@CONFOP_B02,ARG:0,ARG:1,ARG:2                  ;MODIFY
 PRINTL [0]撤退
-PRINTL [1]使用技能（未做完）
+PRINTFORML [1]使用技能（\@BASE:(ARG:2):16==0?无技能#技能{BASE:(ARG:2):16}\@）
 PRINTL [999]返回
 INPUT
 SELECTCASE RESULT
     CASE 0
-        BASE:ARG:12=-1
-        BASE:ARG:14=BASE:ARG:8 ;重置冷却
+        BASE:(ARG:2):12=-1
+        BASE:(ARG:2):14=BASE:(ARG:2):8 ;重置冷却
     CASE 1
+        CALLFORM SKILL_{NO:(ARG:2)}(ARG:1,ARG:0,1)
     CASE 999
         RETURN
 ENDSELECT
 ;=================
 ;select operator
 ;=================
-@SELECTOP_B02,ARG=1                             ;ADJUST
+@SELECTOP_B02,ARG=1                             ;MODIFY
 DRAWLINE =
 FOR COUNT, 0, 11
     IF SQUAD:COUNT!=0
@@ -309,7 +320,7 @@ SIF RESULT==999
     RETURN 999
 RETURN SQUAD:RESULT
 
-@GETOPERATOR_B02(ARG:0,ARG:1)               ;ADJUST
+@GETOPERATOR_B02(ARG:0,ARG:1)               ;MODIFY
 #DIM COUNT3
 #DIM POS 
 POS=ARG:0+ARG:1*7
