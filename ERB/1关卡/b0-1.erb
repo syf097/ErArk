@@ -112,10 +112,11 @@ IF RESULT<HEIGHT*WEIGHT
     IF RESULT==-1;
         CALL SELECTOP_B01(1)
         IF RESULT!=999
-        IF COST>BASE:RESULT:9
+        IF COST>=BASE:RESULT:9
             PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
             PRINTW
             BASE:RESULT:12=POINTER
+            BASE:RESULT:17=0
             COST-=BASE:RESULT:9
         ELSE
             PRINTW 费用不足
@@ -137,8 +138,14 @@ $ROUNDCAL
 FOR COUNT2,0,HEIGHT
     FOR COUNT,0,WEIGHT
         CALL GETOPERATOR_B01(COUNT,COUNT2)
-        IF RESULT!=-1
-            CALLFORM ATTACK_{RESULT-1}(COUNT2,COUNT)      
+        LOCAL=RESULT
+        IF LOCAL!=-1
+            BASE:LOCAL:18++
+            SIF BASE:LOCAL:17>0
+            BASE:LOCAL:17--            
+            LOCAL=NO:LOCAL
+            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT)   
+            CALLFORM SKILL_{LOCAL}(0)     
         ENDIF
     NEXT
 NEXT
@@ -261,6 +268,7 @@ SELECTCASE RESULT
         BASE:ARG:12=-1
         BASE:ARG:14=BASE:ARG:8 ;重置冷却
     CASE 1
+        CALLFORM SKILL_{NO:ARG}(1)
     CASE 999
         RETURN
 ENDSELECT
