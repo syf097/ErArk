@@ -4,4 +4,10 @@
 #DIM  ENEMY,20,20,20
 #DIM  ENEMYH,20,20,20
 #DIMS  ENEMYS,20,20
+#DIM ROUND
 #DIM COST
+
+
+
+;=====================================
+#DIMS BUFF,999,100
