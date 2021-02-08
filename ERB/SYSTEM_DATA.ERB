@@ -1,0 +1,204 @@
+﻿;=================================================
+;SYSTEM:加载游戏
+;-------------------------------------------------
+@SYSTEM_LOADGAME
+;-------------------------------------------------
+#DIM L_LEN
+#DIM L_POS
+#DIM L_IDX
+#DIM L_LINECOUNT
+
+L_POS = L_POS < 0 ? 0 # L_POS
+L_LEN = SAVENOS()
+L_LINECOUNT = LINECOUNT
+
+$DRAW_PAGE
+REDRAW 0
+CUSTOMDRAWLINE =
+PRINTL 【读取存档】要载入以下哪个存档？
+DRAWLINE
+
+CALL SYSTEM_LIST_DATA, L_POS, L_POS + L_LEN
+
+CHKDATA 99
+IF RESULT == 0
+	DRAWLINE 
+	SIF 99 == LASTLOAD_NO
+		SETCOLORBYNAME DEEPSKYBLUE
+	PRINTFORML  [{99,2}] %RESULTS%
+	RESETCOLOR
+	DRAWLINE 
+ELSE
+	DRAWLINE 
+ENDIF
+
+PRINTFORMLC [101] 上一页
+PRINTFORMLC [100] 返回
+PRINTFORMLC [102] 下一页
+PRINTL
+
+REDRAW 1
+$INPUT_LOOP
+INPUT 99
+
+L_IDX = RESULT
+SELECTCASE L_IDX
+;[100] 返回
+CASE 100
+	RETURN L_POS
+
+;[101] 上一页
+CASE 101
+	IF L_POS - L_LEN >= 0
+		L_POS -= L_LEN
+		CLEARLINE LINECOUNT - L_LINECOUNT
+		GOTO DRAW_PAGE
+	ENDIF
+
+;[102] 下一页
+CASE 102
+	IF L_POS + L_LEN < 99
+		L_POS += L_LEN
+		CLEARLINE LINECOUNT - L_LINECOUNT
+		GOTO DRAW_PAGE
+	ENDIF
+
+;0~99
+CASE 0 TO 99
+	CHKDATA L_IDX
+	IF RESULT == 0
+		REDRAW 1
+		LOADDATA L_IDX
+		RETURN L_POS
+	ENDIF
+ENDSELECT
+
+;无效输入
+CLEARLINE 1
+GOTO INPUT_LOOP
+;=================================================
+;SYSTEM:保存游戏
+;-------------------------------------------------
+@SYSTEM_SAVEGAME
+;-------------------------------------------------
+#DIM L_LEN
+#DIM L_POS
+#DIM L_IDX
+#DIM L_LINECOUNT
+
+L_POS = L_POS < 0 ? 0 # L_POS
+L_LEN = SAVENOS()
+L_LINECOUNT = LINECOUNT
+
+$DRAW_PAGE
+REDRAW 0
+CUSTOMDRAWLINE =
+PRINT 【保存存档】
+PRINTL 要保存到以下哪个存档？
+DRAWLINE
+
+CALL SYSTEM_LIST_DATA, L_POS, L_POS + L_LEN
+
+DRAWLINE 
+PRINTL
+PRINTFORMLC [101] 上一页
+PRINTFORMLC [100] 返回
+PRINTFORMLC [102] 下一页
+PRINTL
+
+REDRAW 1
+$INPUT_LOOP
+INPUT
+
+L_IDX = RESULT
+SELECTCASE L_IDX
+;[100] 返回
+CASE 100
+	RETURN L_POS
+
+;[101] 上一页
+CASE 101
+	IF L_POS - L_LEN >= 0
+		L_POS -= L_LEN
+		CLEARLINE LINECOUNT - L_LINECOUNT
+		GOTO DRAW_PAGE
+	ENDIF
+
+;[102] 下一页
+CASE 102
+	IF L_POS + L_LEN < 99
+		L_POS += L_LEN
+		CLEARLINE LINECOUNT - L_LINECOUNT
+		GOTO DRAW_PAGE
+	ENDIF
+
+;0~98
+CASE 0 TO 98
+	CHKDATA L_IDX
+	IF RESULT == 0
+		PRINTL 存档已经存在，确定要覆盖么？
+		PRINTL [1] 确定    [0] 取消
+		INPUT 0
+		IF RESULT != 1
+			CLEARLINE LINECOUNT - L_LINECOUNT
+			GOTO DRAW_PAGE
+		ENDIF
+	ENDIF
+	GOTO SAVE_GAME
+ENDSELECT
+
+;无效输入
+CLEARLINE 1
+GOTO INPUT_LOOP
+
+
+$SAVE_GAME
+SAVEDATA_TEXT = 
+CALL SAVEINFO
+LOCALS = %GETTIMES()% %SAVEDATA_TEXT%
+SAVEDATA L_IDX, LOCALS
+ARRAYSHIFT LASTSAVE_NO, 1, L_IDX
+SAVEGLOBAL
+
+PRINTFORMW 已将游戏保存为{L_IDX}号存档……
+RETURN L_POS
+
+; CLEARLINE LINECOUNT - L_LINECOUNT
+GOTO DRAW_PAGE
+
+;=================================================
+;SYSTEM:显示存档列表
+;-------------------------------------------------
+@SYSTEM_LIST_DATA, ARG, ARG:1
+;-------------------------------------------------
+#DIM L_I
+
+FOR L_I, ARG, ARG:1
+	IF L_I >= 99
+		PRINTL
+		CONTINUE
+	ENDIF
+	
+	SIF L_I == LASTLOAD_NO
+		SETCOLORBYNAME DEEPSKYBLUE
+	SIF L_I == LASTSAVE_NO
+		SETCOLORBYNAME LIGHTGREEN
+	
+	CHKDATA L_I
+	IF RESULT == 0
+		PRINTFORML  [{L_I,2}] %RESULTS%
+	ELSE
+		SETCOLORBYNAME GRAY
+		PRINTFORML  [{L_I,2}] ----
+		RESETCOLOR
+	ENDIF
+	
+	SIF L_I == LASTLOAD_NO || L_I == LASTSAVE_NO
+		RESETCOLOR
+NEXT
+
+;=================================================
+;   SYSTEM:读取结束関数: 兼容性检查
+;-------------------------------------------------
+;@SYSTEM_LOADEND
+;-------------------------------------------------
