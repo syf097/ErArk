@@ -1,0 +1,51 @@
+﻿@ATTACK_7,ARG:0,ARG:1,ARGS   ;3*4医疗模板
+#DIM COUNT3  ;DO NOT USE COUNT AND COUNT2
+#DIM COUNT4
+#DIM RANGE
+IF BASE:RESULT:技能剩余时间>0
+    RANGE=5
+ELSE
+    RANGE=4
+ENDIF
+LOCAL=FINDCHARA(NO,7)
+FOR COUNT3,0,RANGE
+    FOR COUNT4,-1,2
+        IF ARG:0+COUNT4>=0
+            CALLFORM GETOPERATOR_%ARGS%(ARG:1+COUNT3,ARG:0+COUNT4)
+            IF RESULT!=-1&&BASE:RESULT:剩余生命值<BASE:RESULT:生命值
+            IF BASE:RESULT:技能剩余时间>0
+               BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击 
+               PRINTFORMW 安塞尔恢复了%CALLNAME:RESULT%{BASE:LOCAL:攻击}生命值
+            ELSE
+               BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击*15/10
+            ENDIF           
+            SIF BASE:RESULT:剩余生命值>BASE:RESULT:生命值
+                BASE:RESULT:剩余生命值=BASE:RESULT:生命值
+                PRINTFORMW 安塞尔恢复了%CALLNAME:RESULT%{BASE:LOCAL:攻击*15/10}生命值
+            RETURN
+            ENDIF
+        ENDIF
+    NEXT
+NEXT
+RETURN
+
+@SKILL_7,ARG:0,ARG:1,ARG:2 ;坐标YX，是否是手动激活及撤销技能
+#DIM STATIC ACTIVED
+LOCAL=FINDCHARA(NO,7)
+IF ARG:2==1
+    IF BASE:LOCAL:技力<3
+        PRINTW 技力不足3点
+    ELSE
+        BASE:LOCAL:技能剩余时间=5        
+        ACTIVED==1
+        PRINTW 安塞尔攻击范围扩大一格且攻击上升150%
+    ENDIF
+ELSE
+    IF ARG==2&&ACTIVED
+        ACTIVED=0
+    ELSEIF BASE:LOCAL:技能剩余时间==0&&ACTIVED
+        ACTIVED=0
+        PRINTW 安塞尔技能结束
+    ENDIF
+ENDIF
+RETURN -1
