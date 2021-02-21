@@ -1,0 +1,3 @@
+﻿#DIM COUNTRY_NUM=3
+#DIMS COUNTRY_NAME="罗德岛","龙门","乌萨斯"
+#DIM COUNTRY_好感度,99
