@@ -165,7 +165,7 @@ FOR COUNT2,0,HEIGHT
             SIF BASE:LOCAL:17>0
             BASE:LOCAL:17--            
             LOCAL=NO:LOCAL
-            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT)   
+            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT,"B02")   ;MODIFY
             CALLFORM SKILL_{LOCAL}(COUNT2,COUNT,0)     
         ENDIF
     NEXT
@@ -306,7 +306,7 @@ FOR COUNT, 0, 11
     IF SQUAD:COUNT!=0
         IF BASE:(SQUAD:COUNT):12==-1
             IF BASE:(SQUAD:COUNT):14==0
-                PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%
+                PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%   挡{BASE:(SQUAD:COUNT):10}     {BASE:(SQUAD:COUNT):9}费   \@BASE:(SQUAD:COUNT):16==0? #技能{BASE:(SQUAD:COUNT):16}\@  
             ELSE
                 PRINTFORML [冷却中]%CALLNAME:(SQUAD:COUNT)%
             ENDIF
