@@ -1,0 +1,421 @@
+﻿@EVENTEND
+#PRI
+REDRAW 1
+;二人で逆推之时には、きちんと二回ここに来る之に注意
+
+;PLAYERをMASTERに直す
+SIF PLAYER != MASTER
+	CALL SETFLAG, "调教者交代", 1
+
+;恋慕を外した时に戻し忘れているなら、ここで復帰
+CALL SETFLAG, "助手对象之恋慕外し終了"
+
+CALL CHECK_SATISFACTION, TARGET
+CALL CHECK_SATISFACTION, ASSI
+
+CALL SETFLAG, "调教終了", TARGET
+CALL SETFLAG, "调教終了", MASTER
+SIF ASSI
+	CALL SETFLAG, "调教終了", ASSI
+
+
+@EVENTEND
+#LATER
+;调教中标志OFF
+FLAG:99 = 0
+IF FLAG:22 != 2
+	;对象が上位梦魇之场合には攻略刻印（屈服刻印取得に要する参数量を减らす）を得る
+	;满足＋攻略刻印が一定值以下
+	IF COND("性欲大满足") && MARK:攻略刻印 < 4
+		IF TALENT:上位梦魇 && MARK:屈服刻印 < 3
+			DRAWLINE
+			PRINTFORMW ☆★☆ＥＶＥＮＴ达成・屈服刻印习得要求降低☆★☆
+
+			DRAWLINE
+		ENDIF
+		MARK:攻略刻印 = 4
+	ELSEIF COND("性欲满足") && MARK:攻略刻印 < 2
+		IF TALENT:上位梦魇 && MARK:屈服刻印 < 3
+			DRAWLINE
+			PRINTFORMW ☆★☆ＥＶＥＮＴ达成・屈服刻印习得要求降低☆★☆
+
+			DRAWLINE
+		ENDIF
+		MARK:攻略刻印 = 2
+	ENDIF
+
+	PRINTL 
+	PRINTL 调教结束了。
+
+
+
+
+	;寝取られ事件
+	CALL EVENT_DRAGON_NTR, "寝取られ判定"
+
+	;调教后行为之チェック
+	CALL SELF_CHECK
+
+	;搾乳した母乳之売却
+	CALL SELL_MILK
+
+	;调教时に录画した录像を売却
+	CALL SELL_VIDEO
+	IF ASSI
+		SWAP TARGET, ASSI
+		CALL SELL_VIDEO
+		SWAP TARGET, ASSI
+	ENDIF
+
+	;助手之调教終了时特典（狐で媚药入手など）
+	CALL AFTERTRA_BONUS_ASSI
+
+	;消耗品之オート购入
+	CALL CALC, "消耗品之自动购入"
+ENDIF
+
+CALL EVENT_AFTER_TRAIN
+
+BEGIN ABLUP
+
+
+@EVENT_AFTER_TRAIN
+;气力・体力之上升チェック
+CALL EVENT_GROWTH
+
+;何之珠を得られたか
+CALL JUEL_CHECK
+
+;射精标志、处女丧失标志などをリセット
+VARSET TFLAG, 0, 0, 101
+
+;调教経験を増やす
+EXP:调教回数 += 1
+
+;日付之記录
+CFLAG:97 = DAY
+
+@EVENT_AFTER_TRAIN_COS, ARG
+#DIM LCOUNT
+;汚れを初期化
+CALL RESET_STAIN_EX, "全部", ARG
+
+SELECTCASE CONFIG("调教終了时之服装")
+;終了时に本人之服に着替えてもらうなら
+CASE 0
+	CALL COORDINATE_MUMA, ARG
+;終了时に偏爱之服に着替えてもらうなら
+CASE 2
+	;ここでは夜之衣装に之み着替える之に注意。昼之衣装については@EVENTSHOP之早朝事件后に改めて着替える
+	IF GETBIT(IS_FAVORITE_DRESS(ARG), 6)
+		CALL SET_FAVORITE_DRESS, ARG, 6
+	ELSEIF GETBIT(IS_FAVORITE_DRESS(ARG), 0)
+		CALL SET_FAVORITE_DRESS, ARG, 0
+	ENDIF
+;終了时に偏爱之服之どれかに着替えてもらうなら
+CASE 3
+	IF IS_FAVORITE_DRESS(ARG) == 0
+		;胖次之着用禁止
+		SIF COND("外观：没穿胖次", ARG)
+			CALL SET_PANTIES, ARG
+		RETURN 0
+	ENDIF
+
+	;たまには着替えないかもしれなくてもいいじゃない！
+	FOR LCOUNT, 0, 100
+		LOCAL = RAND:10
+		SIF GETBIT(IS_FAVORITE_DRESS(ARG), LOCAL) == 0
+			CONTINUE
+
+		CALL SET_FAVORITE_DRESS, ARG, LOCAL
+		BREAK
+	NEXT
+;終了时に薄着なら服を着てもらう
+CASE 4
+	SIF EQUIP:ARG:上着 + EQUIP:ARG:紧身衣 == 0
+		CALL COORDINATE_MUMA, ARG
+ENDSELECT
+
+;胖次之着用禁止
+SIF COND("外观：没穿胖次", ARG)
+	CALL SET_PANTIES, ARG
+
+@JUEL_CHECK
+#DIM LCOUNT
+#DIM BONUS
+#DIM MEMO_LV
+#DIM MEMO_TEC
+
+DRAWLINE
+VARSET LOCAL
+BONUS = 0
+;性欲など之充足ＢＯＮＵＳ
+IF COND("性欲大满足")
+	PRINT 性欲大满足
+	BONUS += MAX(ABL:欲望 * 4, 10)
+ELSEIF COND("性欲满足")
+	PRINT 性欲满足
+	BONUS += MAX(ABL:欲望 * 2, 5)
+ENDIF
+IF COND("精液欲大满足")
+	SIF BONUS
+		PRINT ＆
+	PRINT 精液欲大满足
+	BONUS += MAX(ABL:精液成瘾 * 4, 10)
+ELSEIF COND("精液欲满足")
+	SIF BONUS
+		PRINT ＆
+	PRINT 精液欲满足
+	BONUS += MAX(ABL:精液成瘾 * 2, 5)
+ENDIF
+IF EX:连续绝顶 >= 3
+	SIF BONUS
+		PRINT ＆
+	PRINTFORM 连续绝顶{EX:连续绝顶}COMBO
+	BONUS += LIMIT(EX:连续绝顶 - 2, 1, 100)
+ENDIF
+
+IF BONUS
+	PRINTL ＢＯＮＵＳ！
+	PRINTFORML 所得珠、経験值增加{BONUS}％
+
+	PRINTL 
+ENDIF
+IF EXP_GAIN(58)
+	SETCOLOR DEF_COLOR("黄色")
+	PRINTL ※使用媚药导致所得珠减少※
+
+	RESETCOLOR
+	PRINTL 
+ENDIF
+
+VARSET J
+FOR LCOUNT, 0, 16
+	SELECTCASE LCOUNT
+	CASE 3, 12, 13
+		CONTINUE
+	CASE 11
+		GOTJUEL:11 = GET_JUEL(11)
+		J:11 = JUEL:11 + GOTJUEL:11
+	CASEELSE
+		GOTJUEL:LCOUNT = MULTIPLY(GET_JUEL(LCOUNT), 100 + BONUS)
+		J:LCOUNT = JUEL:LCOUNT + GOTJUEL:LCOUNT
+	ENDSELECT
+NEXT
+
+;反感之珠之打ち消しチェック
+CALL DENIAL_CHECK
+
+PRINTL 调教之結果：
+FOR LCOUNT, 0, 13
+	;参数を表示する顺番を普べ替える・ＭＢＣＶＡ欲恭屈恥痛恐习反不鬱・Ｖ润Ａ润は无
+	SELECTCASE LCOUNT
+	CASE  0
+		LOCAL = 0
+	CASE  1
+		LOCAL = 1
+	CASE  2
+		LOCAL = 2
+	CASE  3
+		LOCAL = 14
+	CASE  4
+		LOCAL = 15
+	CASE  5
+		LOCAL = 4
+	CASE  6
+		LOCAL = 5
+	CASE  7
+		LOCAL = 6
+	CASE  8
+		LOCAL = 7
+	CASE  9
+		LOCAL = 8
+	CASE  10
+		LOCAL = 9
+	CASE  11
+		LOCAL = 10
+	CASE  12
+		LOCAL = 11
+	ENDSELECT
+
+	PRINTFORM %PALAMNAME:LOCAL%之珠：({JUEL:LOCAL, 10} \@ GOTJUEL:LOCAL >= 0 ? + # - \@ 
+	SIF GOTJUEL:LOCAL
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTFORM {ABS(GOTJUEL:LOCAL), 10} 
+		RESETCOLOR
+	PRINTFORML )
+	JUEL:LOCAL += GOTJUEL:LOCAL
+NEXT
+
+PRINTW 以上为所获珠。
+
+PRINTL 
+
+LOCAL = 0
+FOR LCOUNT, 0, 100
+	SELECTCASE LCOUNT
+	CASE 4 TO 7
+		CONTINUE
+	ENDSELECT
+
+	IF EXP_GAIN(LCOUNT)
+		PRINTFORML %TEXT_RJ(EXPNAME:LCOUNT, 16)%＋{EXP_GAIN(LCOUNT), 3}
+		LOCAL = 1
+	ENDIF
+NEXT
+
+IF LOCAL
+	EXP:経験值 += MULTIPLY(EXP_GAIN(5), BONUS)
+	PRINTFORMW 取得了以上経験\@ EXP_GAIN(5) ? 与経験值{EXP_GAIN(5)}Ｐ #  \@。
+	PRINTL 
+ENDIF
+
+;欲求不满之解消
+LOCAL = 0
+SELECTCASE BASE:性欲
+CASE IS >= MAXBASE:性欲 * 2
+	LOCAL += 15
+CASE IS >= MAXBASE:性欲
+	LOCAL += 10
+CASE IS >= 1
+	LOCAL += 3
+CASEELSE
+	LOCAL += 1
+ENDSELECT
+
+SELECTCASE BASE:精液欲
+CASE IS >= MAXBASE:精液欲 * 2
+	LOCAL += 10
+CASE IS >= MAXBASE:精液欲
+	LOCAL += 5
+CASE IS >= 1
+	LOCAL += 1
+ENDSELECT
+
+;欲望と精液欲を同时に满足させると、欲求不满が大幅に解消される
+SIF COND("性欲满足") && COND("精液欲满足")
+	LOCAL += 10
+
+;欲求不满之解消
+IF BASE:欲求不满 && COND("性欲满足") && COND("精液欲满足")
+	SETCOLOR DEF_COLOR("黄色")
+	IF COND("性欲大满足") && COND("精液欲大满足")
+		PRINTFORMW %CALLNAME:TARGET%之欲求不满完全解消！
+	ELSEIF COND("性欲满足") && COND("精液欲满足")
+		PRINTFORMW %CALLNAME:TARGET%之欲求不满大幅解消。
+	ENDIF
+	RESETCOLOR
+	PRINTL 
+ENDIF
+
+CALL CALC, "欲求不满解消", TARGET, LOCAL
+
+;绝顶ＢＯＮＵＳはここでリセット
+JUEL:20 = 0
+JUEL:21 = 0
+JUEL:22 = 0
+JUEL:23 = 0
+JUEL:24 = 0
+
+;HARDだと自动で幾つか之レベルが上がる
+SIF CONFIG("ＨＡＲＤ") == 0
+	RETURN 0
+
+;上升前之技巧とＬＶを記录
+MEMO_TEC = ABL:技巧
+MEMO_LV = ABL:ＬＶ
+
+;技巧之自动レベルアップ！
+FOR LCOUNT, 0, 10
+	CALL ISABLUP, "技巧"
+	IF RESULT && ABL:技巧 < NUM("最大レベル", 2)
+		JUEL:习得 -= A
+		ABL:技巧 += 1
+	ELSE
+		BREAK
+	ENDIF
+NEXT
+
+;ＬＶ之自动レベルアップ！
+FOR LCOUNT, 0, NUM("最大レベル", 90)
+	CALL ISABLUP, "ＬＶ"
+	IF RESULT && ABL:ＬＶ < NUM("最大レベル", 90)
+		EXP:経験值 -= A
+		ABL:ＬＶ += 1
+	ELSE
+		BREAK
+	ENDIF
+NEXT
+
+IF ABL:技巧 > MEMO_TEC || ABL:ＬＶ > MEMO_LV
+	DRAWLINE
+	PRINTFORMW 能力的自动提高了…
+
+	SIF ABL:技巧 > MEMO_TEC
+		PRINTFORMW %CALLNAME:TARGET%之技巧{ABL:技巧 - MEMO_TEC}LV上升{ABL:技巧}LV！
+	IF ABL:ＬＶ > MEMO_LV
+		PRINTFORMW %CALLNAME:TARGET%之ＬＶ{ABL:ＬＶ - MEMO_LV}LV上升{ABL:ＬＶ}LV！
+		;ＬＶが10以上になると上位梦魇化之可能性あり。LV14だと确实に上位梦魇になる
+		IF ABL:ＬＶ >= 10 && ABL:ＬＶ + ABL:技巧/2 >= 10 + RAND:5 && TALENT:梦魇 && TALENT:上位梦魇 == 0
+			PRINTFORMW %CALLNAME:TARGET%成为上位梦魇！
+			TALENT:梦魇 = 0
+			TALENT:上位梦魇 = 1
+		ENDIF
+		SIF ABL:ＬＶ/5 > MAX(MEMO_LV/5, 1)
+			CALL GET_TALENT, ABL:ＬＶ/5 - MEMO_LV/5
+	ENDIF
+	PRINTL 
+ENDIF
+
+@DENIAL_CHECK
+#DIM LCOUNT
+SIF J:11 == 0
+	RETURN 0
+
+PRINTL 反感之珠和其它之珠相互抵消了。
+
+
+VARSET LOCAL
+
+FOR LCOUNT, 0, 100
+	;欲情・恭顺・屈服之珠が无いなら、恥情・苦痛・恐怖之珠を减らす
+	IF J:4 + J:5 + J:6
+		IF J:4 && RANDIF(1, J:5, J:6)
+			LOCAL = 4
+		ELSEIF J:5 && RANDIF(1, J:6)
+			LOCAL = 5
+		ELSE
+			LOCAL = 6
+		ENDIF
+	ELSEIF J:8 + J:9 + J:10
+		IF J:8 && RANDIF(1, J:9, J:10)
+			LOCAL = 8
+		ELSEIF J:9 && RANDIF(1, J:10)
+			LOCAL = 9
+		ELSE
+			LOCAL = 10
+		ENDIF
+	ELSE
+		BREAK
+	ENDIF
+
+	LOCAL:1 = LIMIT(J:11 / 2, 1, J:LOCAL)
+
+	LOCAL:LOCAL += LOCAL:1
+	J:LOCAL -= LOCAL:1
+	GOTJUEL:LOCAL -= LOCAL:1
+	J:11 -= LOCAL:1
+	GOTJUEL:11 -= LOCAL:1
+
+	SIF J:11 <= 0
+		BREAK
+NEXT
+;减少量表示
+FOR LCOUNT, 4, 11
+	SIF LCOUNT == 7 || LOCAL:LCOUNT == 0
+		CONTINUE
+	PRINTFORML %PALAMNAME:LCOUNT%之珠×{LOCAL:LCOUNT}个减少
+NEXT
+
+PRINTL 
+

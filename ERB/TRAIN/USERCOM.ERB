@@ -1,0 +1,815 @@
+﻿@SHOW_USERCOM
+#DIM LCOUNT
+#DIM MEMO_LINECOUNT
+
+;存在している调教之みを数えていって何番目か
+#DIM NUM_TRAIN
+#DIM NEXT_LINE
+#DIM NUM_COLUMN
+#DIMS COM_NAMES
+#DIMS COM_NAMES_HIDDEN
+
+REDRAW 0
+;主导権が无い标志を一时的に消去
+CLEARBIT FLAG:99, 1
+
+;换装部分之高速化标志消去
+TCVAR:26 = 0
+
+IF FLAG:238 || CONFIG("调教配置模式")
+	FLAG:238 = 0
+
+	NUM_TRAIN = -1
+
+	NEXT_LINE = 0
+	NUM_COLUMN = 3 + (CONFIG("画面表示：调教指令４列") > 0)
+
+	;直接選択できる指令は499番までだが、现状は320までで十分すぎる
+	FOR LCOUNT, 0, 320
+		SIF STRLENS(TRAINNAME:LCOUNT) == 0
+			CONTINUE
+
+		NUM_TRAIN += 1
+
+		IF CONFIG("调教配置模式：全指令表示") == 0
+			TRYCALLFORM COM_ABLE{LCOUNT}
+			SIF RESULT == 0
+				CONTINUE
+		ENDIF
+
+		RESETCOLOR
+		SIF CONFIG("画面表示：未实行指令之色") && FIRSTCOM(LCOUNT) == 0
+			SETCOLOR DEF_COLOR("明灰色")
+
+		IF CONFIG("调教配置模式") == 0
+			;指令表示过滤
+			SELECTCASE DITEMTYPE:0:LCOUNT
+			;非表示設定
+			CASE 1
+				SIF CONFIG("非表示指令之表示") == 0
+					CONTINUE
+				SETCOLOR DEF_COLOR("青")
+			;禁止設定
+			CASE 2
+				CONTINUE
+			ENDSELECT
+		ELSE
+		 	SELECTCASE TRAINNAME:LCOUNT
+			CASE "～予备～"
+				CONTINUE
+			ENDSELECT
+		ENDIF
+
+		IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+			SELECTCASE LCOUNT
+			CASE 178, 280, 281
+				PRINTFORMC %TRAIN_NAME_SELECT(LCOUNT)%[{NUM_TRAIN, 3}]
+			CASEELSE
+				SETCOLOR DEF_COLOR("灰色")
+				PRINTFORMC %TRAIN_NAME_SELECT(LCOUNT)%[XXX]
+				RESETCOLOR
+			ENDSELECT
+		ELSE
+
+			IF CONFIG("调教配置模式") == 0
+				;指令名が通常と違う场合には色を变える(逆推状态で之基本指令は色を变えない)
+				SIF TRAIN_NAME_SELECT(LCOUNT) != TRAIN_NAME_STANDARD(LCOUNT)
+					SETCOLOR DEF_COLOR("粉红色心形")
+
+				;PLAYを終わらせられる时には色を变える
+				SELECTCASE LCOUNT
+				CASE 31, 201
+					SIF TEQUIP:按摩棒
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 33, 202
+					SIF TEQUIP:肛用按摩棒
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 34, 203
+					SIF TEQUIP:阴蒂夹
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 35, 204
+					SIF TEQUIP:乳头夹
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 36, 205
+					SIF TEQUIP:搾乳机
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 38
+					SIF TEQUIP:淋浴
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 39
+					SIF TEQUIP:跳蛋插入
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 99
+					SIF TEQUIP:六九式
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 133
+					SIF TEQUIP:眼罩
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 134
+					SIF TEQUIP:拘束
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 135
+					SIF TEQUIP:口枷
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 136
+					SIF COND("肛塞")
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 137
+					SIF TEQUIP:扩张扩张气囊
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 149
+					SIF TEQUIP:导尿管
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 170
+					SIF TEQUIP:摄像机
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 171
+					SIF TEQUIP:野外PLAY
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 172
+					SIF TEQUIP:浴室PLAY
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 173
+					SIF TEQUIP:新婚PLAY
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 174
+					SIF TEQUIP:屋内露出PLAY
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 179
+					SIF TEQUIP:羞恥PLAY
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 182
+					SIF TEQUIP:PLAYER:逆推
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 200
+					SIF TEQUIP:触手
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 211
+					SIF TEQUIP:触手乳头奸
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 208
+					SIF TEQUIP:触手口辱
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 209
+					SIF TEQUIP:飞机杯
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 301
+					SIF TEQUIP:高潮管理
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 302
+					SIF TEQUIP:演奏中
+						SETCOLOR DEF_COLOR("黄色")
+				CASE 306
+					SIF STATE("皮肤硬化", PLAYER)
+						SETCOLOR DEF_COLOR("黄色")
+				ENDSELECT
+			ELSE
+				SELECTCASE DITEMTYPE:0:LCOUNT
+				;通常状态
+				CASE 0
+					SELECTCASE LCOUNT
+					CASE 0 TO 9, 60, 61, 65, 71, 75, 80 TO 95, 98, 99, 230 TO 289
+						SETCOLOR DEF_COLOR("暗黄色")
+					CASEELSE
+						RESETCOLOR
+					ENDSELECT
+				;非表示設定
+				CASE 1
+					SIF CONFIG("调教配置模式：非表示指令隐藏")
+						CONTINUE
+					SETCOLOR DEF_COLOR("青")
+				;禁止設定
+				CASE 2
+					SIF CONFIG("调教配置模式：禁止指令隐藏")
+						CONTINUE
+					SETCOLOR DEF_COLOR("緑")
+				ENDSELECT
+			ENDIF
+
+			IF GETCOLOR() != DEF_COLOR("黄色") && GETCOLOR() != DEF_COLOR("粉红色心形")
+				;表示するかどうか
+				SELECTCASE LCOUNT
+				CASE 0 TO 29
+					SIF CONFIG("爱抚系非表示") == 0
+						CONTINUE
+				CASE 30 TO 59
+					SIF CONFIG("道具系非表示") == 0
+						CONTINUE
+				CASE 60 TO 69
+					SIF CONFIG("Ｖ性爱系非表示") == 0
+						CONTINUE
+				CASE 70 TO 79
+					SIF CONFIG("Ａ性爱系非表示") == 0
+						CONTINUE
+				CASE 80 TO 89
+					SIF CONFIG("特殊性爱系非表示") == 0
+						CONTINUE
+				CASE 90 TO 119
+					SIF CONFIG("奉仕系非表示") == 0
+						CONTINUE
+				CASE 120 TO 129
+					SIF CONFIG("调教者に插入系非表示") == 0
+						CONTINUE
+				CASE 130 TO 159
+					SIF CONFIG("ＳＭ・调教系非表示") == 0
+						CONTINUE
+				CASE 160 TO 169
+					SIF CONFIG("助手系非表示") == 0
+						CONTINUE
+				CASE 170 TO 199
+					SIF CONFIG("特殊系非表示") == 0
+						CONTINUE
+				CASE 200 TO 229
+					SIF CONFIG("触手系非表示") == 0
+						CONTINUE
+				CASE 230 TO 259
+					SIF CONFIG("秘法系非表示") == 0
+						CONTINUE
+				CASE 260 TO 279
+					SIF CONFIG("消費道具系非表示") == 0
+						CONTINUE
+				CASEELSE
+					SIF CONFIG("其他非表示") == 0
+						CONTINUE
+				ENDSELECT
+			ENDIF
+
+			PRINTFORMC %TRAIN_NAME_SELECT(LCOUNT)%[{NUM_TRAIN, 3}]
+		ENDIF
+
+		NEXT_LINE += 1
+
+		SIF NEXT_LINE % NUM_COLUMN == 0
+			PRINTL 
+	NEXT
+	SIF NEXT_LINE % NUM_COLUMN
+		PRINTL 
+ENDIF
+RESETCOLOR
+
+CALL SETFLAG, "助手对象之恋慕外し終了"
+
+;-------------------------------------------------
+;特殊な指令
+;-------------------------------------------------
+PRINTL 
+
+;HARDで逆推ているなら、主导権が无い标志をセット
+IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+	SETBIT FLAG:99, 1
+ELSE
+	CLEARBIT FLAG:99, 1
+ENDIF
+
+
+NEXT_LINE = 0
+VARSET COM_NAMES
+VARSET COM_NAMES_HIDDEN
+
+IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：Ｂ") == 0 && CONFIG("项目表示过滤：Ｃ") == 0)
+	SIF CONFIG("爱抚系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 爱抚系[300]
+	RESETCOLOR
+	SIF CONFIG("道具系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 道具系[301]
+	RESETCOLOR
+	SIF CONFIG("Ｖ性爱系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC Ｖ性爱系[302]
+	RESETCOLOR
+	PRINTL 
+
+	SIF CONFIG("Ａ性爱系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC Ａ性爱系[303]
+	RESETCOLOR
+	SIF CONFIG("特殊性爱系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 特殊性爱系[304]
+	RESETCOLOR
+	SIF CONFIG("奉仕系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 奉仕系[305]
+	RESETCOLOR
+	PRINTL 
+
+	SIF CONFIG("调教者に插入系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 调教者插入系[306]
+	RESETCOLOR
+	SIF CONFIG("ＳＭ・调教系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC ＳＭ・调教系[307]
+	RESETCOLOR
+	SIF CONFIG("助手系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	;女仆长系とか言われても困るし助手系之まま
+	PRINTFORMC 助手系[308]
+	RESETCOLOR
+	PRINTL 
+
+	SIF CONFIG("特殊系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 特殊系[309]
+	RESETCOLOR
+	SIF CONFIG("触手系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 触手系[310]
+	RESETCOLOR
+	SIF CONFIG("秘法系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 秘法系[311]
+	RESETCOLOR
+	PRINTL 
+
+	SIF CONFIG("消費道具系非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 消費道具系[312]
+	RESETCOLOR
+	SIF CONFIG("其他非表示")
+		SETCOLOR DEF_COLOR("黄色")
+	PRINTC 其他[313]
+	RESETCOLOR
+	PRINTC 表示指令群之反转[320]
+	PRINTL 
+ENDIF
+
+IF CONFIG("调教配置模式") == 0
+	CALL COM_ABLE500
+	SIF RESULT == 0
+		SETCOLOR DEF_COLOR("灰色")
+	PRINTC 秘法一览[340]
+	RESETCOLOR
+
+	CALL COM_ABLE501
+	SIF RESULT == 0
+		SETCOLOR DEF_COLOR("灰色")
+	PRINTC 消費道具一览[341]
+	RESETCOLOR
+
+	IF CONFIG("非表示指令之表示") == 0
+		PRINTC 非表示指令表示[350]
+	ELSE
+		SETCOLOR DEF_COLOR("青")
+		PRINTC 非表示指令隐藏[350]
+		RESETCOLOR
+	ENDIF
+	PRINTL 
+
+	PRINTC 显示状态能力[400]
+
+	IF CONFIG("项目表示过滤：Ｃ") == 0
+		IF TEQUIP:逆推
+			PRINTC 显示污渍[410]
+		ELSE
+			PRINTC 显示＆管理污渍[410]
+		ENDIF
+
+		SIF TALENT:恋慕 == 0 || PLAYER != MASTER
+			SETCOLOR DEF_COLOR("灰色")
+		SIF CONFIG("ＨＡＲＤ")
+				CFLAG:9 = 0
+		IF CFLAG:9
+			PRINTC 相亲相爱[420]
+		ELSE
+			PRINTC 尽情疼爱[420]
+		ENDIF
+		RESETCOLOR
+
+		PRINTL 
+
+		SIF CHECK_EXCHANGE(ASSI, MASTER) == 0
+			SETCOLOR DEF_COLOR("灰色")
+		IF ASSIPLAY
+			PRINTFORMC 让主人接手[430]
+		ELSE
+			PRINTFORMC 让%TEXTS("助手之名称")%接手[430]
+		ENDIF
+		RESETCOLOR
+
+		SIF CHECK_EXCHANGE(ASSI, TARGET) == 0
+			SETCOLOR DEF_COLOR("灰色")
+		IF PLAYER == MASTER
+			PRINTFORMC 和助手玩[431]
+		ELSE
+			PRINTFORMC 逆转调教立场[431]
+		ENDIF
+		RESETCOLOR
+
+		PRINTC 宝珠取得予定数表示[440]
+
+		PRINTL 
+
+		PRINTC 调教配置模式[888]
+	ENDIF
+
+	IF CONFIG("项目表示过滤：Ｂ")
+		PRINTC 项目表示过滤：Ｂ[900]
+	ELSEIF CONFIG("项目表示过滤：Ｃ")
+		PRINTC 项目表示过滤：Ｃ[900]
+	ELSE
+		PRINTC 项目表示过滤：Ａ[900]
+	ENDIF
+
+	SIF COND("调教終了可能") == 0
+		SETCOLOR DEF_COLOR("灰色")
+	PRINTC 调教終了[999]
+	RESETCOLOR
+ELSE
+	IF CONFIG("Ｖ调教过滤")
+		PRINTC Ｖ调教过滤：○[360]
+	ELSE
+		PRINTC Ｖ调教过滤：×[360]
+	ENDIF
+	IF CONFIG("Ａ调教过滤")
+		PRINTC Ａ调教过滤：○[361]
+	ELSE
+		PRINTC Ａ调教过滤：×[361]
+	ENDIF
+	IF CONFIG("实行值过滤")
+		PRINTC 实行值过滤：○[362]
+	ELSE
+		PRINTC 实行值过滤：×[362]
+	ENDIF
+	PRINTL 
+	IF CONFIG("脱童贞过滤")
+		PRINTC 脱童贞过滤：○[363]
+	ELSE
+		PRINTC 脱童贞过滤：×[363]
+	ENDIF
+	IF CONFIG("脱处女过滤")
+		PRINTC 脱处女过滤：○[364]
+	ELSE
+		PRINTC 脱处女过滤：×[364]
+	ENDIF
+	IF CONFIG("假阴茎过滤")
+		PRINTC 假阴茎过滤：○[365]
+	ELSE
+		PRINTC 假阴茎过滤：×[365]
+	ENDIF
+	PRINTL 
+	SELECTCASE GETBIT(FLAG:98, 0) + GETBIT(FLAG:98, 4)*1p4 + GETBIT(FLAG:98, 5)*1p5
+	CASE 0
+		PRINTC 槽：黑白Ａ[370]
+	CASE 1p5
+		PRINTC 槽：黑白Ｂ[370]
+	CASE 1p4 + 1p5
+		PRINTC 槽：黑白Ｃ[370]
+	CASE 1p0 + 1p5
+		PRINTC 槽：彩色Ａ[370]
+	CASE 1p0 + 1p4 + 1p5
+		PRINTC 槽：彩色Ｂ[370]
+	ENDSELECT
+
+	IF CONFIG("画面表示：参数４列")
+	 	PRINTC 参数：４列[371]
+	ELSE
+	 	PRINTC 参数：３列[371]
+	ENDIF
+	IF CONFIG("画面表示：调教指令４列")
+		PRINTC 指令表示：４列[372]
+	ELSE
+		PRINTC 指令表示：３列[372]
+	ENDIF
+	PRINTL 
+
+	IF CONFIG("画面表示：未实行指令之色")
+		PRINTC 未实行指令：暗色[373]
+	ELSE
+		PRINTC 未实行指令：通常[373]
+	ENDIF
+	IF CONFIG("画面表示：尿意槽")
+		PRINTC 尿意槽：表示[374]
+	ELSE
+		PRINTC 尿意槽：隐藏[374]
+	ENDIF
+	IF CONFIG("画面表示：排泄欲槽")
+		PRINTC 排泄欲槽：表示[375]
+	ELSE
+		PRINTC 排泄欲槽：隐藏[375]
+	ENDIF
+	PRINTL 
+
+	PRINTC 選择射精模式[380]
+	PRINTL 
+	PRINTC 调教返回[888]
+	IF CONFIG("调教配置模式：全指令表示")
+		PRINTC 实行不可指令隐藏[890]
+	ELSE
+		PRINTC 调教指令之全表示[890]
+	ENDIF
+	IF CONFIG("调教配置模式：非表示指令隐藏")
+		PRINTC 青緑指令：青隐藏[891]
+	ELSEIF CONFIG("调教配置模式：禁止指令隐藏")
+		PRINTC 青緑指令：緑隐藏[891]
+	ELSE
+		PRINTC 青緑指令：全表示[891]
+	ENDIF
+ENDIF
+
+PRINTL 
+
+MEMO_LINECOUNT = LINECOUNT
+
+SIF MAX(PREVCOM, PREVCOM:2) >= 0 && CONFIG("调教配置模式") == 0
+	CALL SHOW_PREVCOM
+
+;選んだ指令次第で轻い说明表示。原則１行
+SELECTCASE TFLAG:103
+CASE 360
+	SIF CONFIG("Ｖ调教过滤")
+		PRINTFORML  Ｖ调教过滤ＯＮ。处女之时、不可以对阴道进行调教
+CASE 361
+	SIF CONFIG("Ａ调教过滤")
+		PRINTFORML  Ａ调教过滤ＯＮ。不可以对肛门进行调教
+CASE 362
+	SIF CONFIG("实行值过滤")
+		PRINTFORML  实行值过滤ＯＮ。实行值不足时不可使用
+CASE 363
+	SIF CONFIG("脱童贞过滤")
+		PRINTFORML  脱童贞过滤ＯＮ。不可实行会导致脱童贞的调教
+CASE 364
+	SIF CONFIG("脱处女过滤")
+		PRINTFORML  脱处女过滤ＯＮ。插入破处时需要确认
+CASE 365
+	SIF CONFIG("假阴茎过滤")
+		PRINTFORML  假阴茎过滤ＯＮ。禁止假阴茎使用
+CASE 372
+	SIF CONFIG("画面表示：调教指令４列") && CONFIG("ウィンドウ幅") < 1000
+		PRINTFORML  ４列表示之场合、宽度为1000左右
+CASE 373
+	IF CONFIG("画面表示：未实行指令之色")
+		PRINTFORM  还没有选择的事情是没有的指令
+		CALL PRINT_COLORTEXT, "灰色", DEF_COLOR("明灰色")
+		PRINTFORML 。
+	ENDIF
+CASE 890
+	IF CONFIG("调教配置模式：全指令表示")
+		PRINTFORML  [{TARGET, 2}]%CALLNAME:TARGET%可实行调教全显示
+	ELSE
+		PRINTFORML  [{TARGET, 2}]%CALLNAME:TARGET%可实行调教部分显示
+	ENDIF
+CASE 888
+	IF CONFIG("调教配置模式")
+		PRINT  选择的调教指令
+		CALL PRINT_COLORTEXT, "非表示", DEF_COLOR("青")
+		PRINT 、
+		CALL PRINT_COLORTEXT, "禁止", DEF_COLOR("緑")
+		PRINTFORM 在状态上会改变
+			CALL PRINT_COLORTEXT, "こ之色", DEF_COLOR("暗黄色")
+		PRINTFORML 不可禁止的东西
+	ENDIF
+CASE 891
+	IF CONFIG("调教配置模式：非表示指令隐藏")
+		CALL PRINT_COLORTEXT, " 非表示", DEF_COLOR("青")
+		PRINTFORML 之指令隐藏掉（仅限于调教配置模式）
+	ELSEIF CONFIG("调教配置模式：禁止指令隐藏")
+		CALL PRINT_COLORTEXT, " 禁止", DEF_COLOR("緑")
+		PRINTFORML 之指令隐藏掉
+	ENDIF
+CASE 900
+	;前回指令がない时に限り说明出す
+	IF MEMO_LINECOUNT == LINECOUNT
+		IF CONFIG("项目表示过滤：Ｂ")
+			PRINTPLAIN  [300]～[320]
+			PRINTFORML 之指令群过滤隐藏掉
+		ELSEIF CONFIG("项目表示过滤：Ｃ")
+			PRINTFORML  使用頻度低的项目全隐藏掉
+		ENDIF
+	ENDIF
+ENDSELECT
+
+
+
+SIF MEMO_LINECOUNT == LINECOUNT
+	PRINTL 
+
+@CHECK_EXCHANGE(ARG, ARG:1)
+#FUNCTION
+;ARGとARG:1之役割を交换出来るか
+SIF ARG <= 0 || ARG:1 <= 0
+	RETURNF 0
+;ASSIとMASTER间でPLAYERを交代
+IF (ARG == ASSI && ARG:1 == MASTER) || (ARG == MASTER && ARG:1 == ASSI)
+	SIF STATE("击沈", ARG) || STATE("击沈", ARG:1)
+		RETURNF 0
+	SIF TEQUIP:PLAYER:逆推 || TEQUIP:爱之圈套 || TEQUIP:逆推 || TEQUIP:高潮管理 || TEQUIP:新婚PLAY || TEQUIP:演奏中 || TEQUIP:触手 || TEQUIP:摄像机
+		RETURNF 0
+	RETURNF 1
+;ASSIとTARGET间でTARGETを交代
+ELSEIF (ARG == ASSI && ARG:1 == TARGET) || (ARG == TARGET && ARG:1 == ASSI)
+	SIF BASE:精力 <= 0 || COND("助手可能") == 0
+		RETURNF 0
+ 	SIF STATE("击沈", ASSI) || STATE("恍惚", PLAYER) || STATE("脱力", TARGET)
+		RETURNF 0
+	SIF TEQUIP:逆推 + TEQUIP:Ｗ逆推 == 1
+		RETURNF 0
+	SIF TEQUIP:PLAYER:逆推 || TEQUIP:爱之圈套 || TEQUIP:拘束 || TEQUIP:摄像机 || TEQUIP:演奏中 || TEQUIP:触手 || TEQUIP:摄像机
+		RETURNF 0
+	RETURNF 1
+ENDIF
+RETURNF 0
+
+@SHOW_PREVCOM
+PRINTFORM < 前回调教指令 : %TEXTS("前回调教指令")%
+SIF NUM("回合数") == 0 && PREVCOM:2 >= 0
+	PRINTFORM \@ PLAYER == MASTER ? (%TEXTS("助手之名称")%) # (主人) \@
+SETCOLOR DEF_COLOR("黄色")
+PRINTFORM %STR:1%
+RESETCOLOR
+PRINTFORML >
+
+@USERCOM
+
+LOCAL = RESULT
+
+;HARDで逆推ているなら、主导権が无い标志をセット
+IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+	SETBIT FLAG:99, 1
+ELSE
+	CLEARBIT FLAG:99, 1
+ENDIF
+
+TFLAG:103 = LOCAL
+
+;指令選択
+IF LOCAL >= 0 && LOCAL <= 299
+	IF CONFIG("调教配置模式") == 0
+		CALL NO_SELECTCOM, LOCAL
+
+		SIF RESULT == 999
+			RETURN 0
+
+		SELECTCOM = RESULT
+		TRYCALLFORM COM_ABLE{SELECTCOM}
+
+		SIF RESULT == 0
+			RETURN 0
+
+		;主导権が无い标志を解除
+		CLEARBIT FLAG:99, 1
+
+		REDRAW 1
+
+		DOTRAIN SELECTCOM
+	ELSE
+		CALL NO_SELECTCOM, LOCAL
+		LOCAL = RESULT
+
+		SELECTCASE LOCAL
+		CASE 999
+			CLEARLINE LINECOUNT - TFLAG:31
+			RETURN 0
+		CASEELSE
+			IF STRLENS(TRAINNAME:LOCAL) == 0
+				CLEARLINE LINECOUNT - TFLAG:31
+				RETURN 0
+			ENDIF
+
+		 	SELECTCASE TRAINNAME:LOCAL
+			CASE "～予备～"
+				CLEARLINE LINECOUNT - TFLAG:31
+				RETURN 0
+			ENDSELECT
+		ENDSELECT
+
+		DITEMTYPE:0:LOCAL = (DITEMTYPE:0:LOCAL + 1)%3
+
+		SELECTCASE LOCAL
+		CASE 0 TO 9, 60, 61, 65, 71, 75, 80 TO 95, 98, 99, 230 TO 289
+			SIF DITEMTYPE:0:LOCAL == 2
+				DITEMTYPE:0:LOCAL = 0
+		ENDSELECT
+	ENDIF
+;调教指令之种类ごと之表示ＯＮＯＦＦ
+ELSEIF LOCAL >= 300 && LOCAL <= 313
+	INVERTBIT FLAG:210, LOCAL - 300
+	CLEARLINE LINECOUNT - TFLAG:31
+	RETURN 1
+;表示指令群之反转[320]
+ELSEIF LOCAL == 320
+	FLAG:210 = INVERTBITS(FLAG:210, 0, 13)
+	CLEARLINE LINECOUNT - TFLAG:31
+	RETURN 1
+;调教配置模式へ[888]
+ELSEIF LOCAL == 888
+	TFLAG:103 = LOCAL
+	INVERTBIT FLAG:210, 20
+;项目表示过滤[900]
+ELSEIF LOCAL == 900
+	IF CONFIG("项目表示过滤：Ｂ")
+		CLEARBIT FLAG:210, 30
+		SETBIT FLAG:210, 31
+	ELSEIF CONFIG("项目表示过滤：Ｃ")
+		CLEARBIT FLAG:210, 31
+	ELSE
+		SETBIT FLAG:210, 30
+	ENDIF
+;调教終了[999]
+ELSEIF LOCAL == 999 && COND("调教終了可能")
+	REDRAW 1
+	BEGIN AFTERTRAIN
+ELSEIF CONFIG("调教配置模式") == 0
+	;秘法[340]
+	IF LOCAL == 340
+		DOTRAIN 500
+	;道具[341]
+	ELSEIF LOCAL == 341
+		DOTRAIN 501
+	;非表示指令を表示[350]
+	ELSEIF LOCAL == 350
+		INVERTBIT FLAG:210, 21
+		CLEARLINE LINECOUNT - TFLAG:31
+	;显示状态能力[400]
+	ELSEIF LOCAL == 400
+		CALL NEW_PRINT_STATE, TARGET, "通常"
+	;汚れ表示[410]
+	ELSEIF LOCAL == 410
+		CALL STAIN_INFO
+	;反击するか選択[420]
+	ELSEIF LOCAL == 420 && TALENT:恋慕 && PLAYER == MASTER
+		IF CONFIG("ＨＡＲＤ")
+			RETURN 0
+		ELSEIF CFLAG:9 == 1
+			PRINTFORMW 和%CALLNAME:TARGET%相亲相爱。
+		ELSEIF CFLAG:9 == 0
+			PRINTFORMW 和%CALLNAME:TARGET%做有趣的事情。
+		ENDIF
+		INVERTBIT CFLAG:9, 0
+	;交代[430]
+	ELSEIF LOCAL == 430 && CHECK_EXCHANGE(ASSI, MASTER)
+		CALL SETFLAG, "调教者交代", 1
+		CLEARLINE LINECOUNT - TFLAG:31
+	;TARGETとASSIを交换[431]
+	ELSEIF LOCAL == 431 && CHECK_EXCHANGE(ASSI, TARGET)
+		CALL SETFLAG, "对象交代"
+		CLEARLINE LINECOUNT - TFLAG:31
+	;宝珠取得予定数表示[440]
+	ELSEIF LOCAL == 440
+		CALL SHOW_WILLGET_JUEL
+	ENDIF
+ELSE
+	TFLAG:103 = LOCAL
+	;[360]～は各种调教过滤
+	IF LOCAL == 360
+		INVERTBIT FLAG:209, 0
+	ELSEIF LOCAL == 361
+		INVERTBIT FLAG:209, 1
+	ELSEIF LOCAL == 362
+		INVERTBIT FLAG:209, 4
+	ELSEIF LOCAL == 363
+		INVERTBIT FLAG:209, 5
+	ELSEIF LOCAL == 364
+		INVERTBIT FLAG:209, 6
+	ELSEIF LOCAL == 365
+		INVERTBIT FLAG:209, 7
+	;[370]～は调教画面表示之設定
+	ELSEIF LOCAL == 370
+		SELECTCASE GETBIT(FLAG:98, 0) + GETBIT(FLAG:98, 4)*1p4 + GETBIT(FLAG:98, 5)*1p5
+		CASE 0
+			SETBIT FLAG:98, 5
+		CASE 1p5
+			SETBIT FLAG:98, 4
+		CASE 1p4 + 1p5
+			SETBIT FLAG:98, 0
+			CLEARBIT FLAG:98, 4
+		CASE 1p0 + 1p5
+			SETBIT FLAG:98, 4
+		CASE 1p0 + 1p4 + 1p5
+			CLEARBIT FLAG:98, 0
+			CLEARBIT FLAG:98, 4
+			CLEARBIT FLAG:98, 5
+		ENDSELECT
+	ELSEIF LOCAL == 371
+		INVERTBIT FLAG:98, 2
+	ELSEIF LOCAL == 372
+		INVERTBIT FLAG:98, 3
+	ELSEIF LOCAL == 373
+		INVERTBIT FLAG:98, 1
+	ELSEIF LOCAL == 374
+		INVERTBIT FLAG:98, 6
+	ELSEIF LOCAL == 375
+		INVERTBIT FLAG:98, 7
+	;射精モード選択[380]
+	ELSEIF LOCAL == 380
+		CALL SETCONFIG, "射精的地方之变更"
+	;调教指令之全表示[890]
+	ELSEIF LOCAL == 890
+		INVERTBIT FLAG:210, 45
+	;青緑指令：全表示[891]
+	ELSEIF LOCAL == 891
+		IF CONFIG("调教配置模式：非表示指令隐藏")
+			CLEARBIT FLAG:210, 40
+			SETBIT FLAG:210, 41
+		ELSEIF CONFIG("调教配置模式：禁止指令隐藏")
+			CLEARBIT FLAG:210, 41
+		ELSE
+			SETBIT FLAG:210, 40
+		ENDIF
+	ENDIF
+ENDIF
+
+SIF CONFIG("调教配置模式")
+	CLEARLINE LINECOUNT - TFLAG:31

@@ -190,7 +190,7 @@ PUTFORM 干员数量:{CHARANUM-1}
 ;====================================================
 @ADD_INIT_SQUARD
 ;====================================================
-FOR COUNT,0,8
-	ADDCHARA COUNT
+FOR COUNT,1,8
+	CALL GET_NEW_CHARA(COUNT)
 NEXT
 

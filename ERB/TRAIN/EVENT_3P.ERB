@@ -1,0 +1,1100 @@
+﻿;-------------------------------------------------
+;多人数PLAYで用いる共通处理はここで行う
+;-------------------------------------------------
+;-------------------------------------------------
+;３Ｐにおける指令口上之汎用部分
+;-------------------------------------------------
+@TRAIN_MESSAGE_3P
+;同じ指令之組み合わせで连续实行
+IF SELECTCOM:2 == PREVCOM:2 && SELECTCOM == PREVCOM
+	IF RAND:3 == 0
+		PRINTFORMW %CALLNAME:PLAYER%和%CALLNAME:(PLAYER:1)%在%CALLNAME:TARGET%身体上尽情的贪图着欢愉…
+		RETURN 1
+	ENDIF
+	SELECTCASE SELECTCOM
+	;插入
+	CASE 60 TO 79, 83
+		PRINTFORM %CALLNAME:PLAYER%对%CALLNAME:(PLAYER:1)%
+		SELECTCASE PREVCOM:2
+		CASE 90, 97
+			PRINTFORM 的阴茎用\@ PREVCOM:2 == 97 ? %CLO("摩擦胖次")% # 手 \@撸动
+		CASE 91
+			PRINTFORM 的阴茎被呼吸急促地吮吸着
+
+		CASE 92
+			PRINTFORM 做着乳交
+		CASE 96
+			PRINTFORM 的屁股的小穴被激励的侵犯
+
+		CASE 98
+			PRINTFORM 的淫穴被舌头品尝着味道
+
+		ENDSELECT
+		PRINTFORMW %CALLNAME:TARGET%继续被侵犯着…
+	;口奸
+	CASE 140
+		PRINTFORM %CALLNAME:PLAYER%和%CALLNAME:(PLAYER:1)%配合着腰部的动作，对%CALLNAME:TARGET%的
+		SELECTCASE PREVCOM:2
+		CASE 60 TO 69
+			PRINTFORM 阴道
+		CASE 70 TO 79
+			PRINTFORM 肛穴
+		CASE 83
+			PRINTFORM 尿道
+		CASEELSE
+			IF INSERT("Ｖ插入", TARGET, PLAYER:1)
+				PRINTFORM 阴道
+			ELSEIF INSERT("Ａ插入", TARGET, PLAYER:1)
+				PRINTFORM 肛穴
+			ELSEIF INSERT("尿道插入", TARGET, PLAYER:1)
+				PRINTFORM 尿道
+			ENDIF
+		ENDSELECT
+		PRINTFORMW 和喉咙持续的侵犯着…
+
+	CASEELSE
+		;こ之值は助手側之行动で之分岐(PREVCOM:2で之分岐と思って問題ない)
+		SELECTCASE CHECK_COM("３Ｐ奉仕")
+		;乳头奸
+		CASE 82
+			SELECTCASE SELECTCOM
+			;左右乳头奸
+			CASE 82
+				PRINTFORMW %CALLNAME:PLAYER%和%CALLNAME:(PLAYER:1)%配合着腰部的动作对%CALLNAME:TARGET%的左右乳头不断的侵犯…
+			CASE 90
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎用胸部接纳了、%CALLNAME:PLAYER%的鸡鸡向着自己不停的撸动…
+			CASE 91
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎用胸部接纳了、%CALLNAME:PLAYER%的阴茎用舌头缠绕…
+			CASE 97
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎用胸部接纳了、%CALLNAME:PLAYER%的鸡鸡被%CLO("摩擦胖次")%不停的撸动…
+			ENDSELECT
+		CASE 90
+			SELECTCASE SELECTCOM
+			CASE 82
+				PRINTFORMW %CALLNAME:PLAYER%对%CALLNAME:(PLAYER:1)%的阴茎用手不停撸动、%CALLNAME:TARGET%的乳头不停被侵犯…
+			CASE 90, 97
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:PLAYER%这两人的阴茎对着自己、不停的用灵巧的双手进行手交…
+
+			CASEELSE
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎用手玩弄、%CALLNAME:PLAYER%的阴茎用舌头缠绕…
+			ENDSELECT
+		CASE 91
+			SELECTCASE SELECTCOM
+			CASE 82
+				PRINTFORMW %CALLNAME:PLAYER%对%CALLNAME:(PLAYER:1)%的阴茎用小嘴侍奉、%CALLNAME:TARGET%的乳头被不断侵犯…
+			CASE 90
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎被舌头来回的舔舐、%CALLNAME:PLAYER%的鸡鸡向着自己不停的撸动…
+			CASE 97
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%的阴茎被舌头来回的舔舐、%CALLNAME:PLAYER%的鸡鸡被%CLO("摩擦胖次")%不停的撸动…
+			CASEELSE
+				PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:PLAYER%这两人的阴茎轮流不停的往嘴里塞
+			ENDSELECT
+		CASEELSE
+			PRINTFORM %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%跨坐在上面舞动着腰并同时被
+			SELECTCASE SELECTCOM
+			;现在はこれは死に分岐
+			CASE 82
+				PRINTFORMW %CALLNAME:PLAYER%的鸡鸡侵犯着乳腺…
+			CASE 90
+				PRINTFORMW %CALLNAME:PLAYER%的鸡鸡向着自己不停的撸动…
+			CASE 97
+				PRINTFORMW %CALLNAME:PLAYER%的鸡鸡被%CLO("摩擦胖次")%不停的撸动…
+			CASE 91
+				PRINTFORMW %CALLNAME:PLAYER%的鸡鸡呼吸急促地吮吸着…
+			CASE 92
+				PRINTFORMW %CALLNAME:PLAYER%的鸡鸡用乳房夹紧不断的摩擦…
+			CASE 96
+				PRINTFORMW %CALLNAME:PLAYER%的肛门堵住小嘴…
+			CASE 98
+				PRINTFORMW %CALLNAME:PLAYER%的爱液打湿了嘴，还不停用舌头刺激着淫穴…
+
+			ENDSELECT
+		ENDSELECT
+	ENDSELECT
+	RETURN 1
+ENDIF
+
+SELECTCASE SELECTCOM
+;性爱系や口奸などPLAYER主导指令
+CASE 60 TO 79, 82, 83, 140
+	PRINTFORM %CALLNAME:PLAYER%对%CALLNAME:(PLAYER:1)%
+	SELECTCASE PREVCOM:2
+	CASE 60 TO 69
+		PRINTFORM 激烈的侵犯着
+
+	CASE 70 TO 79
+		PRINTFORM 激烈的侵犯着肛穴
+
+	CASE 82
+		PRINTFORM %TEXTR("的乳头侵犯着", "用胸接受的东西")%
+
+	CASE 83
+		PRINTFORM 激烈的侵犯着肛穴尿道
+
+	CASE 90, 97
+		PRINTFORM 的鸡鸡用\@ PREVCOM:2 == 97 ? %CLO("摩擦胖次")% # 手 \@撸动
+	CASE 91
+		PRINTFORM 的鸡鸡用口吮吸着
+
+	CASE 92
+		PRINTFORM 的鸡鸡用胸部摩擦	
+
+	CASE 96
+		PRINTFORM 的屁股的小穴用小嘴侍奉着
+
+	CASE 98
+		PRINTFORM 的淫穴用小嘴侍奉着
+
+	CASE 140
+		PRINTFORM 喉咙的深处不停的侵犯
+
+	ENDSELECT
+
+	PRINTFORM %CALLNAME:TARGET%
+
+	SELECTCASE SELECTCOM
+	CASE 60 TO 69
+		PRINTFORM 的%TEXTS("Ｖ插入前")%
+		SELECTCASE PREVCOM
+		CASE 70 TO 79
+			PRINTFORMW 的肛穴被%NAMES("阴茎", PLAYER)%扑哧扑哧的不停抽插…
+		CASE 83
+			PRINTFORMW 的尿道被%NAMES("阴茎", PLAYER)%扑哧扑哧的不停抽插…
+		CASEELSE
+			PRINTFORMW 被侵犯…
+		ENDSELECT
+	CASE 70 TO 79
+		PRINTFORM 的%TEXTS("Ａ")%肛穴
+		SELECTCASE PREVCOM
+		CASE 60 TO 69
+			PRINTFORMW 沾满爱液的%NAMES("阴茎", PLAYER)%侵犯着…
+		CASE 83
+			PRINTFORMW 散发着精液味道的%NAMES("阴茎", PLAYER)%侵犯着…
+		CASEELSE
+			PRINTFORMW 被侵犯着…
+		ENDSELECT
+	CASE 82
+		PRINTFORM 的、没有被使用那边的乳头
+
+		SELECTCASE PREVCOM
+		CASE 60 TO 69
+			PRINTFORMW 被沾满爱液的%NAMES("阴茎", PLAYER)%侵犯着…
+		CASE 70 TO 79
+			PRINTFORMW 的肛穴被%NAMES("阴茎", PLAYER)%扑哧扑哧的不停抽插…
+		CASE 83
+			PRINTFORMW 的尿道被%NAMES("阴茎", PLAYER)%扑哧扑哧的不停抽插…
+		CASEELSE
+			PRINTFORMW 被侵犯着…
+		ENDSELECT
+	CASE 83
+		PRINTFORMW 
+	CASE 140
+		PRINTFORMW 的头被抓住、%NAMES("阴茎", PLAYER)%粗暴的侵犯着小嘴…
+	ENDSELECT
+CASEELSE
+	PRINTFORM %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%
+
+	SELECTCASE CHECK_COM("３Ｐ奉仕")
+	;乳头奸
+	CASE 82
+		PRINTFORM 同时%TEXTR("的乳头侵犯着", "用胸接受的东西")%
+
+	CASE 90
+		PRINTFORM 的鸡鸡用\@ PREVCOM:2 == 97 ? %CLO("摩擦胖次")% # 手 \@撸动、
+	CASE 91
+		SELECTCASE SELECTCOM
+		CASE 91
+			PRINTFORM 的鸡鸡同时、
+
+		CASEELSE
+			PRINTFORM 的鸡鸡被小嘴吮吸、
+
+		ENDSELECT
+	CASEELSE
+		SELECTCASE PREVCOM:2
+		CASE 60 TO 69
+			PRINTFORM 的鸡鸡随着腰部缓缓下沉被紧致的阴道吞没、
+
+		CASE 70 TO 79
+			PRINTFORM 的鸡鸡被直肠吞没至根部、
+
+		CASE 83
+			PRINTFORM 的鸡鸡被尿道吞没至根部、
+
+		CASEELSE
+			IF INSERT("Ｖ插入", TARGET, PLAYER:1)
+				PRINTFORM 的鸡鸡随着腰部缓缓下沉被紧致的阴道吞没、
+
+			ELSEIF INSERT("Ａ插入", TARGET, PLAYER:1)
+				PRINTFORM 的鸡鸡被直肠吞没至根部、
+
+			ELSEIF INSERT("尿道插入", TARGET, PLAYER:1)
+				PRINTFORM 的鸡鸡被尿道吞没至根部、
+
+			ENDIF
+		ENDSELECT
+	ENDSELECT
+
+	SELECTCASE SELECTCOM
+	CASE 90 TO 92, 97
+		SELECTCASE PREVCOM
+		CASE 60 TO 69
+			PRINTFORM 到刚才都被自己侵犯着
+
+		CASE 70 TO 79
+			PRINTFORM 的肛穴把阴茎拔出来
+
+		CASE 83
+			PRINTFORM 尿尿的穴把阴茎拔出来
+
+		ENDSELECT
+	ENDSELECT
+
+	PRINTFORM %CALLNAME:PLAYER%的
+	SELECTCASE SELECTCOM
+	CASE 90
+		PRINTFORM 阴茎被空出来的手
+
+		IF RAND:3 == 0
+			PRINTW 嗤嗤噗噗的摩擦着…
+
+		ELSEIF RAND:2
+			PRINTW 撸动着…
+
+		ELSE
+			PRINTW 玩弄着…
+
+		ENDIF
+	CASE 97
+		PRINTFORM 阴茎被%CLO("摩擦胖次")%
+
+		IF RAND:3 == 0
+			PRINTW 摩擦着…
+
+		ELSEIF RAND:2
+			PRINTW 撸动着…
+
+		ELSE
+			PRINTW 包裹着玩弄…
+
+		ENDIF
+	CASE 91
+		PRINTFORM 小嘴对着阴茎
+
+		;奉仕精神3以上か欲情4以上
+		IF (ABL:奉仕精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+			PRINTFORMW 激烈的吮吸…
+
+		ELSEIF (RAND:2 == 0 && ABL:技巧 >= 2) || TFLAG:16
+			PRINTFORMW 用力的吸啜，双颊都凹进去了…
+
+		ELSE
+			PRINTFORMW 转动着舌头舔舐…
+
+		ENDIF
+	CASE 92
+		PRINTFORM 阴茎被
+		IF TALENT:贫乳
+			PRINTFORM 单薄的胸部中努力
+
+		ELSEIF TALENT:巨乳
+			PRINTFORM 丰满的胸部包裹着
+
+		ELSE
+			PRINTFORM 乳房夹住
+		ENDIF
+		PRINTW 不停摩擦…
+
+	CASE 96
+		PRINTFORM 屁股淫穴被
+
+		IF ABL:奉仕精神 >= 3 && ABL:Ｓ属性 >= 3 && RAND:2 == 0
+			PRINTFORMW 尖尖的舌头在里面舔弄…
+
+		ELSEIF ABL:奉仕精神 >= 3
+			PRINTFORMW 灵活的舌头清洁着…
+
+			STAIN:PLAYER:Ａ = SET_STAIN(0, "Ａ")
+		ELSEIF ABL:Ｓ属性 >= 3 || TEQUIP:逆推
+			PRINTFORMW 舌头随意玩弄着…
+
+		ELSE
+			PRINTFORMW 小心翼翼的舔舐…
+
+		ENDIF
+	CASE 98
+		PRINTFORM 淫穴被
+		IF ABL:奉仕精神 >= 3 && ABL:Ｓ属性 >= 3 && RAND:2 == 0
+			PRINTFORMW 尖尖的舌头舔弄着里面的皱褶…
+
+		ELSEIF ABL:奉仕精神 >= 3
+			PRINTFORMW 强行用舌头舔舐着每个角落…
+
+			STAIN:PLAYER:Ａ = SET_STAIN(0, "Ａ")
+		ELSE
+			PRINTFORMW 舔舐着…
+		ENDIF
+	ENDSELECT
+ENDSELECT
+
+;-------------------------------------------------
+;３Ｐにおける射精口上之汎用部分
+;-------------------------------------------------
+@SAMEN_SHOOT_MESSAGE_3P, ARGS
+PRINTFORM %CALLNAME:(PLAYER:1)%
+SELECTCASE SELECTCOM:2
+CASE 60 TO 79, 83
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 激动不已的中出了
+
+	ELSEIF INSERT("骑乘位")
+		PRINTFORM 跨坐着的腰不停扭动
+
+	ELSE
+		PRINTFORM 侵犯着
+	ENDIF
+CASE 82
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 的身体颤抖着在胸部中射出精液
+
+	ELSE
+		PRINTFORM 的阴茎侵犯着胸部
+
+	ENDIF
+CASE 90, 97
+	IF COND("绝顶", PLAYER:1)
+		IF ARGS == "手"
+			PRINTFORM 同时和
+		ELSE
+			PRINTFORM 被淋上
+		ENDIF
+	ELSE
+		IF ARGS == "手"
+			PRINTFORM 两根阴茎被痴迷的撸动着
+
+		ELSE
+			PRINTFORM 的阴茎撸动着
+
+		ENDIF
+	ENDIF
+CASE 91
+	IF COND("绝顶", PLAYER:1)
+		IF ARGS == "口"
+			PRINTFORM 同时和
+		ELSE
+			PRINTFORM 精液在小嘴里射出来
+
+		ENDIF
+	ELSE
+		IF ARGS == "口"
+			PRINTFORM 的阴茎离开了小嘴
+
+		ELSE
+			PRINTFORM 的阴茎被吮吸
+
+		ENDIF
+	ENDIF
+CASE 92
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 精液把胸部玷污了
+
+	ELSE
+		PRINTFORM 的阴茎在胸部不停的擦拭
+
+	ENDIF
+CASE 96
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 被屁股摩擦得高潮了
+
+	ELSE
+		PRINTFORM 的肛门被舌头插入
+
+	ENDIF
+CASE 98
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 被舐阴而达到了绝顶
+
+	ELSE
+		PRINTFORM 的淫穴被石头侍奉着
+
+	ENDIF
+CASE 140
+	IF COND("绝顶", PLAYER:1)
+		PRINTFORM 的精液强制的灌下去了
+
+	ELSE
+		PRINTFORM 粗暴的侵犯着喉咙
+
+	ENDIF
+ENDSELECT
+
+
+;-------------------------------------------------
+;３Ｐにおける助手之指令決定（自由行动は今之ところ无）
+;-------------------------------------------------
+@SET_SELECTCOM_ASSI_3P
+SELECTCASE SELECTCOM
+CASE 82, 90 TO 104, 140
+	SIF CHECK_COM("Ｗ奉仕")
+		SELECTCOM:1 = SELECTCOM
+	SIF CHECK_COM("３Ｐ奉仕")
+		SELECTCOM:2 = PREVCOM:2
+CASE 60 TO 69
+	IF CHECK_COM("Ｖ双枪插入")
+		SELECTCOM:2 = 64
+	ELSEIF CHECK_COM("二穴插入")
+		SELECTCOM:2 = 74
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		SELECTCOM:2 = PREVCOM:2
+	ENDIF
+CASE 70 TO 79
+	IF CHECK_COM("Ａ双枪插入")
+		SELECTCOM:2 = 75
+	ELSEIF CHECK_COM("二穴插入")
+		SELECTCOM:2 = 65
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		SELECTCOM:2 = PREVCOM:2
+	ENDIF
+CASE 83
+	SIF CHECK_COM("３Ｐ奉仕")
+		SELECTCOM:2 = PREVCOM:2
+ENDSELECT
+
+;-------------------------------------------------
+;ARGS:1～5で指定された禁止ワードに应じたビットを設定する
+;-------------------------------------------------
+@BIT_FORBIDCOM(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 6
+	ARGS = %ARGS:LCOUNT%
+	;助手がPLAYヤー之动き
+	IF COND("调教側", ASSI)
+		SELECTCASE ARGS
+		;TARGETに对する指令管理
+		CASE "Ｔ顔"
+			SETBIT LOCAL, 0
+		CASE "Ｔ下半身"
+			SETBIT LOCAL, 1
+			SETBIT LOCAL, 2
+			SETBIT LOCAL, 3
+			SETBIT LOCAL, 4
+		CASE "Ｔ阴茎"
+			SETBIT LOCAL, 2
+		CASE "ＴＶ"
+			SETBIT LOCAL, 3
+		CASE "ＴＡ"
+			SETBIT LOCAL, 4
+		CASE "Ｔ胸"
+			SETBIT LOCAL, 5
+		CASE "Ｔ指"
+			SETBIT LOCAL, 6
+		CASE "Ｔ前面"
+			SETBIT LOCAL, 7
+			SETBIT LOCAL, 5
+			SETBIT LOCAL, 2
+		CASE "Ｔ后面"
+			SETBIT LOCAL, 8
+			SETBIT LOCAL, 4
+		ENDSELECT
+	ELSE
+		SELECTCASE ARGS
+		;PLAYERに对する指令管理
+		CASE "Ｐ顔"
+			SETBIT LOCAL, 20
+		CASE "Ｐ下半身"
+			SETBIT LOCAL, 21
+			SETBIT LOCAL, 22
+			SETBIT LOCAL, 23
+			SETBIT LOCAL, 24
+		CASE "Ｐ阴茎"
+			SETBIT LOCAL, 22
+		CASE "ＰＶ"
+			SETBIT LOCAL, 23
+		CASE "ＰＡ"
+			SETBIT LOCAL, 24
+		CASE "Ｐ胸"
+			SETBIT LOCAL, 25
+		CASE "Ｐ指"
+			SETBIT LOCAL, 26
+		CASE "Ｐ前面"
+			SETBIT LOCAL, 27
+			SETBIT LOCAL, 25
+			SETBIT LOCAL, 22
+		CASE "Ｐ后面"
+			SETBIT LOCAL, 28
+			SETBIT LOCAL, 24
+		;PLAYERに对する奉仕指令
+		CASE "手交"
+			SETBIT LOCAL, 30
+		CASE "手交以外"
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "口交"
+			SETBIT LOCAL, 31
+		CASE "口交以外"
+			SETBIT LOCAL, 30
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "乳交"
+			SETBIT LOCAL, 32
+		CASE "乳交以外"
+			SETBIT LOCAL, 30
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "足交"
+			SETBIT LOCAL, 33
+		CASE "足交以外"
+			SETBIT LOCAL, 30
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "素股"
+			SETBIT LOCAL, 34
+		CASE "素股以外"
+			SETBIT LOCAL, 30
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "洗浴服务"
+			SETBIT LOCAL, 35
+		CASE "洗浴服务以外"
+			SETBIT LOCAL, 30
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 36
+			SETBIT LOCAL, 39
+		CASE "摩擦胖次"
+			SETBIT LOCAL, 36
+		CASE "摩擦胖次以外"
+			SETBIT LOCAL, 31
+			SETBIT LOCAL, 32
+			SETBIT LOCAL, 33
+			SETBIT LOCAL, 34
+			SETBIT LOCAL, 35
+			SETBIT LOCAL, 39
+		CASE "性爱"
+			SETBIT LOCAL, 39
+		ENDSELECT
+	ENDIF
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;PLAYERでもTARGETでも无いARG(现状だとASSI之み)に、他之角色が選んだ指令ARG:1に应じた禁止指令を設定する
+;-------------------------------------------------
+@SET_FORBIDCOM, ARG, ARG:1
+VARSET LOCAL
+
+SELECTCASE ARG:1
+;顔面骑乘などPLAYER之口を刺激る
+CASE 1
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴＶ")
+CASE 4
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ阴茎")
+CASE 5
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "Ｔ胸")
+CASE 6
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ顔")
+CASE 9
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴＡ")
+;骑乘位などPLAYER之阴茎をＶやＡで刺激る
+CASE 60, 62, 63
+	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+CASE 61
+	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ后面")
+CASE 64
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
+CASE 65
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ")
+CASE 66 TO 69
+	IF TEQUIP:逆推
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ")
+	ELSE
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+	ENDIF
+CASE 70, 72, 73
+	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+CASE 71
+	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ后面")
+CASE 74
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
+CASE 75
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ", "Ｔ后面")
+CASE 76 TO 79
+	IF TEQUIP:逆推
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ", "Ｔ后面")
+	ELSE
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+	ENDIF
+;貝合わせ
+CASE 80
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+;尿道插入
+CASE 83
+	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+;手交などPLAYER之阴茎を手とかで刺激る
+CASE 90
+	LOCAL = BIT_FORBIDCOM("手交以外", "Ｔ指")
+CASE 91
+	LOCAL = BIT_FORBIDCOM("口交以外", "Ｔ顔")
+CASE 92
+	LOCAL = BIT_FORBIDCOM("乳交以外", "Ｔ胸")
+CASE 93
+	LOCAL = BIT_FORBIDCOM("素股以外", "Ｔ下半身")
+CASE 94
+	LOCAL = BIT_FORBIDCOM("洗浴服务以外", "Ｔ前面")
+CASE 95
+	IF PENIS(MASTER)
+		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
+	ELSE
+		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
+	ENDIF
+CASE 96
+	LOCAL = BIT_FORBIDCOM("ＰＡ", "Ｔ顔")
+CASE 97
+	LOCAL = BIT_FORBIDCOM("摩擦胖次以外", "Ｔ指")
+CASE 98
+	LOCAL = BIT_FORBIDCOM("ＰＶ", "Ｔ顔")
+CASE 104
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ胸", "Ｔ前面")
+;逆肛交
+CASE 125 TO 129
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ后面", "Ｔ阴茎", "Ｔ前面")
+;逆强暴などPLAYER之Ｖを刺激る
+CASE 120 TO 124
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ阴茎", "Ｔ前面")
+CASE 140
+	LOCAL = BIT_FORBIDCOM("Ｐ阴茎", "Ｐ前面", "Ｔ顔")
+CASE 141
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴＶ")
+CASE 142
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴＡ")
+CASE 143
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "Ｐ前面", "Ｔ下半身")
+ENDSELECT
+TCVAR:ARG:25 = LOCAL
+
+;-------------------------------------------------
+;ARGS:1～5が实際に禁止されているかを现る
+;-------------------------------------------------
+@FORBIDCOM(ARG, ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5)
+#FUNCTION
+SIF TCVAR:ARG:25 & BIT_FORBIDCOM(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5)
+	RETURNF 1
+RETURNF 0
+
+
+;-------------------------------------------------
+;3Pなどで之助手之行动を決定する
+;-------------------------------------------------
+@SET_SELECTCOM_ASSI, ARGS
+SELECTCASE ARGS
+CASE "Ｗ逆推"
+	CALL SET_SELECTCOM_ASSI_W
+CASE "３Ｐ"
+	CALL SET_SELECTCOM_ASSI_3P
+ENDSELECT
+
+;-------------------------------------------------
+;Ｗ逆推之时には助手之指令口上とSOURCE等を管理する
+;助手之取得経験は邪魔だから隐藏ことにした
+;-------------------------------------------------
+@EQUIP_COM_3P
+#DIM MEMO_LINECOUNT
+VARSET LOCAL
+
+;表示があったかを判定
+MEMO_LINECOUNT = LINECOUNT
+
+;最初之回合は何もしてこない
+IF SELECTCOM:1 == -1
+	IF PREVCOM:1 >= 0
+		PRINTL 
+		SIF TEQUIP:逆推
+			PRINTL ＜逆推中＞
+		PRINTFORMW %CALLNAME:ASSI%对%CALLNAME:PLAYER%饶有兴趣兴趣的凝视着，思考接下来的玩法…
+	ENDIF
+	RETURN 0
+;二人して同じことをしているor二穴插入
+ELSEIF SELECTCOM:1 == SELECTCOM || (SELECTCOM == 120 && SELECTCOM:1 == 126) || (SELECTCOM == 126 && SELECTCOM:1 == 120)
+	CALL GET_PALAM_ASSI, 1
+	SIF LINECOUNT > MEMO_LINECOUNT
+		PRINTL 
+	SIF TEQUIP:逆推
+		PRINTL ＜逆推中＞
+;前回之助手、今回之TARGETとも异なる行动or眺めている
+ELSEIF SELECTCOM:1 != SELECTCOM && SELECTCOM:1 != PREVCOM:1
+	PRINTL 
+	SIF TEQUIP:逆推
+		PRINTL ＜逆推中＞
+	PRINTFORM %CALLNAME:ASSI%对
+	SELECTCASE SELECTCOM:1
+	CASE 1
+		PRINTFORMW %CALLNAME:PLAYER%的脸用淫穴跨坐在上面并不停的压迫…
+
+		SIF INSERT("骑乘位") && ABL:ASSI:百合属性 + ABL:百合属性 >= 3 && RAND:3 == 0
+			PRINTFORMW 在面前挥动的着腰的%CALLNAME:TARGET%吻上去…
+	CASE 9
+		PRINTFORMW %CALLNAME:PLAYER%的脸用肛穴谋求着舌头的舔弄…
+		SIF INSERT("骑乘位") && ABL:ASSI:百合属性 + ABL:百合属性 >= 3 && RAND:3 == 0
+			PRINTFORMW 在面前挥动的着腰的%CALLNAME:TARGET%吻上去…
+	CASE 4
+		PRINTFORMW %CALLNAME:PLAYER%的口开始被阴茎侵犯…
+	CASE 6
+		PRINTFORMW %CALLNAME:PLAYER%温柔的接吻了…
+	CASE 60 TO 79, 83
+		PRINTFORMW %CALLNAME:PLAYER%的阴茎准确瞄准，沉下了腰部…
+		PRINTFORM 然后、
+		SELECTCASE SELECTCOM:1
+		CASE 60 TO 69
+			PRINTFORM 阴道
+		CASE 70 TO 79
+			PRINTFORM 肛穴
+		CASE 83
+			PRINTFORM 尿道
+		ENDSELECT
+		IF RAND:3 == 0
+			PRINTFORM 巧妙的扭动着
+
+		ELSEIF RAND:2 == 0
+			PRINTFORM 夹得紧紧的
+
+		ELSE
+			SELECTCASE SELECTCOM:1
+			CASE 60 TO 69
+				PRINTFORM 爱液已经满溢出来了
+
+			CASE 70 TO 79
+				PRINTFORM 粘液已经满溢出来了
+
+			CASE 83
+				PRINTFORM 之隙间流出了尿液和精液
+			ENDSELECT
+		ENDIF
+		IF ABL:ASSI:技巧 >= 3 && RAND:3 == 0
+			PRINTFORMW 开始激烈的舞动着腰部…
+
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 舞动着腰部…
+
+		ELSE
+			PRINTFORMW 大幅度的扭动着腰部…
+
+		ENDIF
+	CASE 90
+		IF TALENT:ASSI:恋慕 && RAND:4 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎被手温柔的爱抚着…
+		ELSEIF ABL:ASSI:技巧 >= 3 && ABL:ASSI:奉仕精神 >= 3 && RAND:3 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的龟头被手掌包容着揉捏…
+		ELSEIF ABL:ASSI:奉仕精神 >= 3 && RAND:2 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎被慢慢的撸动…
+		ELSEIF ABL:ASSI:技巧 >= 3 && RAND:2 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎被绝妙的力道忽轻忽重的刺激着…
+
+		ELSE
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎被手撸动着…
+		ENDIF
+	CASE 91
+		IF TALENT:ASSI:恋慕 && RAND:4 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎用小嘴温柔的吸啜舔弄…
+		ELSEIF ABL:ASSI:技巧 >= 4 && ABL:ASSI:奉仕精神 >= 3 && RAND:3 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎大幅度的吮吸，到达喉咙的最深处…
+
+		ELSEIF ABL:ASSI:奉仕精神 >= 3 && RAND:2 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎像人间极品一样在口中品味…
+
+		ELSEIF ABL:ASSI:技巧 >= 3 && RAND:2 == 0
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎一边用舌头交缠着、一边用力的吮吸…
+
+		ELSE
+			PRINTFORMW %CALLNAME:PLAYER%的阴茎用舌头舔弄…
+		ENDIF
+	CASE 92
+		IF TALENT:ASSI:巨乳
+			PRINTFORM 大的
+		ELSEIF TALENT:ASSI:贫乳
+			PRINTFORM 小的
+		ENDIF
+		PRINTFORM 胸部对%CALLNAME:PLAYER%的阴茎
+		IF TALENT:ASSI:巨乳
+			PRINTFORMW 撸动着、对着从胸部峡谷之间突出来的龟头不停的舔舐…
+
+		ELSE
+			PRINTFORMW 撸动着…
+		ENDIF
+	CASE 93
+		PRINTFORMW %CALLNAME:PLAYER%的阴茎用淫穴不停的摩擦着…
+	CASE 94
+		PRINTFORMW %CALLNAME:PLAYER%に浑身都是泡沫的肢体摩擦着…
+	CASE 95
+		PRINTFORM %CALLNAME:PLAYER%的
+		IF TALENT:MASTER:扶她 + TALENT:MASTER:性别男
+			PRINTFORMW 阴茎用脚撸动…
+
+		ELSE
+			PRINTFORMW 股间用脚玩弄…
+
+		ENDIF
+	CASE 96
+		PRINTFORMW %CALLNAME:PLAYER%的肛门用舌头舔舐…
+	CASE 97
+		PRINTFORMW 脱下内裤、包裹着%CALLNAME:PLAYER%的阴茎撸动…
+	CASE 98
+		PRINTFORMW %CALLNAME:PLAYER%的淫穴用舌头舔弄…
+	CASE 104
+		PRINTFORMW %CALLNAME:PLAYER%的脸用胸部碾压…
+	CASE 120
+		PRINTFORM %CALLNAME:PLAYER%的
+		IF TALENT:MASTER:处女 == 1
+			PRINTFORM 不了解男人
+
+		ELSE
+			PRINTFORM 濡湿的淫穴
+
+		ENDIF
+		IF TALENT:小只
+			PRINTFORM 年幼的裂缝
+
+		ELSE
+			PRINTFORM 阴道被
+		ENDIF
+		IF PENIS(ASSI)
+			PRINTFORM 阴茎
+		ELSE
+			PRINTFORM 假阴茎
+		ENDIF
+		PRINTFORMW 侵犯着…
+	CASE 126
+		PRINTFORM %CALLNAME:PLAYER%的肛穴被
+		IF PENIS(ASSI)
+			PRINTFORM 阴茎
+		ELSE
+			PRINTFORM 假阴茎
+		ENDIF
+		PRINTFORMW 侵犯着…
+	;CASE 997
+	;	PRINTFORMW 品尝着绝顶的余韵、%CALLNAME:PLAYER%眺望着我们的游戏…
+
+	CASE 0
+		IF SELECTCOM:1 == PREVCOM:1
+			PRINTFORMW %CALLNAME:PLAYER%的身体被轻轻摩挲着…
+		ELSE
+			PRINTFORMW %CALLNAME:PLAYER%的身体被依偎着，吮吸着手指…
+		ENDIF
+	ENDSELECT
+	SIF SELECTCOM:1 >= 0
+		CALL GET_PALAM_ASSI, 1
+;口上は发言させない
+ELSE
+	PRINTL 
+	SIF TEQUIP:逆推
+		PRINTL ＜逆推中＞
+	CALL GET_PALAM_ASSI
+ENDIF
+
+
+;何か文本を表示したならもう一个改行
+SIF LINECOUNT > MEMO_LINECOUNT
+	PRINTL 
+
+;-------------------------------------------------
+;3P之行动による助手之PALAM、EXP变化
+;Ｗ逆推之场合にはSELECTCOM:1が助手が選択した指令な之で、それに应じて计算する
+;-------------------------------------------------
+@GET_PALAM_ASSI, ARG
+#DIM SELECTCOM_ASSI
+#DIM PREVCOM_ASSI
+
+;何もやっていない场合
+SIF SELECTCOM:1 == -1
+	RETURN 0
+
+;助手が喋らない标志ON？
+IF TFLAG:13
+	ARG = 0
+	;リセット
+	TFLAG:13 = 0
+ENDIF
+
+;助手之BEGIN ABLUPをＯＮにする
+FLAG:22 = 1
+
+VARSET LOCALS
+IF COND("调教側", ASSI)
+	LOCAL = PLAYER
+	PLAYER = ASSI
+	LOCALS = 调教者变更处理
+ELSE
+	SWAP TARGET, ASSI
+	LOCALS = 调教对象变更处理
+ENDIF
+
+SWAP SELECTCOM, SELECTCOM:1
+SWAP PREVCOM, PREVCOM:1
+
+CALL SOURCE_CHECK_SIMPLE, SELECTCOM, ARG, 100, 1
+
+SELECTCASE LOCALS
+CASE "调教者变更处理"
+	PLAYER = LOCAL
+CASE "调教对象变更处理"
+	SWAP TARGET, ASSI
+ENDSELECT
+
+SWAP SELECTCOM, SELECTCOM:1
+SWAP PREVCOM, PREVCOM:1
+
+;助手之ダウン判定
+SIF BASE:ASSI:体力 < 500 || BASE:ASSI:精力 <= 0
+	CALL ASSI_DOWN
+
+
+;-------------------------------------------------
+;文本を不显示、簡易指令選択
+
+;ARGはSELECTCOMを代入し、ARG:1之值で口上等之出力を決定する。
+;ARG:2は强度でARG:3は行う回数
+;-------------------------------------------------
+@SOURCE_CHECK_SIMPLE, ARG, ARG:1, ARG:2, ARG:3
+#DIM MEMO_FLAG8
+#DIM MEMO_SELECTCOM
+
+MEMO_FLAG8 = FLAG:8
+MEMO_SELECTCOM = SELECTCOM
+
+FLAG:8 = 0
+SELECTCOM = ARG
+
+;等级限制器チェック
+CALL SETFLAG, "等级限制器"
+
+TRYCALLFORM SHOW_COM_ORDER_COM, SELECTCOM, 1
+
+TRYCALLFORM FLAG_COM{SELECTCOM}, ARG:2*ARG:3
+TRYCALLFORM SOURCE_COM{SELECTCOM}, ARG:2*ARG:3
+CALL SETFLAG, "奉仕嗜虐判定", SELECTCOM
+CALL SAMEN_CHECK, ARG:2*ARG:3
+CALL CALC_SOURCE, "调教指令"
+
+;插入解除（NEXTCOM等を考慮）
+CALL SETFLAG, "体勢戻し"
+
+;按摩棒など付けっぱなし道具之チェック(主にSOURCE计算。快乐之SOURCEが増えないも之は、ここにはなくても良い)
+CALL EQUIP_1
+
+;ソース之计算
+CALL CALC_SOURCE
+
+;绝顶处理_现込み
+CALL ORGASM_ADD_A
+
+;口上
+SIF ARG:1
+	CALL KOJO_MESSAGE_COM
+;绝顶处理_本番
+CALL ORGASM_ADD_A
+CALL ORGASM_ADD_B
+
+;各种経験之变动
+CALL GET_EXP_COM, ARG:3
+
+;指令によるＨ氛围之獲得
+CALL MOOD_COM, SELECTCOM
+
+;插入标志獲得
+CALL CHECK_INSERT
+
+;ソース之计算
+CALL CALC_SOURCE
+
+;被虐快乐経験、奉仕快乐経験等之チェック
+CALL EXP_GOT_CHECK
+
+;异常経験チェック
+SIF ARG:1
+	CALL EXP50_CHECK
+
+;体力・气力之减少
+CALL CALC, "体力气力减少"
+
+;特殊な素質など之判定
+CALL GET_EXABL2, TARGET
+
+FLAG:8 = MEMO_FLAG8
+SELECTCOM = MEMO_SELECTCOM
+
+
+;-------------------------------------------------
+;３Ｐにおける绝顶口上之处理
+;-------------------------------------------------
+@KOJO_MESSAGE_SAMEN_AND_EXTACY_3P
+;Ｗ逆推などTARGETが二人之时
+IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0
+	SIF COND("绝顶", PLAYER)
+		PRINTL 
+	;ASSIを一时的にTARGETに
+	SWAP TARGET, ASSI
+	SWAP SELECTCOM, SELECTCOM:1
+	SWAP PREVCOM, PREVCOM:1
+	;射精的地方を、ASSI之行动に对应したも之に
+	SWAP TCVAR:PLAYER:5, TCVAR:PLAYER:6
+
+	CALL KOJO_MESSAGE_SAMEN_AND_EXTACY
+
+	SWAP TARGET, ASSI
+	SWAP SELECTCOM, SELECTCOM:1
+	SWAP PREVCOM, PREVCOM:1
+	SWAP TCVAR:PLAYER:5, TCVAR:PLAYER:6
+ENDIF
+;PLAYERが二人之、いわゆる３Ｐ之时
+IF COND("３Ｐ") && COND("绝顶", PLAYER:1) && COND("绝顶", PLAYER) == 0
+	CALL SETFLAG, "调教者交代"
+
+	CALL KOJO_MESSAGE_SAMEN_AND_EXTACY
+
+	CALL SETFLAG, "调教者交代"
+ENDIF
+
+;-------------------------------------------------
+;秘法など、指令途中でRETURN 0する指令で之发言に適している。
+;-------------------------------------------------
+@KOJO_MESSAGE_COM_ASSI
+SIF TEQUIP:Ｗ逆推 == 0
+	RETURN 0
+
+SWAP TARGET, ASSI
+SWAP PREVCOM, PREVCOM:1
+
+PRINTFORML 
+CALL KOJO_MESSAGE_COM
+
+SWAP TARGET, ASSI
+SWAP PREVCOM, PREVCOM:1
+
+

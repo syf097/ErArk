@@ -1,0 +1,31 @@
+﻿@EVENTTRAIN
+#PRI
+VARSET TFLAG
+;设置开始的初始化内容
+VARSET SELECTCOM, -1
+VARSET PREVCOM, -1
+VARSET STR, "", 0, 10
+
+;これはどうなんだろうと思いつつ、指令表示０之时には一回だけ全部表示にしてみるぞ
+;IF GETBITS(FLAG:210, 0, 13) == 0 && CONFIG("调教过滤経験标志") == 0
+;	FLAG:210 = INVERTBITS(FLAG:210, 0, 13)
+;	SETBIT FLAG:210, 60
+;ENDIF
+
+;参与者的设定
+PLAYER = MASTER
+PLAYER:1 = ASSI
+
+CALL SETFLAG, "人物初始化", TARGET
+CALL SETFLAG, "人物初始化", MASTER
+SIF ASSI
+	CALL SETFLAG, "人物初始化", ASSI
+
+
+
+@EVENTTRAIN
+#LATER
+;开始前之諸設定２（前回記录で口上で使えそうなも之をリセット）
+DRAWLINE
+;助手が忙しく色々准备
+CALL EVENT_ASSI_AUTO, "调教开始"

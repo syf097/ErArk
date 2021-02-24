@@ -1,0 +1,1928 @@
+﻿@SOURCE_CHECK
+#DIM LCOUNT
+;-------------------------------------------------
+;调教指令之标志取得
+;-------------------------------------------------
+CALL CALC, "调教之标志取得"
+
+;-------------------------------------------------
+;嗜虐or奉仕快乐経験发生标志
+;-------------------------------------------------
+CALL SETFLAG, "奉仕嗜虐判定", SELECTCOM
+
+;-------------------------------------------------
+;插入解除（NEXTCOM等を考慮）
+;-------------------------------------------------
+CALL SETFLAG, "体勢戻し"
+
+;-------------------------------------------------
+;按摩棒など付けっぱなし道具之チェック(主にSOURCE计算。快乐之SOURCEが増えないも之は、ここにはなくても良い)
+;-------------------------------------------------
+CALL EQUIP_1
+
+;-------------------------------------------------
+;SOURCE计算
+;-------------------------------------------------
+CALL CALC_SOURCE
+
+;助手が调教側として参加している３Ｐ之场合
+IF COND("３Ｐ")
+	CALL SETFLAG, "调教者交代"
+	TRYCALLFORM SOURCE_COM{SELECTCOM}, 50
+	TRYCALLFORM FLAG_COM{SELECTCOM}, 50
+	CALL CALC_SOURCE
+	CALL SETFLAG, "调教者交代"
+ENDIF
+
+;-------------------------------------------------
+;绝顶处理(现込み)
+;-------------------------------------------------
+CALL ORGASM_ADD_A
+
+;-------------------------------------------------
+;刻印取得之チェック(现込み)
+;-------------------------------------------------
+CALL MARK_GOT_CHECK
+
+;-------------------------------------------------
+;指令实行时之口上
+;-------------------------------------------------
+;刻印取得口上を喋ったなら、指令口上は飛ばす
+IF GROUPMATCH(2, CHOSE_EV("苦痛刻印Lv3取得"), CHOSE_EV("快乐刻印Lv3取得"), CHOSE_EV("反发刻印Lv3取得") )
+ELSE
+	CALL KOJO_MESSAGE_COM
+ENDIF
+
+;-------------------------------------------------
+;各种経験之变动
+;-------------------------------------------------
+CALL GET_EXP_COM
+
+;-------------------------------------------------
+;受精确率之变动を表示
+;-------------------------------------------------
+CALL CHECK_NINSHIN
+CALL CHECK_NINSHIN, MASTER
+CALL CHECK_NINSHIN, ASSI
+
+;-------------------------------------------------
+;口上(@KOJO_MESSAGE_COM)による强制終了
+;-------------------------------------------------
+SIF NEXTCOM == 999
+	RETURN 0
+;-------------------------------------------------
+;指令によるＨ氛围之獲得
+;-------------------------------------------------
+CALL MOOD_COM, SELECTCOM
+
+;-------------------------------------------------
+;插入标志等之設定
+;-------------------------------------------------
+CALL CHECK_INSERT
+;顔面骑乘标志など之ON
+CALL CHECK_EX_EQUIP
+;-------------------------------------------------
+;异常経験獲得_1
+;-------------------------------------------------
+CALL EXP50_CHECK
+CALL EXP50_CHECK, MASTER
+CALL EXP50_CHECK, ASSI
+;-------------------------------------------------
+;ラグジャラス判定 （EVENT_M.ERBに記述）
+;-------------------------------------------------
+SIF STATE("恍惚", PLAYER) == 0
+	CALL LUXURIOUS_HIT, "指令", PLAYER
+;PLAYERが恍惚になってしまったらTARGETは恍惚にならない
+SIF STATE("恍惚", PLAYER) == 0 && STATE("恍惚", TARGET) == 0
+	CALL LUXURIOUS_HIT, "指令", TARGET
+
+;-------------------------------------------------
+;助手之行动
+;-------------------------------------------------
+CALL EVENT_ASSI_AUTO, "调教中"
+;-------------------------------------------------
+;按摩棒など付けっぱなし道具之チェック(文本と経験)
+;-------------------------------------------------
+CALL EQUIP_2
+;-------------------------------------------------
+;おもな経験之増加が一段落下ところで技能ＬＶチェック
+;-------------------------------------------------
+CALL GET_EXABL2, TARGET
+CALL GET_EXABL2, MASTER
+CALL GET_EXABL2, ASSI
+;-------------------------------------------------
+;异常経験獲得_2
+;-------------------------------------------------
+CALL EXP50_CHECK
+CALL EXP50_CHECK, MASTER
+CALL EXP50_CHECK, ASSI
+;-------------------------------------------------
+;反击之反击口上・处理
+;-------------------------------------------------
+CALL COUNTER_SYS_1
+;口上による强制終了
+SIF NEXTCOM == 999
+	RETURN 0
+;-------------------------------------------------
+;绝顶处理、调教对象之射精＆喷乳チェック（扶她・性别男）
+;-------------------------------------------------
+;高潮管理している时には止めるか選択させる？
+CALL ORGASM_ADD_A, "数值表示"
+CALL ORGASM_ADD_B
+;-------------------------------------------------
+;异常経験獲得_3
+;-------------------------------------------------
+CALL EXP50_CHECK
+CALL EXP50_CHECK, MASTER
+CALL EXP50_CHECK, ASSI
+;-------------------------------------------------
+;NEW_UPCHECK之直接記述指令对应用
+;-------------------------------------------------
+SIF BASE:MASTER:精力 != TCVAR:MASTER:108
+	TCVAR:MASTER:109 = TCVAR:MASTER:108 - BASE:MASTER:精力
+SIF ASSI && BASE:ASSI:精力 != TCVAR:ASSI:108
+	TCVAR:ASSI:109 = TCVAR:ASSI:108 - BASE:ASSI:精力
+
+;-------------------------------------------------
+;メッセージ表示
+;-------------------------------------------------
+CALL TRAIN_MESSAGE_A
+;-------------------------------------------------
+;参数变动による口上(TARGET之绝顶など)
+;-------------------------------------------------
+CALL KOJO_MESSAGE_PALAMCNG
+;口上による强制終了
+SIF NEXTCOM == 999
+	RETURN 0
+;-------------------------------------------------
+;二人で逆推てる时之助手之绝顶や射精之文本
+;-------------------------------------------------
+IF TEQUIP:Ｗ逆推
+	CALL ORGASM_ADD_TEXT, ASSI
+	CALL TARGET_EJAC_CHECK_TEXT, ASSI
+	CALL TARGET_MILK_CHECK_TEXT, ASSI
+	;射精or绝顶(こらえた时には不发生)
+
+	IF NOWEX:ASSI:绝顶数合计 + NOWEX:ASSI:射精
+		PRINTFORM %CALLNAME:ASSI%一边
+		IF NOWEX:ASSI:射精
+			IF SELECTCOM:1 == 121
+				PRINTFORM 在%CALLNAME:MASTER%的肠内射入精液
+			ELSEIF SELECTCOM:1 == 4
+				PRINTFORM 在%CALLNAME:MASTER%的嘴里射精
+			ELSE
+				PRINTFORM 从阴茎喷出了精液
+
+			ENDIF
+		ELSE
+			IF NOWEX:ASSI:绝顶数合计 >= 2 && TALENT:ASSI:性别男 == 0 && RAND:2
+				PRINT 的小穴biu~biu地往外喷着透明的液体
+
+			ELSE
+				PRINT 的背夸张地后仰
+
+			ENDIF
+		ENDIF
+		PRINTW 一边全身震颤着绝顶了
+
+		PRINTL 
+	ENDIF
+ENDIF
+;-------------------------------------------------
+;触手之射精チェック
+;-------------------------------------------------
+CALL SYOKUSYU_SHOOT
+;-------------------------------------------------
+;龙之射精チェック
+;-------------------------------------------------
+CALL DRAGON_SHOOT
+;-------------------------------------------------
+;射精・绝顶判定
+;-------------------------------------------------
+CALL SAMEN_AND_EXTACY
+
+;-------------------------------------------------
+;SOURCE计算
+;-------------------------------------------------
+CALL CALC_SOURCE
+;-------------------------------------------------
+;PLAYER、龙、触手之射精＆绝顶をトリガーにした口上
+;-------------------------------------------------
+CALL KOJO_MESSAGE_SAMEN_AND_EXTACY
+;口上による强制終了
+SIF NEXTCOM == 999
+	RETURN 0
+;-------------------------------------------------
+;PLAYER、龙、触手之射精＆绝顶をトリガーにした口上（３Ｐ）
+;-------------------------------------------------
+CALL KOJO_MESSAGE_SAMEN_AND_EXTACY_3P
+;口上による强制終了
+SIF NEXTCOM == 999
+	RETURN 0
+;-------------------------------------------------
+;被虐快乐経験、奉仕快乐経験等之チェック
+;-------------------------------------------------
+CALL EXP_GOT_CHECK
+;-------------------------------------------------
+;主人による调教之経験值
+;-------------------------------------------------
+CALL MASTER_FLAG_CHECK
+;-------------------------------------------------
+;刻印取得之チェック(@KOJO_MESSAGE_MARKCNG は@MARK_GOT_CHECK 内にある)
+;-------------------------------------------------
+CALL MARK_GOT_CHECK
+
+;口上による强制終了
+SIF NEXTCOM == 999
+	RETURN 0
+
+;-------------------------------------------------
+;异常経験獲得_4
+;-------------------------------------------------
+CALL EXP50_CHECK
+CALL EXP50_CHECK, MASTER
+CALL EXP50_CHECK, ASSI
+
+;-------------------------------------------------
+;反击による恍惚・逆推、击沈判定
+;-------------------------------------------------
+CALL COUNTER_SYS_2
+
+;-------------------------------------------------
+;调教ソース之表示
+;-------------------------------------------------
+CALL SHOW_SOURCE
+
+;-------------------------------------------------
+;数值变动之表示
+;-------------------------------------------------
+;相性
+IF RELATION:(NO:PLAYER) != 100 && RELATION:(NO:PLAYER) > 0
+	PRINTFORM ＜相性{RELATION:(NO:PLAYER)/100}.
+	SIF RELATION:(NO:PLAYER)%100 < 10
+		PRINT 0
+	PRINTFORML {RELATION:(NO:PLAYER)%100}倍＞
+ENDIF
+
+;同じ指令之连续实行
+SIF COND("连续实行")
+	PRINTL ＜同一指令连续实行＞
+
+;-------------------------------------------------
+;体力・气力之减少
+;-------------------------------------------------
+IF TALENT:Ｖ损伤 || TALENT:Ａ损伤
+	SETCOLOR DEF_COLOR("黄色")
+	PRINTL ＜体内损伤中＞
+	RESETCOLOR
+ENDIF
+CALL CALC, "体力气力减少"
+;体力・气力之变动を表示
+IF DOWNBASE:体力 || DOWNBASE:气力
+	PRINTFORM 体力\@ DOWNBASE:体力 > 0 ? - # + \@{ABS(DOWNBASE:体力)}　
+	PRINTFORML 气力\@ DOWNBASE:气力 > 0 ? - # + \@{ABS(DOWNBASE:气力)}
+ENDIF
+;气力０
+SIF BASE:气力 <= 0
+	PRINTL ★气力０★
+
+;-------------------------------------------------
+;非参加者之气力之回復
+;-------------------------------------------------
+FOR LCOUNT, 2, CHARANUM
+	SIF DOWNBASE:LCOUNT:体力 > 0 || DOWNBASE:LCOUNT:气力 > 0
+		CONTINUE
+
+	BASE:LCOUNT:气力 = LIMIT(BASE:LCOUNT:气力 + 20 + RAND:81, 0, MAXBASE:LCOUNT:气力)
+NEXT
+;-------------------------------------------------
+;文本之表示
+;-------------------------------------------------
+CALL TEXT_TURNEND
+
+;-------------------------------------------------
+;SOURCE计算
+;-------------------------------------------------
+CALL CALC_SOURCE
+
+;-------------------------------------------------
+;刻印取得之チェック
+;-------------------------------------------------
+CALL MARK_GOT_CHECK
+
+;-------------------------------------------------
+;参数之上升＆表示（CDOWNもここで）
+;-------------------------------------------------
+CALL NEW_UPCHECK
+
+
+;-------------------------------------------------
+;Ｗ逆推に移行
+;-------------------------------------------------
+IF RAND:3 == 0 && BASE:体力 >= 1200 && BASE:气力 >= 800 && ASSI && STATE("击沈", ASSI) == 0 && (CONFIG("ＨＡＲＤ") || RELATION:ASSI >= 120 ) && (TALENT:恋慕 == 0 || TALENT:淫乱) && TEQUIP:逆推 && TEQUIP:Ｗ逆推 == 0
+	CALL COM_ABLE178
+	SIF RESULT
+		NEXTCOM = 178
+ENDIF
+
+
+;追加处理及びサブ事件
+;-------------------------------------------------
+;主人による调教之経験值
+;-------------------------------------------------
+@MASTER_FLAG_CHECK
+;こ之回合に上升したＨ氛围を算出
+LOCAL = MOOD() - TFLAG:34
+
+IF (LOCAL < 5 && MOOD_HEART() < 3) || LOCAL < 0
+	IF TALENT:淫乱 + TALENT:好色 && SEXUAL_PLAY()
+		TFLAG:33 += 3
+	ELSEIF TALENT:淫乱 + TALENT:性变态 && ABNORMAL_PLAY()
+		TFLAG:33 += 3
+	ENDIF
+ENDIF
+
+;装饰品效果（Ｈ氛围アップ）：助手调教时にも效果发揮
+TFLAG:33 += TALENT:MASTER:Ｈ氛围
+
+;Ｈ氛围之上升
+LOCAL = MOOD() - TFLAG:34
+
+SIF LOCAL
+	PRINTFORML Ｈ氛围\@ LOCAL > 0 ? 提高:{LOCAL} # 下降:{-LOCAL} \@
+
+SIF PLAYER != MASTER || TEQUIP:触手
+	RETURN 1
+
+LOCAL = TFLAG:30 + NOWEX:同时绝顶
+SIF NOWEX:绝顶数合计
+	LOCAL += 1
+;绝顶的地方に对应する敏感系之素質があるなら、係数ＵＰ
+SIF NOWEX:Ｃ绝顶 > 0 && (TALENT:淫核 || TALENT:Ｃ敏感)
+	LOCAL += 2
+SIF NOWEX:Ｖ绝顶 > 0 && (TALENT:淫壷 || TALENT:Ｖ敏感)
+	LOCAL += 2
+SIF NOWEX:Ａ绝顶 > 0 && (TALENT:尻穴狂 || TALENT:Ａ敏感)
+	LOCAL += 2
+SIF NOWEX:Ｂ绝顶 > 0 && (TALENT:淫乳 || TALENT:Ｂ敏感)
+	LOCAL += 2
+SIF NOWEX:Ｍ绝顶 > 0 && (TALENT:荡唇 || TALENT:Ｍ敏感)
+	LOCAL += 2
+SIF NOWEX:尿道绝顶 > 0 && TALENT:尿道狂
+	LOCAL += 2
+;射精+(性变态or性别男）
+SIF NOWEX:射精 > 0 && TALENT:性变态 + TALENT:性别男
+	LOCAL += 2
+;喷乳+性变态
+SIF NOWEX:喷乳 > 0 && TALENT:性变态
+	LOCAL += 2
+;漏尿+性变态
+SIF NOWEX:绝顶漏尿 > 0 && TALENT:性变态
+	LOCAL += 2
+
+;幸せな处女丧失をした
+SIF GETBIT(NOWEX:处女丧失, 1)
+	LOCAL += 50
+
+;素質による増加
+;坦率
+SIF TALENT:坦率
+	LOCAL += 1
+;纯情
+SIF TALENT:纯情
+	LOCAL += 2
+;献身的
+SIF TALENT:献身
+	LOCAL += 1
+;妄信
+SIF TALENT:妄信
+	LOCAL += 1
+;主人之魅惑or魅力
+SIF TALENT:MASTER:魅惑 || TALENT:MASTER:魅力
+	LOCAL += 1
+;主人之迷之魅力
+SIF TALENT:MASTER:迷之魅力
+	LOCAL += 1
+;偏爱之对象には优しくします
+SIF TALENT:偏爱
+	LOCAL += 1
+;魅强术
+SIF STATE("魅强术", PLAYER)
+	LOCAL += 1
+;主人之人气
+SIF TALENT:MASTER:人气
+	LOCAL += 1
+
+;苦痛刻印によるペナルティ
+SIF MARK:苦痛刻印 > ABL:Ｍ属性 && TALENT:性变态 == 0
+	LOCAL -= MARK:苦痛刻印 - ABL:Ｍ属性
+;苦痛刻印によるＢＯＮＵＳ
+SIF MARK:苦痛刻印 == 3 && (ABL:Ｍ属性 >= 3 || TALENT:性变态)
+	LOCAL += 1
+
+;反感と不快と恐怖によるペナルティ
+SIF CUP:恐怖 + CUP:反感 >= 100
+	LOCAL -= POWER(2, GET_PALAMLV(CUP:恐怖 + CUP:反感) )
+
+;恭顺によるＢＯＮＵＳ
+SIF CUP:恭顺 >= 500
+	LOCAL += GET_PALAMLV(CUP:恭顺)
+
+;Ｈ氛围アップ薫香
+SIF GETBITS(TEQUIP:MASTER:薫香, 4, 6)
+	LOCAL += 1
+;Ｈ氛围
+SIF MOOD_HEART() >= 3
+	LOCAL += 1
+
+;媚药
+IF TEQUIP:媚药
+	LOCAL -= TEQUIP:媚药/50
+	;承认快感、好色、淫乱、性变态、抖Ｍ之どれでもない
+	SIF TALENT:承认快感 + TALENT:好色 + TALENT:淫乱 + TALENT:性变态 + TALENT:抖Ｍ == 0
+		LOCAL -= 2
+	;否认快感(否认快感持ちは、累计で-7之修正)
+	SIF TALENT:否认快感
+		LOCAL -= 2
+ENDIF
+;利尿剂
+SIF TEQUIP:利尿剂 && TALENT:性变态 + TALENT:抖Ｍ == 0
+	LOCAL -= 3
+
+;装饰品效果（魅力）
+SIF TALENT:PLAYER:魅力强化 >= 20
+	LOCAL += TALENT:PLAYER:魅力强化 / 20
+
+;素質による减少
+;反抗心
+SIF TALENT:反抗心 && LOCAL > 0
+	LOCAL -= 1
+;自制心
+SIF TALENT:冷静 && LOCAL > 0
+	LOCAL -= 1
+;不关心
+SIF TALENT:不关心 && LOCAL > 0
+	LOCAL -= 1
+;缺乏情感
+SIF TALENT:缺乏情感 && LOCAL > 0
+	LOCAL -= 1
+;难以逾越的界线(二段阶减少)
+SIF TALENT:难以逾越的界线 && LOCAL > 0
+	LOCAL -= 1
+SIF TALENT:难以逾越的界线 && LOCAL > 10
+	LOCAL -= 1
+;抵抗
+SIF TALENT:抵抗 && LOCAL > 0
+	LOCAL -= 1
+;否认快感
+SIF TALENT:否认快感 && LOCAL > 0
+	LOCAL -= 1
+;嫌恶性别男
+SIF TALENT:嫌恶性别男 && TALENT:MASTER:性别男 && LOCAL > 0
+	LOCAL -= 1
+
+;好感觉之キャップ
+IF LOCAL > 0
+	SELECTCASE CFLAG:2
+	CASE IS >= 100000000
+		LOCAL /= 64
+	CASE IS >= 10000000
+		LOCAL /= 32
+	CASE IS >= 1000000
+		LOCAL /= 16
+	CASE IS >= 100000
+		LOCAL /= 8
+	CASE IS >= 10000
+		LOCAL /= 4
+	CASE IS >= 5000
+		LOCAL /= 2
+	ENDSELECT
+	LOCAL = MAX(LOCAL, 1)
+ENDIF
+
+SELECTCASE LOCAL
+CASE IS >= 200
+	LOCAL = 60 + (LOCAL - 200)/16
+;MAX60
+CASE IS >= 100
+	LOCAL = 48 + (LOCAL - 100)/8
+;MAX47
+CASE IS >= 50
+	LOCAL = 35 + (LOCAL - 50)/4
+;MAX35
+CASE IS >= 20
+	LOCAL = 20 + (LOCAL - 20)/2
+ENDSELECT
+
+CFLAG:2 += LOCAL
+
+SIF LOCAL
+	PRINTFORML 好感觉\@ LOCAL > 0 ? 上升:{LOCAL} # 低下:{-LOCAL} \@
+PRINTFORMW 好感觉合计:{CFLAG:2}
+
+;言叶で之寝取り返し
+CALL EVENT_DRAGON_NTR, "言叶で之寝取り返し"
+
+
+
+;-------------------------------------------------
+;経験取得と表示之管理
+;ARGに２以上之数字が代入されている场合には獲得経験をARG倍する
+;ただし、扩张経験など一部之も之は経験を積むたびに上升が钝る之で、２回までは単纯にARG倍させたりはしない
+;-------------------------------------------------
+@GET_EXP_COM, ARG
+#DIM LCOUNT
+#DIM V_SONSHOU, 2
+#DIM A_SONSHOU, 2
+
+VARSET LOCAL
+
+IF FLAG:8
+	V_SONSHOU = TALENT:Ｖ损伤
+	A_SONSHOU = TALENT:Ａ损伤
+	V_SONSHOU:1 = TALENT:PLAYER:Ｖ损伤
+	A_SONSHOU:1 = TALENT:PLAYER:Ａ损伤
+ENDIF
+
+;六九式だけは特殊
+IF SELECTCOM == 99 && TEQUIP:六九式
+	SELECTCOM = TEQUIP:六九式
+	CALL CALC, "経験取得", SELECTCOM
+	IF ARG >= 2
+		FOR LCOUNT, 0, ARG-1
+			SELECTCASE LCOUNT
+			CASE 0
+				CALL CALC, "経験取得", SELECTCOM
+			CASEELSE
+				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				BREAK
+			ENDSELECT
+		NEXT
+	ENDIF
+	SELECTCOM = TEQUIP:PLAYER:六九式
+	CALL CALC, "経験取得", SELECTCOM
+	IF ARG >= 2
+		FOR LCOUNT, 0, ARG-1
+			SELECTCASE LCOUNT
+			CASE 0
+				CALL CALC, "経験取得", SELECTCOM
+			CASEELSE
+				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				BREAK
+			ENDSELECT
+		NEXT
+	ENDIF
+	SELECTCOM = 99
+ELSE
+	CALL CALC, "経験取得", SELECTCOM
+	IF ARG >= 2
+		FOR LCOUNT, 0, ARG-1
+			SELECTCASE LCOUNT
+			CASE 0
+				CALL CALC, "経験取得", SELECTCOM
+			CASEELSE
+				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				BREAK
+			ENDSELECT
+		NEXT
+	ENDIF
+ENDIF
+
+IF COND("３Ｐ")
+	SWAP SELECTCOM, SELECTCOM:2
+	SWAP PLAYER, PLAYER:1
+	CALL CALC, "経験取得", SELECTCOM
+	IF ARG >= 2
+		FOR LCOUNT, 0, ARG-1
+			SELECTCASE LCOUNT
+			CASE 0
+				CALL CALC, "経験取得", SELECTCOM
+			CASEELSE
+				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				BREAK
+			ENDSELECT
+		NEXT
+	ENDIF
+	SWAP SELECTCOM, SELECTCOM:2
+	SWAP PLAYER, PLAYER:1
+ENDIF
+
+SIF FLAG:8 == 0
+	RETURN 0
+
+;LOCAL:LCOUNTにはTARGET之該当経験之増加量を代入し、LOCAL:(LCOUNT + 100)にはPLAYER之該当経験之増加量を代入
+FOR LCOUNT, 0, 100
+	LOCAL:LCOUNT = EXP:LCOUNT - TCVAR:(LCOUNT + 700)
+
+	LOCAL:(LCOUNT + 100) = EXP:PLAYER:LCOUNT - TCVAR:PLAYER:(LCOUNT + 700)
+NEXT
+;"経験取得"内では増加していないが、实際には増えている
+
+;表示するべき経験があるならPRINTL ないならここで終わり
+FOR LCOUNT, 0, 100
+	SELECTCASE LOCAL:LCOUNT + LOCAL:(LCOUNT + 100)
+	CASE IS > 0
+		BREAK
+	ENDSELECT
+NEXT
+PRINTL 
+
+FOR LCOUNT, 0, 100
+	SIF LOCAL:LCOUNT == 0
+		CONTINUE
+	PRINTFORML %EXPNAME:LCOUNT%＋{LOCAL:LCOUNT}
+NEXT
+;-------------------------------------------------
+;无理な扩张による体内之损伤チェック
+;-------------------------------------------------
+SETCOLOR DEF_COLOR("粉红色")
+SIF TALENT:Ｖ损伤 > V_SONSHOU
+	PRINTFORMW %CALLNAME:TARGET%的阴道不能承受插入的大小，被弄坏了！
+
+SIF TALENT:Ａ损伤 > A_SONSHOU
+	PRINTFORMW %CALLNAME:TARGET%的肛门不能承受插入的大小，被弄坏了！
+
+RESETCOLOR
+
+
+FOR LCOUNT, 0, 100
+	SIF LOCAL:(LCOUNT + 100) == 0
+		CONTINUE
+	PRINTFORML %EXPNAME:LCOUNT%＋{LOCAL:(LCOUNT + 100)} (%CALLNAME:PLAYER%)
+NEXT
+
+SETCOLOR DEF_COLOR("粉红色")
+SIF TALENT:PLAYER:Ｖ损伤 > V_SONSHOU:1
+	PRINTFORMW %CALLNAME:PLAYER%的阴道不能承受插入的大小，被弄坏了！
+
+SIF TALENT:PLAYER:Ａ损伤 > A_SONSHOU:1
+	PRINTFORMW %CALLNAME:PLAYER%的肛门不能承受插入的大小，被弄坏了！
+
+RESETCOLOR
+
+
+@EQUIP_1
+;高潮管理中
+SIF TEQUIP:高潮管理
+	CALL EQUIP_COM31
+;助手も一緒に逆推中
+IF TEQUIP:逆推 && TEQUIP:Ｗ逆推
+	CALL EQUIP_COM30
+;逆推中
+ELSEIF TEQUIP:逆推
+	CALL EQUIP_COM30
+	SIF TEQUIP:顔面骑乘
+		CALL EQUIP_COM1
+;逆推中
+ELSEIF TEQUIP:PLAYER:逆推
+	CALL EQUIP_COM27
+ENDIF
+
+;自慰成瘾判定
+SELECTCASE SELECTCOM
+CASE 60 TO 79, 139
+	SIF ABL:自慰成瘾
+		CALL PLAY_ONANIE
+ENDSELECT
+
+;追加接吻
+SIF TEQUIP:接吻 && COND("追加接吻标志")
+	CALL ADD_KISS
+
+SIF TEQUIP:PLAYER:自慰
+	CALL EQUIP_COM37
+
+;六九式
+SIF TEQUIP:六九式
+	CALL EQUIP_COM69
+;插入中(指令によっては、@INSERTION之なかでRETURN 0)
+CALL INSERTION
+;皮肤硬化
+SIF STATE("皮肤硬化", PLAYER)
+	CALL EQUIP_COM306
+;快感术
+CALL EQUIP_COM243
+;按摩棒装着中
+SIF TEQUIP:按摩棒
+	CALL EQUIP_COM11
+;导尿管装着中
+SIF TEQUIP:导尿管
+	CALL EQUIP_COM12
+;肛用按摩棒装着中
+SIF TEQUIP:肛用按摩棒
+	CALL EQUIP_COM13
+;阴蒂夹装着中
+SIF TEQUIP:阴蒂夹
+	CALL EQUIP_COM14
+;乳头夹装着中
+SIF TEQUIP:乳头夹
+	CALL EQUIP_COM15
+;搾乳器装着中
+SIF TEQUIP:搾乳机
+	CALL EQUIP_COM16
+;飞机杯装着中
+SIF TEQUIP:飞机杯
+	CALL EQUIP_COM17
+;淋浴使用中
+SIF TEQUIP:淋浴
+	CALL EQUIP_COM18
+;跳蛋插入中
+SIF TEQUIP:跳蛋插入
+	CALL EQUIP_COM19
+;爱之圈套中
+SIF TEQUIP:爱之圈套
+	CALL EQUIP_COM29
+;眼罩装着中
+SIF TEQUIP:眼罩
+	CALL EQUIP_COM43
+;绳・拘束中
+SIF TEQUIP:拘束
+	CALL EQUIP_COM44
+;球形口枷装着中
+SIF TEQUIP:口枷
+	CALL EQUIP_COM45
+;灌肠
+SIF TEQUIP:灌肠
+	CALL EQUIP_COM46
+;扩张扩张气囊装着中
+SIF TEQUIP:扩张扩张气囊
+	CALL EQUIP_COM48
+;录像摄影中
+SIF TEQUIP:摄像机
+	CALL EQUIP_COM53_1
+;野外PLAY中
+SIF TEQUIP:野外PLAY
+	CALL EQUIP_COM54_1
+;羞恥PLAY中
+SIF TEQUIP:羞恥PLAY
+	CALL EQUIP_COM57
+;浴室PLAY中
+SIF TEQUIP:浴室PLAY
+	CALL EQUIP_COM58
+;新婚PLAY中
+SIF TEQUIP:新婚PLAY
+	CALL EQUIP_COM59
+;薫香
+SIF TEQUIP:MASTER:薫香
+	CALL INCENSE
+;触手调教中
+SIF TEQUIP:触手
+	CALL EQUIP_COM90
+;触手口辱中
+SIF TEQUIP:触手口辱
+	CALL EQUIP_COM98
+
+@EQUIP_2
+;针术獲得事件
+SIF SELECTCOM == 132
+	CALL EVENT_COM132
+;高潮管理中
+SIF TEQUIP:高潮管理
+	CALL EQUIP_COM31_2
+;3P中
+IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0
+	CALL EQUIP_COM_3P
+;逆推中
+ELSEIF TEQUIP:逆推
+	CALL EQUIP_COM30_2
+	SIF TEQUIP:顔面骑乘
+		CALL EQUIP_COM1_2
+;逆推中
+ELSEIF TEQUIP:PLAYER:逆推
+	CALL EQUIP_COM27
+ENDIF
+
+;自慰成瘾判定
+SELECTCASE SELECTCOM
+CASE 60 TO 79, 139
+	SIF ABL:自慰成瘾
+		CALL PLAY_ONANIE_2
+ENDSELECT
+
+;追加接吻
+SIF TEQUIP:接吻 && COND("追加接吻标志")
+	CALL ADD_KISS_2
+
+SIF TEQUIP:PLAYER:自慰
+	CALL EQUIP_COM37_2
+
+;六九式
+SIF TEQUIP:六九式
+	CALL EQUIP_COM69_2
+;爱抚
+SIF TEQUIP:爱抚
+	CALL EQUIP_COM34_2
+;称賛
+SIF TEQUIP:称賛
+	CALL EQUIP_COM24_2
+;甜言蜜语
+SIF TEQUIP:甜言蜜语
+	CALL EQUIP_COM33_2
+;插入中
+CALL INSERTION_2
+;皮肤硬化
+SIF STATE("皮肤硬化", PLAYER)
+	CALL EQUIP_COM306_2
+;快感术
+CALL EQUIP_COM243_2
+;按摩棒装着中
+SIF TEQUIP:按摩棒
+	CALL EQUIP_COM11_2
+;导尿管装着中
+SIF TEQUIP:导尿管
+	CALL EQUIP_COM12_2
+;肛用按摩棒装着中
+SIF TEQUIP:肛用按摩棒
+	CALL EQUIP_COM13_2
+;阴蒂夹装着中
+SIF TEQUIP:阴蒂夹
+	CALL EQUIP_COM14_2
+;乳头夹装着中
+SIF TEQUIP:乳头夹
+	CALL EQUIP_COM15_2
+;搾乳器装着中
+SIF TEQUIP:搾乳机
+	CALL EQUIP_COM16_2
+;飞机杯装着中
+SIF TEQUIP:飞机杯
+	CALL EQUIP_COM17_2
+;淋浴使用中
+SIF TEQUIP:淋浴
+	CALL EQUIP_COM18_2
+;跳蛋插入中
+SIF TEQUIP:跳蛋插入
+	CALL EQUIP_COM19_2
+;爱之圈套中
+SIF TEQUIP:爱之圈套
+	CALL EQUIP_COM29_2
+;屋内露出PLAY
+SIF TEQUIP:屋内露出PLAY
+	CALL EQUIP_COM35_2
+;眼罩装着中
+SIF TEQUIP:眼罩
+	CALL EQUIP_COM43_2
+;绳・拘束中
+SIF TEQUIP:拘束
+	CALL EQUIP_COM44_2
+;球形口枷装着中
+SIF TEQUIP:口枷
+	CALL EQUIP_COM45_2
+;灌肠
+SIF TEQUIP:灌肠
+	CALL EQUIP_COM46_2
+;扩张扩张气囊装着中
+SIF TEQUIP:扩张扩张气囊
+	CALL EQUIP_COM48_2
+;录像摄影中
+SIF TEQUIP:摄像机
+	CALL EQUIP_COM53_1_2
+;野外PLAY中
+SIF TEQUIP:野外PLAY
+	CALL EQUIP_COM54_2
+;羞恥PLAY中
+SIF TEQUIP:羞恥PLAY
+	CALL EQUIP_COM57_2
+;浴室PLAY中
+SIF TEQUIP:浴室PLAY
+	CALL EQUIP_COM58_2
+;新婚PLAY中
+SIF TEQUIP:新婚PLAY
+	CALL EQUIP_COM59_2
+;薫香
+SIF TEQUIP:MASTER:薫香
+	CALL INCENSE_2
+;触手调教中
+SIF TEQUIP:触手
+	CALL EQUIP_COM90_2
+;触手口辱中
+SIF TEQUIP:触手口辱
+	CALL EQUIP_COM98_2
+;歌
+SIF TEQUIP:演奏中
+	CALL EQUIP_COM302
+
+
+;-------------------------------------------------
+;绝顶处理
+;ARGSが"数值表示"之时にコンフィグを弄ってあるなら确率がみられる
+;-------------------------------------------------
+@ORGASM_ADD_A, ARGS
+#DIM LCOUNT
+
+IF FLAG:217 && ARGS == "数值表示"
+	SIF CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ
+		PRINTFORML 快感/许容值：{BASE:快感许容值女}/{MAXBASE:快感许容值女}
+	SIF NOWEX:绝顶数合计 + NOWEX:忍住了没丢
+		PRINTFORML 忍受高潮的概率：{LIMIT(30*MAXBASE:快感许容值女/(BASE:快感许容值女 + 1), 20, 90)}％
+ENDIF
+
+SIF NOWEX:忍住了没丢 && NOWEX:官能一击 == 0
+	RETURN 1
+
+NOWEX:忍住了没丢 = 0
+
+;快感を插入られる量は１万とする
+
+VARSET LOCAL
+FOR LCOUNT, 0, 16
+	SELECTCASE LCOUNT
+	CASE 0 TO 2, 14, 15
+	CASEELSE
+		CONTINUE
+	ENDSELECT
+
+	;高潮管理中
+	IF TEQUIP:高潮管理 || TEQUIP:爱抚 == 1
+		SELECTCASE UP_PALAM(LCOUNT)
+		CASE IS >= 20000
+			NOWEX:(LOCAL + 6) = 2
+		CASE IS >= 10000
+			NOWEX:(LOCAL + 6) = 1
+		ENDSELECT
+	;イく之を堪えたor高潮管理で槽が1万超えたまま之は、他之绝顶が发生した时に同时に绝顶する。(ここを2回现る之でOK)
+	ELSEIF CUP:LCOUNT || NOWEX:绝顶数合计 || NOWEX:官能一击
+		SELECTCASE UP_PALAM(LCOUNT)
+		CASE IS >= 100000
+			NOWEX:LOCAL = 5
+			CDOWN:LCOUNT = 99000
+		CASE IS >= 60000
+			NOWEX:LOCAL = 4
+			CDOWN:LCOUNT = 59000
+		CASE IS >= 30000
+			NOWEX:LOCAL = 3
+			CDOWN:LCOUNT = 29000
+		CASE IS >= 20000
+			NOWEX:LOCAL = 2
+			CDOWN:LCOUNT = 19000
+		CASE IS >= 10000
+			NOWEX:LOCAL = 1
+			CDOWN:LCOUNT = 9000
+		ENDSELECT
+		SIF UP_PALAM(LCOUNT) - CDOWN:LCOUNT >= 10000 && NOWEX:LOCAL
+			CDOWN:LCOUNT = UP_PALAM(LCOUNT) - 10000 + 1000*NOWEX:LOCAL
+		SIF LCOUNT == 0 && CDOWN:0 && PENIS(TARGET)
+			CDOWN:0 = UP_PALAM(LCOUNT)
+	ENDIF
+	SIF NOWEX:LOCAL
+		NOWEX:(LOCAL + 6) = 0
+	SIF NOWEX:(LOCAL + 6) || NOWEX:LOCAL == 0
+		CDOWN:LCOUNT = 0
+
+	LOCAL += 1
+NEXT
+
+;NOWEX:绝顶数合计とNOWEX:绝顶边缘数合计を設定。尿道绝顶边缘は用意してはあるも之之Ｃ绝顶边缘之方が技巧やすい之で现状死に绝顶
+NOWEX:绝顶数合计 = NOWEX:Ｃ绝顶 + NOWEX:Ｖ绝顶 + NOWEX:Ａ绝顶 + NOWEX:Ｂ绝顶 + NOWEX:Ｍ绝顶 + NOWEX:尿道绝顶
+NOWEX:绝顶边缘数合计 = NOWEX:Ｃ绝顶边缘 + NOWEX:Ｖ绝顶边缘 + NOWEX:Ａ绝顶边缘 + NOWEX:Ｂ绝顶边缘 + NOWEX:Ｍ绝顶边缘 + NOWEX:尿道绝顶边缘
+;MAXは12万
+MAXBASE:快感许容值女 = MIN(ABL:欲望*5000+ABL:ＬＶ*2000+TALENT:上位梦魇*5000+(JUEL:欲情+JUEL:快Ｃ+JUEL:快Ｖ+JUEL:快Ａ+JUEL:快Ｂ+JUEL:快Ｍ)/200, 120000)
+;连续绝顶には弱い
+SIF PALAM:连续绝顶COMBO数
+	MAXBASE:快感许容值女 = DIVIDE(MAXBASE:快感许容值女, 100 + PALAM:连续绝顶COMBO数*10)
+BASE:快感许容值女 = UP_PALAM(0)+UP_PALAM(1)+UP_PALAM(2)+UP_PALAM(14)+UP_PALAM(15)
+SIF PENIS(TARGET) && UP_PALAM(0) >= EJAC:TARGET
+	BASE:快感许容值女 *= 2
+
+SIF ARGS == "数值表示" || NOWEX:绝顶数合计 == 0
+	RETURN 0
+
+;恋慕之人は您之绝顶に合わせてくれます
+IF TALENT:恋慕 && PLAYER == MASTER && COND("绝顶", PLAYER) >= MAX(2, 1 + RAND:5) && RAND:3 == 0
+	EX:忍住了没丢 = 0
+;官能一击之时には忍住ことが出来ない
+ELSEIF NOWEX:官能一击 || NOWEX:精液绝顶
+	EX:忍住了没丢 = 0
+;排泄していたら忍住ことはできない
+ELSEIF NOWEX:放尿 || NOWEX:排泄 || NOWEX:射精
+	EX:忍住了没丢 = 0
+;堪える确率は20%～90%＆快感が许容量を越えているなら、堪えることが出来ない
+ELSEIF MAXBASE:快感许容值女 >= BASE:快感许容值女 && LIMIT(30*MAXBASE:快感许容值女/(BASE:快感许容值女 + 1), 20, 90) > RAND:100
+	EX:忍住了没丢 += 1
+	NOWEX:忍住了没丢 = 1
+	FOR LCOUNT, 0, 6
+		NOWEX:LCOUNT = 0
+	NEXT
+	VARSET CDOWN
+ELSE
+	EX:忍住了没丢 = 0
+ENDIF
+
+
+@CHECK_ECST(ARG)
+#FUNCTION
+#DIM LCOUNT
+;何重绝顶したかを返す
+LOCAL = 0
+SIF NOWEX:ARG:Ｃ绝顶
+	LOCAL += 1
+SIF NOWEX:ARG:Ｖ绝顶
+	LOCAL += 1
+SIF NOWEX:ARG:Ａ绝顶
+	LOCAL += 1
+SIF NOWEX:ARG:Ｂ绝顶
+	LOCAL += 1
+SIF NOWEX:ARG:Ｍ绝顶
+	LOCAL += 1
+SIF NOWEX:ARG:尿道绝顶
+	LOCAL += 1
+RETURNF LOCAL
+
+@ORGASM_ADD_TEXT, ARG
+#DIM LCOUNT
+#DIM MEMO_LINECOUNT
+MEMO_LINECOUNT = LINECOUNT
+
+LOCALS = 
+FOR LCOUNT, 0, 5
+	IF NOWEX:ARG:LCOUNT + NOWEX:ARG:(LCOUNT + 6)
+		LOCALS = 
+		SIF NOWEX:ARG:LCOUNT >= 4
+			LOCALS = 超
+		SIF NOWEX:ARG:LCOUNT + NOWEX:ARG:(LCOUNT + 6) >= 2
+			LOCALS = %LOCALS%强
+		;今回之回合之绝顶具合之表示で使用する
+		;特殊な绝顶
+		IF LCOUNT == 0 && NOWEX:ARG:尿道绝顶
+			LOCALS = 尿道%LOCALS%绝顶\@NOWEX:ARG:(LCOUNT + 6) ? 边缘 # \@
+		ELSE
+			LOCALS = %SUBSTRING(EXNAME:LCOUNT, 0, 2)%%LOCALS%绝顶\@NOWEX:ARG:(LCOUNT + 6) ? 边缘 # \@
+		ENDIF
+			PRINTFORML %LOCALS% \@ ARG == ASSI ? (%TEXTS("助手之名称")%) # \@
+	ENDIF
+NEXT
+
+IF NOWEX:绝顶边缘数合计
+	LOCALS = 绝顶边缘
+;多重绝顶
+ELSEIF CHECK_ECST(ARG) >= 2
+	SELECTCASE CHECK_ECST(ARG)
+	CASE 5
+		LOCALS = 五 重 绝 顶
+		SETCOLOR DEF_COLOR("粉红色心形")
+	CASE 4
+		LOCALS = 四 重 绝 顶
+		SETCOLOR DEF_COLOR("粉红色心形")
+	CASEELSE
+		LOCALS = 
+		IF NOWEX:ARG:尿道绝顶
+			LOCALS += "尿道＆"
+		ELSEIF NOWEX:ARG:Ｃ绝顶
+			LOCALS += "Ｃ＆"
+		ENDIF
+		SIF NOWEX:ARG:Ｖ绝顶
+			LOCALS += "Ｖ＆"
+		SIF NOWEX:ARG:Ａ绝顶
+			LOCALS += "Ａ＆"
+		SIF NOWEX:ARG:Ｂ绝顶
+			LOCALS += "Ｂ＆"
+		SIF NOWEX:ARG:Ｍ绝顶
+			LOCALS += "Ｍ＆"
+		LOCALS = %SUBSTRING(LOCALS, 0, STRLENS(LOCALS) - 2)%绝顶
+		SETCOLOR DEF_COLOR("黄色")
+	ENDSELECT
+
+	PRINTFORML %LOCALS% \@ ARG == ASSI ? (助手) # \@ (各别{CHECK_ECST(ARG)}倍的珠获得)
+
+	RESETCOLOR
+ENDIF
+
+IF ARG == ASSI
+	STR:6 = %LOCALS%
+ELSE
+	STR:5 = %LOCALS%
+ENDIF
+
+;堪える
+IF NOWEX:ARG:忍住了没丢
+	PRINTL 
+	IF NOWEX:ARG:射精边缘 && COND("尿道使用中", ARG)
+		PRINTFORML %CALLNAME:ARG%被上冲的精液不断刺激着，整个身体都后仰了仍拼命忍耐着…
+
+	ELSEIF EX:ARG:忍住了没丢 == 1 && SELECTCOM == 3
+		PRINTFORML %CALLNAME:ARG%正在逗弄着自己，寻求更强的高潮......
+
+	ELSEIF EX:ARG:忍住了没丢 == 1 && RAND:3 == 0
+		PRINTFORML %CALLNAME:ARG%忍住了没丢！
+	ELSE
+		IF EXP_GAIN(6, ARG) == 0 && EX:ARG:绝顶数合计 == 0 && INSERT("插入", ARG) && TALENT:ARG:强硬 && RAND:3 == 0
+			PRINTFORML %CALLNAME:PLAYER%先让%CALLNAME:ARG%高潮，承受快感…
+		ELSEIF INSERT("插入", ARG) && RANDIF(3, COND("视力", ARG) )
+			IF INSERT("Ｖ插入", ARG)
+				PRINTFORML %CALLNAME:ARG%一直紧缩着小穴，抵抗着高潮…
+
+			ELSEIF INSERT("Ａ插入", ARG)
+				PRINTFORML %CALLNAME:ARG%拼命忍耐着从肛门迸出的快感…
+
+			ELSEIF INSERT("尿道插入", ARG)
+				PRINTFORML %CALLNAME:ARG%拼命地忍耐着从身体深处袭击而来的禁断之快乐…
+
+			ENDIF
+		ELSEIF COND("视力", ARG) && RAND:3 == 0
+			IF RAND:2
+				PRINTFORML %CALLNAME:ARG%用苦恼的表情忍耐着绝顶…
+			ELSE
+				PRINTFORML %CALLNAME:ARG%的眼睛湿润了、忍耐着快感…
+			ENDIF
+		ELSEIF ABL:ARG:欲望 >= 3 && RAND:3 == 0
+			PRINTFORML %CALLNAME:ARG%红着脸颊、忍耐绝顶到了極限…
+
+		ELSEIF RAND:2
+			PRINTFORML %CALLNAME:ARG%调整呼吸，忍耐着波涛浪涌的绝顶…
+
+		ELSE
+			PRINTFORML %CALLNAME:ARG%一边嘴角挂着口水，一边忍耐着快感…
+
+		ENDIF
+	ENDIF
+ELSE
+	LOCAL = LIMIT(MAX(MAX(NOWEX:ARG:Ｃ绝顶, NOWEX:ARG:Ｖ绝顶, NOWEX:ARG:Ａ绝顶, NOWEX:ARG:Ｂ绝顶, NOWEX:ARG:Ｍ绝顶) + CHECK_ECST(ARG) - TALENT:ARG:梦魇 - TALENT:ARG:上位梦魇, 0), 0, BASE:ARG:精力)
+	SIF LOCAL > 0
+		PRINTFORML 精力-{LOCAL} \@ ARG == ASSI ? (助手) # \@
+ENDIF
+
+;表示があった场合にはWAITを入れる
+SIF LINECOUNT > MEMO_LINECOUNT
+	WAIT
+
+@ORGASM_ADD_C
+#DIM LCOUNT
+
+IF NOWEX:Ｃ绝顶
+	SOURCE:露出 += 300 * NOWEX:Ｃ绝顶
+	SIF TALENT:Ｃ敏感
+		SOURCE:屈从 += 1000
+	;黒桃Ａで绝顶
+	SIF SELECTCOM == 80
+		CALL SETFLAG, "中意的体位", 80, NOWEX:Ｃ绝顶
+	;尿道绝顶はＣ绝顶を上书きする
+	IF TALENT:尿道性感 && COND("尿道性感标志") && CHECK("玩弄尿道")
+		NOWEX:尿道绝顶 = NOWEX:Ｃ绝顶
+		NOWEX:Ｃ绝顶 = 0
+		;调教中ならば中意的体位に影響
+		IF COND("调教中")
+			SIF INSERT("尿道插入")
+				CALL SETFLAG, "中意的体位", 83, NOWEX:尿道绝顶
+		ENDIF
+	ENDIF
+ENDIF
+IF NOWEX:Ｖ绝顶
+	SOURCE:露出 += 500 * NOWEX:Ｖ绝顶
+	SOURCE:屈从 += 500
+	SIF TALENT:Ｖ敏感
+		SOURCE:屈从 += 1000
+	SOURCE:欲情追加 += 500
+	DOWNBASE:体力 += 10
+	;调教中ならば中意的体位に影響
+	IF COND("调教中")
+		IF INSERT("Ｖ正常位")
+			CALL SETFLAG, "中意的体位", 60, NOWEX:Ｖ绝顶
+		ELSEIF INSERT("Ｖ后背位")
+			CALL SETFLAG, "中意的体位", 61, NOWEX:Ｖ绝顶
+		ELSEIF INSERT("Ｖ屈曲位")
+			CALL SETFLAG, "中意的体位", 62, NOWEX:Ｖ绝顶
+		ELSEIF INSERT("Ｖ对面座位")
+			CALL SETFLAG, "中意的体位", 63, NOWEX:Ｖ绝顶
+		ELSEIF INSERT("Ｖ背面座位")
+			CALL SETFLAG, "中意的体位", 64, NOWEX:Ｖ绝顶
+		ELSEIF INSERT("Ｖ骑乘位")
+			CALL SETFLAG, "中意的体位", 65, NOWEX:Ｖ绝顶
+		ENDIF
+	ENDIF
+ENDIF
+IF NOWEX:Ａ绝顶
+	SOURCE:露出 += 1000 * NOWEX:Ａ绝顶
+	SOURCE:屈从 += 2000
+	SIF TALENT:Ａ敏感
+		SOURCE:屈从 += 1000
+	SOURCE:欲情追加 += 500
+	DOWNBASE:体力 += 20
+	DOWNBASE:气力 += 10
+	IF COND("调教中")
+		IF INSERT("Ａ正常位")
+			CALL SETFLAG, "中意的体位", 70, NOWEX:Ａ绝顶
+		ELSEIF INSERT("Ａ后背位")
+			CALL SETFLAG, "中意的体位", 71, NOWEX:Ａ绝顶
+		ELSEIF INSERT("Ａ屈曲位")
+			CALL SETFLAG, "中意的体位", 72, NOWEX:Ａ绝顶
+		ELSEIF INSERT("Ａ对面座位")
+			CALL SETFLAG, "中意的体位", 73, NOWEX:Ａ绝顶
+		ELSEIF INSERT("Ａ背面座位")
+			CALL SETFLAG, "中意的体位", 74, NOWEX:Ａ绝顶
+		ELSEIF INSERT("Ａ骑乘位")
+			CALL SETFLAG, "中意的体位", 75, NOWEX:Ａ绝顶
+		ENDIF
+	ENDIF
+ENDIF
+IF NOWEX:Ｂ绝顶
+	SOURCE:露出 += 300 * NOWEX:Ｂ绝顶
+	SIF TALENT:Ｂ敏感
+		SOURCE:屈从 += 1000
+ENDIF
+IF NOWEX:Ｍ绝顶
+	SOURCE:情爱 += 500 * NOWEX:Ｍ绝顶
+	SIF TALENT:Ｍ敏感
+		SOURCE:屈从 += 1000
+ENDIF
+
+;绝顶した时之基本值
+IF NOWEX:绝顶数合计
+	SOURCE:屈从 += 1000 * CHECK_ECST(TARGET)
+	SOURCE:欲情追加 += 300 * CHECK_ECST(TARGET)
+	SOURCE:恭顺追加 += 500 * CHECK_ECST(TARGET)
+	DOWNBASE:体力 += 10 * CHECK_ECST(TARGET)
+	DOWNBASE:气力 += 10 * CHECK_ECST(TARGET)
+ENDIF
+
+;多重绝顶した时之珠之处理
+IF CHECK_ECST(TARGET) >= 2
+	;EASYモードで无いなら、媚药を使った场合にはＢＯＮＵＳを减らす
+	IF CONFIG("ＥＡＳＹ") == 0 && TEQUIP:媚药
+		LOCAL = (CHECK_ECST(TARGET) - 1) * 100
+	ELSE
+		LOCAL = (CHECK_ECST(TARGET) - 1) * 1000
+	ENDIF
+	JUEL:20 += (NOWEX:Ｃ绝顶 + NOWEX:尿道绝顶) * LOCAL
+	JUEL:21 += NOWEX:Ｖ绝顶 * LOCAL
+	JUEL:22 += NOWEX:Ａ绝顶 * LOCAL
+	JUEL:23 += NOWEX:Ｂ绝顶 * LOCAL
+	JUEL:24 += NOWEX:Ｍ绝顶 * LOCAL
+ENDIF
+
+;绝顶回数を増やす
+EX:Ｃ绝顶 += NOWEX:Ｃ绝顶
+EX:Ｖ绝顶 += NOWEX:Ｖ绝顶
+EX:Ａ绝顶 += NOWEX:Ａ绝顶
+EX:Ｂ绝顶 += NOWEX:Ｂ绝顶
+EX:Ｍ绝顶 += NOWEX:Ｍ绝顶
+EX:尿道绝顶 += NOWEX:尿道绝顶
+
+;绝顶回数に应じて好感觉増加にＢＯＮＵＳ
+FOR LCOUNT, 0, 5
+	;そ之部位之绝顶５回目
+	SIF EX:LCOUNT >= 5 && EX:LCOUNT - NOWEX:LCOUNT < 5
+		TFLAG:30 += 10
+	;そ之部位之绝顶10回目
+	SIF EX:LCOUNT >= 10 && EX:LCOUNT - NOWEX:LCOUNT < 10
+		TFLAG:30 += 20
+	;そ之部位之绝顶20回目
+	SIF EX:LCOUNT >= 20 && EX:LCOUNT - NOWEX:LCOUNT < 20
+		TFLAG:30 += 30
+NEXT
+
+;绝顶経験を増やす
+EXP:绝顶経験 += NOWEX:绝顶数合计
+;绝顶之内訳を記录
+;CALL SETFLAG, "绝顶之記录"
+;精力消費
+LOCAL = LIMIT(MAX(MAX(NOWEX:Ｃ绝顶, NOWEX:Ｖ绝顶, NOWEX:Ａ绝顶, NOWEX:Ｂ绝顶, NOWEX:Ｍ绝顶, NOWEX:尿道绝顶) + CHECK_ECST(TARGET) - TALENT:梦魇 - TALENT:上位梦魇, 0), 0, BASE:精力)
+BASE:精力 -= LOCAL
+TCVAR:109 += LOCAL
+
+;绝顶回数之合计も記录
+EX:绝顶数合计 = EX:Ｃ绝顶 + EX:Ｖ绝顶 + EX:Ａ绝顶 + EX:Ｂ绝顶 + EX:Ｍ绝顶 + EX:尿道绝顶
+;Ｈ氛围にＢＯＮＵＳ
+SIF NOWEX:绝顶数合计
+	TFLAG:33 += LIMIT(NOWEX:绝顶数合计/2, 1, 5)
+
+
+@ORGASM_ADD_B
+;绝顶した时之处理
+CALL ORGASM_ADD_C
+
+;快感总量を増やす
+PALAM:Extacy += CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ
+;性别男でないなら、快乐に应じたＶ润が发生
+IF TALENT:性别男 == 0 && CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ > 0
+	SELECTCASE CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ
+	CASE IS >= 10000
+		LOCAL = 500
+	CASE IS >= 3000
+		LOCAL = 200
+	CASE IS >= 500
+		LOCAL = 50
+	CASE IS >= 100
+		LOCAL = 20
+	CASEELSE
+		LOCAL = 5
+	ENDSELECT
+	LOCAL += LIMIT(NOWEX:绝顶数合计*200, 0, 600)
+	;Ｖ润アップ之50％を露出之ソースに加える(濡れて恥ずかしい、というやつ)
+	IF TALENT:容易湿
+		SOURCE:液体追加 += UP_PALAMLV(LOCAL)
+		SOURCE:露出 += UP_PALAMLV(LOCAL) / 2
+	ELSEIF TALENT:不易湿
+		SOURCE:液体追加 += DOWN_PALAMLV(LOCAL)
+		SOURCE:露出 += DOWN_PALAMLV(LOCAL) / 2
+	ELSE
+		SOURCE:液体追加 += LOCAL
+		SOURCE:露出 += LOCAL / 2
+	ENDIF
+ENDIF
+
+SIF FLAG:8
+	CALL ORGASM_ADD_TEXT, TARGET
+
+;绝顶による欲望ＬＶアップ
+LOCAL = 0
+SIF NOWEX:绝顶数合计
+	LOCAL = 1
+SIF NOWEX:Ｖ绝顶
+	LOCAL = 2
+SIF NOWEX:Ａ绝顶
+	LOCAL = 3
+SIF NOWEX:Ｃ绝顶 + NOWEX:尿道绝顶 >= 4 && NOWEX:Ａ绝顶 >= 4
+	LOCAL = 3
+SIF NOWEX:Ｃ绝顶 + NOWEX:尿道绝顶 >= 4 && NOWEX:Ｖ绝顶 >= 4 && NOWEX:Ａ绝顶 >= 4
+	LOCAL = 4
+;自制心があると１下がる
+SIF TALENT:冷静 && LOCAL
+	LOCAL -= 1
+
+;多重绝顶等による欲望之上升や否认快感之消滅
+SETCOLOR DEF_COLOR("黄色")
+IF ABL:欲望 < LOCAL
+	ABL:欲望 = LOCAL
+	PRINTFORML 欲望变成了LV{LOCAL}
+	;欲望之上升による[压抑][抵抗]之消滅をチェック
+	CALL YOKUBO_UP_CHECK, "欲望"
+ENDIF
+IF TALENT:否认快感 && NOWEX:绝顶数合计 >= 3
+	PRINTFORML %CALLNAME:TARGET%失去了[%TALENTNAME:71%]
+	TALENT:否认快感 = 0
+
+	SIF FLAG:8 && JUEL:反感 > 0
+		PRINTL 反感之珠减半了
+
+	JUEL:反感 /= 2
+ENDIF
+RESETCOLOR
+
+;尿道性感之獲得…めんどくさい感觉な之で尿道弄り同时之Ｃ绝顶で良いこととする
+IF TALENT:尿道性感 == 0 && COND("尿道性感标志") && NOWEX:Ｃ绝顶 + NOWEX:尿道绝顶
+	TALENT:尿道性感 = 1
+	PRINTFORML ……%CALLNAME:TARGET%被玩弄尿道到竟然绝顶了、新世界的大门为她敞开
+
+	PRINTFORM %CALLNAME:TARGET%获得了
+	CALL PRINT_COLORTEXT, "[尿道性感]", DEF_COLOR("黄色")
+	PRINTFORML 。
+	FORCEWAIT
+ENDIF
+
+;-------------------------------------------------
+;尿意槽之増加
+;1万以上だと漏尿之危险あり。とはいえ、漏尿癖がない场合には利尿剂がないと早々漏らさない
+;CV绝顶は溜まり易い。
+;-------------------------------------------------
+LOCAL = 100 + (NOWEX:Ｃ绝顶 + NOWEX:Ｖ绝顶)*300 + NOWEX:尿道绝顶*500 + (NOWEX:绝顶数合计 + NOWEX:Ｃ绝顶边缘 + NOWEX:Ｖ绝顶边缘 + NOWEX:尿道绝顶边缘 + NOWEX:绝顶边缘数合计)*100
+
+;Gスポ刺激
+SIF CHECK_COM("进攻Ｇ点") || SELECTCOM == 66
+	LOCAL += 500
+;漏尿癖（快感由来之増加量が増える）
+SIF TALENT:漏尿癖
+	LOCAL *= 3
+;膣弄り
+SIF CUP:快Ｖ
+	LOCAL += 100
+;阴蒂弄り
+SIF CUP:快Ｃ
+	LOCAL += 200
+;利尿剂
+SIF TEQUIP:利尿剂
+	LOCAL += 2000
+;尿道弄り
+SIF COND("尿道性感标志")
+	LOCAL += 500
+
+;放尿済み
+IF EXP_GAIN(31) + EXP_GAIN(33)
+	LOCAL /= 5
+ELSEIF STATE("醉酒", TARGET)
+	LOCAL += 1000
+ENDIF
+
+BASE:尿意 = MIN(BASE:尿意 + MIN(LOCAL, 3000), 45000)
+
+;PLAYER之尿意増加は簡単な感じで
+LOCAL = 100
+SIF COND("绝顶", PLAYER)
+	LOCAL = 2000
+SIF COND("绝顶边缘", PLAYER)
+	LOCAL = 1000
+;利尿剂
+SIF TEQUIP:PLAYER:利尿剂
+	LOCAL += 2000
+;放尿済み
+IF EXP_GAIN(31, PLAYER) + EXP_GAIN(33, PLAYER)
+	LOCAL /= 5
+ELSEIF STATE("醉酒", PLAYER)
+	LOCAL += 1000
+ENDIF
+
+BASE:PLAYER:尿意 = MIN(BASE:PLAYER:尿意 + MIN(LOCAL, 3000), 20000)
+
+CALL TARGET_EJAC_CHECK
+CALL TARGET_MILK_CHECK
+
+;-------------------------------------------------
+;异常経験取得
+;CFLAG:11之0～19bitは处女丧失関连、20～29bitは童贞丧失関连、30～39bitはＡ处女丧失関连、40～49bitは处女にかかわる异常経験
+;CFLAG:12は其他色々な异常経験ごった煮
+;-------------------------------------------------
+@EXP50_CHECK, ARG
+#DIM LCOUNT
+#DIM MEMO_LINECOUNT
+
+SIF ARG < 0
+	RETURN 0
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+
+;色は黄色
+SETCOLOR DEF_COLOR("黄色")
+
+;LOCAL:50 之值ぶん、异常経験を得る
+VARSET LOCAL
+
+MEMO_LINECOUNT = LINECOUNT
+
+;初次处女丧失
+IF TALENT:ARG:处女 == 1 && COND("处女丧失标志", ARG) && GETBITS(CFLAG:ARG:11, 0, 19) == 0
+	TALENT:ARG:处女 = 0
+	PRINT ＜
+	LOCAL = 0
+	IF TEQUIP:ARG:触手
+		PRINT 被触手
+
+		LOCAL += 3
+		SETBIT CFLAG:ARG:11, 8
+	ELSEIF TEQUIP:ARG:按摩棒
+		PRINT 被
+		IF SIZE("按摩棒", ARG) >= 3
+			PRINT 极粗的
+
+			LOCAL += 1
+			SETBIT CFLAG:ARG:11, 0
+		ENDIF
+		PRINT 按摩棒
+
+		LOCAL += 1
+		SETBIT CFLAG:ARG:11, 1
+	;3P
+	;ELSEIF 
+	;	PRINT ３Ｐ
+	;	LOCAL += 1
+	;	SETBIT CFLAG:ARG:11, 2
+
+	;
+	ELSEIF INSERT("Ｖ插入", ARG)
+		IF INSERT("骑乘位", ARG)
+			IF PENIS(INSERT("Ｖ插入对象", ARG) ) == 0
+				PRINT 骑着
+			ELSE
+				PRINT 以骑乘位被
+			ENDIF
+			LOCAL += 1
+			SETBIT CFLAG:ARG:11, 5
+		ELSEIF PENIS(INSERT("Ｖ插入对象", ARG) ) == 0
+			PRINT 被
+			SETBIT CFLAG:ARG:11, 6
+		IF PENIS(INSERT("Ｖ插入对象", ARG) ) == 0
+			IF INSERT("Ｖ插入对象", ARG) == ASSI
+				PRINT 助手的假阴茎
+
+				SETBIT CFLAG:ARG:11, 3
+			ELSE
+				PRINT 假阴茎
+				SETBIT CFLAG:ARG:11, 4
+			ENDIF
+			LOCAL += 1
+		ENDIF
+		;骑乘位で处女丧失
+
+
+
+
+
+
+
+
+
+
+
+		ENDIF
+	ENDIF
+	PRINT 夺取处女
+
+
+	;处女丧失
+	NOWEX:ARG:处女丧失 = 1
+	;恋慕状态で主人と之性爱で处女丧失した
+	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反发刻印 < 3
+		IF (SELECTCOM >= 60 && SELECTCOM <= 69) || SELECTCOM == 177
+			SETBIT NOWEX:处女丧失, 1
+			;Ｈ氛围大幅アップ
+			TFLAG:33 += 50
+		ENDIF
+	ENDIF
+	EX:ARG:处女丧失 = NOWEX:ARG:处女丧失
+	
+	;处女丧失标志(录像摄影)
+	IF TEQUIP:ARG:摄像机
+		PRINT (摄影)
+		LOCAL += 1
+		SETBIT CFLAG:ARG:11, 7
+	ENDIF
+	PRINTL ＞
+	IF LOCAL
+		LOCAL:50 += LOCAL
+	ELSE
+		CFLAG:ARG:11 = 0
+	ENDIF
+	FOR LCOUNT, 1, CHARANUM
+		SIF COND("处女篡夺标志", LCOUNT) == 0
+			CONTINUE
+
+		EXP:LCOUNT:处女篡夺経験 += 1
+		SETCOLOR DEF_COLOR("黄色")
+		IF ARG == MASTER
+			EXP:LCOUNT:経験值 += 1000
+			SETBIT TALENT:LCOUNT:初体験对象, 1
+			PRINTFORML %CALLNAME:LCOUNT%成为%CALLNAME:MASTER%的%TALENTNAME:94%
+			PRINTFORML 経験值＋1000
+		ELSE
+			EXP:LCOUNT:経験值 += 50
+			PRINTFORML 経験值＋50
+		ENDIF
+		RESETCOLOR
+	NEXT
+;再生处女丧失
+ELSEIF TALENT:ARG:处女 == 2 && COND("处女丧失标志", ARG)
+	TALENT:ARG:处女 = 0
+	PRINT ＜处女丧失
+	;处女丧失
+	NOWEX:ARG:处女丧失 = 1
+	;恋慕状态で主人と之性爱で处女丧失した
+	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反发刻印 < 3
+		SIF (SELECTCOM >= 60 && SELECTCOM <= 69) || SELECTCOM == 177
+			SETBIT NOWEX:处女丧失, 1
+	ENDIF
+	EX:ARG:处女丧失 = NOWEX:ARG:处女丧失
+
+	;处女丧失标志(录像摄影)
+	SIF TEQUIP:ARG:摄像机
+		PRINT (摄影)
+	PRINTL ＞
+ENDIF
+
+;童贞丧失
+IF TALENT:ARG:童贞 && COND("童贞丧失标志", ARG)
+	PRINT ＜童贞丧失
+	SELECTCASE ARG
+	CASE MASTER
+		PRINTFORM (%CALLNAME:MASTER%)
+	CASE ASSI
+		PRINTFORM (助手)
+	ENDSELECT
+	PRINTL ＞
+	TALENT:ARG:童贞 = 0
+	FOR LCOUNT, 1, CHARANUM
+		SIF COND("童贞猎取标志", LCOUNT) == 0
+			CONTINUE
+		EXP:LCOUNT:童贞猎取経験 += 1
+		SETCOLOR DEF_COLOR("黄色")
+		IF ARG == MASTER
+			EXP:LCOUNT:経験值 += 1000
+			SETBIT TALENT:LCOUNT:初体験对象, 0
+
+			PRINTFORML %CALLNAME:LCOUNT%成为%CALLNAME:MASTER%的%TALENTNAME:94%
+			PRINTFORML 経験值＋1000
+		ELSE
+			EXP:LCOUNT:経験值 += 50
+			PRINTFORML 経験值＋50
+		ENDIF
+		RESETCOLOR
+	NEXT
+ENDIF
+
+;童贞献给肛交
+IF TALENT:ARG:童贞 && EXP_GAIN(16, ARG) && GETBIT(CFLAG:ARG:11, 20) == 0
+	PRINTL ＜异常経験：童贞献给肛交経験＞
+
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:11, 20
+ENDIF
+;Ａ性爱
+IF TALENT:ARG:Ａ处女 && COND("Ａ处女丧失标志", ARG) + EXP_GAIN(13, ARG) && GETBIT(CFLAG:ARG:11, 32) == 0
+	TALENT:ARG:Ａ处女 = 0
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:11, 32
+	;Ａ性爱を先に経験
+	IF TALENT:ARG:处女 == 1 && EXP:ARG:Ｖ性交経験 == 0 && GETBIT(CFLAG:ARG:11, 30) == 0
+		LOCAL:50 += 1
+		SETBIT CFLAG:ARG:11, 30
+	ENDIF
+	;Ａ性爱を先に経験 そ之２
+	IF (TALENT:ARG:性别男 || TALENT:ARG:扶她 == 1) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
+		LOCAL:50 += 1
+		SETBIT CFLAG:ARG:11, 31
+	ENDIF
+	PRINTFORM ＜异常経験：Ａ处女比
+
+	IF GETBIT(CFLAG:ARG:11, 30) || GETBIT(CFLAG:ARG:11, 31)
+		SIF GETBIT(CFLAG:ARG:11, 30)
+			PRINTFORM 处女
+		SIF GETBIT(CFLAG:ARG:11, 30) && GETBIT(CFLAG:ARG:11, 31)
+			PRINTFORM 、
+		SIF GETBIT(CFLAG:ARG:11, 31)
+			PRINTFORM 童贞
+		PRINTFORM 更先
+	ENDIF
+	PRINTFORML 丧失＞
+	;SELECTCASE ARG
+	;CASE MASTER
+	;	PRINTFORM (%CALLNAME:MASTER%)
+	;CASE ASSI
+	;	PRINTFORM (助手)
+	;ENDSELECT
+	;PRINTL ＞
+ENDIF
+
+;公开自慰
+IF TEQUIP:ARG:摄像机 && COND("自慰标志", ARG) && GETBIT(CFLAG:ARG:12, 0) == 0
+	PRINTL ＜异常経験：公开自慰＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 0
+ENDIF
+
+;野外で裸露
+IF TEQUIP:ARG:野外PLAY && CHECK_CLO("裸露", ARG) && GETBIT(CFLAG:ARG:12, 1) == 0 && CLO_ORI(ARG, "服", "西装", "外套", "内衣")
+	PRINTL ＜异常経験：野外全裸＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 1
+ENDIF
+;公开剃毛
+IF TEQUIP:ARG:摄像机 && COND("剃毛标志", ARG) && GETBIT(CFLAG:ARG:12, 2) == 0
+	PRINTL ＜异常経験：公开剃毛＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 2
+ENDIF
+;公开放尿
+IF TEQUIP:ARG:摄像机 && NOWEX:ARG:放尿 + NOWEX:ARG:绝顶漏尿 && GETBIT(CFLAG:ARG:12, 3) == 0
+	PRINTL ＜异常経験：公开放尿＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 3
+ENDIF
+;性器穿环
+IF COND("穿环ＯＮ标志", ARG) && COND("阴蒂穿环标志", ARG) + COND("阴唇穿环标志", ARG) + COND("乳头穿环标志", ARG) && GETBIT(CFLAG:ARG:12, 4) == 0
+	PRINTL ＜异常経験：性器穿环＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 4
+ENDIF
+;排泄
+IF NOWEX:ARG:排泄
+	LOCAL = 0
+	;排泄
+	IF GETBIT(CFLAG:ARG:12, 5) == 0
+		LOCAL += 1
+		SETBIT CFLAG:ARG:12, 5
+	ENDIF
+	;野外排泄
+	IF GETBIT(CFLAG:ARG:12, 6) == 0 && TEQUIP:野外PLAY
+		LOCAL += 1
+		SETBIT CFLAG:ARG:12, 6
+	ENDIF
+	;排泄記录
+	IF GETBIT(CFLAG:ARG:12, 7) == 0 && TEQUIP:摄像机
+		LOCAL += 1
+		SETBIT CFLAG:ARG:12, 7
+	ENDIF
+	SIF LOCAL
+		PRINTFORML ＜异常経験：\@TEQUIP:ARG:野外PLAY ? 野外 # \@排泄\@TEQUIP:ARG:摄像机 ? 記录 # \@＞
+	LOCAL:50 += LOCAL
+ENDIF
+;舐肛奉侍
+IF COND("Ａ奉仕标志", ARG) && GETBIT(CFLAG:ARG:12, 8) == 0
+	PRINTL ＜异常経験：舐肛奉侍＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 8
+ENDIF
+;Ａ之汚れを打扫
+IF COND("Ａ打扫口交标志", ARG) && GETBIT(CFLAG:ARG:12, 9) == 0
+	PRINTL ＜异常経験：打扫口交（Ａ）＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 9
+ENDIF
+
+;初次之２穴刺激
+IF INSERT("二穴插入", ARG) && GETBIT(CFLAG:ARG:12, 10) == 0
+	PRINTL ＜异常経験：二穴插入＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 10
+ENDIF
+;Ｖ扩张
+IF EXP_GAIN(53, ARG) && ABL:ARG:Ｖ扩张 - (TALENT:ARG:生产经历 > 0) + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 11) == 0
+	PRINTL ＜异常経験：Ｖ扩张＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 11
+ENDIF
+;Ａ扩张
+IF EXP_GAIN(57, ARG) && ABL:ARG:Ａ扩张 + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 12) == 0
+	PRINTL ＜异常経験：Ａ扩张＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 12
+ENDIF
+;拳交
+IF EXP_GAIN(66, ARG) + EXP_GAIN(67, ARG) && GETBIT(CFLAG:ARG:12, 13) == 0
+	PRINTL ＜异常経験：拳交＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 13
+ENDIF
+;龙奸
+IF EXP_GAIN(61, ARG) && GETBIT(CFLAG:ARG:12, 14) == 0
+	PRINTL ＜异常経験：龙奸＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 14
+ENDIF
+;多重绝顶
+IF CHECK_ECST(ARG) == 5 && GETBIT(CFLAG:ARG:12, 16) == 0
+	PRINTL ＜异常経験：五重绝顶＞
+	LOCAL:50 += 1
+	SIF GETBIT(CFLAG:ARG:12, 15) == 0
+		LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 15
+	SETBIT CFLAG:ARG:12, 16
+ELSEIF CHECK_ECST(ARG) == 4 && GETBIT(CFLAG:ARG:12, 15) == 0
+	PRINTL ＜异常経験：四重绝顶＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 15
+ENDIF
+;子宮绝顶(多重绝顶之时にも起きてしまうが、良い事とする)
+IF COND("子宮刺激标志", ARG) && TALENT:ARG:子宮性感 && NOWEX:ARG:Ｖ绝顶 >= 3 && GETBIT(CFLAG:ARG:12, 17) == 0
+	PRINTL ＜异常経験：子宮绝顶＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 17
+ENDIF
+;膣よりもＡ之方が経験丰富
+IF INSERT("Ａ插入", ARG) && EXP:ARG:Ａ経験 >= MAX(EXP:ARG:Ｖ経験, 150) && EXP:ARG:Ａ性交経験 >= MAX(EXP:ARG:Ｖ性交経験, 50) && ABL:ARG:Ａ感觉 >= MAX(ABL:ARG:Ｖ感觉, 3) && GETBIT(CFLAG:ARG:12, 18) == 0
+	PRINTL ＜异常経験：肛交专用＞
+
+	LOCAL:50 += 1
+	SIF TALENT:ARG:处女 == 1
+		LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 18
+ENDIF
+;妖精に小根术なしで插入
+IF TALENT:ARG:妖精 && INSERT("插入", ARG) && SIZE("阴茎", INSERT("插入对象", ARG) ) && GETBIT(CFLAG:ARG:12, 19) == 0
+	PRINTL ＜异常経験：妖精无小根术插入＞
+
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 19
+ENDIF
+;抖Ｓ之本領发揮
+;IF CUP:ARG:苦痛 >= 4500 && GETBIT(CFLAG:ARG:12, 20) == 0
+;	PRINTL ＜异常経験：【ＳＭ】＞
+;	LOCAL:50 += 1
+;	SETBIT CFLAG:ARG:12, 20
+;ENDIF
+;针术
+IF COND("针术标志", ARG) && GETBIT(CFLAG:ARG:12, 21) == 0
+	PRINTL ＜异常経験：【针术】＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 21
+ENDIF
+;难以忍受的苦痛
+IF PALAM:ARG:苦痛 + CUP:ARG:苦痛 >= 50000 && GETBIT(CFLAG:ARG:12, 22) == 0
+	PRINTL ＜异常経験：难以忍受的苦痛＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 22
+ENDIF
+;不期望的怀孕…恋慕で无いときに、反发刻印Lv3or反抗心or触手で孕娠之时
+IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
+	IF COND("精液之优勢", ARG) == -3 && MARK:ARG:龙奸刻印 == 2
+	ELSEIF MARK:ARG:反发刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
+		PRINTL ＜异常経験：不期望的怀孕＞
+
+		LOCAL:50 += 1
+		SETBIT CFLAG:ARG:12, 23
+	ENDIF
+ENDIF
+;触手
+IF EXP_GAIN(55, ARG) && TALENT:ARG:旧日支配者的末裔 == 0 && GETBIT(CFLAG:ARG:12, 24) == 0
+	PRINTL ＜异常経験：触手経験＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 24
+ENDIF
+;扶她(处理はSHOPでも行う)
+IF TALENT:ARG:扶她 == 2 && TALENT:ARG:具现 == 0 && GETBIT(CFLAG:ARG:12, 25) == 0
+	PRINTL ＜异常経験：扶她化＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 25
+ENDIF
+;初次之喷乳で、孕娠由来之喷乳体質で无い
+IF EXP_GAIN(54, ARG) && TALENT:ARG:泌乳体質 != 1 && TALENT:ARG:孕娠 == 0 && GETBIT(CFLAG:ARG:12, 26) == 0
+	PRINTL ＜异常経験：喷乳経験＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 26
+ENDIF
+;梦魇化
+IF COND("梦魇化标志", ARG) && GETBIT(CFLAG:ARG:12, 27) == 0
+	PRINTL ＜异常経験：梦魇化＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 27
+ENDIF
+;性转换
+IF COND("性转换标志", ARG) && GETBIT(CFLAG:ARG:12, 28) == 0
+	PRINTL ＜异常経験：性转换＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 28
+ENDIF
+;化蝶之梦
+IF COND("化蝶之梦标志", ARG) && GETBIT(CFLAG:ARG:12, 29) == 0
+	PRINTL ＜异常経験：化蝶之梦＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 29
+ENDIF
+;子宮
+IF COND("子宮插入标志", ARG) && EXP_GAIN(68, ARG) && GETBIT(CFLAG:ARG:12, 30) == 0
+	PRINTL ＜异常経験：子宮插入＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 30
+ENDIF
+;乳头奸
+IF EXP_GAIN(45, ARG) && GETBIT(CFLAG:ARG:12, 31) == 0
+	PRINTL ＜异常経験：乳头奸＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 31
+ENDIF
+;尿道扩张
+IF EXP_GAIN(77, ARG) && GETBIT(CFLAG:ARG:12, 32) == 0
+	PRINTL ＜异常経験：尿道扩张＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 32
+ENDIF
+;尿道处女丧失
+IF EXP_GAIN(78, ARG) && GETBIT(CFLAG:ARG:12, 33) == 0
+	PRINTL ＜异常経験：尿道处女丧失＞
+	LOCAL:50 += 1
+	SETBIT CFLAG:ARG:12, 33
+ENDIF
+
+IF LOCAL:50
+	PRINTFORML 异常経験＋{LOCAL:50}\@ ARG != TARGET ? （%CALLNAME:ARG%） # \@
+	EXP:ARG:异常経験 += LOCAL:50
+ENDIF
+
+SIF LINECOUNT > MEMO_LINECOUNT
+	FORCEWAIT
+
+RESETCOLOR
+
+;-------------------------------------------------
+;调教ソース之表示
+;-------------------------------------------------
+@SHOW_SOURCE
+VARSET LOCALS
+SIF TCVAR:120 > 0
+	LOCALS = %LOCALS%快Ｃ({TCVAR:120})
+SIF TCVAR:121 > 0
+	LOCALS = %LOCALS%快Ｖ({TCVAR:121})
+SIF TCVAR:122 > 0
+	LOCALS = %LOCALS%快Ａ({TCVAR:122})
+SIF TCVAR:137 > 0
+	LOCALS = %LOCALS%快Ｂ({TCVAR:137})
+SIF TCVAR:138 > 0
+	LOCALS = %LOCALS%快Ｍ({TCVAR:138})
+SIF TCVAR:123 > 0
+	LOCALS = %LOCALS%情爱({TCVAR:123})
+SIF TCVAR:124 > 0
+	LOCALS = %LOCALS%性行动({TCVAR:124})
+SIF TCVAR:125 > 0
+	LOCALS = %LOCALS%达成感({TCVAR:125})
+SIF TCVAR:126 > 0
+	LOCALS = %LOCALS%痛({TCVAR:126})
+SIF TCVAR:127 > 0
+	LOCALS = %LOCALS%成瘾充足({TCVAR:127})
+SIF TCVAR:128 > 0
+	LOCALS = %LOCALS%不潔({TCVAR:128})
+SIF TCVAR:129 > 0
+	LOCALS = %LOCALS%恐怖({TCVAR:129})
+SIF TCVAR:130 > 0
+	LOCALS = %LOCALS%液体追加({TCVAR:130})
+SIF TCVAR:139 > 0
+	LOCALS = %LOCALS%Ａ液体追加({TCVAR:139})
+SIF TCVAR:131 > 0
+	LOCALS = %LOCALS%欲情追加({TCVAR:131})
+SIF TCVAR:136 > 0
+	LOCALS = %LOCALS%恭顺追加({TCVAR:136})
+SIF TCVAR:132 > 0
+	LOCALS = %LOCALS%露出({TCVAR:132})
+SIF TCVAR:133 > 0
+	LOCALS = %LOCALS%屈从({TCVAR:133})
+SIF TCVAR:134 > 0
+	LOCALS = %LOCALS%逃脱({TCVAR:134})
+SIF TCVAR:135 > 0
+	LOCALS = %LOCALS%反感追加({TCVAR:135})
+
+SIF LOCALS != ""
+	PRINTFORML %LOCALS%

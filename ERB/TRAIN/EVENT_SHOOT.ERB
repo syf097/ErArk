@@ -1,0 +1,3247 @@
+﻿;---------------------------------------------------------
+;射精处理
+;---------------------------------------------------------
+;3PとＷ口交は、COMFに直接記述します。
+;助手性交って间違って无い？
+;触手、龙についても、COMFに直接記述します。
+@SAMEN_CHECK, ARG
+SELECTCASE ARG
+;マイナス之值が入っているときには取消
+CASE IS < 0
+	BASE:PLAYER:绝顶 -= TCVAR:PLAYER:101
+	TCVAR:PLAYER:101 = 0
+	TCVAR:PLAYER:1 = 0
+	IF COND("３Ｐ")
+		CALL SETFLAG, "调教者交代"
+		BASE:PLAYER:绝顶 -= TCVAR:PLAYER:101
+		TCVAR:PLAYER:101 = 0
+		TCVAR:PLAYER:1 = 0
+		CALL SETFLAG, "调教者交代"
+	ENDIF
+CASEELSE
+	CALL SAMEN_CHECK_PLAYER, ARG
+	IF COND("３Ｐ")
+		CALL SETFLAG, "调教者交代"
+		CALL SAMEN_CHECK_PLAYER, ARG
+		CALL SETFLAG, "调教者交代"
+	ENDIF
+ENDSELECT
+
+@SAMEN_CHECK_PLAYER, ARG
+;-------------------------------------------------
+;等级限制器チェック
+;-------------------------------------------------
+CALL SETFLAG, "等级限制器"
+;-------------------------------------------------
+;射精・绝顶槽チェック
+;-------------------------------------------------
+;射精槽之増加量をLOCAL、そ之倍率をBで现る
+LOCAL = 0
+B = 1000
+
+;指令に对する基礎快乐を設定する
+;顔面骑乘や逆龙奸などは发生していない场合にはそもそもここ之值が０な之で、以下之分岐でTEQUIP:逆推などは无视しても問題ない
+SELECTCASE SELECTCOM
+
+;接吻（温柔的吻は威力减）
+CASE 6
+	LOCAL = 100 + ABL:技巧*200 + ABL:Ｍ感觉*100
+CASE 10
+	SIF INSERT("尿道插入", TARGET, PLAYER)
+		LOCAL = ABL:PLAYER:技巧*100 + ABL_U(TARGET)*50
+;搞基
+CASE 16
+	LOCAL = 300 + ABL:技巧*200 + ABL:Ｃ感觉*100
+;Ｖ插入
+CASE 60 TO 69
+	LOCAL = ABL:技巧*100 + ABL_V(TARGET)*100
+
+	;阴茎を全部插入られないと快感低め
+	SELECTCASE SIZE("阴茎", PLAYER) - ABL:Ｖ扩张
+	CASE IS >= 3
+		TIMES LOCAL, 0.10
+	CASE 2
+		TIMES LOCAL, 0.30
+	CASE 1
+		TIMES LOCAL, 0.70
+	ENDSELECT
+
+	SELECTCASE SELECTCOM
+	CASE 60
+		LOCAL += ABL:顺从*250
+	CASE 61
+		LOCAL += ABL:Ｍ属性*500
+	CASE 62
+		LOCAL += ABL:露阴癖*500
+	CASE 63
+		TIMES LOCAL, 0.50
+		LOCAL += 50 + ABL:技巧*100 + ABL:Ｍ感觉*50
+	CASE 64
+		TIMES LOCAL, 0.60
+	CASE 65
+		TIMES LOCAL, 0.80
+		LOCAL += ABL:腰技*1000
+	ENDSELECT
+
+	;插入失败
+	SIF COND("插入前暴发标志", PLAYER)
+		LOCAL = 0
+;Ａ插入
+CASE 70 TO 79
+	LOCAL = ABL:技巧*100 + ABL_A(TARGET)*100
+
+	;阴茎を全部插入られないと快感低め
+	SELECTCASE SIZE("阴茎", PLAYER) - ABL:Ａ扩张
+	CASE IS >= 3
+		TIMES LOCAL, 0.10
+	CASE 2
+		TIMES LOCAL, 0.30
+	CASE 1
+		TIMES LOCAL, 0.70
+	ENDSELECT
+
+	SELECTCASE SELECTCOM
+	CASE 60
+		LOCAL += ABL:顺从*250
+	CASE 61
+		LOCAL += ABL:Ｍ属性*500
+	CASE 62
+		LOCAL += ABL:露阴癖*500
+	CASE 63
+		TIMES LOCAL, 0.50
+		LOCAL += 50 + ABL:技巧*100 + ABL:Ｍ感觉*50
+	CASE 64
+		TIMES LOCAL, 0.60
+	CASE 65
+		TIMES LOCAL, 0.80
+		LOCAL += ABL:腰技*1000
+	ENDSELECT
+;貝合わせ
+CASE 80
+	IF CHECK_COM("双头按摩棒PLAY")
+		LOCAL = 500 + ABL:技巧*200 + ABL:Ｖ感觉*100
+		;締まり对決。值が大きいほど快乐が少なくなる（TARGETに与える快乐は増える）
+		SELECTCASE ABL:Ｖ技巧 - ABL:Ｖ扩张 - (ABL:PLAYER:Ｖ技巧 - ABL:PLAYER:Ｖ扩张)
+		CASE IS >= 3
+			TIMES LOCAL, 2.00
+		CASE 2
+			TIMES LOCAL, 1.50
+		CASE 1
+			TIMES LOCAL, 1.20
+		CASE -1
+			TIMES LOCAL, 0.80
+		CASE -2
+			TIMES LOCAL, 0.50
+		CASE IS <= -3
+			TIMES LOCAL, 0.30
+		ENDSELECT
+	ELSE
+		LOCAL = 500 + ABL:技巧*200 + ABL:Ｃ感觉*100
+		;阴毛之生え具合补正
+		SIF COND("阴毛", PLAYER) <= 5 && COND("阴毛") >= 5
+			TIMES LOCAL, 1.20
+	ENDIF
+;两乳间抽插
+CASE 81
+	;罩杯之大きさで强化
+	LOCAL = 500 + ABL:技巧*200 + ABL:Ｂ感觉*100 + BASE:罩杯*100
+;乳头奸
+CASE 82
+	;罩杯之大きさで强化
+	LOCAL = 500 + ABL:技巧*200 + ABL:Ｂ感觉*100 + BASE:罩杯*200
+	SIF TALENT:史莱姆
+		LOCAL += 500
+;尿道插入
+CASE 83
+	LOCAL = ABL:技巧*100 + ABL_U(TARGET)*100 + ABL:Ｍ属性*500
+	IF TEQUIP:逆推
+		TIMES LOCAL, 0.80
+		LOCAL += ABL:腰技*1000
+	ENDIF
+
+;奉仕系
+CASE 90 TO 119
+	LOCAL = 500 + ABL:技巧*600
+	SELECTCASE SELECTCOM
+	CASE 91, 99
+		LOCAL += ABL:精液成瘾*200
+		SIF TEQUIP:深喉口交
+			LOCAL += ABL_T(TARGET)*50
+		SIF SELECTCOM == 99
+			LOCAL += 300
+	CASE 92, 94, 104
+		LOCAL += ABL:Ｂ感觉*100
+	CASE 93, 100
+		LOCAL += ABL:Ｃ感觉*100
+	CASE 95, 96
+		LOCAL += ABL:Ｓ属性*200
+	;飞机杯
+	CASE 105
+		LOCAL /= 2
+		LOCAL += 3000
+	CASEELSE
+		LOCAL += ABL:技巧*200
+	ENDSELECT
+;调教者插入
+CASE 120 TO 129
+	LOCAL = 1000 + ABL:技巧*400
+;口奸
+CASE 140
+	IF TEQUIP:深喉口交
+		LOCAL = ABL_T(TARGET)*100
+	ELSE
+		LOCAL = ABL_T(TARGET)*30
+	ENDIF
+
+	;阴茎を全部插入られないと快感低め
+	SELECTCASE SIZE("阴茎", PLAYER) - ABL:喉扩张
+	CASE IS >= 3
+		TIMES LOCAL, 0.10
+	CASE 2
+		TIMES LOCAL, 0.30
+	CASE 1
+		TIMES LOCAL, 0.70
+	ENDSELECT
+;深喉口交
+CASE 150
+	IF TEQUIP:深喉口交
+		LOCAL = ABL_T(TARGET)*50
+	ELSE
+		LOCAL = ABL_T(TARGET)*10
+	ENDIF
+
+	;阴茎を全部插入られないと快感低め
+	SELECTCASE SIZE("阴茎", PLAYER) - ABL:喉扩张
+	CASE IS >= 3
+		TIMES LOCAL, 0.10
+	CASE 2
+		TIMES LOCAL, 0.30
+	CASE 1
+		TIMES LOCAL, 0.70
+	ENDSELECT
+;助手系
+CASE 160, 162 TO 169
+	SIF ASSI
+		LOCAL = 1000 + ABL:ASSI:技巧*300
+;爱之圈套
+CASE 177
+	LOCAL = ABL:技巧*200 + ABL_V(TARGET)*100
+;自慰
+CASE 282
+	LOCAL = MAXBASE:PLAYER:绝顶/2
+	SIF SELECTCOM == PREVCOM
+		LOCAL += MAXBASE:PLAYER:绝顶/2
+	;オカズによってＢＯＮＵＳ有
+	SELECTCASE TEQUIP:PLAYER:自慰
+	;舐阴
+	CASE 1
+		SIF COND("弱点：♀", PLAYER)
+			LOCAL += MAXBASE:PLAYER:绝顶/2
+	;自慰
+	CASE 3
+		LOCAL += MAXBASE:PLAYER:绝顶/4
+	;调教者口交
+	CASE 4
+		SIF COND("弱点：♂", PLAYER)
+			LOCAL += MAXBASE:PLAYER:绝顶/2
+	;舐肛
+	CASE 9
+		SIF COND("弱点：尻技", PLAYER)
+			LOCAL += MAXBASE:PLAYER:绝顶/2
+	;展示阴道
+	CASE 13
+		SIF COND("弱点：♀", PLAYER)
+			LOCAL += MAXBASE:PLAYER:绝顶/2
+	;展示肛门
+	CASE 14
+		SIF COND("弱点：尻技", PLAYER)
+			LOCAL += MAXBASE:PLAYER:绝顶/2
+	ENDSELECT
+;逆推
+CASEELSE
+	IF TEQUIP:逆推
+		;调教者口交
+		SELECTCASE SELECTCOM
+		CASE 4
+			LOCAL = 10 + ABL:技巧*100
+		;顔面骑乘
+		CASE 1
+			LOCAL = 300 + ABL:技巧*300 + ABL:Ｃ感觉*100
+		CASE 9
+			LOCAL = 300 + ABL:技巧*300 + ABL:Ａ感觉*100
+		;逆龙奸
+		CASE 304, 305
+			LOCAL = 1000 + ABL:技巧*200
+		ENDSELECT
+	ENDIF
+ENDSELECT
+
+;调教知识によるＢＯＮＵＳ
+SELECTCASE TALENT_NAME(185, TALENT:调教知识, TARGET)
+CASE "调教知识(爱抚・奉仕)"
+	SELECTCASE SELECTCOM
+	CASE 6, 65, 75, 90 TO 119, 120, 121, 125, 126, 140
+		LOCAL = MAX(MULTIPLY(LOCAL, 150), LOCAL + 500)
+	ENDSELECT
+CASE "调教知识(Ａ)"
+	SELECTCASE SELECTCOM
+	CASE 96, 125 TO 129
+		LOCAL = MAX(MULTIPLY(LOCAL, 150), LOCAL + 1000)
+	ENDSELECT
+CASE "调教知识(道具)"
+	SELECTCASE SELECTCOM
+	CASE 105 TO 107
+		LOCAL = MAX(MULTIPLY(LOCAL, 150), LOCAL + 1000)
+	ENDSELECT
+ENDSELECT
+
+;插入指令で、插入している人が假阴茎使用してる时
+IF PENIS(PLAYER) == 0
+	SELECTCASE SELECTCOM
+	CASE 60 TO 79, 81 TO 83, 140, 177
+		LOCAL = 0
+	ENDSELECT
+ENDIF
+
+SIF LOCAL == 0
+	RETURN 0
+
+;TCVAR:PLAYER:2でこ之回合にPLAYERに射精绝顶するような刺激があったかを调べる。女は接吻でもイく事にしてみる。
+;TCVAR:PLAYER:2が0でも、快感が射精绝顶槽之最大值之2倍以上あれば耐え切れず射精绝顶する。
+;また、反击があった场合にもTCVAR:PLAYER:2はONとなる。
+SELECTCASE SELECTCOM
+CASE 4, 6
+	SIF TALENT:PLAYER:性别女 || TALENT:PLAYER:扶她
+		TCVAR:PLAYER:2 = 1
+CASE 10, 16, 60 TO 79, 81 TO 83, 140, 150, 162, 177
+	SIF PENIS(PLAYER)
+		TCVAR:PLAYER:2 = 1
+CASE 80, 90 TO 129, 282, 304, 305
+	TCVAR:PLAYER:2 = 1
+ENDSELECT
+
+
+;PALAM:Ｖ润、PALAM:Ａ润をみる
+SELECTCASE SELECTCOM
+;例外的に润滑が関係ないも之
+CASE 82, 83
+;顔面骑乘系
+CASE 1, 9
+	B = MULTIPLY(B, MIN(80 + GET_PALAMLV(PALAM:Ｖ润)*10, 120) + ABL:欲望*10)
+;骑乘位系
+CASE 65, 75, 177
+	B = MULTIPLY(B, MIN(20 + GET_PALAMLV(PALAM:Ｖ润)*30, 120) + ABL:欲望*10)
+;Ｖ插入
+CASE 60 TO 69
+	B = MULTIPLY(B, MIN(60 + GET_PALAMLV(PALAM:Ｖ润)*20, 120) + ABL:欲望*10)
+;Ａ插入
+CASE 70 TO 79
+	B = MULTIPLY(B, MIN(40 + GET_PALAMLV(PALAM:Ａ润)*20, 120) + ABL:欲望*10)
+;摩擦插入
+CASE 80
+	B = MULTIPLY(B, MIN(10 + GET_PALAMLV(PALAM:Ｖ润)*40, 120) + ABL:欲望*10)
+CASE 16, 81 TO 89, 93, 94, 100
+	B = MULTIPLY(B, MIN(10 + GET_PALAMLV(PALAM:PLAYER:Ｐ润)*40, 120) + ABL:欲望*10)
+ENDSELECT
+
+;主に技能による补正
+CALL SAMEN_CHECK_EX
+
+;连续绝顶コンボ数による补正
+IF PALAM:补正值
+	;奉仕指令は影響强い
+	SELECTCASE SELECTCOM
+	CASE 6, 90 TO 119, 140
+		B = DIVIDE(B, 100 + PALAM:补正值*20)
+	CASEELSE
+		B = DIVIDE(B, 100 + PALAM:补正值*5)
+	ENDSELECT
+ENDIF
+
+;２倍以上之场合には、２之n乗 < 补正倍率 < ２之(n+1)乗 →　(n+1)倍 < 补正倍率 < (n+2)倍
+;效果が上がりすぎると上がり幅之减少著しい对数関数的な补正
+B = CALCF("快乐补正", B)
+
+LOCAL = MULTIPLY(LOCAL, B/10)
+
+;技巧や偏爱や弱点、ＬＶ差等绝对にかかる补正
+;非常に效果が高い
+LOCAL = CALCF("基礎补正", LOCAL)
+
+;逆推orＷ逆推or３Ｐ之时之补正
+IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || COND("３Ｐ")
+	TIMES LOCAL, 0.70
+ELSEIF TEQUIP:逆推
+	IF ABL:PLAYER:Ｍ属性
+		LOCAL = MULTIPLY(LOCAL, 100 + MIN(ABL:Ｓ属性 + TALENT:抖Ｓ, ABL:PLAYER:Ｍ属性 + TALENT:PLAYER:抖Ｍ)*10)
+	ELSE
+		LOCAL = MULTIPLY(LOCAL, 100 - (ABL:PLAYER:Ｓ属性 + TALENT:PLAYER:抖Ｓ)*5)
+	ENDIF
+ENDIF
+;かなり强之减少补正（调教中之み）
+IF COND("调教中")
+	SELECTCASE SELECTCOM
+	CASE 6
+		;温柔的吻
+		SIF NUM("回合数") == 0
+			TIMES LOCAL, 0.10
+	CASE 91
+		SIF CHECK_COM("打扫口交", 91)
+			TIMES LOCAL, 0.20
+	CASE 98
+		SIF CHECK_COM("打扫舐阴", 98)
+			TIMES LOCAL, 0.20
+	CASE 99
+		SIF CHECK_COM("打扫口交", 91) + CHECK_COM("打扫舐阴", 98) && CHECK_COM("打扫口交", 4) + CHECK_COM("打扫舐阴", 1)
+			TIMES LOCAL, 0.20
+	ENDSELECT
+ENDIF
+;PLAYヤーが自分でやっていない场合にはオミット
+SELECTCASE SELECTCOM
+;自慰
+CASE 282
+
+CASEELSE
+	;媚药を使われてると、技巧减少
+	SIF TEQUIP:媚药
+		LOCAL = DIVIDE(LOCAL, 100 + TEQUIP:媚药)
+	;脱力
+	SIF STATE("脱力", TARGET)
+		TIMES LOCAL, 0.50
+	;打屁股性爱
+	SIF COND("打屁股性爱标志") && COND("打屁股性爱标志", PLAYER)
+		TIMES LOCAL, 1.10
+	;倍化术(TARGETが主导権を握っているも之之み。顔面骑乘と接吻は效果无とする)
+	IF STATE("倍化术", TARGET)
+		SELECTCASE SELECTCOM
+		CASE 65, 75, 90 TO 119, 120 TO 129
+			TIMES LOCAL, 2.00
+		ENDSELECT
+	ENDIF
+ENDSELECT
+;呼び出し时之补正
+SIF ARG > 0
+	LOCAL = MULTIPLY(LOCAL, ARG)
+
+;PRINTFORML 玩家的射精槽增加 = {LOCAL}
+BASE:PLAYER:绝顶 += LOCAL
+
+;射精槽増加之一时保存
+TCVAR:PLAYER:101 += LOCAL
+
+;射精ＬＶ之计算
+TCVAR:PLAYER:1 = CALCF("绝顶", PLAYER)
+
+;PRINTFORML 玩家的射精槽 = {BASE:PLAYER:绝顶}
+
+
+;技巧以外之ABL之值による射精槽増加补正
+@SAMEN_CHECK_EX
+SELECTCASE SELECTCOM
+CASE 6
+	;ABL:Ｍ感觉をみる
+	SELECTCASE ABL:PLAYER:Ｍ感觉
+	CASE 0
+		TIMES B, 0.50
+	CASE 1
+		TIMES B, 0.70
+	CASE 2
+		TIMES B, 1.00
+	CASE 3
+		TIMES B, 1.20
+	CASE 4
+		TIMES B, 1.50
+	CASEELSE
+		TIMES B, 2.00
+	ENDSELECT
+	;敏感具合
+	IF TALENT:PLAYER:荡唇
+		TIMES B, 2.00
+	ELSEIF TALENT:PLAYER:Ｍ敏感
+		TIMES B, 1.50
+	ELSEIF TALENT:PLAYER:Ｍ钝感
+		TIMES B, 0.50
+	ENDIF
+;插入指令
+CASE 60 TO 69, 177
+	;插入中爱抚で夹紧増加
+	SIF COND("夹紧标志")
+		TIMES B, 1.20
+	;绝顶すると、夹紧増加
+	SIF NOWEX:绝顶数合计
+		B = MULTIPLY(B, 100 + NOWEX:绝顶数合计*10)
+	SIF INSERT("狂野摇摆")
+		TIMES B, 1.50
+	;PLAYERが童贞
+	SIF EXP:PLAYER:Ｖ插入経験 + EXP:PLAYER:Ａ插入経験 == 0
+		TIMES B, 3.00
+	;EXP:Ｖ性交経験をみる。経験が多くなると少し上がる
+	IF TALENT:处女 == 1
+		TIMES B, 1.50
+	ELSE
+		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:Ｖ性交経験)*5)
+	ENDIF
+	;阴茎之大きさと之差でＢＯＮＵＳ
+	SELECTCASE ABL:Ｖ扩张 - SIZE("阴茎", PLAYER)
+	CASE IS <= 0
+		TIMES B, 1.20
+	CASE IS <= ABL:Ｖ技巧
+		LOCAL = LIMIT(150 * BASE:体力 / MAXBASE:体力, 25, 100)
+		B = MULTIPLY(B, LOCAL)
+	CASEELSE
+		LOCAL = LIMIT(120 * BASE:体力 / MAXBASE:体力, 10, 100)
+		B = MULTIPLY(B, LOCAL)
+	ENDSELECT
+CASE 70 TO 79
+	;插入中爱抚で夹紧増加
+	SIF COND("夹紧标志")
+		TIMES B, 1.20
+	;绝顶すると、夹紧増加
+	SIF NOWEX:绝顶数合计
+		B = MULTIPLY(B, 100 + NOWEX:绝顶数合计*10)
+	SIF INSERT("狂野摇摆")
+		TIMES B, 1.50
+	;PLAYERが童贞
+	SIF EXP:PLAYER:Ｖ插入経験 + EXP:PLAYER:Ａ插入経験 == 0
+		TIMES B, 3.00
+	;EXP:Ａ性交経験をみる。経験が多くなると少し上がる
+	IF TALENT:Ａ处女
+		TIMES B, 1.50
+	ELSE
+		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:Ａ性交経験)*5)
+	ENDIF
+	;阴茎之大きさと之差でＢＯＮＵＳ
+	SELECTCASE ABL:Ａ扩张 - SIZE("阴茎", PLAYER)
+	CASE IS <= 0
+		TIMES B, 1.20
+	CASE IS <= ABL:Ａ技巧
+		LOCAL = LIMIT(150 * BASE:体力 / MAXBASE:体力, 25, 100)
+		B = MULTIPLY(B, LOCAL)
+	CASEELSE
+		LOCAL = LIMIT(120 * BASE:体力 / MAXBASE:体力, 10, 100)
+		B = MULTIPLY(B, LOCAL)
+	ENDSELECT
+CASE 83
+	;插入中爱抚で夹紧増加
+	SIF COND("夹紧标志")
+		TIMES B, 1.20
+	;绝顶すると、夹紧増加
+	SIF NOWEX:绝顶数合计
+		B = MULTIPLY(B, 100 + NOWEX:绝顶数合计*10)
+	SIF INSERT("狂野摇摆")
+		TIMES B, 1.50
+	;PLAYERが童贞
+	SIF EXP:PLAYER:Ｖ插入経験 + EXP:PLAYER:尿道插入経験 == 0
+		TIMES B, 3.00
+;PLAYER之Ａを刺激
+CASE 96, 107, 109, 110, 125 TO 129, 305
+	;ABL:Ａ感觉をみる
+	SELECTCASE ABL:PLAYER:Ａ感觉
+	CASE 0
+		TIMES B, 0.50
+	CASE 1
+		TIMES B, 0.70
+	CASE 2
+		TIMES B, 1.00
+	CASE 3
+		TIMES B, 1.20
+	CASE 4
+		TIMES B, 1.50
+	CASEELSE
+		TIMES B, 2.00
+	ENDSELECT
+	;PLAYヤー之EXP:Ａ経験をみる
+	SELECTCASE EXP:PLAYER:Ａ経験
+	CASE IS < 5
+		TIMES B, 0.10
+	CASE IS < 20
+		TIMES B, 0.30
+	CASE IS < 50
+		TIMES B, 0.50
+	CASE IS < 150
+		TIMES B, 0.80
+	ENDSELECT
+	;敏感具合
+	IF TALENT:PLAYER:尻穴狂
+		TIMES B, 2.00
+	ELSEIF TALENT:PLAYER:Ａ敏感
+		TIMES B, 1.50
+	ELSEIF TALENT:PLAYER:Ａ钝感
+		TIMES B, 0.50
+	ENDIF
+	;PLAYヤーが性别男
+	SIF TALENT:PLAYER:性别男
+		TIMES B, 1.50
+	;Ａ扩张具合による补正
+	IF SELECTCOM == 107
+		LOCAL = SIZE("肛用按摩棒", PLAYER) - ABL:PLAYER:Ａ扩张
+		;緩い
+		IF LOCAL <= -2
+			TIMES B, 0.80
+		;余裕あり
+		ELSEIF LOCAL == -1
+			TIMES B, 1.20
+		;余裕无
+		ELSE
+			B /= MAX(LOCAL*2, 1)
+		ENDIF
+	ENDIF
+;PLAYER之Ｃを刺激
+CASE 95, 98, 99
+	IF TALENT:PLAYER:性别男 == 0
+		;ABL:Ｃ感觉をみる
+		SELECTCASE ABL:PLAYER:Ｃ感觉
+		CASE 0
+			TIMES B, 0.50
+		CASE 1
+			TIMES B, 0.70
+		CASE 2
+			TIMES B, 1.00
+		CASE 3
+			TIMES B, 1.20
+		CASE 4
+			TIMES B, 1.50
+		CASEELSE
+			TIMES B, 2.00
+		ENDSELECT
+		;敏感具合
+		IF TALENT:PLAYER:淫核
+			TIMES B, 2.00
+		ELSEIF TALENT:PLAYER:Ｃ敏感
+			TIMES B, 1.50
+		ELSEIF TALENT:PLAYER:Ｃ钝感
+			TIMES B, 0.50
+		ENDIF
+	ENDIF
+;PLAYER之Ｖを刺激
+CASE 106, 108, 110, 120 TO 124, 304
+	;ABL:V感觉をみる
+	SELECTCASE ABL:PLAYER:Ｖ感觉
+	CASE 0
+		TIMES B, 0.50
+	CASE 1
+		TIMES B, 0.70
+	CASE 2
+		TIMES B, 1.00
+	CASE 3
+		TIMES B, 1.20
+	CASE 4
+		TIMES B, 1.50
+	CASEELSE
+		TIMES B, 2.00
+	ENDSELECT
+	;PLAYヤー之EXP:Ｖ経験をみる
+	SELECTCASE EXP:PLAYER:Ｖ経験
+	CASE IS < 5
+		TIMES B, 0.20
+	CASE IS < 20
+		TIMES B, 0.40
+	CASE IS < 50
+		TIMES B, 0.60
+	CASE IS < 150
+		TIMES B, 0.80
+	ENDSELECT
+	;敏感具合
+	IF TALENT:PLAYER:淫壷
+		TIMES B, 2.00
+	ELSEIF TALENT:PLAYER:Ｖ敏感
+		TIMES B, 1.50
+	ELSEIF TALENT:PLAYER:Ｖ钝感
+		TIMES B, 0.50
+	ENDIF
+	;Ｖ扩张具合による补正
+	IF SELECTCOM == 106
+		LOCAL = SIZE("按摩棒", PLAYER) - ABL:PLAYER:Ｖ扩张
+		;緩い
+		IF LOCAL <= -2
+			TIMES B, 0.80
+		;余裕あり
+		ELSEIF LOCAL == -1
+			TIMES B, 1.20
+		;余裕无
+		ELSE
+			B /= MAX(LOCAL*2, 1)
+		ENDIF
+	ENDIF
+ENDSELECT
+
+;部位特化能力。
+SELECTCASE SELECTCOM
+;舌を使う指令
+CASE 6, 63, 73, 91, 96, 98, 99, 140, 150
+	;荡唇
+	SIF TALENT:荡唇
+		TIMES B, 1.50
+	;ABL:舌技をみる
+	B = SOURCE_EXABL(B, 30, TARGET)
+;指を使う指令
+CASE 90, 97
+	;ABL:指技
+	B = SOURCE_EXABL(B, 31, TARGET)
+	;多手
+	SIF TALENT:多手
+		TIMES B, 2.00
+;胸を使う指令（例外的に胸を揉んだりする之もＯＫ）
+CASE 64, 74, 81, 82, 92, 94, 104
+	;淫乳
+	SIF TALENT:淫乳
+		TIMES B, 1.50
+	;ABL:魔乳
+	B = SOURCE_EXABL(B, 34, TARGET)
+	;爆乳、巨乳、贫乳
+	IF TALENT:巨乳 >= 3
+		TIMES B, 2.00
+	ELSEIF TALENT:巨乳 == 2
+		TIMES B, 1.50
+	ELSEIF TALENT:巨乳
+		TIMES B, 1.20
+	ELSEIF TALENT:贫乳
+		TIMES B, 0.70
+	ENDIF
+;足を使う指令
+CASE 95
+	;ABL:足技
+	B = SOURCE_EXABL(B, 32, TARGET)
+ENDSELECT
+
+;腰を使う指令
+SELECTCASE SELECTCOM
+CASE 1, 4, 9, 16, 93, 94, 120 TO 129, 177
+	;ABL:腰技
+	B = SOURCE_EXABL(B, 33, TARGET)
+;骑乘位は性爱系之中では腰技之影響が强い（腰技ＬＶが０だとペナルティ）
+CASE 65, 75
+	;ABL:腰技
+	IF ABL:腰技
+		B = SOURCE_EXABL(B, 33, TARGET)
+	ELSE
+		TIMES B, 0.70
+	ENDIF
+
+;骑乘位以外之性爱系はちょい弱め(刺激插入部位系は腰技之影響なし)
+CASE 60 TO 64, 70 TO 74
+	B += (SOURCE_EXABL(B, 33, TARGET) - B)/3
+CASE 83
+	IF TEQUIP:逆推
+		IF ABL:腰技
+			B = SOURCE_EXABL(B, 33, TARGET)
+		ELSE
+			TIMES B, 0.70
+		ENDIF
+	ELSE
+		B += (SOURCE_EXABL(B, 33, TARGET) - B)/3
+	ENDIF
+ENDSELECT
+
+;气力０だとペナルティ
+SIF BASE:气力 <= 0
+	B /= 2
+
+;-------------------------------------------------
+;射精的地方之强制变更
+;ここで之变更不可は、射精的地方を選ぶ部分之み影響する
+;-------------------------------------------------
+@SET_SHOOT, ARG, ARGS
+SELECTCASE ARGS
+CASE "发"
+	TCVAR:ARG:3 = 1
+CASE "顔"
+	TCVAR:ARG:3 = 2
+CASE "口"
+	TCVAR:ARG:3 = 3
+CASE "胸"
+	TCVAR:ARG:3 = 4
+CASE "股间"
+	TCVAR:ARG:3 = 5
+CASE "お腹"
+	TCVAR:ARG:3 = 6
+CASE "お尻"
+	TCVAR:ARG:3 = 7
+CASE "变更不可", "こ之まま"
+	TCVAR:ARG:3 = 8
+CASE "冲击"
+	TCVAR:ARG:3 = RAND:7 + 1
+CASE "魔法瓶"
+	TCVAR:ARG:3 = 90
+ENDSELECT
+TCVAR:ARG:4 = 1
+
+;-------------------------------------------------
+;射精的地方
+;PLAYERがデフォ。省略可能。
+;-------------------------------------------------
+@SHOOT(ARGS, ARG)
+#FUNCTION
+;龙奸
+SIF ARGS == "龙" && TFLAG:9 && TEQUIP:逆推 == 0
+	RETURNF 1
+SIF ARG == 0 && PLAYER > 0
+	ARG = PLAYER
+SIF ARGS == "こらえた" && NOWEX:ARG:忍住了没丢
+	RETURNF 1
+SIF COND("绝顶", ARG) == 0
+	RETURNF 0
+SELECTCASE ARGS
+CASE "发"
+	SIF TCVAR:ARG:3 == 1
+		RETURNF 1
+CASE "顔"
+	SIF TCVAR:ARG:3 == 2
+		RETURNF 1
+CASE "口"
+	SIF TCVAR:ARG:3 == 3 || (TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 1)
+		RETURNF 1
+CASE "胸"
+	SIF TCVAR:ARG:3 == 4 || (TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 5) || (TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 18)
+		RETURNF 1
+CASE "股间"
+	SIF TCVAR:ARG:3 == 5
+		RETURNF 1
+CASE "观察"
+	;观察中
+	IF SELECTCOM == 13 || COND("两穴观察") || TEQUIP:PLAYER:自慰 == 13
+		SIF TCVAR:ARG:3 == 5
+			RETURNF 1
+	ENDIF
+CASE "お腹"
+	SIF TCVAR:ARG:3 == 6
+		RETURNF 1
+CASE "お尻"
+	SIF TCVAR:ARG:3 == 7
+		RETURNF 1
+CASE "Ａ观察"
+	;Ａ观察中
+	IF SELECTCOM == 14 || COND("两穴观察") || TEQUIP:PLAYER:自慰 == 14
+		SIF TCVAR:ARG:3 == 6 || TCVAR:ARG:3 == 7
+			RETURNF 1
+	ENDIF
+CASE "冲击"
+	SELECTCASE TCVAR:ARG:3
+	CASE 1, 2, 5, 6, 7
+		RETURNF 1
+	ENDSELECT
+CASE "外"
+	SIF TCVAR:ARG:3 && TCVAR:ARG:3 <= 7
+		RETURNF 1
+CASE "魔法瓶"
+	SIF TCVAR:ARG:3 == 90
+		RETURNF 1
+CASE "变更不可"
+	SIF TCVAR:ARG:3 == 8
+		RETURNF 1
+CASE "就那样"
+	SIF TCVAR:ARG:3 == 0
+		RETURNF 1
+CASE "口淫"
+	SIF TCVAR:ARG:5 == 1
+		RETURNF 1
+CASE "手"
+	SIF TCVAR:ARG:5 == 2
+		RETURNF 1
+CASE "ぱんつ"
+	SIF TCVAR:ARG:5 == 2 && SELECTCOM == 97
+		RETURNF 1
+CASE "飞机杯"
+	SIF TCVAR:ARG:5 == 2 && SELECTCOM == 105
+		RETURNF 1
+
+CASE "中出"
+	SIF TCVAR:ARG:3 == 0 && (TCVAR:ARG:5 == 3 || TCVAR:ARG:5 == 4 || TCVAR:ARG:5 == 19)
+		RETURNF 1
+CASE "除了自己以外中出"
+	SIF TCVAR:ARG:3 == 0 && (TCVAR:ARG:6 == 3 || TCVAR:ARG:6 == 4 || TCVAR:ARG:6 == 19)
+		RETURNF 1
+CASE "膣内"
+	SIF TCVAR:ARG:5 == 3
+		RETURNF 1
+CASE "Ｖ中出"
+	SIF TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 3
+		RETURNF 1
+CASE "Ａ"
+	SIF TCVAR:ARG:5 == 4
+		RETURNF 1
+CASE "Ａ中出"
+	SIF TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 4
+		RETURNF 1
+CASE "乳交"
+	SIF TCVAR:ARG:5 == 5
+		RETURNF 1
+CASE "脚"
+	SIF TCVAR:ARG:5 == 6
+		RETURNF 1
+CASE "搞基"
+	SIF TCVAR:ARG:5 == 7 && SELECTCOM == 16
+		RETURNF 1
+CASE "素股"
+	SIF TCVAR:ARG:5 == 7
+		RETURNF 1
+CASE "接吻"
+	SIF TCVAR:ARG:5 == 8
+		RETURNF 1
+CASE "逆舐阴"
+	SIF TCVAR:ARG:5 == 9
+		RETURNF 1
+CASE "逆强暴"
+	SIF TCVAR:ARG:5 == 10
+		RETURNF 1
+CASE "逆肛交"
+	SIF TCVAR:ARG:5 == 11
+		RETURNF 1
+CASE "逆龙奸"
+	SIF TCVAR:ARG:5 == 12
+		RETURNF 1
+
+CASE "逆肛龙奸"
+	SIF TCVAR:ARG:5 == 13
+		RETURNF 1
+CASE "顔面骑乘"
+	SIF TCVAR:ARG:5 == 14
+		RETURNF 1
+CASE "舐肛奉侍"
+	SIF TCVAR:ARG:5 == 15
+		RETURNF 1
+CASE "Ｖ舐Ａ"
+	SIF TCVAR:ARG:5 == 16
+		RETURNF 1
+CASE "两乳夹头"
+	SIF TCVAR:ARG:5 == 17
+		RETURNF 1
+CASE "乳头奸"
+	SIF TCVAR:ARG:5 == 18
+		RETURNF 1
+CASE "乳头中出"
+	SIF TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 18
+		RETURNF 1
+CASE "尿道"
+	SIF TCVAR:ARG:5 == 19
+		RETURNF 1
+CASE "尿道中出"
+	SIF TCVAR:ARG:3 == 0 && TCVAR:ARG:5 == 19
+		RETURNF 1
+CASE "自慰"
+	SIF TCVAR:ARG:5 == 20
+		RETURNF 1
+
+CASE "调教者が性别女"
+	SIF TCVAR:ARG:5 >= 30 && TCVAR:ARG:5 <= 49
+		RETURNF 1
+
+CASE "助手"
+	SIF TCVAR:ARG:5 >= 50 && TCVAR:ARG:5 <= 59
+		RETURNF 1
+CASE "助手之膣内"
+	SIF TCVAR:ARG:5 == 50
+		RETURNF 1
+CASE "助手之Ａ"
+	SIF TCVAR:ARG:5 == 51
+		RETURNF 1
+CASE "助手之口"
+	SIF TCVAR:ARG:5 == 52
+		RETURNF 1
+CASE "强制变更"
+	SIF TCVAR:ARG:4
+		RETURNF 1
+CASE "なぶられ中"
+	SELECTCASE TCVAR:ARG:5
+	CASE 8 TO 11, 14 TO 17
+		RETURNF 1
+	ENDSELECT
+ENDSELECT
+RETURNF 0
+
+;-------------------------------------------------
+;助手之PLAYに对する射精的地方
+;-------------------------------------------------
+@SHOOT_A(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && PLAYER > 0
+	ARG = PLAYER
+SWAP TCVAR:PLAYER:5, TCVAR:PLAYER:6
+LOCAL = SHOOT(ARGS, ARG)
+SWAP TCVAR:PLAYER:5, TCVAR:PLAYER:6
+RETURNF LOCAL
+
+@SAMEN_AND_EXTACY
+#DIM SHOOT_CHANGE_VALUE
+
+SIF TEQUIP:触手
+	RETURN 0
+
+CALL SETFLAG, "射精＆绝顶チェック", PLAYER
+;３Ｐ
+IF COND("３Ｐ")
+	CALL SETFLAG, "调教者交代"
+	CALL SETFLAG, "射精＆绝顶チェック", PLAYER
+	CALL SETFLAG, "调教者交代"
+ENDIF
+
+;PLAYERに阴茎があるなら、どこに射精したかor我慢したか之TFLAGをここで設定する。
+;３Ｐなら变更不可とする（今后变更可能にするかも）
+IF PENIS(PLAYER) && COND("绝顶", PLAYER) && COND("３Ｐ") == 0 && COND("射精禁止中", PLAYER) == 0
+	;后之TFLAG判定之ために代入
+	SELECTCASE TCVAR:PLAYER:5
+	CASE 1, 5
+		SHOOT_CHANGE_VALUE = 92
+	CASE 2
+		SHOOT_CHANGE_VALUE = 93
+	CASE 3
+		SHOOT_CHANGE_VALUE = 94
+	CASE 4
+		SHOOT_CHANGE_VALUE = 95
+	CASE 6, 7
+		SHOOT_CHANGE_VALUE = 96
+	ENDSELECT
+
+	;精液的地方变更可能判定标志。基本值は腰技。
+	;TFLAG:7が1ならば何とか射精的地方变更可能で、2以上ならば、余裕ありと判定されます。
+	;4以上ならば、@SHOOT_CHANGEにおいて「忍住」が選択できる。
+
+	;精力と技巧ＬＶに应じて猶予
+	TFLAG:7 = LIMIT(ABL:PLAYER:技巧, 0, 5) + 4 - 4*BASE:PLAYER:精力/MAXBASE:PLAYER:精力
+
+	;限界突破
+	SELECTCASE BASE:PLAYER:快感许容值男
+	CASE IS >= MAXBASE:PLAYER:快感许容值男*3
+		TFLAG:7 = 0
+	CASE IS >= MAXBASE:PLAYER:快感许容值男
+		;精力ＭＡＸ(-3or-6)、精力が９割以上（-2or-4）、３割以上で分岐(-1or-2)
+		SELECTCASE 100 * BASE:PLAYER:精力 / MAXBASE:PLAYER:精力
+		CASE IS >= 100
+			TFLAG:7 -= BASE:PLAYER:快感许容值男 / MAXBASE:PLAYER:快感许容值男 * 3
+		CASE IS >= 90
+			TFLAG:7 -= BASE:PLAYER:快感许容值男 / MAXBASE:PLAYER:快感许容值男 * 2
+		CASE IS >= 30
+			TFLAG:7 -= BASE:PLAYER:快感许容值男 / MAXBASE:PLAYER:快感许容值男
+		ENDSELECT
+	CASE IS >= MAXBASE:PLAYER:快感许容值男/2
+		TFLAG:7 += 2
+	CASEELSE
+		TFLAG:7 += 4
+	ENDSELECT
+	;前回こらえた
+	SIF EX:PLAYER:忍住了没丢
+		TFLAG:7 -= 1 + RAND:5
+
+	;射精的地方を選べる指令か？
+	SELECTCASE TCVAR:PLAYER:5
+	CASE 1 TO 7
+		;余裕があったとき之み射精的地方变更としているなら
+		IF TFLAG:7 < 2 && FLAG:SHOOT_CHANGE_VALUE == 40
+			TFLAG:7 = 0
+		;射精的地方变更ONで余裕なし
+		ELSEIF FLAG:91 == 1 && TFLAG:7 == 0
+			TFLAG:7 = 1
+		ENDIF
+	;自慰
+	CASE 20
+		TFLAG:7 = 1
+	CASEELSE
+		TFLAG:7 = 0
+		SIF TEQUIP:PLAYER:自慰
+			TFLAG:7 = 1
+	ENDSELECT
+
+	;射精的地方变更を许さない指令はここに記述。今后变更される可能性大。
+	SELECTCASE SELECTCOM
+	CASE 66, 67, 68, 96, 105, 160
+		TFLAG:7 = 0
+	ENDSELECT
+
+	SIF TEQUIP:六九式 || CHECK_COM("两乳夹头手交") || CHECK_COM("刺激肛门手交")
+		TFLAG:7 = 0
+	;射精的地方变更OFFor恍惚or口上で之射精的地方決定
+	SIF FLAG:91 == 0 || SHOOT("强制变更") || STATE("恍惚", PLAYER)
+		TFLAG:7 = 0
+
+	;股间にかけた时には、VA两方に汚れがつくも之とする。
+	;射精的地方变更标志が立っていて、二人に逆推て无いなら、ここで变更。
+	IF TFLAG:7 && TEQUIP:Ｗ逆推 == 0
+		CALL SHOOT_CHANGE, SHOOT_CHANGE_VALUE
+	ELSEIF COND("射精的地方变更", PLAYER)
+		IF SHOOT("外")
+			CALL RESET_INSERT, TARGET, PLAYER
+		ELSEIF SHOOT("变更不可")
+			TCVAR:PLAYER:3 = 0
+		ENDIF
+	ENDIF
+ENDIF
+
+;射精or绝顶
+IF COND("绝顶", PLAYER) || (COND("３Ｐ") && COND("绝顶", PLAYER:1) )
+	CALL CALC, "同时绝顶"
+
+	IF COND("绝顶", PLAYER)
+		SIF STATE("束缚术：Ｐ", PLAYER)
+			PRINTFORML %CALLNAME:PLAYER%异常高涨的欲望无法拘束而射精了
+		PRINTFORML %TEXTS("绝顶", PLAYER)%
+	ENDIF
+	SIF COND("３Ｐ") && COND("绝顶", PLAYER:1)
+		PRINTFORML %TEXTS("绝顶", PLAYER:1)%
+
+	;绝顶した时之文本を出力します。
+	IF COND("绝顶", PLAYER)
+		CALL SAMEN_SHOOT_MESSAGE
+	ELSE
+		CALL SETFLAG, "调教者交代"
+		CALL SAMEN_SHOOT_MESSAGE
+		CALL SETFLAG, "调教者交代"
+	ENDIF
+
+	IF COND("绝顶", PLAYER)
+		CALL CALC, "绝顶させた处理", TARGET
+		;W逆推
+		SIF SELECTCOM:1 >= 0
+			CALL CALC, "绝顶させた处理", ASSI
+		CALL CALC, "绝顶した处理", PLAYER
+	ENDIF
+	IF COND("３Ｐ") && COND("绝顶", PLAYER:1)
+		CALL SETFLAG, "调教者交代"
+		CALL CALC, "绝顶させた处理", TARGET
+		CALL CALC, "绝顶した处理", PLAYER
+		CALL SETFLAG, "调教者交代"
+	ENDIF
+
+	;受精确率之变动を表示
+	CALL CHECK_NINSHIN
+	CALL CHECK_NINSHIN, MASTER
+	CALL CHECK_NINSHIN, ASSI
+	;效果を及ぼす之はメ因普レイヤー一人之み
+	CALL CALC, "能量吸收"
+ELSEIF COND("射精禁止中", PLAYER)
+	PRINTFORMW %CALLNAME:PLAYER%的尿道压住了，无法射精！
+ELSEIF COND("焦らされ中", PLAYER)
+	PRINTFORMW %CALLNAME:PLAYER%因%CALLNAME:TARGET%\@ SELECTCOM:1 >= 0 ? 们 # \@而焦急中！
+;こらえていない＆绝顶边缘
+ELSEIF EX:PLAYER:忍住了没丢 == 0 && BASE:PLAYER:绝顶 >= MAXBASE:PLAYER:绝顶*4/5 && TCVAR:PLAYER:100 != BASE:PLAYER:绝顶
+	PRINTFORMW %CALLNAME:PLAYER%快要射了……
+ENDIF
+
+;奉仕精神ＬＶ２以上、技巧ＬＶ２以上で实行值を30以上上回っているなら汚れをなめ取る
+IF ABL:奉仕精神 > MAX(1, RAND:5) && ABL:技巧 >= 2 && SHOOT("口") && TCVAR:28 >= 30 && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
+	SIF COND("绝顶", PLAYER) && TFLAG:8 == 0 && ABL:奉仕精神 > RAND:5
+		TFLAG:8 = 1
+ENDIF
+
+
+@SHOOT_CHANGE, ARG
+#DIM CHOICE
+#DIM MEMO_LINECOUNT
+;どこに射精した之か
+CHOICE = -1
+
+;射精的地方が選択できるか之判定に使う
+VARSET LOCAL
+LOCAL:0 = 1
+LOCAL:1 = 1
+LOCAL:2 = 2
+SIF SHOOT("口") + SHOOT("脚") + SHOOT("素股") == 0
+	LOCAL:3 = 3
+SIF SHOOT("胸") == 0
+	LOCAL:4 = 4
+LOCAL:5 = 5
+SIF INSERT("插入") || SELECTCOM == 14 || COND("两穴观察") || TEQUIP:PLAYER:自慰 == 14
+	LOCAL:6 = 6
+SIF ITEM:魔法瓶
+	LOCAL:90 = 90
+SIF COND("忍住", PLAYER)
+	LOCAL:99 = 99
+
+
+;射精的地方が固定されているかどうか
+SELECTCASE FLAG:ARG
+CASE 0, 40
+
+CASE 20
+	CHOICE = 0
+CASE 30
+	CHOICE = CALCF("随机射精")
+	SIF LOCAL:CHOICE == 0
+		CHOICE = 0
+CASEELSE
+	CHOICE = 0
+	SIF LOCAL:(FLAG:ARG)
+		CHOICE = FLAG:ARG
+ENDSELECT
+
+IF CHOICE == -1
+	PRINTFORML 
+	SIF EX:PLAYER:忍住了没丢
+		PRINTFORM 上次总算忍住了、
+
+
+	PRINTFORM %CALLNAME:PLAYER%的阴茎
+	IF BASE:PLAYER:绝顶 >= EJAC:PLAYER * 2
+		PRINTFORM 膨胀到极限、
+
+
+	ELSE
+		PRINTFORM 愤怒的勃起、
+
+
+	ENDIF
+	PRINTFORMW 已经快要射精了\@ TEQUIP:逆推 ? 似的 #    \@……
+
+	MEMO_LINECOUNT = LINECOUNT
+
+	;射精前之口上
+	CALL KOJO_MESSAGE_SHOOT
+
+	SIF LINECOUNT > MEMO_LINECOUNT
+
+	PRINTFORMW \@ TEQUIP:逆推 ? 射精到哪里？ # 在%CALLNAME:TARGET%哪里射精？ \@？
+
+	PRINTFORM  [ 0] 「就那样
+	IF SHOOT("胸")
+		SELECTCASE SELECTCOM
+		CASE 81
+			PRINTFORM 用胸来处理
+
+
+		CASE 82
+			PRINTFORM 胸部中间
+		CASEELSE
+			PRINTFORM 乳\@ TEQUIP:逆推 ? 上 # 沟之间 \@
+		ENDSELECT
+	ELSEIF SHOOT("口")
+		IF TEQUIP:深喉口交
+			PRINTFORM 喉咙深处
+		ELSE
+			PRINTFORM 口里
+		ENDIF
+	ELSEIF SHOOT("手")
+		PRINTFORM \@ SELECTCOM == 97 ? %CLO("摩擦胖次")%上 # 手中 \@
+	ELSEIF SHOOT("膣内")
+		IF COND("子宮插入标志")
+			PRINTFORM 子宮内
+		ELSE
+			PRINTFORM 阴道内
+		ENDIF
+	ELSEIF SHOOT("Ａ")
+		PRINTFORM 肠内
+	ELSEIF SHOOT("脚")
+		PRINTFORM 足上
+	ELSEIF SHOOT("素股")
+		PRINTFORM 身体上
+	ELSEIF SHOOT("自慰")
+		IF TEQUIP:野外PLAY
+			PRINTFORM 地面上
+		ELSE
+			PRINTFORM 床上
+		ENDIF
+	ENDIF
+	PRINTFORML \@ TEQUIP:逆推 ? 射出 # 射在 \@」
+
+	PRINTFORML  [ 1] 「发」
+	PRINTFORML  [ 2] 「顔」
+	SIF LOCAL:3
+		PRINTFORML  [ 3] 「口」
+	SIF LOCAL:4
+		PRINTFORML  [ 4] 「胸」
+	IF SELECTCOM == 13 || COND("两穴观察") || TEQUIP:PLAYER:自慰 == 13
+		PRINTFORML  [ 5] 「押进阴道」
+	ELSE
+		PRINTFORML  [ 5] 「股间」
+	ENDIF
+	IF LOCAL:6
+		IF SELECTCOM == 14 || COND("两穴观察") || TEQUIP:PLAYER:自慰 == 14
+			PRINTFORML  [ 6] 「押进肛门」
+		ELSE
+		PRINTFORML  [ 6] 「\@ INSERT("后背位") + INSERT("背面座位") ? 尻 # 腹 \@」
+		ENDIF
+	ENDIF
+	SIF LOCAL:90
+		PRINTFORML  [90] 「魔法瓶\@ TEQUIP:逆推 ?  # 将精液积蓄\@」
+	SIF LOCAL:99
+		PRINTFORML  [99] 「\@ TEQUIP:逆推 ? 忍耐 # 忍住 \@」
+
+	CALL INPUT_SELECT, 3, LOCAL:3, LOCAL:4, LOCAL:5, LOCAL:6, LOCAL:90, LOCAL:99
+	CHOICE = RESULT
+ENDIF
+
+
+;CHOICE == 0なら变化なし
+SELECTCASE CHOICE
+CASE 0 TO 5
+	TCVAR:PLAYER:3 = CHOICE
+CASE 6
+	IF INSERT("后背位") || INSERT("背面座位")
+		TCVAR:PLAYER:3 = 7
+	ELSE
+		TCVAR:PLAYER:3 = 6
+	ENDIF
+CASE 90
+	TCVAR:PLAYER:3 = 90
+	TCVAR:PLAYER:5 = 0
+	ITEM:精液储蓄量 += COND("绝顶", PLAYER) * COND("绝顶", PLAYER)
+CASE 99
+	PRINTFORML %CALLNAME:PLAYER% \@ PENIS(PLAYER) ? 射精 #    \@忍耐！
+	EX:PLAYER:忍住了没丢 += 1
+	NOWEX:PLAYER:忍住了没丢 = 1
+	TCVAR:PLAYER:5 = 0
+	TCVAR:PLAYER:1 = 0
+ENDSELECT
+
+;插入解除など
+SELECTCASE CHOICE
+CASE 1 TO 6
+	CALL RESET_INSERT, TARGET, PLAYER
+	TEQUIP:深喉口交 = 0
+ENDSELECT
+
+;３Ｐなど复数人が调教側之ときには、相方はPLAYER:1となっている
+;ARGに角色编号が代入されている场合にはARGを一时的にTARGETと交换する
+@SAMEN_SHOOT_MESSAGE, ARG
+SIF ARG > 0
+	SWAP ARG, TARGET
+
+IF PENIS(PLAYER) == 0
+	CALL EXTACY_MESSAGE
+	SIF ARG > 0
+		SWAP ARG, TARGET
+	RETURN 0
+ENDIF
+
+;まずは、场所を变える段阶之文本
+IF SHOOT("魔法瓶")
+	PRINTFORML %CALLNAME:PLAYER%念着不思议的咒文后、携带着欲望飞出去的精液从魔法瓶里面消失了…
+
+
+	PRINTFORMW 貯蔵量＋{COND("绝顶", PLAYER) * COND("绝顶", PLAYER)}　（魔法瓶的中的精液：{ITEM:精液储蓄量}）
+ELSEIF SHOOT("就那样") == 0 && COND("射精的地方变更", PLAYER) == 0
+	IF TEQUIP:逆推
+		IF SHOOT("口淫")
+			PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射精之前
+			SIF COND("深喉口交标志")
+				PRINTFORM 吮吸到根部的位置
+			PRINTFORM 吸允阴茎的口离开了
+
+
+
+
+		ELSEIF SHOOT("手")
+			PRINTFORM %CALLNAME:TARGET%将阴茎引导到目标位置
+		ELSEIF SHOOT("膣内")
+			PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射精之前抬起腰将阴茎放开、
+		ELSEIF SHOOT("Ａ")
+			PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射精之前抬起腰将阴茎放开、
+		ELSEIF SHOOT("乳交")
+			PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射精之前停止乳交、
+		;ELSEIF SHOOT("脚")
+		;	PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射进之前悬空了臀部并继续用脚足交、
+
+
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%射精之前变换体位、
+		ENDIF
+	ELSEIF SHOOT("口淫")
+		IF SELECTCOM == 140
+			PRINTFORM %CALLNAME:PLAYER%在
+			IF COND("深喉口交标志") && SIZE("阴茎", PLAYER) >= 3
+				PRINTFORM 食道
+			ELSE
+				PRINTFORM 口
+			ENDIF
+			PRINTFORM 将阴茎抽出来
+
+
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%含在嘴里制止了、
+		ENDIF
+	ELSEIF SHOOT("手")
+		PRINTFORM %CALLNAME:PLAYER%放开了手、
+	ELSEIF SHOOT("膣内")
+		PRINTFORM %CALLNAME:PLAYER%把秘裂的阴茎拔出来、
+	ELSEIF SHOOT("Ａ")
+		PRINTFORM %CALLNAME:PLAYER%把肛穴的阴茎拔出来、
+	ELSEIF SHOOT("乳交")
+		PRINTFORM %CALLNAME:PLAYER%把乳交停止了、
+	;ELSEIF SHOOT("脚")
+	;	PRINTFORM %CALLNAME:PLAYER%继续足交，并抬起屁股、
+	ELSEIF SHOOT("自慰")
+		PRINTFORM %CALLNAME:PLAYER%一边自慰一边观察、
+	ELSE
+		PRINTFORM %CALLNAME:PLAYER%变换了体位、
+	ENDIF
+ELSEIF SHOOT("就那样") == 0 && COND("射精的地方变更", PLAYER)
+	IF TEQUIP:逆推
+		PRINTFORM %CALLNAME:TARGET%在
+	ENDIF
+ENDIF
+;以下实際にかかった部位を焦点とした文本
+;冲击は必ず射精的地方之变更が起きている
+IF SHOOT("冲击")
+	IF SHOOT("发")
+		;角
+		IF TALENT:犄角 && RAND:2 == 0
+			IF TEQUIP:逆推
+				PRINTFORML 浇到自己的角上
+				PRINTFORMW 并且、用%TEXTR("光滑的", "美丽的")%的角摩擦着阴茎让浓厚的精液在上面涂抹了…
+
+
+
+
+			ELSE
+				PRINTFORML 浇到%CALLNAME:TARGET%的角上
+				PRINTFORMW 并且、用%TEXTR("光滑的", "美丽的")%的角摩擦着阴茎让浓厚的精液在上面涂抹了…
+
+
+			ENDIF
+		;天使之輪
+		ELSEIF (BASE:种族 == 20 || BASE:种族 == 21) && (RAND:3 == 0 || COND("绝顶", PLAYER) >= 3)
+			IF TEQUIP:逆推
+				PRINTFORMW 浇到自己头上的光辉之环上
+				PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
+
+
+
+
+			ELSE
+				PRINTFORMW 浇到%CALLNAME:TARGET%头上的光辉之环上
+				PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
+
+
+			ENDIF
+		ELSE
+			IF TEQUIP:逆推
+				PRINTFORML 浇到自己的头发上
+
+
+			ELSE
+				PRINTFORML 浇到%CALLNAME:TARGET%的头发上
+			ENDIF
+			IF RAND:2 == 0
+				PRINTFORMW 艳丽的头发和浓厚的精液交织在一起……
+
+
+			ELSE
+				PRINTFORMW 并且、擦拭着阴茎头发染上了精液的气味…
+
+
+			ENDIF
+		ENDIF
+	ELSEIF SHOOT("顔")
+		IF TEQUIP:逆推
+			PRINTFORM 自分之
+		ELSE
+			IF SELECTCOM == 140
+				IF (TALENT:PLAYER:抖Ｓ || ABL:奉仕精神 >= 3) && RAND:3 == 0
+					PRINTFORM 激烈的口奸里白花花的口水滴落下来
+
+
+				ELSEIF ABL:喉扩张 <= SIZE("阴茎", PLAYER) && RAND:2
+					IF RAND:2 || EXP:口交経験 >= 150
+						PRINTFORM 被毫不留情对待的喉咙
+
+
+					ELSE
+						PRINTFORM 経験不足的喉咙
+
+
+					ENDIF
+					IF RAND:3 == 0
+						PRINTFORM 被摩擦着
+
+
+					ELSEIF RAND:2
+						PRINTFORM 被捅着
+					ELSE
+						PRINTFORM 被侵犯着
+
+
+					ENDIF
+					IF RAND:3 == 0
+						PRINTFORM 湿润的眼眸
+
+
+					ELSEIF RAND:2
+						PRINTFORM 带泪的眼睛
+
+
+					ELSE
+						PRINTFORM 呕吐着
+					ENDIF
+				ELSEIF ABL:喉扩张 > SIZE("阴茎", PLAYER) && ABL:Ｍ属性 >= 3 && RAND:2
+					PRINTFORM 激烈的动作让呼吸变得急速
+
+
+				ENDIF
+			ELSEIF TALENT:好奇心 && RAND:2
+				PRINTFORM 饶有兴趣的打量着阴茎
+
+
+			ENDIF
+			PRINTFORM %CALLNAME:TARGET%之
+		ENDIF
+		IF RAND:3 && CHECK_OTHER("眼鏡等")
+			PRINTFORM 眼鏡
+		ELSE
+			PRINTFORM 顔
+		ENDIF
+		IF COND("绝顶", PLAYER) >= 3 && RAND:3 == 0
+			PRINTFORMW \@ TEQUIP:逆推 ? 让 # 把 \@白浊均匀的撒上…
+		ELSEIF COND("绝顶", PLAYER) >= 2 && RAND:3 == 0
+			PRINTFORMW \@ TEQUIP:逆推 ? 让我 #   \@都射到了她的脸上…
+		ELSEIF RAND:2
+			PRINTFORMW \@ TEQUIP:逆推 ? 让精液淋上 # 使精液迸出 \@…
+		ELSE
+			PRINTFORMW \@ TEQUIP:逆推 ? 让我 #  \@射精…
+		ENDIF
+		;顺从3以上…eraSQは梦魇だからなぁ…
+		IF TALENT:淫乱 + TALENT:恋慕 + TEQUIP:媚药 && RAND:4
+			PRINTFORM %CALLNAME:TARGET%
+			IF RAND:2
+				PRINTFORM 接下了充满气势飞过来的\@ COND("绝顶", PLAYER) >= 2 ? 大量之 # \@精液、
+				IF CHECK_OTHER("眼鏡等") && RAND:3
+					PRINTFORM 眼镜脏了也不在意
+
+
+				ELSE
+					PRINTFORM 张开嘴
+				ENDIF
+				PRINTFORMW 用脸好好地接受…
+
+
+			ELSE
+				IF CHECK_OTHER("眼鏡等") && RAND:3
+					PRINTFORM 被精液弄脏了眼镜令视线模糊
+
+
+				ELSEIF COND("绝顶", PLAYER) >= 2
+					PRINTFORM 脸上的精液黏黏糊糊的
+
+
+				ENDIF
+				PRINTFORMW 、涨红的脸看着%CALLNAME:PLAYER%…
+			ENDIF
+		ELSEIF ABL:顺从 + ABL:精液成瘾 >= 3
+			PRINTFORM %CALLNAME:TARGET%
+			IF NOWEX:绝顶数合计 && RAND:2
+				PRINTFORM 绝顶的快感让身体不停的颤抖、
+
+
+			ELSEIF TALENT:怕羞 && RAND:2
+				PRINTFORM 感到羞耻、
+
+
+			ELSEIF PALAM:欲情 >= 10000 && RAND:3
+				PRINTFORM 脸通红的同时、
+
+
+			ENDIF
+			IF ABL:精液成瘾 >= 5 && RAND:3 == 0
+				PRINTFORMW 把挂在脸上的精液不断涂抹扩大…
+
+
+			ELSEIF ABL:顺从 + ABL:精液成瘾 >= 7 && RAND:2 == 0
+				PRINTFORMW 射精结束之后把阴茎在脸上摩擦…
+
+
+			ELSE
+				PRINTFORMW 脸也能够毫不迟疑地将精液接住…
+
+
+			ENDIF
+		ENDIF
+	ELSEIF SHOOT("股间")
+		;处女（插入かと思って焦る）
+		IF TALENT:处女
+			PRINTFORML %CALLNAME:TARGET%第一次被阴茎插入后身体整个的僵硬了
+			PRINTFORML 但是、明白发生了什么事后、微微露出了安心满足的表情…
+
+
+			PRINTFORML 
+		ENDIF
+		IF TEQUIP:逆推
+			PRINTFORML %CALLNAME:TARGET%的私处里的精液被吐出来了。
+
+		ELSE
+			IF SHOOT("观察")
+				IF TALENT:处女
+					PRINTFORM %CALLNAME:TARGET%之处女膜
+				ELSE
+					PRINTFORM %CALLNAME:TARGET%之膣口
+				ENDIF
+			ELSE
+				PRINTFORM %CALLNAME:TARGET%之股间
+			ENDIF
+			SELECTCASE RANDFIX(3, NUM("回合数") )
+			CASE 2
+				PRINTFORM 被阴茎刺进去
+			CASE 1
+				PRINTFORM 被瞄准了并攻击后
+			CASEELSE
+				PRINTFORM 被作为攻击目标后
+			ENDSELECT
+			PRINTFORMW %TEXTR("粘满了精液", "被射精了", "、被精液弄脏了")% 。
+		ENDIF
+		;Ｖが露出していない
+		IF CHECK_CLO("Ｖ露出") == 0 && SELECTCOM != 97
+			PRINTFORMW %TEXTS("Ｖ：视覚")%被精液染上了白色…
+		ELSEIF SHOOT("观察")
+			SELECTCASE RANDFIX(3, NUM("回合数") )
+			CASE 2
+				PRINTFORMW 然后被射精液、被用龟头把白濁液细致的柔和的在粘膜上涂抹均匀开了…
+			CASEELSE
+				PRINTFORMW 完全暴露出的%CALLNAME:TARGET%的秘密的场所、每个角落都被%CALLNAME:PLAYER%的精液给弄脏了…
+			ENDSELECT
+		;Ｖが现える
+		ELSE
+			;阴毛で分岐
+			IF COND("阴毛") == 0 || RAND:2
+				IF PALAM:Ｖ润 >= PALAMLV:3 && RAND:2 == 0
+					PRINTFORM 濡湿了的
+
+
+				ELSEIF TALENT:小只
+					PRINTFORM 鼓起了
+				ELSE
+					PRINTFORM 轻轻地打开了
+
+
+				ENDIF
+				PRINTFORMW 私处被精液染成了白色……
+
+
+			ELSE
+				SELECTCASE COND("阴毛")
+				CASE 1 TO 3
+					PRINTFORMW 光溜溜\@ PREVCOM == 145 ? 刚被 # 被 \@精液玷污……
+
+
+				CASE 4
+					IF TALENT:小只
+						PRINTFORM 小孩子般的残留
+
+
+					ELSE
+						PRINTFORM 剃毛后显眼的痕迹
+
+
+					ENDIF
+					PRINTFORMW 那里被精液玷污了……
+
+
+				CASE 5
+					IF PREVCOM == 145
+						PRINTFORM 剃的整整齐齐的
+
+
+					ELSE
+						PRINTFORM 修理得很周到
+
+
+					ENDIF
+					PRINTFORMW 阴毛和精液互相交织着……
+
+
+				CASE 6
+					PRINTFORMW 柔顺的恥毛和精液交织着……
+
+
+				CASE 7
+					PRINTFORMW 毛发浓密的那里和精液交织着……
+
+
+				ENDSELECT
+			ENDIF
+		ENDIF
+	ELSEIF SHOOT("Ａ观察")
+		PRINTFORM %CALLNAME:TARGET%之%TEXTR("屁屁的穴", "狭窄的后之穴", "被扩大的肛门")%
+		SELECTCASE RANDFIX(3, NUM("回合数") )
+		CASE 2
+			PRINTFORM 被阴茎刺进去
+		CASE 1
+			PRINTFORM 被瞄准了并攻击后
+		CASEELSE
+			PRINTFORM 被作为攻击目标后
+		ENDSELECT
+		PRINTFORMW %TEXTR("粘满了精液", "被射精了", "、被精液弄脏了")% 。
+		PRINTFORMW 高浓度的白濁液从%CALLNAME:TARGET%的%TEXTR("不浄之穴", "那里", "肛门")%滴滴答答的流淌滴落了下来…
+	ELSEIF SHOOT("お腹")
+		IF TEQUIP:逆推
+			PRINTFORML 自己的肚子上
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%的肚子上
+		ENDIF
+		PRINTFORM 射出的精液、
+		IF TALENT:肚脐穿环 && RAND:2
+			PRINTFORMW 肚脐的%TEXTS("肚脐穿环")%被玷污了…
+		ELSE
+			PRINTFORMW 在小小的肚脐流出来……
+		ENDIF
+	ELSEIF SHOOT("お尻")
+		IF TEQUIP:逆推
+			PRINTFORMW 自己的屁股上洒满着精液…
+		ELSE
+			PRINTFORMW %CALLNAME:TARGET%的%TEXTS("お尻：视覚")%被精液洒满了……
+		ENDIF
+	ENDIF
+;以下は通常之射精区分。
+;素股足交系は射精的地方之变更を経る事が无い
+ELSEIF SHOOT("搞基")
+	;同时射精
+	IF NOWEX:射精 > 0
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 以惊人的气势吐出的二人的精液、把两人全身都变得黏黏糊糊的了…
+		CASE 1
+			PRINTFORMW 二人同时吐出精液、肚子之间被黏糊糊的弄脏了…
+		ENDSELECT
+	ELSE
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 2
+			PRINTFORMW 以惊人的气势吐出的大量的精液、直到%CALLNAME:TARGET%的胸口都变得黏黏糊糊的了…
+		CASE 1
+			PRINTFORMW 喷吐出的精液把二人肚子之间黏糊糊的弄脏了…
+		ENDSELECT
+	ENDIF
+ELSEIF SHOOT("脚") || SHOOT("素股")
+	;摩擦学校泳装
+	IF SELECTCOM == 100
+		;同时射精
+		IF NOWEX:射精 > 0
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 3
+				PRINTFORMW 以惊人的气势被吐出的两个人的精液、在学校泳装里面朝%CALLNAME:TARGET%的脸射出黏黏糊糊的精液…
+
+
+			CASE 2
+				PRINTFORMW 同时喷出了大量的精液、隔着学校泳装的布料渗出来，在肚子上形成了一个精液池塘…
+
+
+			CASE 1
+				PRINTFORMW 两个人同时吐出的精液，学校泳装的两腿之间黏黏糊糊的脏了…
+
+
+			ENDSELECT
+		ELSE
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 3
+				PRINTFORMW 可怕的气势中被吐出的大量的精液、%CALLNAME:TARGET%的胸口黏黏糊糊的…
+
+
+			CASE 2
+				PRINTFORMW 学校泳装中被吐出的大量的精液，隔着腹部的面料渗出来。…
+
+
+			CASE 1
+				PRINTFORMW 吐出的精液在学校泳装的腹部位置迅速污染了…
+
+
+			ENDSELECT
+		ENDIF
+	ELSEIF SELECTCOM == 93 && SELECTCOM:1 == SELECTCOM
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 两个人的身体沾满了被吐出来的大量的精液…
+
+
+		CASE 2
+			PRINTFORMW 两个人的身体沾满了被吐出来的大量的精液…
+
+
+		CASE 1
+			PRINTFORMW 吐出的精液弄脏了两个人的身体…
+
+
+		ENDSELECT
+	ELSE
+		SELECTCASE SELECTCOM:1
+		CASE 1, 4, 9, 104
+			PRINTFORM %CALLNAME:MASTER%因
+			CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+			PRINTFORM %CALLNAME:TARGET%之
+			IF SHOOT("脚")
+				PRINTFORM 足交
+			ELSE
+				PRINTFORM 素股
+			ENDIF
+			PRINTFORMW 而 \@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精…
+		CASEELSE
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 3
+				PRINTFORMW %CALLNAME:TARGET%\@ SELECTCOM:1 == 95 ? 和%CALLNAME:ASSI% # \@的身体沾满了被吐出来的大量的精液…
+			CASE 2
+				PRINTFORMW %CALLNAME:TARGET%\@ SELECTCOM:1 == 95 ? 和%CALLNAME:ASSI% # \@的身体沾满了被吐出来的大量的精液…
+			CASE 1
+				PRINTFORMW 吐出的精液…%CALLNAME:TARGET%\@ SELECTCOM:1 == 95 ? 和%CALLNAME:ASSI% # \@把身体弄脏了…
+			ENDSELECT
+		ENDSELECT
+	ENDIF
+ELSEIF SHOOT("口")
+	IF SHOOT("就那样") == 0
+		IF TEQUIP:逆推
+			IF ABL:精液成瘾 >= 3 + RAND:5
+				PRINTFORM 伸出舌头一边等待着
+
+
+			ELSEIF ABL:精液成瘾 >= 1 + RAND:5
+				PRINTFORM 大大地张开了
+
+
+			ENDIF
+			PRINTFORMW 在自己的嘴里吐出了欲望…
+
+
+		ELSE
+			IF ABL:精液成瘾 >= 3 + RAND:5
+				PRINTFORM 用力伸出舌头在一旁等待着
+
+
+			ELSEIF ABL:精液成瘾 >= 1 + RAND:5
+				PRINTFORM 大大地打开了
+
+
+			ENDIF
+			PRINTFORMW %CALLNAME:TARGET%的口中吐出了欲望…
+		ENDIF
+	;二人で逆推
+	ELSEIF SHOOT_A("なぶられ中")
+		PRINTFORM %CALLNAME:MASTER%
+		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+		PRINTFORMW 在%CALLNAME:TARGET%之口射出\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精…
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		PRINTFORM 和%CALLNAME:PLAYER%在\@ SELECTCOM == 140 ? 起伏着腰部 # \@
+		CALL SAMEN_SHOOT_MESSAGE_3P, "口"
+		PRINTFORMW 在%CALLNAME:TARGET%之\@ SELECTCOM == 140 ? 咽喉之深处 # 口 \@射出\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
+	ELSEIF SELECTCOM == 140
+		PRINTFORM %CALLNAME:PLAYER%把%CALLNAME:TARGET%之头抓住并摆动着腰部、
+		IF TEQUIP:深喉口交 && SIZE("阴茎") >= 2 && RAND:2
+			PRINTFORMW 精液直接流入食道…
+
+
+		ELSE
+			PRINTFORMW 在喉咙的深处射精…
+
+
+		ENDIF
+	;ダブル口交
+	ELSEIF SELECTCOM == 91 && SELECTCOM:1 == SELECTCOM
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW %CALLNAME:PLAYER%张开口在等待的二人的脸上被白浊液洒遍，整张脸被染成白色…
+
+
+		CASEELSE
+			PRINTFORMW %CALLNAME:PLAYER%放任涌上来的感觉、在两人的嘴里吐出了欲望…
+
+
+		ENDSELECT
+	ELSE
+		IF RAND:3 == 0
+			PRINTFORM %CALLNAME:PLAYER%放任涌上来的感觉、
+		ELSEIF TEQUIP:顔面骑乘
+			PRINTFORM %CALLNAME:PLAYER%脸上被私处压着、
+		ELSEIF TEQUIP:六九式
+			PRINTFORM %CALLNAME:PLAYER%は
+			IF (SELECTCOM == 13 || SELECTCOM == 14) && RAND:2
+				PRINTFORM 享受着眼前的光景、
+
+
+			ELSEIF TEQUIP:PLAYER:六九式 == 4 && RAND:2
+				PRINTFORM 阴茎一边被吮吸着、
+
+
+			ELSE
+				PRINTFORM 享受着六九式的乐趣、
+
+
+			ENDIF
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%放任涌上来的感觉、
+		ENDIF
+		PRINTFORM %CALLNAME:TARGET%之
+		IF TEQUIP:深喉口交
+			PRINTFORMW %TEXTR("喉奥", "食道")%吐出了欲望…
+		ELSE
+			PRINTFORMW 口里吐出了欲望…
+
+
+		ENDIF
+	ENDIF
+
+	CALL LUXURIOUS_HIT, "精液", TARGET
+
+	;ダブル口交
+	IF SELECTCOM == 91 && SELECTCOM:1 == SELECTCOM
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			IF TALENT:淫乱 + TALENT:恋慕 + TALENT:ASSI:淫乱 + TALENT:ASSI:恋慕 >= 2 && RAND:4
+				PRINTFORM %CALLNAME:TARGET%和%CALLNAME:ASSI%は
+				SIF COND("绝顶", PLAYER) >= 4
+					PRINTFORM 脸上被洒满精液
+
+
+				PRINTFORMW 看着%CALLNAME:PLAYER% ，脸变得通红…
+			ELSEIF ABL:顺从 + ABL:精液成瘾 + ABL:ASSI:顺从 + ABL:ASSI:精液成瘾 >= 7
+				PRINTFORM %CALLNAME:TARGET%和%CALLNAME:ASSI%は
+				IF RAND:2 == 0 && ABL:顺从 + ABL:精液成瘾 >= 7
+					SIF PALAM:欲情 >= 10000
+						PRINTFORM 脸上通红的同时
+					PRINTFORMW 脸摩擦着阴茎…
+
+
+
+
+				ELSE
+					SIF TALENT:怕羞
+						PRINTFORM 感到羞耻、
+					PRINTFORMW 脸也能够毫不迟疑地精液接住…
+
+
+
+
+				ENDIF
+			ENDIF
+		CASEELSE
+			IF ABL:精液成瘾 + ABL:ASSI:精液成瘾 >= 6 && ABL:百合属性 + ABL:ASSI:百合属性 >= 6 && RAND:3 == 0
+				PRINTFORMW %CALLNAME:TARGET%和%CALLNAME:ASSI%将精液嘴对嘴互相交换着…
+			ELSE
+				PRINTFORMW %CALLNAME:TARGET%和%CALLNAME:ASSI%将精液用口接住…
+			ENDIF
+		ENDSELECT
+	ELSE
+		PRINTFORM %CALLNAME:TARGET%
+		;插入から饮ませる
+		IF ABL:奉仕精神 >= 3 && SHOOT("膣内") + SHOOT("Ａ") && ABL:奉仕精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反发刻印) > 3
+			IF RAND:3 == 0
+				PRINTFORM %TEXTR("污秽", "粘液的气味", "过分的气味", "性交后的气味")%
+
+
+			ELSE
+				IF SHOOT("膣内")
+					LOCALS = %TEXTR("爱液", "自己的体内的", "做爱后的")%
+
+
+				ELSE
+					LOCALS = %TEXTR("肠液", "自己的肠内之", "肛门做爱之后的")%
+
+
+					SIF BASE:排泄物 && BASE:排泄欲 >= MAXBASE:排泄欲 && RAND:4 == 0
+						LOCALS = %TEXTR("排泄物之","排泄物")%
+				ENDIF
+				SELECTCASE SUBSTRING(LOCALS, STRLENS(LOCALS) - 2, 2)
+				CASE "之"
+					PRINTFORM %LOCALS%%TEXTR("粘液的气味", "过分的气味", "性交后的气味")%
+
+
+				CASEELSE
+					PRINTFORM %TEXTR("自己的","＿")%%LOCALS%%TEXTR("粘糊糊的", "涂着")%的
+
+
+				ENDSELECT
+			ENDIF
+			IF (TALENT:性变态 || ABL:Ｍ属性) && RAND:2
+				PRINTFORM %TEXTR("兴奋", "欲情")%
+			ELSE
+				IF RAND:2 && MAX(ABL:顺从, ABL:欲望, ABL:奉仕精神) >= 5
+					PRINTFORM 完全不在意
+
+
+				ELSE
+					PRINTFORM 毫不理睬
+
+
+				ENDIF
+				;各调教で最初之一回之み
+				SIF TALENT:恋慕 && EX:口内射精 == 0
+					PRINTFORM 我爱你
+			ENDIF
+			IF RAND:3 == 0
+				PRINTFORM 舌头交缠着%TEXTR("阴茎", "龟头")%、
+			ELSEIF RAND:2
+				PRINTFORM 迎接着%TEXTR("阴茎", "龟头")%、
+			ELSE
+				PRINTFORM 吮吸着%TEXTR("鈴口", "龟头")%、
+			ENDIF
+		;六九式
+		ELSEIF TEQUIP:六九式
+			SELECTCASE TEQUIP:PLAYER:六九式
+			CASE 0
+				PRINTFORM 屁股的刺激
+
+
+			CASE 2, 9
+				PRINTFORM 肛穴的刺激
+
+
+			CASE 4
+				PRINTFORM 阴茎的刺激
+
+
+			CASEELSE
+				SELECTCASE SELECTCOM
+				CASE 13, 14
+					PRINTFORM 羞恥
+				CASEELSE
+					PRINTFORM 私处的刺激刺激
+
+
+				ENDSELECT
+			ENDSELECT
+			PRINTFORM 身体不停的颤抖、
+
+
+		ENDIF
+		IF ABL:精液成瘾 >= 3 && (ABL:精液成瘾 >= 5 || MARK:屈服刻印 == 3 || ABL:奉仕精神 >= 3) && RAND:2 == 0
+			IF COND("绝顶", PLAYER) >= 3 && RAND:2
+				PRINTFORM 可怕的精液量
+
+
+				IF ABL:精液成瘾 >= 5 && RAND:3 == 0
+					PRINTFORM 出乎意料的射精气势
+
+
+				ELSEIF RAND:2
+					PRINTFORM 咕嘟咕嘟
+
+
+				ELSE
+					PRINTFORM 恍惚中
+				ENDIF
+				PRINTFORMW 喝下去了…
+
+
+			ELSEIF COND("绝顶", PLAYER) == 2 && RAND:2
+				PRINTFORMW \@ RAND:2 ? 很高兴 # 一边陶醉一边 \@饮干大量之精液…
+
+
+			ELSEIF COND("绝顶", PLAYER)
+				IF RAND:2
+					PRINTFORMW \@ RAND:2 ? 好好地品尝着 # 在凉爽的脸上 \@饮干精液…
+
+
+				ELSE
+					PRINTFORMW 喉咙咕嘟咕嘟的把精液喝下去了…
+
+
+				ENDIF
+			ENDIF
+		ELSEIF ABL:精液成瘾 && (ABL:精液成瘾 >= 3 || ABL:奉仕精神 >= 3)
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 3
+				IF ABL:精液成瘾 >= 3
+					IF RAND:2
+						PRINTFORMW 把浓厚又黏稠的白濁液一边用鼻子换气一边喉咙咕嘟咕嘟的喝了下去…
+					ELSE
+						PRINTFORMW 几次都在喉咙、\@ TEQUIP:深喉口交 ? 往深处倾注着精液 # 把口中溢出的精液注入胃 \@ 。…
+					ENDIF
+				ELSE
+					PRINTFORM 很有气势的喷出精液
+
+
+					IF RAND:2
+						PRINTFORMW 努力的喝下去…
+
+
+					ELSE
+						PRINTFORMW 含着眼泪吞下去…
+
+
+					ENDIF
+				ENDIF
+			CASE 2
+				PRINTFORMW 将源源不断的大量精液咽下去了…
+
+
+			CASE 1
+				PRINTFORMW 精液\@ TEQUIP:深喉口交 ? 在口深处射入 # 在口中 \@让她很高兴。…
+
+
+			ENDSELECT
+		ELSEIF ABL:精液成瘾 || ABL:奉仕精神 >= 3
+			PRINTFORMW \@ ABL:奉仕精神 >= 3 ? 发揮了天生的服务精神 # \@，用口接住了精液…
+
+
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 3
+				PRINTFORMW 大量喷出的精液来不及咽下去了、喝不完的精液从%CALLNAME:TARGET%的口中和鼻里满溢出来…
+
+
+			CASE 2
+				IF ABL:精液成瘾 == 0
+					PRINTFORMW 因为精液的味道很苦所以皱着眉头，%CALLNAME:TARGET%口中分泌大量的唾液拼命的咽下去…
+
+
+				ELSE
+					PRINTFORMW 还是没能喝完、精液从%CALLNAME:TARGET%的口角满溢出来了…
+
+
+				ENDIF
+			ENDSELECT
+		ELSE
+			SELECTCASE COND("绝顶", PLAYER)
+			CASE IS >= 2
+				PRINTFORMW 精液太多了，呛到了
+
+
+			CASE 1
+				PRINTFORMW 口中的精液的味道微妙的表情…
+
+
+			ENDSELECT
+		ENDIF
+	ENDIF
+ELSEIF SHOOT("乳头奸")
+	PRINTFORM %CALLNAME:PLAYER%
+	IF TEQUIP:逆推
+		PRINTFORMW 对%CALLNAME:TARGET%抽插着、在她的乳房之中射入了\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		;左右乳头奸
+		IF CHECK_COM("左右乳头奸")
+			PRINTFORM %CALLNAME:(PLAYER:1)%配合侵犯着另一只乳房、
+			IF COND("绝顶", PLAYER:1)
+				PRINTFORMW 绝顶的同时将精液灌注进去
+
+
+			ELSE
+				PRINTFORMW 乳房之中灌入了\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
+			ENDIF
+		ELSE
+			CALL SAMEN_SHOOT_MESSAGE_3P, "乳头"
+			PRINTFORMW 在%CALLNAME:TARGET%之乳房之中射入了\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
+		ENDIF
+	ELSE
+		PRINTFORM 向%TEXTR("乳房", "胸", "乳头")%挺进着腰部
+		IF RAND:5 == 0
+			PRINTFORM 激烈地搅拌内部、
+
+
+		ELSEIF RAND:4 == 0
+			PRINTFORM 往里面捅进去、
+
+
+		ELSEIF RAND:3 == 0
+			PRINTFORM 深深刺进去的状态、
+
+
+		ELSEIF RAND:2 == 0
+			PRINTFORM 深深的侵犯着、
+
+
+		ELSE
+			PRINTFORM 激烈的侵犯着、
+
+
+		ENDIF
+		SIF PALAM:欲情 > PALAM:恭顺 && PALAM:欲情 > 10000 && RAND:5 < COND("绝顶", PLAYER)
+			PRINTFORM 任凭欲望，
+
+
+
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORM 恐怖量的
+		CASE 2
+			PRINTFORM 大量的
+		CASE 1
+			PRINTFORM 热的
+		ENDSELECT
+
+		IF RAND:3 == 0 && COND("绝顶", PLAYER) >= 2
+			PRINTFORMW 精液被灌注…
+
+
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 精液使之染成了白色…
+
+
+		ELSE
+			PRINTFORMW 精液注入到里面…
+
+
+		ENDIF
+	ENDIF
+	SIF COND("绝顶", PLAYER) >= 3
+		PRINTFORMW 从隙间之中滲出的沿着%CALLNAME:TARGET%的胸部一点点移动的精液、就好像母乳滴落下来一样…
+	CALL LUXURIOUS_HIT, "精液", TARGET
+
+ELSEIF SHOOT("尿道")
+	PRINTFORM %CALLNAME:PLAYER%
+	IF TEQUIP:逆推
+		PRINTFORMW 就这么侵犯着%CALLNAME:TARGET%的尿道、在膀胱之中\@ COND("绝顶", PLAYER) >= 2 ? 大量的 # \@射精了…
+	ELSE
+		PRINTFORM 摆动着腰部，
+		IF RAND:4 == 0 && BASE:尿意 >= 10000 && PENIS(TARGET) == 0
+			PRINTFORM 激烈的搅拌着膀胱内积存着的尿液、并
+		ELSEIF RAND:3 == 0 && PENIS(TARGET) == 0
+			PRINTFORM 沿着尿道一路进攻到膀胱的深处、并
+		ELSEIF RAND:2 == 0
+			PRINTFORM 侵犯着为排尿而存在的器官、并
+		ELSE
+			PRINTFORM 激烈的侵犯着尿道、并
+		ENDIF
+		SIF PALAM:欲情 > PALAM:恭顺 && PALAM:欲情 > 10000 && RAND:5 < COND("绝顶", PLAYER)
+			PRINTFORM 放任着欲望
+
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORM 把惊人的量的
+		CASE 2
+			PRINTFORM 把大量的
+		CASE 1
+			PRINTFORM 把熱热的
+		ENDSELECT
+
+		IF RAND:3 == 0 && COND("绝顶", PLAYER) >= 2
+			PRINTFORMW 精液注入里面…
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 精液将里面染了一遍…
+		ELSE
+			PRINTFORMW 精液向里面注入进去…
+		ENDIF
+	ENDIF
+	CALL LUXURIOUS_HIT, "精液", TARGET
+ELSEIF SHOOT("胸")
+	IF SHOOT("就那样") == 0
+		IF TEQUIP:逆推
+			PRINTFORMW 自己的胸部让欲望一吐为快。
+
+
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%之
+			IF RAND:2 && PALAM:欲情 >= 3000
+				PRINTFORM 微微出汗的胸部
+
+
+			ELSEIF TALENT:巨乳
+				PRINTFORM 丰满的胸部
+
+
+			ELSEIF TALENT:贫乳
+				PRINTFORM 小小的胸
+			ELSE
+				PRINTFORM 胸
+			ENDIF
+			PRINTFORMW 面向阴茎的前端、倾泻着欲望。
+
+
+		ENDIF
+	;二人で逆推
+	ELSEIF SHOOT_A("なぶられ中")
+		PRINTFORM %CALLNAME:MASTER%
+		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+		PRINTFORMW 在%CALLNAME:TARGET%之胸内\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		PRINTFORM %CALLNAME:PLAYER%
+		CALL SAMEN_SHOOT_MESSAGE_3P, "胸"
+		PRINTFORMW 在%CALLNAME:TARGET%之胸内\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	;顔面骑乘
+	ELSEIF TEQUIP:顔面骑乘
+		PRINTFORMW %CALLNAME:PLAYER%的脸被私处压住了、%CALLNAME:TARGET%的胸部被弄得要去了…
+	ELSEIF TEQUIP:六九式
+		PRINTFORM %CALLNAME:PLAYER%
+		IF (SELECTCOM == 13 || SELECTCOM == 14) && RAND:2
+			PRINTFORM 受着眼前的光景、
+
+
+		ELSEIF TEQUIP:PLAYER:六九式 == 4 && RAND:2
+			PRINTFORM 阴茎一边被吮吸着、
+
+
+		ELSE
+			PRINTFORM 享受着六九式的乐趣、
+
+
+		ENDIF
+		PRINTFORMW %CALLNAME:TARGET%被玩弄着…
+	ELSE
+		SELECTCASE SELECTCOM
+		CASE 81
+			PRINTFORMW %CALLNAME:PLAYER%用阴茎侵犯着%CALLNAME:TARGET%之乳房并射入了\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液
+		CASEELSE
+			PRINTFORMW %CALLNAME:PLAYER%在%CALLNAME:TARGET%之胸内\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+		ENDSELECT
+	ENDIF
+	IF SELECTCOM == 92 && SELECTCOM:1 == SELECTCOM
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 2
+			PRINTFORMW 从胸部露出的阴茎喷射了大量的精液、玷污了%CALLNAME:TARGET%和%CALLNAME:ASSI%的脸…
+
+
+		CASE 1
+			PRINTFORMW %CALLNAME:TARGET%和%CALLNAME:ASSI%胸部的峡谷之间接住了精液…
+		ENDSELECT
+	ELSEIF ABL:顺从 >= 3 && COND("指之使用") && RAND:2
+		PRINTFORM %CALLNAME:TARGET%
+		IF ABL:欲望 >= 3 && RAND:2
+			PRINTFORMW 带着出神的表情、精液在%TEXTS("欧派")%的全身%TEXTR("涂抹扩大", "流淌着")%…
+
+
+		ELSEIF TALENT:贫乳 == 0 && TALENT:性别男 == 0 && RAND:2
+			PRINTFORMW 用双手抱着胸部、让精液装在乳沟中……
+
+
+		ELSE
+			PRINTFORMW 用手指蘸着%TEXTS("欧派")%肮脏的精液、%TEXTS("乳首：描写")%的乳头开心的涂抹着……
+
+
+		ENDIF
+	;贫乳
+	ELSEIF TALENT:贫乳
+		IF RAND:2
+			PRINTFORMW 精液流淌在不断起伏的胸部上……
+
+
+		ELSE
+			PRINTFORMW 无法控制的鼓起被温热的精液洒满……
+
+
+		ENDIF
+	ELSE
+		IF TALENT:巨乳 && RAND:2
+			PRINTFORMW %TEXTS("欧派")%上污秽的白浊液在峡谷间流淌、乳沟装着满满的精液…
+
+
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 喷出的精液在%CALLNAME:TARGET%之胸不停的流动并飞散到\@ TALENT:魅力 ? 妖艳的 # \@顔上…
+
+
+		ELSE
+			PRINTFORMW 柔软的鼓起被温热的精液洒满了……
+
+
+		ENDIF
+	ENDIF
+;手で射精
+ELSEIF SHOOT("手")
+	;二人で逆推
+	IF SHOOT_A("なぶられ中")
+		PRINTFORM %CALLNAME:MASTER%
+		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+		PRINTFORM 在%CALLNAME:TARGET%
+		IF SELECTCOM == 97
+			PRINTFORM 的%CLO("摩擦胖次")%和
+
+
+		ELSE
+			PRINTFORM 用手不停撸动
+
+
+		ENDIF
+		PRINTFORMW \@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		PRINTFORM %CALLNAME:PLAYER%和
+		CALL SAMEN_SHOOT_MESSAGE_3P, "手"
+		PRINTFORM %CALLNAME:TARGET%
+		IF SELECTCOM == 97
+			PRINTFORM 的%CLO("摩擦胖次")%
+
+
+		ELSE
+			PRINTFORM 的脸上
+		ENDIF
+		PRINTFORMW \@ COND("绝顶", PLAYER) >= 2 ? 大量的 # \@射精。
+	;顔面骑乘
+	ELSEIF TEQUIP:顔面骑乘
+		PRINTFORM %CALLNAME:PLAYER%的脸被%CALLNAME:TARGET%的私处压着
+		IF SELECTCOM == 97
+			PRINTFORM 的%CLO("摩擦胖次")%
+
+
+		ELSE
+			PRINTFORM 用手不停撸动
+
+
+			SIF SELECTCOM == 105
+				PRINTFORM 飞机杯的里面
+
+
+		ENDIF
+		PRINTFORMW \@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	ELSEIF CHECK_COM("刺激肛门手交")
+		PRINTFORMW %CALLNAME:PLAYER%\@ TEQUIP:逆推 ? 以打桩机的姿势 # \@被舌头刺激着肛门、在欲望下射精了。。
+
+
+	ELSEIF CHECK_COM("两乳夹头手交")
+		PRINTFORM %CALLNAME:PLAYER%は
+		IF COND("饮用母乳标志", PLAYER)
+			IF RAND:2
+				PRINTFORM 在%CALLNAME:TARGET%的乳头吮吸着母乳细细品尝
+			ELSE
+				PRINTFORM 在%CALLNAME:TARGET%的乳房品尝着味道
+			ENDIF
+		ELSE
+			PRINTFORM 脸被胸部压迫着
+
+
+		ENDIF
+		PRINTFORMW 同时，在欲望爆满的状态下射精了。
+
+
+	;飞机杯奉侍
+	ELSEIF SELECTCOM == 105
+		PRINTFORMW %CALLNAME:PLAYER%被%CALLNAME:TARGET%用手不停撸动、飞机杯之中\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	ELSEIF TEQUIP:六九式
+		PRINTFORM %CALLNAME:PLAYER%は
+		IF (SELECTCOM == 13 || SELECTCOM == 14) && RAND:2
+			PRINTFORM 受着眼前的光景、
+
+
+		ELSEIF TEQUIP:PLAYER:六九式 == 4 && RAND:2
+			PRINTFORM 阴茎一边被吮吸着、
+
+
+		ELSE
+			PRINTFORM 享受着六九式的乐趣、
+
+
+		ENDIF
+		PRINTFORMW 带着充满欲望的样子\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
+	ENDIF
+	;飞机杯奉侍
+	IF SELECTCOM == 105
+		SIF COND("绝顶", PLAYER) >= 2
+			PRINTFORMW 大量的精液从飞机杯的间隙中被搅动成泡沫状流出来了…
+
+
+	ELSEIF SELECTCOM == 97 && SELECTCOM:1 == SELECTCOM
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 2
+			PRINTFORMW 大量的精液让%CALLNAME:TARGET%和%CALLNAME:ASSI%的底裤黏黏糊糊的…
+		CASE 1
+			PRINTFORMW 吐出来的精液、%CALLNAME:TARGET%和%CALLNAME:ASSI%的底裤渗透出来了…
+		ENDSELECT
+	ELSEIF SELECTCOM == 97
+		SIF CHECK_COM("两乳夹头手交")
+			PRINTFORM 被温柔的触感包围的%CALLNAME:PLAYER%射精了
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 大量的精液让%CLO("摩擦胖次")%越过面料、%CALLNAME:TARGET%被大量的白浊液沾满了…
+
+
+		CASE 2
+			PRINTFORMW 大量的精液让%CLO("摩擦胖次")%像果冻一样渗出、%CALLNAME:TARGET%的手黏黏糊糊的…
+
+
+		CASE 1
+			PRINTFORMW 精液在%CALLNAME:TARGET%的%CLO("摩擦胖次")%的里面喷出来、变得又湿又重…
+
+
+		ENDSELECT
+	ELSE
+		SIF ABL:精液成瘾 >= 3
+			PRINTFORM 浮起飘飘欲仙的表情
+
+
+		SIF SELECTCOM == 90 && SELECTCOM:1 == SELECTCOM
+			PRINTFORM %CALLNAME:ASSI%和
+		IF CHECK_COM("两乳夹头手交")
+			LOCALS = %CALLNAME:TARGET%的手
+		ELSEIF CHECK_COM("刺激肛门手交")
+			LOCALS = %CALLNAME:TARGET%的手当然是、%CALLNAME:PLAYER%的脸上
+		ELSE
+			LOCALS = %CALLNAME:TARGET%的脸上和手上
+		ENDIF
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW %LOCALS%沾满了大量的白浊液…
+
+
+		CASE 2
+			PRINTFORMW %LOCALS%沾满了大量的精液…
+		CASE 1
+			PRINTFORMW %CALLNAME:TARGET%被精液洒满了…
+		ENDSELECT
+	ENDIF
+;自慰で射精
+ELSEIF SHOOT("自慰")
+	PRINTFORMW %CALLNAME:PLAYER%直到界限为止把身体沉浸于高涨的欲望、向着空中\@ COND("绝顶", PLAYER) >= 2 ? 大量的 # 舒服的 \@射精了
+;性爱で射精
+ELSEIF SHOOT("中出")
+	PRINTFORM 
+	;、之管理
+	LOCALS = 
+	;二人で逆推
+	IF SHOOT_A("なぶられ中")
+		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+		LOCALS = 、
+	ELSEIF CHECK_COM("３Ｐ奉仕")
+		CALL SAMEN_SHOOT_MESSAGE_3P, "中出"
+		PRINTFORM 
+	;两乳夹头
+	ELSEIF SELECTCOM == 104
+		IF TEQUIP:逆推
+			IF RAND:2 && NOWEX:绝顶数合计 == 0
+				PRINTFORM %CALLNAME:PLAYER%把脸都埋在了%CALLNAME:TARGET%的%TEXTS("欧派")%，
+			ELSE
+				PRINTFORM %CALLNAME:PLAYER%把脸都埋在%TEXTS("欧派")%的姿势、
+				LOCALS = 、
+			ENDIF
+		ELSE
+			IF RAND:2 && NOWEX:绝顶数合计 == 0
+				PRINTFORM %CALLNAME:PLAYER%把脸都埋在了%CALLNAME:TARGET%的%TEXTS("欧派")%，
+			ELSE
+				PRINTFORM %CALLNAME:PLAYER%把脸都埋在%TEXTS("欧派")%的姿势、
+				LOCALS = 、
+			ENDIF
+		ENDIF
+	ELSEIF NOWEX:绝顶数合计 && RAND:3 == 0
+		IF (RAND:2 && SELECTCOM != 67) || TEQUIP:逆推
+			PRINTFORM %CALLNAME:PLAYER%%TEXTR("蠢动", "蠕动")%着，
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%让%CALLNAME:TARGET%的腰部颤抖着，
+		ENDIF
+	ELSEIF TEQUIP:逆推
+		IF RAND:2 == 0 && COND("指之使用")
+			PRINTFORM %CALLNAME:PLAYER%一直被%CALLNAME:TARGET%拥抱着，
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%%TEXTR("紧贴着腰", "借着体重")%，
+		ENDIF
+	ELSE
+		IF RAND:2 == 0 && COND("指之使用", PLAYER)
+			PRINTFORM %CALLNAME:PLAYER%被%CALLNAME:TARGET%紧紧地抱住，
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%的腰被%TEXTR("紧贴", "双脚夹紧")% ，
+		ENDIF
+	ENDIF
+
+	IF COND("子宮插入标志")
+		IF TEQUIP:逆推
+			PRINTFORM %CALLNAME:TARGET%让子宮%TEXTR("最深处的肉壁摩擦着龟头", "接受着激烈地侵犯")%
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%的子宮%TEXTR("最深处的肉壁被撞击着", "最深处的肉壁被摩擦着", "激烈地被侵犯")%
+		ENDIF
+	ELSEIF SELECTCOM == 67
+		IF TEQUIP:逆推
+			PRINTFORM %CALLNAME:TARGET%趁机%TEXTR("让子宮被插入", "让尖端在子宫口摩擦", "把龟头推入子宫之中")%
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%被%TEXTR("压入子宮", "用阴茎抽插子宫口", "将龟头塞进子宫之中")%
+		ENDIF
+	ELSEIF SHOOT("膣内")
+		IF TEQUIP:逆推
+			IF RAND:5 == 0 && NOWEX:绝顶数合计 == 0
+				PRINTFORM %CALLNAME:TARGET%下面的口被%TEXTR("激烈", "毫不留情地")%不断侵犯着
+			ELSEIF RAND:4 == 0
+				PRINTFORM 肉棒被阴道吮吸着
+			ELSEIF RAND:3 == 0
+				PRINTFORM 肉棒被阴道深处吞没了
+			ELSEIF RAND:2
+				PRINTFORM 肉棒被阴道紧紧夹住
+			ELSE
+				PRINTFORM 肉棒在阴道壁上摩擦
+			ENDIF
+		ELSE
+			IF RAND:7 == 0
+				PRINTFORM 肉棒在阴道壁上摩擦
+			ELSEIF RAND:6 == 0
+				PRINTFORM 肉棒激烈地搅拌着
+			ELSEIF RAND:5 == 0
+				PRINTFORM %CALLNAME:TARGET%阴道深处的膣肉被%TEXTR("摩擦", "撞击")%
+			ELSEIF RAND:4 == 0
+				PRINTFORM 被阴道深处吞没了
+			ELSEIF RAND:3 == 0
+				PRINTFORM %CALLNAME:TARGET%被捅进阴道最深的地方
+			ELSEIF RAND:2
+				PRINTFORM 在阴道深深地刺进去的状态
+			ELSE
+				PRINTFORM 在%TEXTR("激烈", "直达深处的")%侵犯着阴道
+			ENDIF
+		ENDIF
+	ELSEIF SHOOT("Ａ")
+		IF RAND:2 == 0
+			PRINTFORM %CALLNAME:TARGET%的直肠
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%的肛穴
+		ENDIF
+		IF TEQUIP:逆推
+			IF RAND:4 == 0
+				PRINTFORM 被激烈的刺激着
+			ELSEIF RAND:3 == 0
+				PRINTFORM 吞没肉棒到深处
+			ELSEIF RAND:2
+				PRINTFORM 紧紧夹住
+			ELSE
+				PRINTFORM 被%TEXTR("激烈", "毫不留情地")%侵犯着
+			ENDIF
+		ELSE
+			IF RAND:6 == 0
+				PRINTFORM 被激烈地搅拌着
+			ELSEIF RAND:5 == 0
+				PRINTFORM 被捅进深处
+			ELSEIF RAND:4 == 0
+				PRINTFORM 被捅进最深的地方
+			ELSEIF RAND:3 == 0
+				PRINTFORM 在被深深地刺进去的状态
+			ELSEIF RAND:2 == 0
+				PRINTFORM 被在深处不停侵犯着
+			ELSE
+				PRINTFORM 被激烈地侵犯着
+			ENDIF
+		ENDIF
+	ENDIF
+
+	SELECTCASE LOCALS
+	CASE "、"
+	CASEELSE
+		PRINTFORM 、
+	ENDSELECT
+
+	VARSET LOCALS
+
+	SIF RAND:5 < COND("绝顶", PLAYER)
+		LOCALS = \@ TEQUIP:逆推 ? 屈服于 # 任凭 \@欲望
+
+	SELECTCASE COND("绝顶", PLAYER)
+	CASE IS >= 3
+		LOCALS:1 = 恐怖量的
+	CASE 2
+		LOCALS:1 = 大量的
+	CASE 1
+		LOCALS:1 = 热的
+	ENDSELECT
+
+	IF SELECTCOM == 67 && RAND:3 == 0
+		PRINTFORMW %LOCALS:1%精液被注入到最深处\@ TEQUIP:逆推 ? 中了 # . \@。
+	ELSEIF EXP_GAIN(17) == 0 && SHOOT("膣内") && COND("危险日")
+		PRINTFORMW %LOCALS:1%精液\@ TEQUIP:逆推 ? 被危险日之子宮榨取了 # %LOCALS%注入危险日之子宮 \@。
+	ELSEIF RAND:3 == 0 && TEQUIP:逆推 == 0
+		PRINTFORMW %LOCALS%让%LOCALS:1%用精液把里面染上了。
+	ELSEIF RAND:2
+		PRINTFORMW %LOCALS%的射出%LOCALS:1%精液。
+	ELSE
+		PRINTFORMW %LOCALS:1%精液被%LOCALS%注入。
+	ENDIF
+
+	CALL LUXURIOUS_HIT, "精液", TARGET
+
+	IF MARK:淫紋 && TALENT:性别男 == 0 && SHOOT("膣内") && EXP_GAIN(17) == 0
+		SETCOLOR DEF_COLOR("粉红色心形")
+		PRINTFORMW %CALLNAME:TARGET%被刻上了淫紋妖媚的闪耀着…
+		RESETCOLOR
+	ENDIF
+
+	IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("Ｖ双枪插入") + CHECK_COM("Ａ双枪插入")
+		PRINTFORM 二人分之
+	ELSEIF (SHOOT("膣内") && NOWEX:Ｖ绝顶) || (SHOOT("Ａ") && NOWEX:Ａ绝顶)
+		SIF NOWEX:精液绝顶 == 0
+			PRINTFORM 绝顶的同时
+	ELSEIF SELECTCOM == 3 && TCVAR:28 >= 40
+		PRINTFORM 正在专心的自慰
+	ENDIF
+	IF MARK:淫紋 && TALENT:性别男 == 0 && SHOOT("膣内") && EXP_GAIN(17) == 0
+		PRINTFORMW 子宮里%TEXTR("被灌入", "被注入了")%精液带来令人难以忍受的%TEXTR("疼痛", "愉悦")%感觉、%CALLNAME:TARGET%无意识颤抖着腰部…
+
+	ELSE
+	SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORM 被注入的精液溢出来了
+
+		CASE 2
+			PRINTFORM 充满了精液
+
+		CASE 1
+			PRINTFORM 被灌入精液
+
+		ENDSELECT
+
+		PRINTFORM %CALLNAME:TARGET%之
+		IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
+			PRINTFORM 两穴里
+		ELSEIF SHOOT("膣内")
+			PRINTFORM 阴道内
+		ELSE
+			PRINTFORM 肠道内
+		ENDIF
+		IF TALENT:淫壷 + TALENT:尻穴狂 && RAND:2 == 0
+			PRINTFORM 贪婪地蠕动着、
+
+
+		ELSEIF RAND:2 == 0
+			PRINTFORM 轻微地颤抖、
+
+		ELSE
+			PRINTFORM 微微蠕动着、
+		ENDIF
+		IF TALENT:淫壷 + TALENT:尻穴狂 && RAND:4 == 0
+			IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
+			ELSEIF SHOOT("膣内")
+				PRINTFORM 阴道口里
+			ELSE
+				PRINTFORM 肛穴里
+			ENDIF
+			IF RAND:2
+				PRINTFORMW 一直慢慢地紧缩着榨取阴茎中的精液…
+
+			ELSE
+				PRINTFORMW 仿佛要把尿道里每一滴精液都榨取干净的强力紧缩感…
+
+			ENDIF
+		ELSEIF RAND:3 == 0
+			PRINTFORMW 粘膜沾满了射精之后的阴茎上…
+
+		ELSEIF RAND:2 == 0
+			PRINTFORMW 紧紧包裹着阴茎…
+		ELSE
+			PRINTFORMW 和阴茎纠缠着…
+
+		ENDIF
+	ENDIF
+;接吻、舐阴、舐肛など、口や顔へ之刺激で射精
+ELSEIF SHOOT("接吻") || SHOOT("顔面骑乘") || SHOOT("两乳夹头")
+	;舐阴
+	IF SELECTCOM == 1 || TEQUIP:顔面骑乘 == 1
+		IF TEQUIP:逆推
+			PRINTFORM %CALLNAME:PLAYER%被那里压到脸上、
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%舔舐着那里、
+		ENDIF
+	;调教者口交
+	ELSEIF SELECTCOM == 4 && (SELECTCOM:1 == 120 || SELECTCOM:1 == 126)
+		PRINTFORM %CALLNAME:PLAYER%的喉咙
+		IF SELECTCOM:1 == 120
+			PRINTFORM 的阴道
+		ELSEIF SELECTCOM:1 == 126
+			PRINTFORM 和肛穴
+		ENDIF
+		PRINTFORM 一边被阴茎蹂躏、
+
+
+	ELSEIF SELECTCOM == 4
+		IF TEQUIP:逆推
+			PRINTFORM %CALLNAME:PLAYER%的阴茎被口穴侵犯着、
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%的阴茎被口穴侍奉着、
+		ENDIF
+	;接吻
+	ELSEIF SELECTCOM == 6
+		PRINTFORM %CALLNAME:PLAYER%は%CALLNAME:TARGET%と
+		;SIF ABL:技巧 >= 3
+		;	PRINTFORM 浓密的
+		PRINTFORM 一边接吻、
+
+
+	;舐肛
+	ELSEIF SELECTCOM == 9
+		IF TEQUIP:逆推
+			PRINTFORM %CALLNAME:PLAYER%被迫舔屁股的穴、
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%舔舐着肛穴、
+		ENDIF
+	;两乳夹头
+	ELSEIF SELECTCOM == 104
+		PRINTFORM %CALLNAME:PLAYER%は
+		IF COND("饮用母乳标志", PLAYER)
+			IF RAND:2
+				PRINTFORM 乳头有一股母乳的味道、
+
+
+			ELSE
+				PRINTFORM 品尝着胸部浓厚的味道、
+
+
+			ENDIF
+		ELSEIF TEQUIP:逆推
+			IF TALENT:巨乳 && CONFIG("３サイズ") && RAND:3 == 0
+				PRINTFORM %TOFULL(CONDS("胸部罩杯") )%罩杯的%TALENT_NAME(110, TALENT:巨乳)%快要令人窒息了、
+			ELSEIF RAND:2
+				PRINTFORM 脸被胸部压垮、
+
+
+			ELSE
+				PRINTFORM 胸部被脸摩擦着、
+
+
+			ENDIF
+		ELSE
+			IF TALENT:巨乳 && CONFIG("３サイズ") && RAND:3 == 0
+				PRINTFORM 在%TOFULL(CONDS("胸部罩杯") )%罩杯的%TALENT_NAME(110, TALENT:巨乳)%把脸埋了进去、
+			ELSEIF RAND:2
+				PRINTFORM 胸部把脸埋进去了、
+
+
+			ELSE
+				PRINTFORM 柔软的乳房在脸部摩擦、
+
+
+			ENDIF
+		ENDIF
+		SIF CHECK_COM("两乳夹头手交") && PREVCOM == 97
+			PRINTFORM %CALLNAME:TARGET%之%CLO("摩擦胖次")%に
+	ENDIF
+	IF SELECTCOM:1 == 90
+		PRINTFORM %CALLNAME:ASSI%的手上
+	ELSEIF SELECTCOM:1 == 91
+		PRINTFORM %CALLNAME:ASSI%的口里
+	ELSEIF SELECTCOM:1 == 92
+		PRINTFORM %CALLNAME:ASSI%的胸部上
+	ELSEIF SELECTCOM:1 == 65
+		PRINTFORM %CALLNAME:ASSI%的阴道里面
+	ELSEIF SELECTCOM:1 == 95
+		PRINTFORM %CALLNAME:ASSI%的玉足上
+	ELSEIF SELECTCOM:1 == 97
+		PRINTFORM %CALLNAME:ASSI%的底裤上
+	ELSEIF SELECTCOM:1 == 75
+		PRINTFORM %CALLNAME:ASSI%的肛穴里
+	ENDIF
+	SELECTCASE COND("绝顶", PLAYER)
+	CASE IS >= 3
+		PRINTFORMW 不断有气势地射精…
+
+
+	CASE 2
+		PRINTFORMW 大量的精液喷射出来…
+
+
+	CASE 1
+		PRINTFORMW 很有气势地喷射出精液…
+
+
+	ENDSELECT
+;逆肛交、逆强暴で射精
+ELSEIF SHOOT("逆强暴") || SHOOT("逆肛交") || SHOOT("舐肛奉侍") || SHOOT("逆舐阴")
+	PRINTFORM %CALLNAME:PLAYER%は
+	;两穴强暴
+	IF (SELECTCOM == 126 && SELECTCOM:1 == 120) || (SELECTCOM == 120 && SELECTCOM:1 == 126)
+		PRINTFORM 激烈地侵犯着两边的小穴
+
+
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 同时、不断有气势地射精…
+
+
+		CASE 2
+			PRINTFORMW 大量的精液喷射出来…
+
+
+		CASE 1
+			PRINTFORMW 射精了…
+		ENDSELECT
+	;强暴＋口奸
+	ELSEIF SELECTCOM:1 == 4 && (SELECTCOM == 120 || SELECTCOM == 126)
+		PRINTFORM 喉
+		IF SELECTCOM == 120
+			PRINTFORM 和阴道
+		ELSEIF SELECTCOM == 126
+			PRINTFORM 和肛穴
+		ENDIF
+
+		PRINTFORM 被激励的侵犯着
+
+
+
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 同时、不断有气势地射精…
+
+
+		CASE 2
+			PRINTFORMW 大量的精液喷射出来…
+
+
+		CASE 1
+			PRINTFORMW 射精了…
+		ENDSELECT
+	ELSE
+		SIF TEQUIP:Ｗ逆推
+			CALL TEXT, "追加地之文：Ｗ逆推中之射精"
+
+		IF CHECK_COM("３Ｐ奉仕")
+			IF COND("绝顶", PLAYER:1)
+				PRINTFORM %CALLNAME:(PLAYER:1)%不断地在里面射精
+			ELSEIF INSERT("骑乘位")
+				PRINTFORM %CALLNAME:(PLAYER:1)%被跨坐着摇晃着腰部
+			ELSE
+				PRINTFORM %CALLNAME:(PLAYER:1)%被侵犯着
+			ENDIF
+		ENDIF
+
+		SELECTCASE SELECTCOM
+		CASE 96
+			PRINTFORM %CALLNAME:TARGET%屁股的小穴被舌头挖掘着
+		CASE 98
+			PRINTFORM %CALLNAME:TARGET%被舔舐着阴部
+		CASE 120 TO 124
+			PRINTFORM %CALLNAME:TARGET%被激烈的侵犯着
+		CASE 125 TO 129
+			PRINTFORM %CALLNAME:TARGET%的肛穴被激烈的侵犯着
+		CASEELSE
+			IF CHECK_COM("刺激肛门手交")
+				PRINTFORM %CALLNAME:TARGET%屁股的小穴被舌头挖掘着
+			ELSEIF INSERT("Ｖ插入", PLAYER, TARGET)
+				PRINTFORM %CALLNAME:TARGET%被激烈的侵犯着
+			ELSEIF INSERT("Ａ插入", PLAYER, TARGET)
+				PRINTFORM %CALLNAME:TARGET%的肛穴被激烈的侵犯着
+			ENDIF
+		ENDSELECT
+
+		IF SELECTCOM:1 == 65
+			PRINTFORM 同时、%CALLNAME:ASSI%的阴道里
+		ELSEIF SELECTCOM:1 == 75
+			PRINTFORM 最后、%CALLNAME:ASSI%的直肠里
+		ELSEIF CHECK_COM("刺激肛门手交")
+			PRINTFORM 同时，激烈地\@ PREVCOM == 97 ? %CLO("摩擦胖次")% # 肛门手交 \@
+		ELSE
+			PRINTFORM 
+		ENDIF
+
+		SELECTCASE COND("绝顶", PLAYER)
+		CASE IS >= 3
+			PRINTFORMW 不断有气势地射精……
+
+
+		CASE 2
+			PRINTFORMW 大量的精液喷射出来…
+
+
+		CASE 1
+			PRINTFORMW 射精了…
+		ENDSELECT
+	ENDIF
+;逆龙奸で射精
+ELSEIF SHOOT("逆龙奸") || SHOOT("逆肛龙奸")
+	PRINTFORM %CALLNAME:PLAYER%は
+	SELECTCASE COND("绝顶", PLAYER)
+	CASE IS >= 3
+		PRINTFORMW 龙那又长又大的阴茎贯穿着、不断有气势地射精…
+
+
+	CASE 2
+		PRINTFORMW 龙那又长又大的阴茎贯穿着、大量的精液喷射出来…
+
+
+	CASE 1
+		PRINTFORMW 龙那又长又大的阴茎贯穿着、精液漏出来了…
+
+
+	ENDSELECT
+;助手に射精
+ELSEIF SHOOT("助手")
+	PRINTFORM %CALLNAME:TARGET%的眼前、%CALLNAME:ASSI%的
+	IF SHOOT("助手之膣内")
+		PRINTFORM 阴道里面
+	ELSEIF SHOOT("助手之Ａ")
+		PRINTFORM 肛穴
+	ELSEIF SHOOT("助手之口")
+		PRINTFORM 口里
+	ENDIF
+	PRINTFORMW \@ COND("绝顶", PLAYER) >= 2 ? 满溢的 # \@精液漏了出来…
+	SIF ABL:欲望 > 3 || ABL:精液成瘾 > 2
+		PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:ASSI%的高兴的样子用羡慕的眼光凝视着…
+ENDIF
+
+SIF ARG > 0
+	SWAP ARG, TARGET
+
+@EXTACY_MESSAGE
+;两穴强暴
+IF (SELECTCOM == 120 && SELECTCOM:1 == 126) || (SELECTCOM == 126 && SELECTCOM:1 == 120)
+	PRINTFORMW %CALLNAME:PLAYER%は两边的淫穴被激烈的侵犯着、强制的高潮了…
+
+
+ELSEIF TCVAR:PLAYER:5 == 30
+	PRINTFORML %CALLNAME:PLAYER%は强制的高潮了…
+ELSE
+	PRINTFORM %CALLNAME:PLAYER%
+	IF COND("３Ｐ")
+		PRINTFORM 和%CALLNAME:(PLAYER:1)%
+		IF CHECK_COM("二穴插入")
+			PRINTFORM 合力侵犯着前后两个淫穴、
+
+
+		ELSEIF CHECK_COM("Ｖ双枪插入")
+			PRINTFORM 同时侵犯着阴道、
+
+
+		ELSEIF CHECK_COM("Ａ双枪插入")
+			PRINTFORM 同时侵犯着直肠、
+
+
+		ENDIF
+	ELSEIF TCVAR:PLAYER:6 == 31
+		PRINTFORM %CALLNAME:ASSI%
+	ELSEIF TCVAR:PLAYER:5 == 31
+		PRINTFORM %CALLNAME:TARGET%
+	ENDIF
+	;舐阴
+	IF SELECTCOM == 1 || SELECTCOM:1 == 1
+		IF TEQUIP:逆推
+			PRINTFORM 那里压在脸上、
+
+
+		ELSE
+			PRINTFORM 的那里被舔舐着、
+
+
+		ENDIF
+	;调教者口交
+	ELSEIF SELECTCOM == 4 || SELECTCOM:1 == 4
+		IF TEQUIP:逆推
+			PRINTFORM 的阴茎被口穴侵犯着、
+
+
+		ELSE
+			PRINTFORM 的阴茎被口穴侍奉着、
+
+
+		ENDIF
+	;接吻
+	ELSEIF SELECTCOM == 6 || SELECTCOM:1 == 6
+		PRINTFORM 在接吻、
+	;舐肛
+	ELSEIF SELECTCOM == 9 || SELECTCOM:1 == 9
+		IF TEQUIP:逆推
+			PRINTFORM 的屁股的淫穴被舔舐着、
+
+
+		ELSE
+			PRINTFORM 的肛穴被舔舐着、
+
+
+		ENDIF
+	;两乳夹头
+	ELSEIF SELECTCOM == 104 || SELECTCOM:1 == 104
+		IF TEQUIP:逆推
+			PRINTFORM 的胸摩擦着脸部、
+
+
+		ELSE
+			PRINTFORM 的胸把脸埋进去了、
+
+
+		ENDIF
+	ENDIF
+	IF SELECTCOM:1 == 95 || SELECTCOM:1 == 96 || SELECTCOM:1 == 98 || SELECTCOM:1 == 120 || SELECTCOM:1 == 126
+		PRINTFORM %CALLNAME:ASSI%
+		LOCAL = ASSI
+	ELSEIF SELECTCOM == 95 || SELECTCOM == 96 || SELECTCOM == 98 || SELECTCOM == 120 || SELECTCOM == 126
+		PRINTFORM %CALLNAME:TARGET%
+		LOCAL = TARGET
+	ENDIF
+	IF SELECTCOM == 126 || SELECTCOM:1 == 126
+		PRINTFORM 的那里被侵犯着
+
+
+	ELSEIF SELECTCOM == 120 || SELECTCOM:1 == 120
+		IF ABL:LOCAL:技巧 >= 4 && STATE("小根术", LOCAL) == 0 && RAND:2 == 0
+			PRINTFORM 的子宫被叩击
+
+
+		ELSEIF ABL:LOCAL:技巧 >= 4
+			PRINTFORM 的G点被虐待
+
+
+		ELSE
+			PRINTFORM 被噗呲噗呲的侵犯着
+
+
+		ENDIF
+	ELSEIF SELECTCOM == 98 || SELECTCOM:1 == 98
+		PRINTFORM 激烈的舔舐着阴部
+
+
+	ELSEIF SELECTCOM == 96 || SELECTCOM:1 == 96
+		PRINTFORM 那里被舌头挖掘着
+
+
+	ELSEIF SELECTCOM == 95 || SELECTCOM:1 == 95
+		IF TALENT:LOCAL:抖Ｓ && RAND:2 == 0
+			PRINTFORM 电器按摩
+		ELSE
+			PRINTFORM 踩踏着两腿之间
+
+
+		ENDIF
+	ELSE
+		PRINTFORM 身体身体不停颤抖
+
+
+	ENDIF
+	PRINTFORMW 强制的高潮了…
+
+
+ENDIF
+
+
+;-------------------------------------------------
+;调教对象之射精チェック
+;-------------------------------------------------
+@TARGET_EJAC_CHECK
+#DIM PARTNER
+
+SIF PENIS(TARGET) == 0
+	RETURN 0
+
+BASE:绝顶 += CUP:快Ｃ * MAXBASE:绝顶 / 10000
+;射精槽増加量之記录
+TCVAR:101 += CUP:快Ｃ * MAXBASE:绝顶 / 10000
+
+;こらえた场合には射精しない
+IF NOWEX:忍住了没丢
+ELSEIF BASE:绝顶 >= MAXBASE:绝顶 && CUP:快Ｃ
+	SELECTCASE BASE:绝顶
+	CASE IS >= EJAC:TARGET * 4
+		NOWEX:射精 = 3
+	CASE IS >= EJAC:TARGET * 2
+		NOWEX:射精 = 2
+	CASE IS >= EJAC:TARGET
+		NOWEX:射精 = 1
+	ENDSELECT
+ENDIF
+
+;调教对象が射精
+EX:射精 += NOWEX:射精
+
+;射精边缘(高潮管理)
+IF NOWEX:射精 && COND("射精禁止中")
+
+
+	;大量射精边缘
+	IF NOWEX:射精 >= 2
+		SOURCE:欲情追加 += 800
+		SOURCE:屈从 += 1000
+
+		NOWEX:射精边缘 = 2
+	ELSEIF NOWEX:射精
+		SOURCE:欲情追加 += 300
+		SOURCE:屈从 += 500
+
+		NOWEX:射精边缘 = 1
+	ENDIF
+	NOWEX:射精 = 0
+ELSEIF NOWEX:射精
+	SELECTCASE EXP:射精経験
+	CASE IS < EXPLV:1
+		SOURCE:屈从 += 650 * NOWEX:射精
+	CASE IS < EXPLV:2
+		SOURCE:屈从 += 550 * NOWEX:射精
+	CASE IS < EXPLV:3
+		SOURCE:屈从 += 450 * NOWEX:射精
+	CASE IS < EXPLV:4
+		SOURCE:屈从 += 400 * NOWEX:射精
+	CASE IS < EXPLV:5
+		SOURCE:屈从 += 300 * NOWEX:射精
+	CASEELSE
+		SOURCE:屈从 += 200 * NOWEX:射精
+	ENDSELECT
+
+	EXP:射精経験 += NOWEX:射精
+	BASE:绝顶 = (PALAM:快Ｃ + CUP:快Ｃ - CDOWN:0) * MAXBASE:绝顶 / 10000
+	;精力减少(Ｃ绝顶でも减っているはずな之でここでは纯粋に射精で减るだけを扱う)
+	LOCAL = MAX(NOWEX:射精 - TALENT:梦魇 - TALENT:上位梦魇, 1)
+	BASE:精力 = LIMIT(BASE:精力 - LOCAL, 0, MAXBASE:精力)
+	TCVAR:109 += LOCAL
+
+	;射精した场所に精液汚れを付加
+	IF INSERT("Ｖ插入中")
+		PARTNER = INSERT("Ｖ插入中")
+		EXP:PARTNER:精液経験 += NOWEX:射精 * 2
+		CALL SETFLAG, "膣内精液経験", NOWEX:射精, PARTNER, TARGET
+	ELSEIF INSERT("Ａ插入中")
+		PARTNER = INSERT("Ａ插入中")
+		EXP:PARTNER:精液経験 += NOWEX:射精 * 2
+		CALL SETFLAG, "肛内精液経験", NOWEX:射精, PARTNER, TARGET
+	ELSE
+		SELECTCASE SELECTCOM
+		;口
+		CASE 4, 11
+			EXP:PLAYER:精液経験 += NOWEX:射精 * 3
+			CALL SETFLAG, "饮精経験", NOWEX:射精, PLAYER, TARGET
+			SIF SELECTCOM == 11
+				CALL ADD_STAIN, PLAYER, "Ｂ", "精液"
+		;手
+		CASE 10
+			EXP:PLAYER:精液経験 += NOWEX:射精
+			CALL ADD_STAIN, PLAYER, "手", "精液"
+		;Ｖ
+		CASE 120 TO 124
+			EXP:PLAYER:精液経験 += NOWEX:射精 * 2
+			CALL SETFLAG, "膣内精液経験", NOWEX:射精, PLAYER, TARGET
+		;Ａ
+		CASE 125 TO 129
+			EXP:PLAYER:精液経験 += NOWEX:射精 * 2
+			CALL SETFLAG, "肛内精液経験", NOWEX:射精, PLAYER, TARGET
+		;助手之Ｖ
+		CASE 161
+			EXP:ASSI:精液経験 += NOWEX:射精 * 2
+			CALL SETFLAG, "膣内精液経験", NOWEX:射精, ASSI, TARGET
+		ENDSELECT
+	ENDIF
+
+	;Ｐに精液汚れ
+	CALL ADD_STAIN, TARGET, "Ｐ", "精液"
+ENDIF
+SIF FLAG:8
+	CALL TARGET_EJAC_CHECK_TEXT, TARGET
+
+
+@TARGET_EJAC_CHECK_TEXT, ARG
+VARSET LOCALS
+IF NOWEX:ARG:射精边缘
+	PRINTFORML %CALLNAME:ARG%\@ ARG == ASSI ? (助手) # \@\@ NOWEX:ARG:射精边缘 >= 2 ? 大量 # \@射精边缘
+ELSEIF NOWEX:ARG:射精
+	LOCALS = \@ NOWEX:ARG:射精 >= 3 ? 超 # \@\@ NOWEX:ARG:射精 >= 2 ? 大量 # \@射精
+	IF ARG == ASSI
+		STR:6 = %STR:6%(%LOCALS%)
+	ELSEIF ARG == TARGET
+		STR:5 = %STR:5%(%LOCALS%)
+	ENDIF
+	PRINTFORML %CALLNAME:ARG%%LOCALS%
+	PRINTFORML 射精経験＋{NOWEX:ARG:射精} \@ ARG == ASSI ? (助手) # \@
+	LOCAL = MAX(NOWEX:ARG:射精 - TALENT:ARG:梦魇 - TALENT:ARG:上位梦魇, 1)
+	PRINTFORML 精力-{LOCAL}
+ENDIF
+
+
+;-------------------------------------------------
+;调教对象之喷乳チェック
+;-------------------------------------------------
+@TARGET_MILK_CHECK
+SIF TALENT:泌乳体質 == 0
+	RETURN 0
+
+CALL SETFLAG, "射精槽", TARGET
+
+BASE:喷乳 += CUP:快Ｂ * MAXBASE:喷乳 / EJAC:TARGET
+;母乳槽増加量之記录
+TCVAR:103 += CUP:快Ｂ * MAXBASE:喷乳 / EJAC:TARGET
+
+IF BASE:喷乳 >= MAXBASE:喷乳 && CUP:快Ｂ
+	SELECTCASE BASE:喷乳
+	CASE IS >= 10000 * 4
+		NOWEX:喷乳 = 3
+	CASE IS >= 10000 * 2
+		NOWEX:喷乳 = 2
+	CASE IS >= 10000
+		NOWEX:喷乳 = 1
+	ENDSELECT
+	NOWEX:喷乳 = MIN(NOWEX:喷乳, NOWEX:Ｂ绝顶 + 1)
+ENDIF
+
+EX:喷乳 += NOWEX:喷乳
+
+IF NOWEX:喷乳
+	SOURCE:屈从 += 250 * NOWEX:喷乳 * LOCAL:13
+
+	EXP:喷乳経験 += 1
+
+	;Ｂに母乳汚れ
+	CALL ADD_STAIN, TARGET, "Ｂ", "乳"
+
+	;BASE:喷乳 = (PALAM:快Ｂ + CUP:快Ｂ - CDOWN:14) * MAXBASE:喷乳 / 10000
+	IF NOWEX:Ｂ绝顶
+		BASE:喷乳 = MAX(BASE:喷乳 - NOWEX:喷乳*10000, 0)
+	ELSE
+		BASE:喷乳 = LIMIT(BASE:喷乳 - NOWEX:喷乳*5000, 0, 9999)
+	ENDIF
+	;搾乳器で母乳が集められているかチェック
+	SIF TEQUIP:搾乳机
+		TFLAG:35 += NOWEX:喷乳
+ENDIF
+
+SIF FLAG:8
+	CALL TARGET_MILK_CHECK_TEXT, TARGET
+
+
+@TARGET_MILK_CHECK_TEXT, ARG
+IF NOWEX:ARG:喷乳
+	IF NOWEX:ARG:喷乳 >= 2 && NOWEX:Ｂ绝顶
+		PRINTFORML %CALLNAME:ARG%的乳头喷射出大量的母乳
+	ELSEIF NOWEX:Ｂ绝顶
+		PRINTFORML %CALLNAME:ARG%的乳头滴落着母乳
+	ELSE
+		PRINTFORML %CALLNAME:ARG%的乳头渗出母乳
+	ENDIF
+	PRINTFORML 喷乳経験＋{NOWEX:ARG:喷乳} \@ ARG == ASSI ? (助手) # \@
+ENDIF
