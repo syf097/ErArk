@@ -1,13 +1,9 @@
 ﻿@EVENTEND
 #PRI
 REDRAW 1
-;二人で逆推之时には、きちんと二回ここに来る之に注意
-
-;PLAYERをMASTERに直す
 SIF PLAYER != MASTER
 	CALL SETFLAG, "调教者交代", 1
 
-;恋慕を外した时に戻し忘れているなら、ここで復帰
 CALL SETFLAG, "助手对象之恋慕外し終了"
 
 CALL CHECK_SATISFACTION, TARGET
@@ -24,40 +20,10 @@ SIF ASSI
 ;调教中标志OFF
 FLAG:99 = 0
 IF FLAG:22 != 2
-	;对象が上位梦魇之场合には攻略刻印（屈服刻印取得に要する参数量を减らす）を得る
-	;满足＋攻略刻印が一定值以下
-	IF COND("性欲大满足") && MARK:攻略刻印 < 4
-		IF TALENT:上位梦魇 && MARK:屈服刻印 < 3
-			DRAWLINE
-			PRINTFORMW ☆★☆ＥＶＥＮＴ达成・屈服刻印习得要求降低☆★☆
-
-			DRAWLINE
-		ENDIF
-		MARK:攻略刻印 = 4
-	ELSEIF COND("性欲满足") && MARK:攻略刻印 < 2
-		IF TALENT:上位梦魇 && MARK:屈服刻印 < 3
-			DRAWLINE
-			PRINTFORMW ☆★☆ＥＶＥＮＴ达成・屈服刻印习得要求降低☆★☆
-
-			DRAWLINE
-		ENDIF
-		MARK:攻略刻印 = 2
-	ENDIF
-
 	PRINTL 
 	PRINTL 调教结束了。
-
-
-
-
-	;寝取られ事件
-	CALL EVENT_DRAGON_NTR, "寝取られ判定"
-
 	;调教后行为之チェック
 	CALL SELF_CHECK
-
-	;搾乳した母乳之売却
-	CALL SELL_MILK
 
 	;调教时に录画した录像を売却
 	CALL SELL_VIDEO
@@ -66,33 +32,25 @@ IF FLAG:22 != 2
 		CALL SELL_VIDEO
 		SWAP TARGET, ASSI
 	ENDIF
-
-	;助手之调教終了时特典（狐で媚药入手など）
-	CALL AFTERTRA_BONUS_ASSI
-
-	;消耗品之オート购入
-	CALL CALC, "消耗品之自动购入"
 ENDIF
 
 CALL EVENT_AFTER_TRAIN
-
 BEGIN ABLUP
 
-
 @EVENT_AFTER_TRAIN
-;气力・体力之上升チェック
+;属性上升
 CALL EVENT_GROWTH
 
-;何之珠を得られたか
+;珠的获取
 CALL JUEL_CHECK
 
-;射精标志、处女丧失标志などをリセット
+;重置标志
 VARSET TFLAG, 0, 0, 101
 
-;调教経験を増やす
-EXP:调教回数 += 1
+;增加目标的调教回数
+;EXP:调教回数 += 1
 
-;日付之記录
+;上次调教之日的记录
 CFLAG:97 = DAY
 
 @EVENT_AFTER_TRAIN_COS, ARG
