@@ -44,7 +44,7 @@ ENDIF
 RESETCOLOR
 PRINTL ============================行动===========================
 PRINTL [1]进行亲善
-PRINTL [2]绑架行动
+PRINTL [2]胁迫招揽
 PRINTL 秘密同盟战线会谈*
 PRINTL ============================协议===========================
 PRINTL [11]资源支援协议
@@ -58,6 +58,7 @@ SELECTCASE RESULT
     CASE 1
         CALL INTERCOURSE(ARG)
     CASE 2
+        CALL KIDNAP(ARG)
     CASE 3
     CASE 11
     CASE 12
@@ -124,10 +125,13 @@ REPEAT CHARANUM
     ENDIF
 REND
 DRAWLINE
+PRINTL [900]随便逛逛
 PRINTL [999]返回
 
 INPUT
 SIF RESULT==999
+    RETURN
+SIF RESULT==900
     RETURN
 IF RESULT<=INDEX&&RESULT>=0
     TARGET=NO:(LIST:RESULT)
