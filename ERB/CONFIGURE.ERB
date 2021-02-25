@@ -1,0 +1,2299 @@
+﻿@SET_CONFIGURE
+LOCAL:207 = FLAG:207
+LOCAL:239 = FLAG:239
+CALL SET_CONFIGURE_MAIN
+;コンフィグに関する設定ロード
+IF FLAG:207 && FLAG:207 != LOCAL:207
+	FOR LOCAL, 1, CHARANUM
+		CALL SETFLAG, "阴毛と腋毛", LOCAL
+	NEXT
+ENDIF
+IF CONFIG("３サイズ") && FLAG:239 != LOCAL:239
+	;巨乳之罩杯之定义を变化した时
+	IF GETBITS(FLAG:239, 1, 3) != GETBITS(LOCAL:239, 1, 3)
+		CALL SETFLAG, "测量胸部"
+	ENDIF
+	FOR LOCAL, 1, CHARANUM
+		CALL SET_3SIZE, LOCAL
+	NEXT
+ENDIF
+
+
+@SET_CONFIGURE_MAIN
+PRINTL 
+PRINTFORML 当前设置如下。请选择要变更的内容
+PRINTL 
+PRINTFORML  [ 0] 与调教部分有关的各种重要设定
+PRINTFORML  [ 1] 系统功能以及事件相关的设定
+PRINTFORML  [ 2] 与孕娠系统有关的设定（孕娠补丁的使用状況：\@ CONFIG("孕娠补丁") ? ○ # －\@）
+IF CONFIG("ユニコード")
+	PRINTFORML  [ 3] UNICODE相关设定…现在、代用对的使用为OFF
+ELSE
+	PRINTFORML  [ 3] UNICODE相关设定…%UNI("龙")%龙之标志不想看见请选择
+ENDIF
+IF CONFIG("EmueraTunes")
+	PRINTFORM  [ 4] ボイス設定：
+	IF FLAG:500 == 1
+		PRINTFORML 萝莉
+	ELSEIF FLAG:500 == 2
+		PRINTFORML 年増
+	ELSEIF FLAG:500 == 3
+		PRINTFORML 根据对方自动选择
+	ELSE
+		PRINTFORML 标准
+	ENDIF
+ENDIF
+PRINTFORML  [10] 保存全局设定
+;グローバル变数之読み込み
+LOADGLOBAL
+SIF GLOBAL:99 > 0
+	PRINTFORML  [20] 读取全局设定（保存日期:{GLOBAL:99/10000}年{(GLOBAL:99%10000)/100}月{GLOBAL:99%100}日）
+PRINTFORML  [30] 更改人名
+
+SIF CHARANUM <= 3
+	SETCOLOR DEF_COLOR("灰色")
+PRINTFORML  [40] 人物排序
+RESETCOLOR
+
+PRINTFORML [100] 返回
+
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 100
+	RETURN 0
+ELSEIF RESULT == 0
+	CALL SETCONFIG, "调教全般"
+ELSEIF RESULT == 1
+	CALL SETCONFIG, "系统＆事件全般"
+ELSEIF RESULT == 2
+	CALL SETCONFIG, "孕娠"
+ELSEIF RESULT == 3
+	INVERTBIT FLAG:279, 0
+ELSEIF RESULT == 4 && CONFIG("EmueraTunes")
+	CALL SETCONFIG, "ボイス"
+ELSEIF RESULT == 10
+	CALL SAVE_CONFIGURE
+ELSEIF RESULT == 20 && GLOBAL:99 > 0
+	CALL LOAD_CONFIGURE
+ELSEIF RESULT == 30
+	CALL NAME_CONVERT, 0, 0
+ELSEIF RESULT == 40
+	IF CHARANUM <= 3
+		PRINTFORMW 没有可供排序的人物
+	ELSE
+		CALL CHARA_SORT
+	ENDIF
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+RESTART
+
+@CONFIG(ARGS)
+#FUNCTION
+SELECTCASE ARGS
+CASE "ＳＨＯＰ非表示"
+	RETURNF GETBIT(FLAG:2, 0)
+CASE "ＳＨＯＰ１割引"
+	RETURNF GETBIT(FLAG:2, 1)
+CASE "自动购入"
+	RETURNF FLAG:9
+CASE "助手へ之指示"
+	RETURNF GETBIT(FLAG:45, 0)
+CASE "助手之探索显示状态能力"
+	RETURNF GETBIT(FLAG:45, 1)
+CASE "探索同行者選択中"
+	RETURNF GETBIT(FLAG:45, 2)
+CASE "显示状态能力で３サイズ閲览"
+	RETURNF FLAG:46
+CASE "调教对象变更でアナライズ"
+	RETURNF GETBIT(FLAG:47, 0)
+CASE "触手設定"
+	RETURNF FLAG:80 + FLAG:87
+CASE "触手は主人"
+	RETURNF FLAG:87
+CASE "射精的地方之变更"
+	RETURNF FLAG:91
+CASE "射精后に抜かない"
+	RETURNF GETBIT(FLAG:91, 1)
+CASE "画面表示"
+	RETURNF FLAG:98
+CASE "画面表示：カラーバー"
+	RETURNF GETBIT(FLAG:98, 0)
+CASE "画面表示：未实行指令之色"
+	RETURNF GETBIT(FLAG:98, 1)
+CASE "画面表示：参数４列"
+	RETURNF GETBIT(FLAG:98, 2)
+CASE "画面表示：调教指令４列"
+	RETURNF GETBIT(FLAG:98, 3)
+CASE "画面表示：バー背景无"
+	RETURNF GETBIT(FLAG:98, 4)
+CASE "画面表示：バー之グラフ表示"
+	RETURNF GETBIT(FLAG:98, 5)
+CASE "画面表示：尿意槽"
+	RETURNF GETBIT(FLAG:98, 6)
+CASE "画面表示：排泄欲槽"
+	RETURNF GETBIT(FLAG:98, 7)
+
+CASE "换装設定"
+	RETURNF FLAG:200+FLAG:201+FLAG:202+FLAG:203+FLAG:204
+CASE "调教終了时之服装"
+	RETURNF FLAG:200
+CASE "靴や手套之表記"
+	RETURNF FLAG:201
+CASE "室内や屋外で之靴之扱い"
+	RETURNF FLAG:202
+CASE "让梦魇自己选喜欢的胖次穿"
+	RETURNF FLAG:203
+CASE "衣装之自动脱ぎ之禁止"
+	RETURNF GETBIT(FLAG:204, 0)
+CASE "衣装之细かい色表示之禁止"
+	RETURNF GETBIT(FLAG:204, 1)
+CASE "内衣が现えない服装时之表示之限制"
+	RETURNF GETBIT(FLAG:204, 2)
+CASE "胖次とブラを合わせる"
+	RETURNF GETBIT(FLAG:204, 3)
+
+CASE "日常"
+	RETURNF FLAG:205
+CASE "自动喘ぎ"
+	RETURNF FLAG:206
+CASE "阴毛と腋毛", "阴毛"
+	RETURNF FLAG:207
+CASE "腋毛"
+	RETURNF GETBIT(FLAG:207, 10)
+CASE "调教过滤"
+	RETURNF FLAG:209
+CASE "Ｖ调教过滤"
+	RETURNF GETBIT(FLAG:209, 0)
+CASE "Ａ调教过滤"
+	RETURNF GETBIT(FLAG:209, 1)
+
+CASE "实行值过滤"
+	RETURNF GETBIT(FLAG:209, 4)
+CASE "脱童贞过滤"
+	RETURNF GETBIT(FLAG:209, 5)
+CASE "脱处女过滤"
+	RETURNF GETBIT(FLAG:209, 6)
+CASE "假阴茎过滤"
+	RETURNF GETBIT(FLAG:209, 7)
+
+;调教过滤関连
+CASE "爱抚系非表示"
+	RETURNF GETBIT(FLAG:210, 0)
+CASE "道具系非表示"
+	RETURNF GETBIT(FLAG:210, 1)
+CASE "Ｖ性爱系非表示"
+	RETURNF GETBIT(FLAG:210, 2)
+CASE "Ａ性爱系非表示"
+	RETURNF GETBIT(FLAG:210, 3)
+CASE "特殊性爱系非表示"
+	RETURNF GETBIT(FLAG:210, 4)
+CASE "奉仕系非表示"
+	RETURNF GETBIT(FLAG:210, 5)
+CASE "调教者に插入系非表示"
+	RETURNF GETBIT(FLAG:210, 6)
+CASE "ＳＭ・调教系非表示"
+	RETURNF GETBIT(FLAG:210, 7)
+CASE "助手系非表示"
+	RETURNF GETBIT(FLAG:210, 8)
+CASE "特殊系非表示"
+	RETURNF GETBIT(FLAG:210, 9)
+CASE "触手系非表示"
+	RETURNF GETBIT(FLAG:210, 10)
+CASE "秘法系非表示"
+	RETURNF GETBIT(FLAG:210, 11)
+CASE "消費道具系非表示"
+	RETURNF GETBIT(FLAG:210, 12)
+CASE "其他非表示"
+	RETURNF GETBIT(FLAG:210, 13)
+
+CASE "调教配置模式"
+	RETURNF GETBIT(FLAG:210, 20)
+CASE "非表示指令之表示"
+	RETURNF GETBIT(FLAG:210, 21)
+
+CASE "项目表示过滤：Ｂ"
+	RETURNF GETBIT(FLAG:210, 30)
+CASE "项目表示过滤：Ｃ"
+	RETURNF GETBIT(FLAG:210, 31)
+
+CASE "调教配置模式：非表示指令隐藏"
+	SIF CONFIG("调教配置模式") == 0
+		RETURNF 0
+	RETURNF GETBIT(FLAG:210, 40)
+CASE "调教配置模式：禁止指令隐藏"
+	SIF CONFIG("调教配置模式") == 0
+		RETURNF 0
+	RETURNF GETBIT(FLAG:210, 41)
+
+CASE "调教配置模式：全指令表示"
+	SIF CONFIG("调教配置模式") == 0
+		RETURNF 0
+	RETURNF GETBIT(FLAG:210, 45)
+
+CASE "调教过滤経験标志"
+	RETURNF GETBIT(FLAG:210, 60)
+
+CASE "孕娠补丁"
+	RETURNF FLAG:211
+CASE "孕娠补丁：主人之精子之み"
+	RETURNF GETBIT(FLAG:211, 1)
+CASE "孕娠补丁：主人孕娠可能"
+	RETURNF GETBIT(FLAG:211, 2)
+CASE "孕娠补丁：调教以外で孕娠可能"
+	RETURNF GETBIT(FLAG:211, 3)
+CASE "孕娠补丁：娘之胸之成长あり"
+	RETURNF GETBIT(FLAG:211, 4)
+CASE "孕娠补丁：史莱姆分裂"
+	RETURNF GETBIT(FLAG:211, 5)
+CASE "孕娠补丁：受精确率表示"
+	RETURNF GETBIT(FLAG:211, 6)
+
+CASE "内部データ之表示"
+	RETURNF FLAG:217
+CASE "助手对象でも恋慕適用"
+	RETURNF FLAG:218
+CASE "难易度"
+	RETURNF FLAG:220
+CASE "ＥＡＳＹ"
+	SIF FLAG:220 == 1
+		RETURNF 1
+CASE "ＮＯＲＭＡＬ"
+	SIF FLAG:220 == 0
+		RETURNF 1
+CASE "ＨＡＲＤ"
+	SIF FLAG:220 == 2
+		RETURNF 1
+CASE "召唤事故"
+	RETURNF FLAG:221
+CASE "召唤事故：独特"
+	RETURNF GETBIT(FLAG:221, 1)
+CASE "召唤事故：扶她"
+	RETURNF GETBIT(FLAG:221, 2)
+CASE "召唤事故：男孩子？"
+	RETURNF GETBIT(FLAG:221, 3)
+CASE "精强术即使没有也大量射精"
+	RETURNF FLAG:222
+CASE "恍惚状态"
+	RETURNF FLAG:223
+CASE "表示人数"
+	RETURNF FLAG:225
+CASE "对象之梦魇化"
+	RETURNF GETBIT(FLAG:226, 0)
+CASE "对象之梦魇化：男"
+	RETURNF GETBIT(FLAG:226, 1)
+CASE "对象之梦魇化：女体化"
+	RETURNF GETBIT(FLAG:226, 2)
+CASE "主人・助手之梦魇化"
+	RETURNF GETBIT(FLAG:227, 0)
+CASE "主人・助手之梦魇化：男"
+	RETURNF GETBIT(FLAG:227, 1)
+CASE "主人・助手之梦魇化：女体化"
+	RETURNF GETBIT(FLAG:227, 2)
+CASE "主人・助手之梦魇化：取消"
+	RETURNF GETBIT(FLAG:227, 3)
+CASE "录像売却之選択"
+	RETURNF FLAG:261
+CASE "世代别表示"
+	RETURNF FLAG:237
+CASE "３サイズ"
+	RETURNF FLAG:239
+CASE "３サイズ：表示"
+	RETURNF GETBIT(FLAG:239, 0)
+CASE "巨乳补正"
+	IF GETBIT(FLAG:239, 3)
+		RETURNF 5
+	ELSEIF GETBIT(FLAG:239, 2)
+		RETURNF 2
+	ELSE
+		RETURNF 0
+	ENDIF
+CASE "巨乳补正：罩杯"
+	IF GETBIT(FLAG:239, 3)
+		RETURNF 2
+	ELSEIF GETBIT(FLAG:239, 2)
+		RETURNF 1
+	ELSE
+		RETURNF 0
+	ENDIF
+CASE "３サイズ：Ｆ"
+	RETURNF GETBIT(FLAG:239, 1)
+CASE "３サイズ：Ｇ"
+	RETURNF GETBIT(FLAG:239, 2)
+CASE "３サイズ：Ｈ"
+	RETURNF GETBIT(FLAG:239, 3)
+CASE "相思相爱"
+	RETURNF FLAG:241
+CASE "相思相爱：人数限制无"
+	RETURNF GETBIT(FLAG:241, 0)
+CASE "相思相爱：主动夜袭限制"
+	RETURNF GETBIT(FLAG:241, 1)
+CASE "梦魇化时之特征变化"
+	RETURNF FLAG:242
+CASE "梦魇化时之特征变化：外现之み"
+	SIF FLAG:242 == 1
+		RETURNF 1
+CASE "梦魇化时之特征变化：全部"
+	SIF FLAG:242 == 2
+		RETURNF 1
+CASE "探索ボス"
+	RETURNF FLAG:245
+
+CASE "等级限制器"
+	RETURNF FLAG:247
+CASE "等级限制器：－10ＬＶ"
+	RETURNF GETBIT(FLAG:247, 11)
+CASE "等级限制器：－５ＬＶ"
+	RETURNF GETBIT(FLAG:247, 12)
+CASE "等级限制器：和对手相同"
+	RETURNF GETBIT(FLAG:247, 13)
+CASE "等级限制器：＋５ＬＶ"
+	RETURNF GETBIT(FLAG:247, 14)
+CASE "等级限制器：＋10ＬＶ"
+	RETURNF GETBIT(FLAG:247, 15)
+
+CASE "経験表示詰め"
+	RETURNF FLAG:250
+CASE "恋慕と淫乱之任意獲得"
+	RETURNF FLAG:251
+CASE "调教对象变更不可"
+	RETURNF FLAG:252
+CASE "ＶＡ详细表示"
+	RETURNF GETBIT(FLAG:254, 0)
+CASE "ＶＡ详细表示：手动ＬＶＵＰ"
+	RETURNF GETBIT(FLAG:254, 1)
+
+CASE "咖啡屋描写"
+	SIF FLAG:258 == 0
+		RETURNF 1
+CASE "咖啡屋"
+	RETURNF FLAG:258
+CASE "寝取られ"
+	RETURNF FLAG:262
+CASE "阴茎详细設定"
+	RETURNF FLAG:263
+
+CASE "限制时间撤废"
+	RETURNF FLAG:265
+CASE "日付固定事件再现"
+	RETURNF FLAG:266
+CASE "乳头奸"
+	RETURNF FLAG:267
+CASE "精液灌肠"
+	RETURNF FLAG:268
+CASE "独特角色之多重召唤"
+	RETURNF FLAG:269
+CASE "主动夜袭主动朝袭禁止"
+	RETURNF FLAG:270
+
+CASE "台词之名前非表示"
+	RETURNF FLAG:273
+CASE "一晩开放之事件全表示"
+	RETURNF FLAG:274
+CASE "温泉旅行で之NTR"
+	RETURNF FLAG:275
+CASE "尿道を扩张し易く"
+	RETURNF FLAG:276
+CASE "正太女仆"
+	RETURNF FLAG:277
+CASE "气味之表記变更"
+	RETURNF FLAG:278
+CASE "ユニコード"
+	RETURNF FLAG:279
+CASE "性骚扰禁止"
+	RETURNF FLAG:281
+CASE "性骚扰许可"
+	SIF FLAG:281 == 0
+	RETURNF 1
+
+CASE "地之文ＯＦＦ"
+	SIF (FLAG:6 == 0 || TARGET && TCVAR:24)
+		RETURNF 1
+CASE "口上による地之文ＯＦＦ"
+	SIF TARGET && TCVAR:24
+		RETURNF 1
+
+;以下は项目ONOFFボタン
+CASE "项目：搾精排行"
+	RETURNF GETBIT(FLAG:3, 0)
+CASE "项目：助手之职责指示"
+	RETURNF GETBIT(FLAG:3, 1)
+CASE "项目：出演作品详细"
+	RETURNF GETBIT(FLAG:3, 2)
+CASE "项目：外观"
+	RETURNF GETBIT(FLAG:3, 3)
+CASE "项目：服装详细"
+	RETURNF GETBIT(FLAG:3, 4)
+CASE "项目：体型"
+	RETURNF GETBIT(FLAG:3, 5)
+CASE "项目：性癖"
+	RETURNF GETBIT(FLAG:3, 6)
+CASE "项目：弱点"
+	RETURNF GETBIT(FLAG:3, 7)
+CASE "项目：属性"
+	RETURNF GETBIT(FLAG:3, 8)
+CASE "项目：宝珠"
+	RETURNF GETBIT(FLAG:3, 9)
+CASE "项目：経験"
+	RETURNF GETBIT(FLAG:3, 10)
+CASE "项目：异常経験"
+	RETURNF GETBIT(FLAG:3, 11)
+CASE "项目：能力"
+	RETURNF GETBIT(FLAG:3, 12)
+CASE "项目：刻印"
+	RETURNF GETBIT(FLAG:3, 13)
+CASE "项目：素質"
+	RETURNF GETBIT(FLAG:3, 14)
+CASE "项目：家族構成"
+	RETURNF GETBIT(FLAG:3, 15)
+CASE "项目：相性"
+	RETURNF GETBIT(FLAG:3, 16)
+CASE "项目：阴毛"
+	RETURNF GETBIT(FLAG:3, 17)
+CASE "项目：装饰品"
+	RETURNF GETBIT(FLAG:3, 18)
+CASE "项目：射精ランキング"
+	RETURNF GETBIT(FLAG:3, 19)
+
+CASE "ボイス"
+	RETURNF FLAG:500
+CASE "EmueraTunes"
+	RETURNF FLAG:501
+ENDSELECT
+RETURNF 0
+
+@SETCONFIG, ARGS
+#DIM LCOUNT
+#DIM MEMO_LINECOUNT
+#DIM NEXT_LINE
+#DIM MEMO, 10
+
+MEMO_LINECOUNT = LINECOUNT
+PRINTL 
+SELECTCASE ARGS
+CASE "调教全般"
+	PRINTFORML  [ 0] \@ CONFIG("射精的地方之变更") ? ○ # －\@ 变更射精位置
+	PRINTFORML  [ 1] \@ CONFIG("精强术即使没有也大量射精") ? ○ # －\@ 没有精强术buff时也能超大量射精
+	PRINTFORML  [ 2] \@ CONFIG("恍惚状态") ? ○ # －\@ 陷入恍惚时任凭梦魇摆布
+	PRINTFORML  [ 3] \@ CONFIG("换装設定") ? ○ # －\@ 换装設定
+	PRINTFORM  [ 4] \@ CONFIG("３サイズ") ? ○ # －\@ 三围、身高的显示与巨乳的上限設定：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("３サイズ：表示")
+		PRINT 表示する＆
+		IF CONFIG("３サイズ：Ｈ")
+			PRINTL Ｈ
+		ELSEIF CONFIG("３サイズ：Ｇ")
+			PRINTL Ｇ
+		ELSE
+			PRINTL Ｆ
+		ENDIF
+	ELSE
+		PRINTL 不显示
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 5] \@ CONFIG("阴毛と腋毛") ? ○ # －\@ 阴毛和%TEXTS("腋")%毛的设定：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("阴毛と腋毛")
+		IF GETBIT(FLAG:207, 3)
+			PRINT 只有大人会长
+		ELSEIF GETBIT(FLAG:207, 2)
+			PRINT 只有大姐姐和成人会长
+		ELSEIF GETBIT(FLAG:207, 1)
+			PRINT 除了小孩子之外会长
+		ELSEIF GETBIT(FLAG:207, 0)
+			PRINT 所有人
+		ENDIF
+		PRINTFORML ＆\@ CONFIG("腋毛") ? 有 # 无 \@%TEXTS("腋")%毛
+	ELSE
+		PRINTL 不显示
+	ENDIF
+	RESETCOLOR
+	PRINTFORML  [ 6] \@ CONFIG("阴茎详细設定") ? ○ # －\@ 阴茎的详细设定
+	PRINTFORML  [ 7] \@ CONFIG("助手对象之恋慕口上設定") ? ○ # －\@ 助手实施调教时不使用恋慕口上
+	PRINTFORML  [ 8] \@ CONFIG("寝取られ") ? ○ # －\@ 发生相思相爱对象被NTR的事件
+	PRINTFORML  [ 9] \@ CONFIG("触手設定") ? ○ # －\@ 触手設定
+	PRINTFORML  [10] \@ CONFIG("内部データ之表示") ? ○ # －\@ 显示反击概率等内部数据
+	PRINTFORML  [11] \@ CONFIG("自动喘ぎ") ? ○ # －\@ 为没有口上的角色自动生成娇喘
+	PRINTFORML  [12] \@ CONFIG("限制时间撤废") ? ○ # －\@ 废除选择项的时间限制
+	PRINTFORML  [13] \@ CONFIG("乳头奸") ? ○ # －\@ 允许进行乳头奸
+	PRINTFORML  [14] \@ CONFIG("精液灌肠") ? ○ # －\@ 在肛内大量射精，会有灌肠效果
+	PRINTFORML  [15] \@ CONFIG("尿道を扩张し易く") ? ○ # －\@ 尿道之扩张的难度下降
+	PRINTFORM  [16] \@ CONFIG("气味之表記变更") ? ○ # －\@ 「气味」这个词的表达变更。现在是：
+	CALL PRINTL_COLORTEXT, TEXTS("气味"), DEF_COLOR("黄色")
+	PRINTFORML [100] 返回
+	CALL INPUT_SELECT, 17, 100
+	SELECTCASE RESULT
+	CASE 100
+		RETURN 0
+	CASE 0
+		CALL SETCONFIG, "射精的地方之变更"
+	CASE 1
+		CALL SETCONFIG, "精强术即使没有也大量射精"
+	CASE 2
+		CALL SETCONFIG, "恍惚状态"
+	CASE 3
+		CALL SETCONFIG, "换装設定"
+	CASE 4
+		CALL SETCONFIG, "３サイズ"
+	CASE 5
+		CALL SETCONFIG, "阴毛と腋毛"
+	CASE 6
+		CALL SETCONFIG, "阴茎详细設定"
+	CASE 7
+		CALL SETCONFIG, "助手对象之恋慕口上設定"
+	CASE 8
+		CALL SETCONFIG, "寝取られ"
+	CASE 9
+		CALL SETCONFIG, "触手設定"
+	CASE 10
+		CALL SETCONFIG, "内部データ之表示"
+	CASE 11
+		CALL SETCONFIG, "自动喘ぎ"
+	CASE 12
+		CALL SETCONFIG, "限制时间撤废"
+	CASE 13
+		CALL SETCONFIG, "乳头奸"
+	CASE 14
+		CALL SETCONFIG, "精液灌肠"
+	CASE 15
+		CALL SETCONFIG, "尿道を扩张し易く"
+	CASE 16
+		CALL SETCONFIG, "气味之表記变更"
+	ENDSELECT
+	ARGS = 调教全般
+	RESTART
+CASE "系统＆事件全般"
+	PRINTFORM  [ 0] \@ CONFIG("难易度") ? ○ # －\@ 现在的难易度：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("ＨＡＲＤ")
+		PRINTL HARD
+	ELSEIF CONFIG("ＥＡＳＹ")
+		PRINTL EASY
+	ELSE
+		PRINTL NORMAL
+	ENDIF
+	RESETCOLOR
+	PRINTFORML  [ 1] \@ CONFIG("恋慕と淫乱之任意獲得") ? ○ # －\@ 恋慕・淫乱可任意获得
+	PRINTFORM  [ 2] \@ CONFIG("相思相爱") ? ○ # －\@ 素質：相思相爱 的設定：
+	SETCOLOR DEF_COLOR("暗黄色")
+	PRINTFORM \@ CONFIG("相思相爱：人数限制无") ? 随意 # 只限一人 \@
+	PRINTFORML ＆\@ CONFIG("相思相爱：主动夜袭限制") ? 限制夜袭 # 不限制夜袭 \@
+	RESETCOLOR
+	PRINTFORML  [ 3] \@ CONFIG("経験表示詰め") ? ○ # －\@ 在显示能力时，不显示未获得的経験
+	PRINTFORM  [ 4] \@ CONFIG("ＶＡ详细表示") ? ○ # －\@ 详细显示Ｖ和Ａ能力：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("ＶＡ详细表示")
+		PRINTFORML 显示，并且ＶＡ扩张ＬＶ的变化为\@ CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") ? 手动 # 自动 \@进行
+	ELSE
+		PRINTFORML 不显示
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 5] \@ CONFIG("召唤事故") ? ○ # －\@ 召唤事故：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("召唤事故")
+		LOCALS = 特殊角色\@ CONFIG("召唤事故：独特") ? ○ # × \@
+		LOCALS = %LOCALS% 扶她\@ CONFIG("召唤事故：扶她") ? ○ # × \@
+		LOCALS = %LOCALS% 男孩子？\@ CONFIG("召唤事故：男孩子？") ? ○ # × \@
+		PRINTFORML 发生（%LOCALS%）
+	ELSE
+		PRINTFORML 不发生
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 6] \@ CONFIG("对象之梦魇化") ? ○ # －\@ 调教对象的梦魇化：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("对象之梦魇化")
+		LOCALS = 男\@ CONFIG("对象之梦魇化：男") ? ○ # × \@
+		LOCALS = %LOCALS% 女体化\@ CONFIG("对象之梦魇化：女体化") ? ○ # × \@
+		PRINTFORML 发生（%LOCALS%）
+	ELSE
+		PRINTFORML 不发生
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 7] \@ CONFIG("主人・助手之梦魇化") ? ○ # －\@ 主人・助手之梦魇化：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("主人・助手之梦魇化")
+		LOCALS = 男\@ CONFIG("主人・助手之梦魇化：男") ? ○ # × \@
+		LOCALS = %LOCALS% 女体化\@ CONFIG("主人・助手之梦魇化：女体化") ? ○ # × \@
+		LOCALS = %LOCALS% 取消梦魇化\@ CONFIG("主人・助手之梦魇化：取消") ? ○ # × \@
+		PRINTFORML 发生（%LOCALS%）
+	ELSE
+		PRINTFORML 不发生
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 8] \@ CONFIG("梦魇化时之特征变化") ? ○ # －\@ 梦魇化时的特征变化：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("梦魇化时之特征变化") == 0
+		PRINTL 不与梦魇同化
+	ELSEIF CONFIG("梦魇化时之特征变化：外现之み")
+		PRINTL 只有外表与梦魇同化
+	ELSEIF CONFIG("梦魇化时之特征变化：全部")
+		PRINTL 内在与外表都与梦魇同化
+	ENDIF
+	RESETCOLOR
+	PRINTFORM  [ 9] \@ CONFIG("表示人数") ? ○ # －\@ 角色表中显示人数的设定：
+	SETCOLOR DEF_COLOR("暗黄色")
+	PRINTFORML \@ CONFIG("表示人数") ? １Ｐ{CONFIG("表示人数"), 2}人表示 # 默认 \@\@ CONFIG("世代别表示") ? ＆世代别 # \@
+	RESETCOLOR
+	PRINTFORM  [10] \@ CONFIG("日常") ? ○ # －\@ 梦魇们的日常事件发生频度：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF FLAG:205 == 0
+		PRINTL 仅在休息时
+	ELSEIF FLAG:205 == 1
+		PRINTL 每当时间推进时
+	ELSEIF FLAG:205 == 2
+		PRINTL 不发生
+	ENDIF
+	RESETCOLOR
+	PRINTFORML  [11] \@ CONFIG("自动购入") ? ○ # －\@ 自动购入消耗品
+	PRINTFORML  [12] \@ CONFIG("探索ボス") ? ○ # －\@ 在进行探索时，会遭遇已经召唤的Boss角色
+	PRINTFORML  [13] \@ CONFIG("录像売却之選択") ? ○ # －\@ 选择是否売却录像
+	PRINTFORML  [14] \@ CONFIG("日付固定事件再现") ? ○ # －\@ 在游戏中的特定日期再现现实中的特殊节日等
+	PRINTFORML  [15] \@ CONFIG("独特角色之多重召唤") ? ○ # －\@ 可反复召唤同一名特殊角色
+	PRINTFORML  [16] \@ CONFIG("主动夜袭主动朝袭禁止") ? ○ # －\@ 禁止夜袭与唤醒服务
+	PRINTFORML  [17] \@ CONFIG("台词之名前非表示") ? ○ # －\@ 在吃茶店等对话中显示角色名字
+	PRINTFORML  [18] \@ CONFIG("一晩开放之事件全表示") ? ○ # －\@ 开放表示全部角色一夜分别事件？
+	PRINTFORML  [19] \@ CONFIG("温泉旅行で之NTR") ? ○ # －\@ 解除温泉旅行NTR活动的禁令
+	PRINTFORML  [20] \@ CONFIG("正太女仆") ? ○ # －\@ 正太也在咖啡店打工
+	PRINTFORML  [21] \@ CONFIG("性骚扰禁止") ? ○ # －\@ 主人禁止无选项而性骚扰
+	PRINTFORML [100] 返回
+	CALL INPUT_SELECT, 22, 100
+	SELECTCASE RESULT
+	CASE 100
+		RETURN 0
+	CASE 0
+		CALL SETCONFIG, "难易度"
+	CASE 1
+		CALL SETCONFIG, "恋慕と淫乱之任意獲得"
+	CASE 2
+		CALL SETCONFIG, "相思相爱"
+	CASE 3
+		CALL SETCONFIG, "経験表示詰め"
+	CASE 4
+		CALL SETCONFIG, "ＶＡ详细表示"
+	CASE 5
+		CALL SETCONFIG, "召唤事故"
+	CASE 6
+		CALL SETCONFIG, "对象之梦魇化"
+	CASE 7
+		CALL SETCONFIG, "主人・助手之梦魇化"
+	CASE 8
+		CALL SETCONFIG, "梦魇化时之特征变化"
+	CASE 9
+		CALL SETCONFIG, "表示人数"
+	CASE 10
+		CALL SETCONFIG, "日常"
+	CASE 11
+		CALL SETCONFIG, "自动购入"
+	CASE 12
+		CALL SETCONFIG, "探索ボス"
+	CASE 13
+		CALL SETCONFIG, "录像売却之選択"
+	CASE 14
+		CALL SETCONFIG, "日付固定事件再现"
+	CASE 15
+		CALL SETCONFIG, "独特角色之多重召唤"
+	CASE 16
+		CALL SETCONFIG, "主动夜袭主动朝袭禁止"
+	CASE 17
+		CALL SETCONFIG, "台词之名前非表示"
+	CASE 18
+		CALL SETCONFIG, "一晩开放之事件全表示"
+	CASE 19
+		CALL SETCONFIG, "温泉旅行で之NTR"
+	CASE 20
+		CALL SETCONFIG, "正太女仆"
+	CASE 21
+		CALL SETCONFIG, "性骚扰禁止"
+	ENDSELECT
+	ARGS = 系统＆事件全般
+	RESTART
+CASE "性癖"
+	REDRAW 0
+	PRINTL 进行性癖的设定。请从以下各项中任意选择
+	FOR LCOUNT, 0, NUM("属性")
+		PRINTFORMLC 　[{LCOUNT, 2}] \@GETBIT(TALENT:MASTER:性癖, LCOUNT) ? ○ # － \@ %NAMES("属性", LCOUNT)%
+		SIF LCOUNT%3 == 2
+			PRINTL 
+	NEXT
+	PRINTL 
+	;PRINTL   [99] 随机１～３个
+	PRINTL  [100] 返回
+	CALL INPUT_SELECT, NUM("属性"), 100
+	IF RESULT == 100
+		REDRAW 1
+		RETURN 0
+	;ELSEIF RESULT == 99
+	;	TALENT:MASTER:性癖 = 0
+	;	SETBIT TALENT:MASTER:性癖, RAND:NUM("属性")
+	;	SIF RAND:2
+	;		SETBIT TALENT:MASTER:性癖, RAND:NUM("属性")
+	;	SIF RAND:2
+	;		SETBIT TALENT:MASTER:性癖, RAND:NUM("属性")
+	ELSEIF RESULT >= 0 && RESULT <= NUM("属性") - 1
+		;IF GETBIT(TALENT:MASTER:性癖, RESULT) == 0 && NUM_BIT(TALENT:MASTER:性癖) == 3
+		;	PRINTW 最多具备三个性癖。请去掉一个
+		;ELSE
+			INVERTBIT TALENT:MASTER:性癖, RESULT
+		;ENDIF
+	ENDIF
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "弱点"
+	REDRAW 0
+	PRINTL 进行弱点的设定。请随意选择
+	FOR LCOUNT, 0, NUM("弱点")
+		PRINTFORMLC 　[{LCOUNT, 2}] \@GETBIT(TALENT:MASTER:弱点, LCOUNT) ? ○ # － \@ %NAMES("弱点", LCOUNT)%
+		SIF LCOUNT%3 == 2
+			PRINTL 
+	NEXT
+	PRINTL 
+	PRINTL   [99] 全选
+	PRINTL  [100] 返回
+	CALL INPUT_SELECT, NUM("弱点"), 99, 100
+	IF RESULT == 100
+		REDRAW 1
+		RETURN 0
+	ELSEIF RESULT == 99
+		FOR LCOUNT, 0, NUM("弱点")
+			SETBIT TALENT:MASTER:弱点, LCOUNT
+		NEXT
+	ELSEIF RESULT >= 0 && RESULT <= NUM("属性") - 1
+		INVERTBIT TALENT:MASTER:弱点, RESULT
+	ENDIF
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "自动购入"
+	REDRAW 0
+	PRINTL  ～自动补充消耗品设定一览～
+	PRINTL  请点击要变更的项目
+	PRINTFORML  [ 0] \@ GETBIT(FLAG:9, 0) ? ○ # － \@ 录像带
+	PRINTFORML  [ 1] \@ GETBIT(FLAG:9, 1) ? ○ # － \@ 润滑液
+	PRINTFORML  [ 2] \@ GETBIT(FLAG:9, 2) ? ○ # － \@ 媚药
+	PRINTFORML  [ 3] \@ GETBIT(FLAG:9, 3) ? ○ # － \@ 利尿剂
+	PRINTFORML  [ 4] \@ GETBIT(FLAG:9, 4) ? ○ # － \@ 镇静剂
+	SIF CONFIG("孕娠补丁")
+		PRINTFORML  [ 5] \@ GETBIT(FLAG:9, 5) ? ○ # － \@ 排卵诱发剂
+	PRINTFORML  [ 6] \@ GETBIT(FLAG:9, 6) ? ○ # － \@ 茉莉香
+	PRINTFORML  [ 7] \@ GETBIT(FLAG:9, 7) ? ○ # － \@ 薰衣草香
+	PRINTFORML  [ 8] \@ GETBIT(FLAG:9, 8) ? ○ # － \@ 麝香
+	PRINTFORML  [ 9] \@ GETBIT(FLAG:9, 9) ? ○ # － \@ 檀香
+	PRINTFORML  [10] \@ GETBIT(FLAG:9, 10) ? ○ # － \@ 迷迭香
+	PRINTFORML  [11] \@ GETBIT(FLAG:9, 11) ? ○ # － \@ 沐浴剂
+	PRINTFORML  [12] \@ GETBIT(FLAG:9, 12) ? ○ # － \@ 肌肉松弛剂
+	PRINTFORML [100] 设定好了
+
+	CALL INPUT_SELECT, 13, 100
+	IF RESULT == 100
+		REDRAW 1
+		RETURN 0
+	ELSEIF RESULT == 5 && CONFIG("孕娠补丁") == 0
+	ELSEIF RESULT >= 0 && RESULT <= 10
+		INVERTBIT FLAG:9, RESULT
+		SELECTCASE RESULT
+		CASE 0
+			PRINT 录像带
+		CASE 1
+			PRINT 润滑液
+		CASE 2
+			PRINT 媚药
+		CASE 3
+			PRINT 利尿剂
+		CASE 4
+			PRINT 镇静剂
+		CASE 5
+			PRINT 排卵诱发剂
+		CASE 6
+			PRINT 茉莉香
+		CASE 7
+			PRINT 薰衣草香
+		CASE 8
+			PRINT 麝香
+		CASE 9
+			PRINT 檀香
+		CASE 10
+			PRINT 迷迭香
+		CASE 11
+			PRINT 沐浴剂
+		CASE 12
+			PRINT 肌肉松弛剂
+		ENDSELECT
+		PRINTFORMW 的自动补充设定为了 \@ GETBIT(FLAG:9, RESULT) ? ＯＮ # ＯＦＦ\@
+	ENDIF
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "射精的地方之变更"
+	PRINTFORML  　～自动选择射精位置一览～
+	PRINTFORML  　请点击选择部位
+	PRINTFORML  [ 0] 射在口中或胸部的调教指令：　　　　　　%TEXTS("射精的地方之表示", 92)%
+	PRINTFORML  [ 1] 在手上射精的调教指令：　　　　　　　　%TEXTS("射精的地方之表示", 93)%
+	PRINTFORML  [ 2] 在阴道内射精的指令：  　　　　　　　　%TEXTS("射精的地方之表示", 94)%
+	PRINTFORML  [ 3] 在肛内射精的调教指令：    　　　　　　%TEXTS("射精的地方之表示", 95)%
+	PRINTFORML  [ 4] 足交或素股等在身上射精的调教指令：  　%TEXTS("射精的地方之表示", 96)%
+	PRINTFORML  [ 7] 在射精时一律"直接在对应部位射精"
+	PRINTFORML  [ 8] 射精后是否解除插入：          　　　　\@ GETBIT(FLAG:91, 1) ? 不拔出 # 偶尔拔出 \@
+	PRINTFORML  [ 9] 设定好了
+
+	CALL ONEINPUT_SELECT, 5, 7, 8, 9
+
+	SELECTCASE RESULT
+	CASE 9
+		IF ALLSAMES(20, FLAG:92, FLAG:93, FLAG:94, FLAG:95, FLAG:96)
+			CLEARBIT FLAG:91, 0
+			PRINTW 设定为总是直接射精
+		ELSE
+			SETBIT FLAG:91, 0
+		ENDIF
+		RETURN 1
+	CASE 7
+		FOR LCOUNT, 92, 97
+			FLAG:LCOUNT = 20
+		NEXT
+	CASE 8
+		INVERTBIT FLAG:91, 1
+	CASE 0 TO 4
+		LOCAL = RESULT + 92
+		PRINTL 请选择自动射精的位置
+		PRINTL [ 0] 每次射精时选择
+		PRINTL [ 1] 头发
+		PRINTL [ 2] 脸
+		PRINTL [ 3] 口
+		PRINTL [ 4] 胸
+		PRINTL [ 5] 腿间
+		PRINTL [ 6] 腹部或屁股
+		PRINTL [20] 直接射精
+		PRINTL [30] 随机
+		PRINTL [40] 如果允许的话自己选择
+		IF ITEM:魔法瓶
+			PRINTL [90] 将精液存入魔法瓶
+			CALL INPUT_SELECT, 7, 20, 30, 40, 90
+		ELSE
+			CALL INPUT_SELECT, 7, 20, 30, 40
+		ENDIF
+		IF RESULT == 0
+			PRINTW ―设定成在射精时进行选择―
+			FLAG:LOCAL = 0
+		ELSEIF RESULT == 1
+			PRINTW ―固定在头发上射精―
+			FLAG:LOCAL = 1
+		ELSEIF RESULT == 2
+			PRINTW ―固定在脸上射精―
+			FLAG:LOCAL = 2
+		ELSEIF RESULT == 3
+			PRINTW ―固定在口中射精―
+			FLAG:LOCAL = 3
+		ELSEIF RESULT == 4
+			PRINTW ―固定在胸部射精―
+			FLAG:LOCAL = 4
+		ELSEIF RESULT == 5
+			PRINTW ―固定在腿间射精―
+			FLAG:LOCAL = 5
+		ELSEIF RESULT == 6
+			PRINTW ―固定在屁股或腹部射精―
+			FLAG:LOCAL = 6
+		ELSEIF RESULT == 20
+			PRINTW ―选择了直接射精―
+			FLAG:LOCAL = 20
+		ELSEIF RESULT == 30
+			PRINTW ―选择在随机部位射精―
+			FLAG:LOCAL = 30
+		ELSEIF RESULT == 40
+			PRINTW ―设定为在可能时进行选择―
+			FLAG:LOCAL = 40
+		ELSEIF RESULT == 90 && ITEM:魔法瓶
+			PRINTW ―设定为储存在魔法瓶中―
+			FLAG:LOCAL = 90
+		ENDIF
+	ENDSELECT
+	RESTART
+CASE "触手設定"
+	PRINTFORML 当前设置如下。请选择要变更的项目
+	PRINTL 
+	PRINTFORM  [ 0] 触手插入　　　　　　　　　　　　
+	IF GETBIT(FLAG:80, 0)
+		PRINTL 自动拔出
+	ELSEIF GETBIT(FLAG:80, 1)
+		PRINTL 随机
+	ELSE
+		PRINTL 保持插入
+	ENDIF
+	PRINTFORM  [ 1] 触手插肛　　　　　　　　　　　　
+	IF GETBIT(FLAG:80, 2)
+		PRINTL 自动拔出
+	ELSEIF GETBIT(FLAG:80, 3)
+		PRINTL 随机
+	ELSE
+		PRINTL 保持插入
+	ENDIF
+	PRINTFORM  [ 2] 触手揉阴　　　　　　　　　　　　
+	IF GETBIT(FLAG:80, 4)
+		PRINTL 不持续刺激
+	ELSEIF GETBIT(FLAG:80, 5)
+		PRINTL 随机
+	ELSE
+		PRINTL 持续刺激
+	ENDIF
+	PRINTFORM  [ 3] 触手蹂躏乳头　　　　　　　　　　
+	IF GETBIT(FLAG:80, 6)
+		PRINTL 不持续刺激
+	ELSEIF GETBIT(FLAG:80, 7)
+		PRINTL 随机
+	ELSE
+		PRINTL 持续刺激
+	ENDIF
+	PRINTFORM  [ 4] 触手搾乳　　　　　　　　　　　　
+	IF GETBIT(FLAG:80, 8)
+		PRINTL 不持续刺激
+	ELSEIF GETBIT(FLAG:80, 9)
+		PRINTL 随机
+	ELSE
+		PRINTL 持续刺激
+	ENDIF
+	PRINTFORM  [ 5] 触手蹂躏阴茎　　　　　　　　　　
+	IF GETBIT(FLAG:80, 10)
+		PRINTL 不持续刺激
+	ELSEIF GETBIT(FLAG:80, 11)
+		PRINTL 随机
+	ELSE
+		PRINTL 持续刺激
+	ENDIF
+	PRINTFORM  [ 6] 触手口辱　　　　　　　　　　　　
+	IF GETBIT(FLAG:80, 12)
+		PRINTL 自动拔出
+	ELSEIF GETBIT(FLAG:80, 13)
+		PRINTL 随机
+	ELSE
+		PRINTL 保持插入
+	ENDIF
+	PRINTFORM  [ 7] 「触手召唤」中的触手是…　　　　
+	IF CONFIG("触手は主人")
+		PRINTL 你自己的变身
+	ELSE
+		PRINTL 被召唤出的东西
+	ENDIF
+	PRINTFORML [100] 取消
+
+	CALL INPUT_SELECT, 8, 100
+
+	IF RESULT == 100
+		RETURN 0
+	ELSEIF RESULT >= 0 && RESULT <= 6
+		LOCAL = RESULT
+		CLEARBIT FLAG:80, LOCAL*2
+		CLEARBIT FLAG:80, LOCAL*2 + 1
+		PRINTL [0] 默认
+		PRINTL [1] 回合结束时解除
+		PRINTL [2] 随机
+		CALL INPUT_SELECT, 3
+		IF RESULT == 1
+			SETBIT FLAG:80, LOCAL*2
+		ELSEIF RESULT == 2
+			SETBIT FLAG:80, LOCAL*2 + 1
+		ENDIF
+	ELSEIF RESULT == 7
+		PRINTFORML [0] 从某处而来的异形触手
+		PRINTFORML [1] %CALLNAME:MASTER%
+		CALL INPUT_SELECT, 2
+		IF RESULT == 1
+			PRINTW 你能够变身成触手了！
+			FLAG:87 = 1
+		ELSEIF RESULT == 0
+			PRINTW 怪物触手是你召唤出来的东西
+			FLAG:87 = 0
+		ENDIF
+	ENDIF
+	RESTART
+CASE "换装設定"
+	REDRAW 0
+	PRINTFORML 当前设置如下(○表示默认选项已经变更)
+	PRINTFORML 请选择要变更的内容
+	PRINTL 
+	PRINTFORM  [ 0] \@ FLAG:200 ? ○ # － \@ %TEXT_LJ("调教終了时之服装", 30)%
+	SELECTCASE FLAG:200
+	CASE 0
+		PRINTL 恢复本人的衣装
+	CASE 1
+		PRINTL 维持调教结束时的姿态
+	CASE 2
+		PRINTL 穿着指定的服装搭配
+	CASE 3
+		PRINTL 穿着任一服装搭配
+	CASE 4
+		PRINTL 若服装过于单薄则换回原来的服装
+	ENDSELECT
+	PRINTFORM  [ 1] \@ FLAG:201 ? ○ # － \@ %TEXT_LJ("靴や手套之表記", 30)%
+	SELECTCASE FLAG:201
+	CASE 0
+		PRINTL 总是显示
+	CASE 1
+		PRINTL 不显示
+	CASE 2
+		PRINTL 只在接近全裸时显示
+	ENDSELECT
+	PRINTFORM  [ 2] \@ FLAG:202 ? ○ # － \@ %TEXT_LJ("室内や屋外で之靴之扱い", 30)%
+	SELECTCASE FLAG:202
+	CASE 0
+		PRINTL 不脱鞋
+	CASE 1
+		PRINTL 进入室内时脱掉
+	ENDSELECT
+	PRINTFORML  [ 3] \@ FLAG:203 ? ○ # － \@ %TEXT_LJ("让梦魇自由决定胖次", 30)%
+	PRINTFORML  [ 4] \@ GETBIT(FLAG:204, 0) ? ○ # － \@ %TEXT_LJ("禁止自动脱衣", 30)%
+	PRINTFORML  [ 5] \@ GETBIT(FLAG:204, 1) ? ○ # － \@ %TEXT_LJ("不表示颜色细节", 30)%
+	PRINTFORML  [ 6] \@ GETBIT(FLAG:204, 2) ? ○ # － \@ %TEXT_LJ("内衣不外露时不表示", 30)%
+	PRINTFORML  [ 7] \@ GETBIT(FLAG:204, 3) ? ○ # － \@ %TEXT_LJ("穿着胖次时自动搭配文胸", 30)%
+
+	PRINTFORML [100] 返回
+
+	CALL INPUT_SELECT, 8, 100
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		PRINTL 　　调教结束后是否改变着装？
+		PRINTL [ 0] 恢复本人的衣装
+		PRINTL [ 1] 维持调教结束时的姿态
+		PRINTL [ 2] 穿着指定的服装搭配
+		PRINTL [ 3] 随机穿着服装搭配
+		PRINTL [ 4] 未穿着外套或连身服时，换回本人的衣服
+		CALL INPUT_SELECT, 5
+		SELECTCASE RESULT
+		CASE 2
+			PRINTFORML 如果指定了昼间、夜间的服装搭配则对应穿着。
+			PRINTFORMW 如果没有指定的话则穿着０号栏位的服装搭配。
+		ENDSELECT
+		FLAG:200 = RESULT
+	CASE 1
+		PRINTL 　　鞋子和手套如何显示？
+		PRINTL [ 0] 总是显示
+		PRINTL [ 1] 不显示
+		PRINTL [ 2] 如果只穿着鞋袜或手套，则显示
+		CALL INPUT_SELECT, 3
+		FLAG:201 = RESULT
+	CASE 2
+		PRINTL 　　进出室外时穿脱鞋子吗？
+		PRINTL [ 0] 不作指示
+		PRINTL [ 1] 调教开始时以及从野外归来时脱鞋
+		CALL INPUT_SELECT, 2
+		FLAG:202 = RESULT
+	CASE 3
+		INVERTBIT FLAG:203, 0
+	CASE 4
+		INVERTBIT FLAG:204, 0
+	CASE 5
+		INVERTBIT FLAG:204, 1
+	CASE 6
+		INVERTBIT FLAG:204, 2
+	CASE 7
+		INVERTBIT FLAG:204, 3
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "日常"
+	PRINTL 　　在何时发生日常事件？
+	PRINTL [0] 仅在休息时
+	PRINTL [1] 每当时间经过时
+	PRINTL [2] 不发生
+	CALL INPUT_SELECT, 3
+	FLAG:205 = RESULT
+	SELECTCASE FLAG:205
+	CASE 0
+		PRINTW 只在休息时发生
+	CASE 1
+		PRINTW 设定为每当时间推进时就会发生
+	CASE 2
+		PRINTW 设定为不发生日常事件
+	ENDSELECT
+CASE "自动喘ぎ"
+	INVERTBIT FLAG:206, 0
+	IF FLAG:206
+		PRINTW 启动自动娇喘引擎
+	ELSE
+		PRINTW 没有口上文件时不会开口说话
+	ENDIF
+CASE "阴毛と腋毛"
+	REDRAW 0
+	PRINTFORML 进行阴毛和%TEXTS("腋")%毛的设定
+	PRINTFORML 请指定开始长毛的年龄段
+	PRINTFORML 注意不长阴毛的人物是不会长%TEXTS("腋")%毛的
+	PRINTFORML （注：设定为OFF时，会将所有的阴毛和%TEXTS("腋")%毛FLAG初始化！）
+	PRINTFORM  阴毛的设定：
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF CONFIG("阴毛と腋毛") == 0
+		PRINTL ＯＦＦ
+	ELSE
+		IF GETBIT(FLAG:207, 3)
+			PRINT ：只有成人会长
+		ELSEIF GETBIT(FLAG:207, 2)
+			PRINT ：只有大姐姐和成人
+		ELSEIF GETBIT(FLAG:207, 1)
+			PRINT ：只有小孩子不会长
+		ELSEIF GETBIT(FLAG:207, 0)
+			PRINT ：所有人
+		ENDIF
+		PRINTFORML ＆\@ CONFIG("腋毛") ? 有 # 无 \@%TEXTS("腋")%毛
+	ENDIF
+	RESETCOLOR
+	PRINTFORML  [ 0] 所有人长毛
+	PRINTFORML  [ 1] 小孩子：×　少女：○　大姐姐：○　成年人：○
+	PRINTFORML  [ 2] 小孩子：×　少女：×　大姐姐：○　成年人：○
+	PRINTFORML  [ 3] 小孩子：×　少女：×　大姐姐：×　成年人：○
+	SIF CONFIG("阴毛と腋毛")
+		PRINTFORML  [10] \@ CONFIG("腋毛") ? ○ # － \@ %TEXTS("腋")%毛之有无
+	PRINTFORML  [99] OFF
+	PRINTFORML [100] 返回
+
+	CALL INPUT_SELECT, 4, 10, 99, 100
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 99
+		LOCAL = 0
+		FOR LCOUNT, 1, CHARANUM
+			SIF BASE:LCOUNT:阴毛 == 0
+				CONTINUE
+			LOCAL = 1
+			BREAK
+		NEXT
+		IF LOCAL
+			PRINTFORML 确定要将阴毛和%TEXTS("腋")%毛的FLAG状态初始化吗？
+			PRINTFORML [ 0] 对
+			PRINTFORML [ 1] 还是算了
+			CALL INPUT_SELECT, 2
+			SIF RESULT == 1
+				RESTART
+		ENDIF
+		PRINTW 将阴毛与%TEXTS("腋")%毛设定为了OFF
+		FLAG:207 = 0
+		CALL SETFLAG, "已将阴毛与腋毛设定初始化"
+		REDRAW 1
+		RETURN 0
+	CASE 0 TO 3
+		CLEARBIT FLAG:207, 0
+		CLEARBIT FLAG:207, 1
+		CLEARBIT FLAG:207, 2
+		CLEARBIT FLAG:207, 3
+		SETBIT FLAG:207, RESULT
+	CASE 10
+		SIF CONFIG("阴毛と腋毛")
+			INVERTBIT FLAG:207, 10
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+
+CASE "孕娠"
+	REDRAW 0
+	PRINTFORML ～孕娠补丁的设定状况一览～
+	PRINTFORML 请选择要变更的内容
+	PRINTFORML （注意：若将孕娠补丁设置为OFF，有关孕娠的FLAG将被冻结！）
+	PRINTFORML  [ 0] \@ GETBIT(FLAG:211, 0) ? ○ # － \@ 孕娠补丁
+	PRINTFORML  [ 1] \@ GETBIT(FLAG:211, 1) ? ○ # － \@ 只能通过玩家的精子孕娠
+	PRINTFORML  [ 2] \@ GETBIT(FLAG:211, 2) ? ○ # － \@ 玩家孕娠
+	PRINTFORML  [ 3] \@ GETBIT(FLAG:211, 3) ? ○ # － \@ 可在调教之外的场景受孕，如夜袭等
+	PRINTFORML  [ 4] \@ GETBIT(FLAG:211, 4) ? ○ # － \@ 女儿的胸部发育（要点：对胸部施加刺激）
+	PRINTFORML  [ 5] \@ GETBIT(FLAG:211, 5) ? ○ # － \@ 史莱姆在发觉孕娠的同时分裂
+	PRINTFORML  [ 6] \@ GETBIT(FLAG:211, 6) ? ○ # － \@ 在中出时受精几率增加
+	PRINTFORML [100] 设定好了
+
+	CALL INPUT_SELECT, 7, 100
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 1
+	CASE 0
+		IF FLAG:211
+			FLAG:211 = 0
+		ELSE
+			FLAG:211 = 1
+		ENDIF
+	CASE 1
+		INVERTBIT FLAG:211, 1
+		SIF GETBIT(FLAG:211, 1)
+			CLEARBIT FLAG:211, 2
+	CASE 2
+		INVERTBIT FLAG:211, 2
+		SIF GETBIT(FLAG:211, 2)
+			CLEARBIT FLAG:211, 1
+	CASEELSE
+		INVERTBIT FLAG:211, RESULT
+	ENDSELECT
+	SIF FLAG:211
+		SETBIT FLAG:211, 0
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "内部データ之表示"
+	INVERTBIT FLAG:217, 0
+	IF FLAG:217
+		PRINTW 会显示详细数值
+	ELSE
+		PRINTW 把内部数值隐藏起来了
+	ENDIF
+CASE "助手对象之恋慕口上設定"
+	INVERTBIT FLAG:218, 0
+	IF FLAG:218
+		PRINTW 助手实施调教时不体现恋慕属性
+	ELSE
+		PRINTW 在助手实施调教时同样使用恋慕口上
+	ENDIF
+CASE "难易度"
+	PRINTL 　　使用那种难度？
+	PRINTL [ 0] NORMAL
+	PRINTL [ 1] EASY
+	PRINTL [ 2] HARD？
+	CALL INPUT_SELECT, 3
+	IF RESULT == 0
+		PRINTW 使用通常难度
+	ELSEIF RESULT == 1
+		PRINTW 不只是能力升级与恋慕取得条件，其他方面也会变得更为简单
+	ELSEIF RESULT == 2
+		PRINTFORMW 梦魇们的技巧等部分能力会自动升级，其他方面难度也会提高
+		PRINTFORMW 相对地，%NAME:MASTER%的精力与回復量等也会有所上升
+	ENDIF
+	FLAG:220 = RESULT
+CASE "召唤事故"
+	REDRAW 0
+	LOCAL = FLAG:221
+	PRINTFORML 当前设置如下。请进行详细设置。
+	PRINTFORML  [ 0] \@ CONFIG("召唤事故") ? ○ # － \@ 发生召唤事故
+	PRINTFORML  [ 1] \@ CONFIG("召唤事故：独特") ? ○ # － \@ 特殊角色的召唤事故
+	PRINTFORML  [ 2] \@ CONFIG("召唤事故：扶她") ? ○ # － \@ 女性角色扶她化事故
+	PRINTFORML  [ 3] \@ CONFIG("召唤事故：男孩子？") ? ○ # － \@ 女性角色男孩子化事故（仅限少女以下年龄层）
+	PRINTFORML [100] 这样就行了
+	CALL INPUT_SELECT, 4, 100
+	SELECTCASE RESULT
+	CASE 100
+		IF CONFIG("召唤事故") == 0
+			PRINTFORML 不发生召唤事故
+		ELSE
+			IF CONFIG("召唤事故：独特")
+				PRINTFORML 设定一切角色在召唤时可能发生事故
+				PRINTFORML 设定上身经百战的角色居然是处女，这种时候请不要吐槽喔
+			ELSE
+				PRINTFORML 除了特殊角色之外都可能发生召唤事故
+			ENDIF
+			LOCALS = \@ CONFIG("召唤事故：扶她") ? 扶她 # \@
+			SIF CONFIG("召唤事故：男孩子？")
+				LOCALS = %LOCALS%\@ CONFIG("召唤事故：扶她") ? 及び # \@男孩子？
+			IF LOCALS != ""
+				PRINTFORML 此外女性角色可能发生%LOCALS%化事故
+				PRINTFORML 如果有违和感的话还请多包涵
+			ENDIF
+		ENDIF
+		WAIT
+		REDRAW 1
+		RETURN 0
+	CASE 0 TO 3
+		INVERTBIT FLAG:221, RESULT
+	ENDSELECT
+	IF GETBIT(LOCAL, 0) && GETBIT(FLAG:221, 0) == 0
+		FLAG:221 = 0
+	ELSEIF GETBIT(LOCAL, 0) == 0 && FLAG:221
+		SETBIT FLAG:221, 0
+	ENDIF
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "精强术即使没有也大量射精"
+	INVERTBIT FLAG:222, 0
+	IF FLAG:222
+		PRINTW 就算没有精强术的BUFF也会射好多
+	ELSE
+		PRINTW 没有精强术可没法射那么多
+	ENDIF
+CASE "恍惚状态"
+	PRINTL 　　陷入恍惚状态的时候会任凭梦魇处置吗？
+	PRINTL 　　（具体来说，一旦恍惚，就会让梦魇自己选择指令。）
+	PRINTL [0] 好
+	PRINTL [1] 不要
+	CALL INPUT_SELECT, 2
+	IF RESULT == 0
+		PRINTW 请当心不要被过量榨精
+		FLAG:223 = 1
+	ELSEIF RESULT == 1
+		FLAG:223 = 0
+	ENDIF
+CASE "表示人数"
+	REDRAW 0
+	PRINTFORML 如下，请设定每页的显示人数，以及区分辈分显示功能的ON/OFF。
+	PRINTFORML 
+	PRINTFORM  [ 0] \@ CONFIG("表示人数") ? ○ # － \@ 变更显示人数
+	SIF CONFIG("表示人数")
+		PRINTFORM ：{CONFIG("表示人数")}人
+	PRINTL 
+	PRINTFORML  [ 1] \@ CONFIG("世代别表示") ? ○ # － \@ 区分辈分
+	PRINTFORML [100] 更改完毕
+
+	CALL INPUT_SELECT, 2, 100
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		PRINTL 每１页上显示多少人？？
+		PRINTL 　 [ 0] 显示所有人
+		PRINTL [1～99] 每１页上显示输入的人数
+		PRINTL 　[100] 返回
+
+		CALL INPUT_SELECT, 101
+
+		SELECTCASE RESULT
+		CASE 0
+			FLAG:225 = 0
+			PRINTFORMW 一口气显示出所有人
+		CASE 1 TO 99
+			FLAG:225 = RESULT
+			PRINTFORMW 每１页显示{FLAG:225}人
+		ENDSELECT
+	CASE 1
+		INVERTBIT FLAG:237, 0
+		SIF CONFIG("世代别表示")
+			PRINTW 可以选择只显示子女或只显示父母
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "对象之梦魇化"
+	REDRAW 0
+	PRINTFORML 设定调教对象梦魇化的条件
+	PRINTFORML 当前设置如下。请进行详细设定。
+	PRINTFORML  [ 0] \@ CONFIG("对象之梦魇化") ? ○ # － \@ 允许发生梦魇化事件
+	PRINTFORML  [ 1] \@ CONFIG("对象之梦魇化：男") ? ○ # － \@ 性别男角色的梦魇化
+	PRINTFORML  [ 2] \@ CONFIG("对象之梦魇化：女体化") ? ○ # － \@ 梦魇化的同时女体化
+	PRINTFORML [100] 这样就行了
+	CALL INPUT_SELECT, 3, 100
+	SELECTCASE RESULT
+	CASE 100
+		IF CONFIG("对象之梦魇化")
+			PRINTFORMW 若玩家为梦魇且调教对象不是梦魇，对象体力或精力减为０时会变成梦魇
+			PRINTFORMW ※调教对象的梦魇化\@ CONFIG("对象之梦魇化：女体化") ? 以及女体化 # \@是不能撤销的。请有计划地实施调教
+		ELSE
+			PRINTFORMW 设定为不发生梦魇化
+		ENDIF
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		INVERTBIT FLAG:226, RESULT
+		SIF CONFIG("对象之梦魇化") == 0
+			FLAG:226 = 0
+	CASE 1
+		INVERTBIT FLAG:226, RESULT
+		IF CONFIG("对象之梦魇化：男")
+			SETBIT FLAG:226, 0
+		ELSE
+			CLEARBIT FLAG:226, 2
+		ENDIF
+	CASE 2
+		INVERTBIT FLAG:226, RESULT
+		IF CONFIG("对象之梦魇化：女体化")
+			SETBIT FLAG:226, 0
+			SETBIT FLAG:226, 1
+		ENDIF
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "主人・助手之梦魇化"
+	REDRAW 0
+	PRINTFORML 设定主人及助手梦魇化的条件
+	PRINTFORML 当前设置如下。请进行详细设定。
+	PRINTFORML  [ 0] \@ CONFIG("主人・助手之梦魇化") ? ○ # － \@ 允许梦魇化事件发生
+	PRINTFORML  [ 1] \@ CONFIG("主人・助手之梦魇化：男") ? ○ # － \@ 性别男角色的梦魇化
+	PRINTFORML  [ 2] \@ CONFIG("主人・助手之梦魇化：女体化") ? ○ # － \@ 梦魇化的同时女体化
+	PRINTFORML  [ 3] \@ CONFIG("主人・助手之梦魇化：取消") ? ○ # － \@ 允许取消梦魇化
+	PRINTFORML [100] 这样就行了
+	CALL INPUT_SELECT, 4, 100
+	SELECTCASE RESULT
+	CASE 100
+		IF CONFIG("主人・助手之梦魇化")
+			PRINTFORMW 调教对象为梦魇且主人或助手不是梦魇时，主人或助手的精力变为０则会变成梦魇
+			PRINTFORM ※主人・助手的梦魇化\@ CONFIG("主人・助手之梦魇化：女体化") ? 及女体化 # \@
+			IF CONFIG("主人・助手之梦魇化：取消")
+				PRINTW 可以取消
+			ELSE
+				PRINTL 无法取消！
+				PRINTW 请有计划地实施（逆）调教
+			ENDIF
+		ELSE
+			PRINTFORMW 将主人和助手设定为不会发生梦魇化
+		ENDIF
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		INVERTBIT FLAG:227, RESULT
+		SIF CONFIG("主人・助手之梦魇化") == 0
+			FLAG:227 = 0
+	CASE 1
+		INVERTBIT FLAG:227, RESULT
+		IF CONFIG("主人・助手之梦魇化：男")
+			SETBIT FLAG:227, 0
+		ELSE
+			CLEARBIT FLAG:227, 2
+		ENDIF
+	CASE 2
+		INVERTBIT FLAG:227, RESULT
+		IF CONFIG("主人・助手之梦魇化：女体化")
+			SETBIT FLAG:227, 0
+			SETBIT FLAG:227, 1
+		ENDIF
+	CASE 3
+		INVERTBIT FLAG:227, RESULT
+		SIF CONFIG("主人・助手之梦魇化：取消")
+			SETBIT FLAG:227, 0
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "梦魇化时之特征变化"
+	PRINTL 对梦魇化时的变化进行设定
+	PRINTFORML 除了少数个例之外，只有「本来不是梦魇的角色」能够在梦魇化时改变外观
+	PRINTL [0] 没有变化
+	PRINTL [1] 只有外表发生变化
+	PRINTL [2] 除了外表之外，性格也受到影响
+	CALL INPUT_SELECT, 3
+	FLAG:242 = RESULT
+	IF RESULT == 0
+		PRINTW 即使梦魇化也不会受到影响
+	ELSEIF RESULT == 1
+		PRINTW 梦魇化时，外表受到影响
+	ELSEIF RESULT == 2
+		PRINTW 梦魇化时，外表与内在都受到影响
+	ENDIF
+CASE "录像売却之選択"
+	PRINTL 売却录像带时是否显示选项？
+	PRINTL 若显示选项时选择不売却录像带，
+	PRINTL 就可以让特定的梦魇把录像带递送给某个角色
+	PRINTL [0] 好的
+	PRINTL [1] 不要
+	CALL INPUT_SELECT, 2
+	FLAG:261 = !RESULT
+	PRINTFORMW 调教结束后\@ FLAG:261 ? 选择是否売却录影带 # 自动出售录影带 \@。
+CASE "３サイズ"
+	REDRAW 0
+	PRINTFORML 设定三围、身高以及巨乳的显示上限。
+	PRINTFORML 巨乳的显示上限是根据三围计算的，因此若设置[ 0]为OFF则无法发挥作用。
+	PRINTFORML 当前设置如下。请进行详细设定。
+	PRINTFORML  [ 0] \@ CONFIG("３サイズ：表示") ? ○ # － \@ 显示三围和身高
+	SIF CONFIG("３サイズ：表示") == 0
+		SETCOLOR DEF_COLOR("灰色")
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {1, 2} # × \@] \@ CONFIG("３サイズ：Ｆ") ? ○ # － \@ Ｅ～Ｆ罩杯为巨乳
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {2, 2} # × \@] \@ CONFIG("３サイズ：Ｇ") ? ○ # － \@ Ｅ～Ｇ罩杯为巨乳
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {3, 2} # × \@] \@ CONFIG("３サイズ：Ｈ") ? ○ # － \@ Ｅ～Ｈ罩杯为巨乳
+	RESETCOLOR
+	PRINTFORML [100] 返回
+
+	IF CONFIG("３サイズ：表示")
+		CALL INPUT_SELECT, 4, 100
+	ELSE
+		CALL INPUT_SELECT, 1, 100
+	ENDIF
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		INVERTBIT FLAG:239, 0
+		IF CONFIG("３サイズ：表示")
+			SETBIT FLAG:239, 1
+			PRINTFORML 请继续设定巨乳的上限
+			PRINTFORMW 默认设定Ｅ～Ｆ罩杯为巨乳
+		ELSE
+			FLAG:239 = 0
+		ENDIF
+	CASE 1 TO 3
+		FLAG:239 = 1
+		SETBIT FLAG:239, RESULT
+	ENDSELECT
+
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "相思相爱"
+	REDRAW 0
+	PRINTFORML 设置素質：『相思相爱』的处理方式。
+	PRINTFORML 请选择要变更的项目：
+	PRINTFORML 
+	PRINTFORM  [ 0] 能够相思相爱的人数\@ITEM:誓約之指环 >= 2 ?（变更不可！）# %BL(14)% \@　　　　　　　
+	IF CONFIG("相思相爱：人数限制无")
+		PRINTFORML 爱是没有限制的
+	ELSE
+		PRINTFORML 只有一人
+	ENDIF
+	PRINTFORM  [ 1] 相思相爱角色的夜袭事件处理　
+	IF CONFIG("相思相爱：主动夜袭限制")
+		PRINTFORML 只允许相思相爱角色夜袭
+	ELSE
+		PRINTFORML 不加限制
+	ENDIF
+	PRINTFORML [100] 完成
+	CALL INPUT_SELECT, 2, 100
+	IF RESULT == 100
+		REDRAW 1
+		RETURN 0
+	ELSEIF RESULT == 0 && ITEM:誓約之指环 < 2
+		INVERTBIT FLAG:241, 0
+	ELSEIF RESULT == 1
+		INVERTBIT FLAG:241, 1
+	ENDIF
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "探索ボス"
+	INVERTBIT FLAG:245, 0
+	IF CONFIG(ARGS)
+		PRINTFORMW 据说，世界上相同长相的人是３人一组来着
+	ELSE
+		PRINTFORMW 不会出现二重身
+	ENDIF
+CASE "経験表示詰め"
+	INVERTBIT FLAG:250, 0
+	IF CONFIG(ARGS)
+		PRINTFORMW 隐藏未获得経験
+	ELSE
+		PRINTFORMW 提示可能取得的経験
+	ENDIF
+CASE "恋慕と淫乱之任意獲得"
+	INVERTBIT FLAG:251, 0
+	IF CONFIG(ARGS)
+		PRINTFORMW 满足条件时，可在升级画面中选取
+	ELSE
+		PRINTFORMW 恋爱的龙卷风横扫一切！（满足条件时自动获得）
+	ENDIF
+CASE "ＶＡ详细表示"
+	REDRAW 0
+	PRINTFORML 设定Ｖ与Ａ的扩张度／名器度的显示
+	PRINTFORML 当前设置如下。请进行详细设定。
+	IF GETBIT(FLAG:11, 0) == 0
+		PRINTFORM （通过[ 1]设置为手动提升扩张等级时、
+		CALL PRINT_COLORTEXT, "只限一次", DEF_COLOR("黄色")
+		PRINTFORML 可以初始化所有人物的ＶＡ扩张等级）
+	ENDIF
+	PRINTFORML  [ 0] \@ CONFIG("ＶＡ详细表示") ? ○ # － \@ 详细显示（会出现在人物的能力页面）
+	PRINTFORML  [\@ CONFIG("ＶＡ详细表示") ? {1, 2} # × \@] \@ CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") ? ○ # － \@ 手动提升Ｖ扩张度和Ａ扩张度等级（前提是设置为详细显示）
+	PRINTFORML [100] 返回
+
+	IF CONFIG("ＶＡ详细表示")
+		CALL INPUT_SELECT, 2, 100
+	ELSE
+		CALL INPUT_SELECT, 1, 100
+	ENDIF
+
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 0
+		INVERTBIT FLAG:254, 0
+		SIF CONFIG("ＶＡ详细表示") == 0
+			FLAG:254 = 0
+	CASE 1
+		INVERTBIT FLAG:254, 1
+		;たった一度之初期化
+		IF CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") && GETBIT(FLAG:11, 0) == 0
+			PRINTFORML 将所有人物的Ｖ扩张度和Ａ扩张度初始化吗？
+			PRINTFORML 只能初始化一次，请想清纯
+			PRINTFORML [ 0] 是的
+			PRINTFORML [ 1] 算了
+			CALL INPUT_SELECT, 2
+			IF RESULT == 0
+				FOR LCOUNT, 1, CHARANUM
+					ABL:LCOUNT:Ｖ扩张 = 0
+					ABL:LCOUNT:Ａ扩张 = 0
+					CALL GET_EXABL2, LCOUNT
+				NEXT
+				SETBIT FLAG:11, 0
+			ENDIF
+		;自动ＬＶを選んだなら早速ＬＶＵＰ
+		ELSEIF CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") == 0
+			FOR LCOUNT, 1, CHARANUM
+				ABL:LCOUNT:Ｖ扩张 = CALCF("Ｖ扩张之上限", LCOUNT)
+				ABL:LCOUNT:Ａ扩张 = CALCF("Ａ扩张之上限", LCOUNT)
+			NEXT
+		ENDIF
+	ENDSELECT
+
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "咖啡屋"
+	INVERTBIT FLAG:258, 0
+	IF CONFIG(ARGS)
+		PRINTW 不发生Ｅｖｅｎｔ
+	ELSE
+		PRINTW Ｅｖｅｎｔ随时间发生
+	ENDIF
+CASE "寝取られ"
+	INVERTBIT FLAG:262, 0
+	IF CONFIG(ARGS)
+		PRINTFORMW 和龙睡得太多了，没准就被龙睡走了
+		PRINTFORMW 不过就算被睡走了，只要努力就能睡回来
+	ELSE
+		PRINTFORMW 牛头人什么的才不要呢！
+		PRINTFORMW 注意，如果已经被睡走了，在这个设置下无法睡回来。
+	ENDIF
+CASE "阴茎详细設定"
+	PRINTL 详细设定阴茎相关
+	CALL SETCONFIG, "阴茎详细設定：汎用"
+	IF FLAG:263 == 0
+		PRINTFORMW 有时候，没有特征才方便代入
+		RETURN 0
+	ENDIF
+	SIF TALENT:MASTER:阴茎 == 0
+		CALL SETCONFIG, "阴茎详细設定：主人"
+	;实際之数值を決定
+	CALL SETFLAG, "阴茎详细設定"
+	PRINTFORMW 那么，请好好使用哦
+CASE "阴茎详细設定：汎用"
+	REDRAW 0
+	PRINTFORML 请设定以下几类人物的阴茎属性倾向
+	PRINTFORML 随机生成人物属性时，会反映出此处设定的倾向
+	PRINTFORML 不过，儿子之类的正太角色默认会有较小的尺寸以及包皮倾向
+	PRINTFORML （注意：越大越好不是真的！）
+	FOR LCOUNT, 0, 3
+		SELECTCASE LCOUNT
+		CASE 0
+			PRINT 　　扶她：
+		CASE 1
+			PRINT 　　性别男：
+		CASE 2
+			PRINT 　　伪娘：
+		ENDSELECT
+
+		LOCAL = LCOUNT * 10
+
+		PRINTPLAINFORM 大小…
+		SETCOLOR DEF_COLOR("暗黄色")
+		IF GETBIT(FLAG:263, LOCAL + 3)
+			PRINTPLAIN 马尺寸
+		ELSEIF GETBIT(FLAG:263, LOCAL + 2)
+			PRINTPLAIN 巨根
+		ELSEIF GETBIT(FLAG:263, LOCAL + 1)
+			PRINTPLAIN 短小
+		ELSE
+			PRINTPLAIN 普通
+		ENDIF
+		RESETCOLOR
+		PRINTFORML 　[{LOCAL, 2}]普通　[{LOCAL + 1, 2}]短小　[{LOCAL + 2, 2}]巨根　[{LOCAL + 3, 2}]马尺寸
+		PRINTFORM 　　　　　包皮…
+		SETCOLOR DEF_COLOR("暗黄色")
+		IF GETBIT(FLAG:263, LOCAL + 7)
+			PRINTPLAIN 真性
+		ELSEIF GETBIT(FLAG:263, LOCAL + 6)
+			PRINTPLAIN 假性
+		ELSE
+			PRINTPLAIN 卷起
+		ENDIF
+		RESETCOLOR
+		PRINTFORML 　[{LOCAL + 5, 2}]卷起　[{LOCAL + 6, 2}]假性　[{LOCAL + 7, 2}]真性
+	NEXT
+	PRINTFORML  [99] 不使用详细设定
+	PRINTFORML [100] 这就行了\@ (TALENT:MASTER:阴茎 == 0 && FLAG:5) ? （接下来进行%NAME:MASTER%的阴茎设置）# \@
+	CALL INPUT_SELECT, 101
+	SELECTCASE RESULT
+	CASE 100
+		SETBIT FLAG:263, 0
+		REDRAW 1
+		RETURN 0
+	CASE 99
+		FLAG:263 = 0
+		REDRAW 1
+		RETURN 0
+	CASE 0 TO 3
+		FLAG:263 = CLEARBITS(FLAG:263, 1, 3)
+		SETBIT FLAG:263, RESULT
+	CASE 5 TO 7
+		FLAG:263 = CLEARBITS(FLAG:263, 6, 7)
+		SETBIT FLAG:263, RESULT
+	CASE 10 TO 13
+		FLAG:263 = CLEARBITS(FLAG:263, 11, 13)
+		SETBIT FLAG:263, RESULT
+	CASE 15 TO 17
+		FLAG:263 = CLEARBITS(FLAG:263, 16, 17)
+		SETBIT FLAG:263, RESULT
+	CASE 20 TO 23
+		FLAG:263 = CLEARBITS(FLAG:263, 21, 23)
+		SETBIT FLAG:263, RESULT
+	CASE 25 TO 27
+		FLAG:263 = CLEARBITS(FLAG:263, 26, 27)
+		SETBIT FLAG:263, RESULT
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "阴茎详细設定：主人"
+	REDRAW 0
+	TALENT:MASTER:阴茎 = MAX(TALENT:MASTER:阴茎, 1)
+	PRINTFORML 请决定%NAME:MASTER%的阴茎属性
+	SIF PENIS(MASTER) == 0
+		PRINTFORML （虽然眼下是没有，不过请假设如果有的话会是怎样的）
+	PRINTFORM 大小为…
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF GETBIT(TALENT:MASTER:阴茎, 3)
+		PRINTPLAIN 马尺寸
+	ELSEIF GETBIT(TALENT:MASTER:阴茎, 2)
+		PRINTPLAIN 巨根
+	ELSEIF GETBIT(TALENT:MASTER:阴茎, 1)
+		PRINTPLAIN 短小
+	ELSEIF GETBIT(TALENT:MASTER:阴茎, 0)
+		PRINTPLAIN 普通
+	ENDIF
+	RESETCOLOR
+	PRINTFORML 　[ 0]普通　[ 1]短小　[ 2]巨根　[ 3]马尺寸
+	PRINTFORM 包皮是…
+	SETCOLOR DEF_COLOR("暗黄色")
+	IF GETBIT(TALENT:MASTER:阴茎, 12)
+		PRINTPLAIN 真性
+	ELSEIF GETBIT(TALENT:MASTER:阴茎, 11)
+		PRINTPLAIN 假性
+	ELSE
+		PRINTPLAIN 没有
+	ENDIF
+	RESETCOLOR
+	PRINTFORML 　[10]没有　[11]假性　[12]真性
+	PRINTFORML [100] 好了
+	CALL INPUT_SELECT, 101
+	SELECTCASE RESULT
+	CASE 100
+		REDRAW 1
+		RETURN 0
+	CASE 0 TO 3
+		TALENT:MASTER:阴茎 = CLEARBITS(TALENT:MASTER:阴茎, 0, 3)
+		SETBIT TALENT:MASTER:阴茎, RESULT
+	CASE 10 TO 12
+		TALENT:MASTER:阴茎 = CLEARBITS(TALENT:MASTER:阴茎, 11, 12)
+		SIF RESULT > 10
+			SETBIT TALENT:MASTER:阴茎, RESULT
+	ENDSELECT
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+CASE "限制时间撤废"
+	INVERTBIT FLAG:265, 0
+	IF CONFIG(ARGS)
+		PRINTW 妈妈再也不用担心我被逆推
+	ELSE
+		PRINTW 惊险刺激，很好
+	ENDIF
+CASE "日付固定事件再现"
+	INVERTBIT FLAG:266, 0
+	IF CONFIG(ARGS)
+		PRINTL 请注意，1年有120天，所以游戏里的日期和现实中的日期并不一样
+		PRINTW （将现实中的年历压缩为三分之一）
+	ELSE
+		PRINTW 特定日期事件完全参照现实中的日期发生
+	ENDIF
+CASE "乳头奸"
+	INVERTBIT FLAG:267, 0
+	IF CONFIG(ARGS)
+		PRINTW 可以对具有史莱姆或淫乳属性、且胸部为巨乳以上的角色进行乳头奸
+	ELSE
+		PRINTW 乳头扩张什么的是不可能的
+	ENDIF
+CASE "精液灌肠"
+	INVERTBIT FLAG:268, 0
+	IF CONFIG(ARGS)
+		PRINTL 虽然不如灌肠强力，如果在肠内中出太多刺激过度的话…
+		PRINTW 肛交之前最好把里面洗洗干净哦
+		SIF CONFIG("画面表示：排泄欲槽") == 0
+			PRINTW 最好同时在界面显示设置中打开排泄欲的显示
+	ELSE
+		PRINTW 设定精液不具有促进排泄的作用
+	ENDIF
+CASE "独特角色之多重召唤"
+	INVERTBIT FLAG:269, 0
+	IF CONFIG(ARGS)
+		PRINTL 同一特殊人物可召唤不止一名。
+		PRINTW 可能会出现比较奇怪的情形…不过那样也有那样的趣味
+	ELSE
+		PRINTW 特殊人物是独一无二的
+	ENDIF
+CASE "主动夜袭主动朝袭禁止"
+	INVERTBIT FLAG:270, 0
+	IF CONFIG(ARGS)
+		PRINTL 主人房间要上锁，墙壁也进行了改造，无法穿过
+		PRINTW 早晨晚上不会遭到袭击了，但是欲求不满的梦魇也会变多吧…
+	ENDIF
+CASE "台词之名前非表示"
+	INVERTBIT FLAG:273, 0
+	IF CONFIG(ARGS)
+		PRINTW 这样一来，咖啡屋里谁说了什么就很清纯明白了
+		PRINTW ……你说啥？ 有重名的？！
+
+	ELSE
+		PRINTL 在咖啡屋等场合隐去发言者名字！
+	ENDIF
+CASE "一晩开放之事件全表示"
+	INVERTBIT FLAG:274, 0
+	IF CONFIG(ARGS)
+		PRINTL 设定深夜偷吃事件等场合显示所有有关人物的讯息
+		PRINTW 人多的时候会很冗长
+	ELSE
+		PRINTW 夜间外出时仅显示一人的讯息作为代表
+	ENDIF
+CASE "温泉旅行で之NTR"
+	INVERTBIT FLAG:275, 0
+	IF CONFIG(ARGS)
+		PRINTW 欲求不满的时候，会在和主人一同旅行半途中试图NTR你
+	ELSE
+		PRINTW 旅行时禁止NTR
+	ENDIF
+CASE "尿道を扩张し易く"
+	INVERTBIT FLAG:276, 0
+	IF CONFIG(ARGS)
+		PRINTW 尿道的调教相当的容易
+	ELSE
+		PRINTW 尿道调教难度提高也是一种乐趣。
+	ENDIF
+CASE "正太女仆"
+	INVERTBIT FLAG:277, 0
+	IF CONFIG(ARGS)
+		PRINT 男孩子？以外的正太(外表年幼的男孩……显示状态能力之属性是
+		CALL PRINT_COLORTEXT, "[正太]", DEF_COLOR("黄色")
+		PRINTW 显示)可以在咖啡店工作。
+	ELSE
+		PRINTW 在咖啡店工作的男孩或者男孩子？不会出现在你的面前
+	ENDIF
+CASE "气味之表記变更"
+	IF FLAG:278 < 100
+		PRINTFORML 文章中出现的“味道”非词，你喜好变更为
+		PRINTFORM 具体的是、
+		CALL PRINTL_COLORTEXT, "一般认为好的也不好，难以判断的气味", DEF_COLOR("黄色")
+		CALL PRINT_COLORTEXT, "……比如，喜欢的对方的气味和身体的气味，", DEF_COLOR("黄色")
+		PRINTFORML 请选择之表示
+		PRINTFORML （但是，头发的味道，料理之味道等的一般好的香味也在「气味」上固定、
+		PRINTFORMW 　头皮之臭，排泄物之臭等的一般不好的香味儿固定
+		PRINTFORML 
+	ENDIF
+	PRINTFORML 那么，以下请选择
+	PRINTL 
+	PRINTFORML [ 0] 味道
+	PRINTFORML [ 1] 臭味
+	PRINTFORML [ 2] 香味
+	PRINTFORML [ 3] 异味
+
+	CALL INPUT_SELECT, 4
+
+	FLAG:278 = RESULT
+
+	PRINTFORMW %TEXTS("气味")%选择。以下的例子
+	PRINTL 
+	PRINTFORMW 隔着胖次的阴部之%TEXTS("气味")%……
+	PRINTFORMW 潮湿的汗水之%TEXTS("气味")%……
+	PRINTFORMW 从火热的身体发散出的H的%TEXTS("气味")%……
+	PRINTFORMW 从紧凑的阴道口泄露出的、让人想将之推到的诱惑%TEXTS("气味")%……
+	PRINTFORMW 传到鼻子里的阴茎之%TEXTS("气味")%……
+	PRINTFORMW 混杂着淫靡的汗液的%TEXTS("气味")%……
+	PRINTFORMW 对方身上你的旧衣服发出的你的%TEXTS("气味")%……
+	PRINTL 
+	PRINTFORML ……%TEXTS("气味")%可以吗？？
+	PRINTFORML [ 0] 是的
+	PRINTFORML [ 1] 重新考虑
+
+	CALL INPUT_SELECT, 2
+
+	IF RESULT == 0
+		PRINTFORMW 那么请期待吧
+	ELSE
+		FLAG:278 = 100
+		RESTART
+	ENDIF
+CASE "性骚扰禁止"
+	INVERTBIT FLAG:281, 0
+	IF CONFIG(ARGS)
+		PRINTFORML 不可以随意的性骚扰了…但是也可能会有所遗漏
+		PRINTFORMW （基本上是发生活动减少。）
+	ELSE
+		PRINTFORMW %CALLNAME:MASTER%时常深出罪恶的手
+	ENDIF
+
+
+CASE "ボイス"
+	PRINTFORM 现在之設定：
+	IF FLAG:500 == 1
+		PRINTFORML 萝莉
+	ELSEIF FLAG:500 == 2
+		PRINTFORML 年増
+	ELSEIF FLAG:500 == 3
+		PRINTFORML 根据对方自动选择
+	ELSE
+		PRINTFORML 标准
+	ENDIF
+	PRINTL 声質を設定します
+	PRINTL [0] 标准
+	PRINTL [1] 萝莉
+	PRINTL [2] 年増
+	PRINTL [3] 根据对方自动选择
+	CALL INPUT_SELECT, 4
+	FLAG:500 = RESULT
+	IF RESULT == 0
+		PRINT [标准]
+	ELSEIF RESULT == 1
+		PRINT [萝莉]
+	ELSEIF RESULT == 2
+		PRINT [年増]
+	ELSEIF RESULT == 3
+		PRINT [根据对方自动选择]
+	ENDIF
+	PRINTW 設定
+ENDSELECT
+
+@NAME_CONVERT, P, M
+#DIM LCOUNT
+
+CALL SHOW_CHARA_LIST_PRE, "名前变更"
+CALL SHOW_CHARA_LIST, "名前变更", P, M
+
+$INPUT_LOOP
+INPUT
+IF RESULT == 100
+	RETURN 0
+ELSEIF RESULT == 2000 && CONFIG("世代别表示")
+	M = 0
+	P = 0
+	RESTART
+ELSEIF RESULT == 2001 && CONFIG("世代别表示")
+	M += 1
+	P = 0
+	RESTART
+ELSEIF RESULT == 2002 && CONFIG("世代别表示")
+	M -= 1
+	P = 0
+	RESTART
+ELSEIF RESULT >= 1001 && RESULT <= 1000+Q && CONFIG("表示人数") && Q >= 2 && P != RESULT - 1001
+	P = RESULT - 1001
+	RESTART
+ELSEIF RESULT < MASTER || RESULT >= CHARANUM
+	GOTO INPUT_LOOP
+ENDIF
+
+CALL NAME_CONVERT_MAIN, RESULT
+
+RESTART
+
+;選んだ角色はARGに格納されている
+@NAME_CONVERT_MAIN, ARG
+#DIM CHOICE
+#DIMS MEMO_NAME
+#DIMS MEMO_CALLNAME
+#DIMS MEMO_CNAME
+#DIMS MEMO_CNAME_KANA
+
+
+;名前と呼び名を記录
+MEMO_NAME = %NAME:ARG%
+MEMO_CALLNAME = %CALLNAME:ARG%
+
+PRINTL 
+PRINTFORML 改变%NAME:ARG%的哪一项称呼？
+PRINTFORML  [ 0] 改名字（%NAME:ARG%）　　　　    （关系到状态页面等）
+PRINTFORML  [ 1] 改称呼（%CALLNAME:ARG%）　　　（99％以上的场合显示的是这里的名字）
+;PRINTFORML  [ 2] 改昵称（只有一部分人物具有这一项。也没有什么地方会用到）
+IF ARG != MASTER
+	PRINTFORML  [10] 主人的显示用一人称（%CNAMET(ARG, "一人称")%、ふりがな：%CNAMET(ARG, "一人称", "かな")%）变更
+	PRINTFORML  [11] 主人的显示用二人称（%CNAMET(ARG, "二人称")%、ふりがな：%CNAMET(ARG, "二人称", "かな")%）变更
+ENDIF
+PRINTFORML [100] 不改了
+
+IF ARG != MASTER
+	CALL INPUT_SELECT, 2, 10, 11, 100
+ELSE
+	CALL INPUT_SELECT, 2, 100
+ENDIF
+
+CHOICE = RESULT
+
+SELECTCASE CHOICE
+CASE 100
+	PRINTFORMW 回到角色选择画面
+	RETURN 0
+CASE 0
+	PRINTFORML 修改%NAME:ARG%的名字
+	PRINTFORML 请输入最多８个全角字符(16个半角字符)
+	PRINTFORML 不输入而直接回车的话，将不会改变原来的名字。
+	CALL INPUTS_SELECT, 16
+CASE 1
+	PRINTFORML %NAME:ARG%当前的称呼是「%CALLNAME:ARG%」
+	PRINTFORML 请输入最多８个全角字符(16个半角字符)
+	PRINTFORML 不输入而直接回车的话，将不会改变原来的名字。
+	CALL INPUTS_SELECT, 16
+CASE 10
+	PRINTFORML %NAME:ARG%が、主人と話す際之一人称を变更します
+	PRINTFORML 请输入最多15个全角字符(30个半角字符)
+	PRINTL なお、"%CALLNAME:TARGET%酱大人"と呼ばせたいんだという场合には"CALLNAME_TARGET酱大人"と入力してください
+	PRINTFORML 不输入而直接回车的话，将不会改变原来的名字。
+	CALL INPUTS_SELECT, 30
+CASE 11
+	PRINTFORML %NAME:ARG%が、主人と話す際之二人称を变更します
+	PRINTFORML 请输入最多15个全角字符(30个半角字符)
+	PRINTL なお、"%CALLNAME:MASTER%大人"と呼ばせたいんだという场合には"CALLNAME_MASTER大人"と入力してください
+	PRINTFORML 不输入而直接回车的话，将不会改变原来的名字。
+	CALL INPUTS_SELECT, 30
+ENDSELECT
+
+PRINTL 
+SELECTCASE RESULTS
+CASE ""
+	PRINTFORMW 未作改变
+	RESTART
+CASEELSE
+	SELECTCASE CHOICE
+	CASE 0
+		IF RESULTS == MEMO_NAME
+			PRINTFORMW 未作改变
+			RESTART
+		ENDIF
+		NAME:ARG = %RESULTS%
+		PRINTFORMW 把名字改成了%RESULTS%
+	CASE 1
+		IF RESULTS == MEMO_CALLNAME
+			PRINTFORMW 未作改变
+			RESTART
+		ENDIF
+		CALLNAME:ARG = %RESULTS%
+		PRINTFORMW 把称呼改成了%RESULTS%
+	CASE 10
+		IF RESULTS == CEVENTS("一人称主人", ARG)
+			PRINTFORMW 未作改变
+			RESTART
+		ENDIF
+
+		MEMO_CNAME = 一人称主人：%RESULTS%
+		MEMO_CNAME_KANA = 一人称主人かな：%RESULTS%
+
+		;呼び名标志リセット
+		CALL DEL_CEVENT_GROUP_EX, "一人称主人", ARG
+		CALL SET_CEVENT, MEMO_CNAME, ARG
+		PRINTFORMW 和主人说话时的第一人称变更%CNAMET(ARG, "一人称")%
+		PRINTL 
+		PRINTFORML 继续，以假名输入第一人称
+		PRINTFORML （什么都不输入的话%CNAMET(ARG, "一人称")%会使用平假名。）
+		PRINTL 
+		PRINTFORML 全角30文字(半角60文字)以内
+		PRINTL 一人称，"%CALLNAME:TARGET%，同大人に"CALLNAME_TARGET都由你输入
+
+		CALL INPUTS_SELECT, 60
+
+		PRINTL 
+		SIF RESULTS != ""
+			MEMO_CNAME_KANA = 一人称主人かな：%RESULTS%
+
+		CALL SET_CEVENT, MEMO_CNAME_KANA, ARG
+
+		PRINTFORML 和主人说话时的第一人称变更%CNAMET(ARG, "一人称")%、
+		PRINTFORMW 那个注音假名%CNAMET(ARG, "一人称", "かな")%变更
+
+		RESTART
+	CASE 11
+		IF RESULTS == CEVENTS("二人称主人", ARG)
+			PRINTFORMW 未作改变
+			RESTART
+		ENDIF
+
+		MEMO_CNAME = 二人称主人：%RESULTS%
+		MEMO_CNAME_KANA = 二人称主人かな：%RESULTS%
+
+		;呼び名标志リセット
+		CALL DEL_CEVENT_GROUP_EX, "二人称主人", ARG
+		CALL SET_CEVENT, MEMO_CNAME, ARG
+		PRINTFORMW 和主人说话时的第二人称变更%CNAMET(ARG, "二人称")%
+		PRINTL 
+		PRINTFORML 继续，以假名输入第二人称
+		PRINTFORML （什么都不输入的话%CNAMET(ARG, "二人称")%会使用平假名。）
+		PRINTL 
+		PRINTFORML 全角30文字(半角60文字)以内
+		PRINTL 二人称，"%CALLNAME:TARGET%，同大人に"CALLNAME_TARGET都由你输入
+
+		CALL INPUTS_SELECT, 60
+
+		PRINTL 
+		SIF RESULTS != ""
+			MEMO_CNAME_KANA = 二人称主人かな：%RESULTS%
+
+		CALL SET_CEVENT, MEMO_CNAME_KANA, ARG
+
+		PRINTFORML 和主人说话时的第二人称变更%CNAMET(ARG, "二人称")%、
+		PRINTFORMW 那个注音假名%CNAMET(ARG, "二人称", "かな")%变更
+
+		RESTART
+	ENDSELECT
+ENDSELECT
+
+;名前を变えた
+IF NAME:ARG != MEMO_NAME && CALLNAME:ARG != NAME:ARG
+	PRINTFORML 连称呼（%CALLNAME:ARG%）也一块儿改了吧？
+	PRINTFORML [ 0] 好的
+	PRINTFORML [ 1] 不要
+	PRINTFORML [ 2] 把称呼和名字（%NAME:ARG%）统一
+	CALL INPUT_SELECT, 3
+	IF RESULT == 0
+		PRINTFORML %NAME:ARG%当前的称呼是「%CALLNAME:ARG%」
+		PRINTFORML 请输入新称呼。不输入而直接回车的话，将不会改变原来的称呼方式。
+
+		CALL INPUTS_SELECT, 16
+		
+		PRINTL 
+		SELECTCASE RESULTS
+		CASE "", MEMO_CALLNAME
+			PRINTFORMW 未做变更
+		CASEELSE
+			CALLNAME:ARG = %RESULTS%
+			PRINTFORMW 把称呼改成了%RESULTS%
+		ENDSELECT
+	ELSEIF RESULT == 2
+		CALLNAME:ARG = %NAME:ARG%
+		PRINTFORMW 将称呼改成了「%CALLNAME:ARG%」
+	ENDIF
+ENDIF
+
+;呼び名を变えた场合にはニックネームも变更
+IF NICKNAME:ARG != "" && CALLNAME:ARG != MEMO_CALLNAME
+	IF STRFIND(CALLNAME:ARG, "・") > 0 || STRFIND(CALLNAME:ARG, "＝") > 0
+		NICKNAME:ARG = %SUBSTRING(CALLNAME:ARG, 0, MAX(STRFIND(CALLNAME:ARG, "・"), STRFIND(CALLNAME:ARG, "＝") ) - 1)%
+	ELSEIF STRFIND(CALLNAME:ARG, " ") > 0
+		NICKNAME:ARG = %SUBSTRING(CALLNAME:ARG, STRFIND(CALLNAME:ARG, " ") + 1, -1)%
+	ELSEIF STRFIND(CALLNAME:ARG, " ") > 0 || STRFIND(CALLNAME:ARG, "　") > 0
+		NICKNAME:ARG = %SUBSTRING(CALLNAME:ARG, STRFIND(CALLNAME:ARG, "　") + 2, -1)%
+	ELSE
+		NICKNAME:ARG = %CALLNAME:ARG%
+	ENDIF
+	PRINTFORMW 因为称呼改成了%CALLNAME:ARG%、昵称变为了%NICKNAME:ARG%
+ENDIF
+
+RESTART
+
+;-------------------------------------------------
+;角色クター之普び替えを行う
+;合わせて@SORT_CHARA, ARGSも参照すること
+;-------------------------------------------------
+@CHARA_SORT
+#DIM LCOUNT
+#DIM MEMO_LINECOUNT
+#DIM CHOICE, 3
+#DIMS CHOICES, 2
+
+MEMO_LINECOUNT = LINECOUNT
+
+REDRAW 0
+PRINTL 
+PRINTFORML 进行人物的排序
+PRINTFORML 如果想交换２人的位置，连续点选要交换的２人即可
+PRINTFORML 如果需要以好感觉、角色编号等条件进行自动排序，请选择[200]
+
+FOR LCOUNT, 2, CHARANUM
+	CALL PRINT_NUM_NAME, "体力", LCOUNT
+NEXT
+PRINTL  [100]返回　[200]自动排序
+
+$INPUT_LOOP
+CALL INPUT_SELECT, CHARANUM, 100, 200
+
+SELECTCASE RESULT
+CASE 0, 1
+	GOTO INPUT_LOOP
+CASE 100
+	REDRAW 1
+	RETURN 0
+CASE 200
+	PRINTL 
+	PRINTFORML 用什么要素排列？
+	PRINTFORML  [ 0] 入手顺序　　　　　　（从没排过序的话就是这个）
+	PRINTFORML  [ 1] 角色编号　　　　　　（按照召唤时显示的ＩＤ顺序）
+	PRINTFORML  [ 2] 好感觉
+	PRINTFORML  [ 3] 最近一次床战　　　　（日期越近排序值越大）
+	PRINTFORML  [ 4] 等级
+	PRINTFORML  [ 5] 评价点数　　　　　　（也就是売却价格顺序）
+	PRINTFORML  [ 6] 身高
+	PRINTFORML  [ 7] 胸部
+	PRINTFORML [100] 返回
+
+	CALL INPUT_SELECT, 8, 100
+
+	CHOICE = RESULT
+
+	SELECTCASE CHOICE
+	CASE 100
+		CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	CASEELSE
+		SELECTCASE CHOICE
+		CASE 0
+			CHOICES = 入手顺序
+		CASE 1
+			CHOICES = 角色编号
+		CASE 2
+			CHOICES = 好感觉
+		CASE 3
+			CHOICES = 最近一次床战
+		CASE 4
+			CHOICES = ＬＶ
+		CASE 5
+			CHOICES = 评价点数
+		CASE 6
+			CHOICES = 身长
+		CASE 7
+			CHOICES = 胸围
+		ENDSELECT
+
+		PRINTL 大的在上还是小的在上？
+		PRINTL [ 0] 小的（升序排列）
+		PRINTL [ 1] 大的（降序排列）
+
+		CALL INPUT_SELECT, 2
+
+		SELECTCASE RESULT
+		CASE 0
+			CHOICES:1 = 升序排列
+		CASE 1
+			CHOICES:1 = 升序排列
+		ENDSELECT
+
+		CALL SORT_CHARA, CHOICES, CHOICES:1
+
+		PRINTFORMW 将全员按照[%CHOICES%]进行[%CHOICES:1%]
+		CLEARLINE LINECOUNT - MEMO_LINECOUNT
+		;履历を残してみる
+		PRINTFORML 将全员按照[%CHOICES%]进行[%CHOICES:1%]
+	ENDSELECT
+
+	RESTART
+ENDSELECT
+
+CHOICE:1 = RESULT
+CLEARLINE LINECOUNT - MEMO_LINECOUNT
+MEMO_LINECOUNT = LINECOUNT
+
+PRINTL 
+PRINTFORML 已经选择了[{CHOICE:1, 2}]%CALLNAME:(CHOICE:1)%作为要换位的人物
+PRINTL 
+PRINTFORML 请再选一人
+
+FOR LCOUNT, 2, CHARANUM
+	SIF LCOUNT == CHOICE:1
+		SETCOLOR DEF_COLOR("黄色")
+
+	CALL PRINT_NUM_NAME, "体力", LCOUNT
+
+	RESETCOLOR
+NEXT
+PRINTL  [100]返回
+
+$INPUT_LOOP_2
+CALL INPUT_SELECT, CHARANUM, 100
+
+SELECTCASE RESULT
+CASE 0, 1, CHOICE:1
+	GOTO INPUT_LOOP_2
+CASE 100
+	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+	RESTART
+ENDSELECT
+
+CHOICE:2 = RESULT
+
+PRINTFORMW 交换了[{CHOICE:1, 2}]%CALLNAME:(CHOICE:1)%和[{CHOICE:2, 2}]%CALLNAME:(CHOICE:2)%的顺序
+
+CLEARLINE LINECOUNT - MEMO_LINECOUNT
+;履历を残してみる
+PRINTFORML 交换了[{CHOICE:1, 2}]%CALLNAME:(CHOICE:1)%和[{CHOICE:2, 2}]%CALLNAME:(CHOICE:2)%的顺序
+
+CALL SWAP_CHARA, CHOICE:1, CHOICE:2
+
+RESTART
+

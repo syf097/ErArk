@@ -1,0 +1,370 @@
+﻿;--------------------------------------------------------
+;打扫舐阴
+;--------------------------------------------------------
+@OSOUJI_V
+PRINTFORM %CALLNAME:TARGET%将%CALLNAME:PLAYER%的小穴打开、
+IF ABL:百合属性 >= 3 && RAND:2 == 0
+	PRINTFORMW 用小嘴和舌头把里面舔得干干净净…
+
+ELSE
+	PRINTFORMW 用舌头仔细地舔污垢…
+
+ENDIF
+;経験や汚れなど之处理は全部ここで行う
+CALL SETFLAG, "打扫舐阴", TARGET
+
+PRINTFORML 舐阴経験＋１
+PRINTFORML 打扫舐阴経験＋１
+PRINTL 
+
+;CALL SELF_KOJO, "打扫舐阴"
+
+;--------------------------------------------------------
+;打扫口交
+;--------------------------------------------------------
+@OSOUJI_F
+CALL CHECK_BASEPLAYER2
+LOCAL = (ABL:奉仕精神 * 5) + ABL:技巧
+
+;Ａ汚れ
+IF CHECK_STAIN(STAIN:PLAYER:Ｐ, "Ａ")
+	LOCAL -= 10
+	;A感觉
+	SIF ABL:Ａ感觉 >= 3
+		LOCAL += 2
+	SIF ABL:Ａ感觉 >= 5
+		LOCAL += 5
+	;尻穴狂
+	SIF TALENT:尻穴狂
+		LOCAL += 10
+	;气味钝感
+	SIF TALENT:气味钝感
+		LOCAL += 5
+	;气味敏感
+	SIF TALENT:气味敏感
+		LOCAL -= 5
+ENDIF
+;坦率
+SIF TALENT:坦率
+	LOCAL += 5
+;プライド高い
+SIF TALENT:傲慢
+	LOCAL -= 10
+;低姿态
+SIF TALENT:低姿态
+	LOCAL += 5
+;献身的
+SIF TALENT:献身
+	LOCAL += 10
+;淫乱
+SIF TALENT:淫乱
+	LOCAL += 5
+;嫌恶性别男
+SIF TALENT:嫌恶性别男
+	LOCAL -= 10
+;恋慕
+SIF TALENT:恋慕
+	LOCAL += 10
+;反发刻印
+IF MARK:反发刻印 == 1
+	LOCAL -= 5
+ELSEIF MARK:反发刻印 == 2
+	LOCAL -= 15
+ELSEIF MARK:反发刻印 == 3
+	LOCAL = 30
+ENDIF
+;焦躁中已经没有先前挑逗的余力了
+SIF (NOWEX:Ｍ绝顶边缘 && CUP:快Ｃ) || (NOWEX:Ｃ绝顶边缘 + NOWEX:尿道绝顶边缘 && CUP:快Ｃ) || (NOWEX:Ｖ绝顶边缘 && CUP:快Ｖ) || (NOWEX:Ａ绝顶边缘 && CUP:快Ａ) || (NOWEX:Ｂ绝顶边缘 && CUP:快Ｂ)
+	LOCAL -= 20
+;爱之圈套、眼罩、绳・拘束、球形口枷ではしません
+SIF TEQUIP:爱之圈套 || TEQUIP:眼罩 || TEQUIP:拘束 || TEQUIP:口枷 || LOCAL < 0
+	RETURN 0
+
+SIF LOCAL > RAND:100
+	CALL OSOUJI
+
+
+@OSOUJI
+PRINTL 
+;打扫前口上
+TFLAG:47 = 0
+CALL SELF_KOJO, "打扫口交"
+
+IF RAND:3 == 0 || SHOOT("中出") == 0
+	PRINTFORMW %CALLNAME:TARGET%对着刚刚射精了的%CALLNAME:PLAYER%之阴茎恭敬的舔舐起来、非常谨慎的清理着每一个角落……
+
+ELSEIF RAND:2 == 0
+	IF INSERT("Ｖ插入")
+		PRINT 从肉缝
+	ELSEIF INSERT("Ａ插入")
+		PRINT 从肛门
+	ELSEIF INSERT("尿道插入")
+		IF PENIS(TARGET)
+			PRINT 自ら之阴茎から抜き出されたどろどろ之ソレを、
+		ELSE
+			PRINT 从尿道
+		ENDIF
+	ENDIF
+	PRINTFORMW 拔出来的阴茎被%CALLNAME:TARGET%非常怜爱的舔舐起来……
+ELSE
+	IF INSERT("Ｖ插入")
+		PRINT 刚从肉缝
+	ELSEIF INSERT("Ａ插入")
+		PRINT 刚从肛门
+	ELSEIF INSERT("尿道插入")
+		IF PENIS(TARGET)
+			PRINT 自ら之阴茎から抜き出された精液まみれ之ソレを现ると、
+		ELSE
+			PRINT 刚从尿道
+		ENDIF
+	ENDIF
+	PRINTFORMW 拔出整个沾满精液的阴茎被%CALLNAME:TARGET%舔了舔舌头将它整个含着清理起来……
+ENDIF
+
+;打扫中口上
+TFLAG:47 = 1
+CALL SELF_KOJO, "打扫口交"
+IF RAND:3 == 0
+	PRINTFORMW %CALLNAME:TARGET%舔舐这龟头的前端、并用舌尖温柔地挑逗龟头的前端，把还剩的精液给吸了出来。
+	PRINTFORMW 强烈的快感包裹住下体、%CALLNAME:TARGET%的温热柔软的口腔便器不断施加压力。
+	PRINTFORMW %CALLNAME:PLAYER%的精液弹药再一次被填充发射出去……
+
+
+
+ELSEIF RAND:2 == 0
+	PRINTFORMW %CALLNAME:TARGET%舔舐这龟头的前端、并用舌尖温柔地挑逗龟头的前端，然后
+	PRINTFORMW 非常仔细的舔舐这阴茎的每一处敏感点、%CALLNAME:PLAYER%的下半身被一阵阵酥麻感刺激着……
+
+ELSE
+	PRINTFORMW 强烈的快感包裹住下体、%CALLNAME:TARGET%的温热柔软的口腔便器不断施加压力。
+	PRINTFORMW 阴茎之内部的精液像是被真空给吸了出去，尽管如此%CALLNAME:PLAYER%之阴茎依然被强烈的吮吸刺激并敏感得似乎准备再次发射……
+
+ENDIF
+
+;射精槽
+LOCAL = (ABL:技巧 + (ABL:奉仕精神 + 1)/2 + ABL:舌技) * 2000 * (RAND:5 + (ABL:奉仕精神 + 1)/2 + 1)
+SIF ABL:PLAYER:技巧
+	LOCAL /= ABL:PLAYER:技巧
+;LV之差による补正
+LOCAL = MULTIPLY(LOCAL, LIMIT(5*(ABL:ＬＶ - ABL:PLAYER:ＬＶ), -30, 100) + 100)
+
+SIF COND("弱点：口技", PLAYER)
+	TIMES LOCAL, 2.00
+BASE:PLAYER:绝顶 += LOCAL
+;射精槽増加之一时保存
+TCVAR:PLAYER:101 += LOCAL
+
+PRINTL 
+
+;阴茎を抜く处理
+CALL RESET_INSERT, TARGET, PLAYER
+
+;打扫で射精しなかった
+IF BASE:PLAYER:绝顶 < MAXBASE:PLAYER:绝顶
+	;打扫で射精しなかった
+	TFLAG:47 = 2
+	CALL SELF_KOJO, "打扫口交"
+	IF RAND:2 == 0
+		PRINTFORMW %CALLNAME:TARGET%一边用眼睛上翻盯着%CALLNAME:PLAYER%、一边用舌头小心翼翼的服侍着阴茎。
+		PRINTFORMW 很快、适度的快感把%CALLNAME:PLAYER%的下体包裹住了……
+
+
+	ELSE
+		PRINTFORMW %CALLNAME:TARGET%用嘴巴套弄一阵后，又有些想要了，把身体贴了上来……
+
+	ENDIF
+	PRINTL 
+
+;打扫で射精しそう？
+ELSE
+	;打扫で射精しそう？
+	TFLAG:47 = 3
+	CALL SELF_KOJO, "打扫口交"
+
+
+	IF RAND:3 == 0
+		PRINTFORMW 本来已经软了的阴茎再次变的敏感、身体因为从下体传来的源源不断的快感而不断颤抖。
+
+	ELSEIF RAND:2 == 0
+		PRINTFORMW %CALLNAME:TARGET%再一次将阴茎小心翼翼的含在嘴里……
+
+	ELSE
+		PRINTFORMW %CALLNAME:TARGET%非常认真的套弄着阴茎并在嘴里不断的刺激着龟头。
+		PRINTFORMW 射精的阴茎被非常努力的含在嘴里，%CALLNAME:PLAYER%感到强烈的快感不断传来……
+
+
+	ENDIF
+	PRINTL 
+
+	;射精
+
+	TFLAG:47 = 4
+	CALL SELF_KOJO, "打扫口交"
+
+	IF RAND:3 == 0
+		PRINTFORMW ，阴茎被强行榨精、那一瞬间快感让身体都弹了起来……
+
+	ELSEIF RAND:2 == 0
+		PRINTFORMW %CALLNAME:TARGET%龟头被强烈的吮吸的瞬间、精液再次爆发了。
+		PRINTFORMW 视野变的发白了，强烈的快感把%CALLNAME:PLAYER%的意识都冲走了……
+
+
+	ELSE
+		PRINTFORMW 不断发出厚重的喘息，被喉咙深处突袭导致%CALLNAME:PLAYER%的下体依然因绝顶一跳一跳的……
+
+	ENDIF
+	PRINTL 
+
+	CALL BOUHATSU, "打扫口交"
+
+	;打扫で射精后
+	TFLAG:47 = 5
+	CALL SELF_KOJO, "打扫口交"
+
+	IF NO:TARGET == 20
+		PRINTFORMW 这次的「邪气」把最后的精液也从尿道口中抽走了%CALLNAME:TARGET%依然不依不饶、%CALLNAME:PLAYER%也渐渐无法抵抗……
+
+	ELSE
+		PRINTFORMW 喷涌而出的精液沐浴在脸上、%CALLNAME:TARGET%幸福的笑了……
+
+	ENDIF
+	PRINTL 
+	;ダウン判定
+	CALL COUNTER_DOWN
+ENDIF
+
+;経験や汚れなど之处理は全部ここで行う
+CALL SETFLAG, "打扫口交", TARGET
+
+PRINTFORML 口交経験＋１
+PRINTFORML 打扫口交経験＋１
+PRINTL 
+
+RETURN 1
+
+;-------------------------------------------------
+;※暴发判定
+;-------------------------------------------------
+@BOUHATSU, ARGS
+CALL CHECK_BASEPLAYER2
+;精力が既にないなら終了
+SIF BASE:PLAYER:精力 < 0
+	RETURN 0
+
+;绝顶许可
+TCVAR:PLAYER:2 = 1
+
+;射精ＬＶ之计算
+LOCAL = CALCF("绝顶", PLAYER)
+
+;射精してないなら終了
+SIF LOCAL == 0
+	RETURN 0
+
+;女はMAX3
+;SIF PENIS(PLAYER) == 0 && LOCAL >= 4
+;	LOCAL = 3
+
+PRINTL 
+
+;梅芙女王专用挑逗モード
+IF CFLAG:459 > 0 && NO:TARGET == 17
+	LOCAL = MIN(LOCAL, BASE:PLAYER:精力 - 1)
+	CFLAG:459 = 0
+ENDIF
+
+;阴茎あり
+IF PENIS(PLAYER)
+	;插入前に暴发
+	IF COND("插入前暴发标志", PLAYER)
+		CALL SELF_KOJO, "插入前暴发"
+		PRINTFORMW …不过
+		PRINTFORMW 由于兴奋过头，插入前在%CALLNAME:TARGET%之股间精液就射了出来…
+
+	ELSE
+		PRINTFORMW %CALLNAME:PLAYER%不堪忍受而射精了……
+	ENDIF
+	NOWEX:PLAYER:射精 = LOCAL
+	EX:PLAYER:射精 += NOWEX:PLAYER:射精
+	EXP:PLAYER:射精経験 += NOWEX:PLAYER:射精
+	EXP:精液経験 += LOCAL * 2
+	IF LOCAL >= 3
+		PRINTFORM 超大量
+	ELSEIF LOCAL == 2
+		PRINTFORM 大量
+	ENDIF
+	PRINTL 射精
+	PRINTFORML 精液経験＋{LOCAL * 2}
+
+	;PLAYER之阴茎に精液汚れを追加
+	CALL ADD_STAIN, PLAYER, "Ｐ", "精液"
+	;精液を出したところに精液汚れを追加
+	IF COND("插入前暴发标志", PLAYER)
+		CALL ADD_STAIN, TARGET, "Ｖ", "精液"
+	;口に汚れを追加
+	ELSEIF SELECTCOM == 91 || SELECTCOM == 99 || SELECTCOM == 140 || ARGS == "打扫口交"
+		;梦魇之口⇔调教者之Ｐ之汚れが移动
+		CALL EQ_STAIN, TARGET, PLAYER, 0, 2
+		CALL SETFLAG, "饮精経験", LOCAL
+	;胸に汚れを追加
+	ELSEIF SELECTCOM == 81 || SELECTCOM == 92
+		CALL ADD_STAIN, TARGET, "Ｂ", "精液"
+	;Ｖに汚れを追加
+	ELSEIF (SELECTCOM >= 60 && SELECTCOM <= 69) || INSERT("Ｖ插入")
+		CALL SETFLAG, "膣内精液経験", LOCAL
+	;Ａに汚れを追加
+	ELSEIF (SELECTCOM >= 70 && SELECTCOM <= 79) || INSERT("Ａ插入")
+		CALL SETFLAG, "肛内精液経験", LOCAL
+	;ＶかＰに汚れを追加
+	ELSEIF SELECTCOM == 83 || INSERT("尿道插入")
+		CALL SETFLAG, "膀胱精液経験", LOCAL
+	;手に汚れを追加
+	ELSEIF SELECTCOM == 90 || SELECTCOM == 97
+		CALL ADD_STAIN, TARGET, "手", "精液"
+	ENDIF
+ELSE
+	PRINTFORMW %CALLNAME:PLAYER%不堪重负高潮了……
+	EXP:PLAYER:绝顶経験 += LOCAL
+	IF LOCAL >= 3
+		PRINTFORM 超强
+	ELSEIF LOCAL == 2
+		PRINTFORM 强
+	ENDIF
+	PRINTFORML 绝顶
+	PRINTFORML 绝顶経験＋{LOCAL}
+ENDIF
+
+;暴发回数
+NOWEX:暴发 = LOCAL
+EX:暴发 += LOCAL
+
+;高潮回数
+EXP:高潮回数 += 1
+
+;堪えた标志を初期化
+EX:PLAYER:忍住了没丢 = 0
+
+CALL GET_EXPERIENCE(LOCAL, TARGET)
+IF TEQUIP:Ｗ逆推
+	EXP:ASSI:高潮回数 += 1
+	CALL GET_EXPERIENCE(LOCAL, ASSI)
+ENDIF
+
+;精力减少
+LOCAL:1 = MAX(LOCAL * 2, 1)
+
+TCVAR:PLAYER:109 += LOCAL:1
+BASE:PLAYER:精力 -= LOCAL:1
+PRINTFORMW 精力-{LOCAL:1}
+
+;射精槽对应
+BASE:PLAYER:绝顶 = MAXBASE:PLAYER:绝顶 * (1 + BASE:斯道克) * BASE:精力 * (100 + STATE("精强术", PLAYER) * 20)
+BASE:PLAYER:绝顶 /= (2 + BASE:斯道克) * MAXBASE:精力 * LOCAL:1 * 100
+
+BASE:PLAYER:绝顶 = LIMIT(BASE:PLAYER:绝顶, 0, MAXBASE:PLAYER:绝顶 - 1)
+
+BASE:PLAYER:快感许容值男 = BASE:PLAYER:绝顶
+
+PRINTL 
+
+RETURN 1

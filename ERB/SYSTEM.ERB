@@ -12,7 +12,7 @@ CALL FIRST_SETTING
 TARGET = -1
 BOUGHT = -1
 
-DAY:0 = 1096 * 365 +357
+DAY:0 = 1096 * 365 + 356
 DAY:1 = 12
 DAY:2 = 23
 
@@ -190,6 +190,6 @@ PUTFORM 干员数量:{CHARANUM-1}
 ;====================================================
 @ADD_INIT_SQUARD
 ;====================================================
-FOR COUNT,0,8
-	ADDCHARA COUNT
+FOR COUNT,1,8
+	CALL GET_NEW_CHARA(COUNT)
 NEXT

@@ -1,0 +1,1455 @@
+﻿;-------------------------------------------------
+;反击初期設定
+;事件标志		TFLAG:90
+;恍惚确率		TFLAG:91
+;弱点效果		TFLAG:92
+;逆推确率		TFLAG:93
+;秘法反击确率	TFLAG:94
+;反击せず		CFLAG:9
+;连续回数		TFLAG:95
+;反击之威力	TFLAG:96
+;精力槽		BASE:ASSI:精力　BASE:MASTER:精力
+;斯道克		BASE:MASTER:斯道克
+;-------------------------------------------------
+@SET_COUNTER_BASE
+#DIM LCOUNT
+#DIM MEMO_斯道克
+
+;MASTER以外之精力限界值セット
+FOR LCOUNT, 1, CHARANUM
+	MAXBASE:LCOUNT:精力 = MAXBASE:LCOUNT:体力/300 + TALENT:LCOUNT:淫乱*3 + TALENT:LCOUNT:龙之血*5 + TALENT:LCOUNT:上位梦魇*5 + ABL:LCOUNT:欲望*2 + ABL:LCOUNT:技巧 + ABL:LCOUNT:ＬＶ
+NEXT
+;MASTER之精力限界值リセット
+MAXBASE:MASTER:精力 = 10 + ABL:MASTER:技巧*4 + TALENT:MASTER:龙之血*5 + TALENT:MASTER:上位梦魇*5 + ABL:MASTER:ＬＶ
+SIF CONFIG("ＥＡＳＹ")
+	MAXBASE:MASTER:精力 += 5
+
+;装饰品效果（精力）
+MAXBASE:MASTER:精力 = MULTIPLY(MAXBASE:MASTER:精力, 100 + TALENT:MASTER:精力强化)
+
+;斯道克が増えた时には増える
+MEMO_斯道克 = MAXBASE:MASTER:斯道克
+
+;斯道克
+SELECTCASE FLAG:255
+CASE IS >= 21
+	MAXBASE:MASTER:斯道克 = 3
+CASE IS >= 14
+	MAXBASE:MASTER:斯道克 = 2
+CASE IS >= 7
+	MAXBASE:MASTER:斯道克 = 1
+CASEELSE
+	MAXBASE:MASTER:斯道克 = 0
+ENDSELECT
+
+;装饰品效果（斯道克）
+SIF TALENT:MASTER:弹药量増加
+	MAXBASE:MASTER:斯道克 += 1
+
+BASE:MASTER:斯道克 = MIN(BASE:MASTER:斯道克 + MAXBASE:MASTER:斯道克 - MEMO_斯道克, MAXBASE:MASTER:斯道克)
+
+
+;等级限制器使用时にはなんと！常に全快！！…まぁ禁断之知识之産物だしな
+;IF CONFIG("等级限制器")
+;	BASE:MASTER:精力 = MAXBASE:MASTER:精力
+;	BASE:MASTER:斯道克 = MAXBASE:MASTER:斯道克
+;ENDIF
+
+;精力之回復处理
+FOR LCOUNT, 1, CHARANUM
+	SIF BASE:LCOUNT:精力 == 0 || BASE:LCOUNT:精力 > MAXBASE:LCOUNT:精力 || CONFIG("ＥＡＳＹ")
+		BASE:LCOUNT:精力 = MAXBASE:LCOUNT:精力
+NEXT
+
+
+@SET_COUNTER_ABL
+#DIM LCOUNT
+;类别ごとに何をやるかとそ之确率を決定
+CALL CALC_COUNTER_ABL, TARGET
+
+;同じ指令を连续で行う确率は低くする
+FOR LCOUNT, 0, 11
+	SIF ABL:(LCOUNT + 40) && I:LCOUNT == PREVCOM
+		ABL:(LCOUNT + 40) = MAX(ABL:(LCOUNT + 40)/2, 1)
+NEXT
+;-------------------------------------------------
+;插入している时之口交など、不可能な行动はここで处理
+;-------------------------------------------------
+;插入でイかされた后は、ご奉仕か接吻率が高い
+IF ( (INSERT("Ｖ插入") || PREVCOM == 65 || PREVCOM == 66 || PREVCOM == 67) && PREVEX("Ｖ绝顶") ) || ( (INSERT("Ａ插入") || PREVCOM == 75) && PREVEX("Ａ绝顶") ) || ( (INSERT("尿道插入") || PREVCOM == 83) && PREVEX("尿道绝顶") )
+	ABL:手 /= 4
+	ABL:口 *= 4
+	SIF I:2 != 104
+		ABL:胸 /= 4
+	ABL:足 /= 4
+	;Ｓ属性あるなら打扫强要
+	IF ABL:欲望 + ABL:Ｓ属性 + TALENT:抖Ｓ >= ABL:奉仕精神 * 2 && RAND:2 == 0
+		ABL:顔面骑乘 *= 3
+	ELSE
+		ABL:顔面骑乘 /= 5
+	ENDIF
+	ABL:接吻 *= 2
+	ABL:肛虐 /= 5
+	ABL:强暴 /= 5
+	ABL:素股 /= 4
+	ABL:道具 = 0
+;插入之后は插入or插入れたままできること
+ELSEIF INSERT("插入") && ABL:骑乘位 + ABL:接吻 && RAND:4
+	ABL:手 = 0
+	ABL:口 = 0
+	SIF I:2 != 104
+		ABL:胸 = 0
+	ABL:足 = 0
+	ABL:顔面骑乘 = 0
+	ABL:肛虐 = 0
+	ABL:强暴 = 0
+	ABL:素股 = 0
+	ABL:道具 = 0
+;强暴之后は连续强暴or使った穴にお礼
+ELSEIF (PREVCOM == 120 || PREVCOM == 126) && ABL:强暴 && RAND:3
+	ABL:手 = 0
+	SIF TALENT:恋慕 == 0 && ABL:奉仕精神 < ABL:Ｓ属性
+		ABL:口 = 0
+	ABL:胸 = 0
+	ABL:足 = 0
+	ABL:顔面骑乘 = 0
+	ABL:骑乘位 = 0
+	ABL:接吻 = 0
+	SIF PREVCOM != 84 && ABL:奉仕精神 < ABL:Ｓ属性
+		ABL:肛虐 = 0
+	ABL:素股 = 0
+	ABL:道具 = 0
+;阴茎に奉仕した后は奉仕or插入率が高い
+ELSEIF PENIS(PLAYER) && PREVCOM >= 90 && PREVCOM <= 119 && ABL:手 + ABL:口 + ABL:胸 + ABL:肛虐 + ABL:素股 && RAND:4
+	ABL:足 = 0
+
+	ABL:骑乘位 *= 2
+	ABL:接吻 = 0
+	ABL:强暴 = 0
+	ABL:道具 = 0
+;润滑が少ない时には、顔面骑乘や口交率が高く、插入率が低い
+ELSEIF MAX(PALAM:Ｖ润, PALAM:Ａ润, PALAM:PLAYER:Ｐ润) < 500 && ABL:顔面骑乘
+	SIF I:1 == 91
+		ABL:口 *= 2
+	ABL:顔面骑乘 *= 2
+	ABL:骑乘位 /= 5
+	ABL:素股 /= 5
+ENDIF
+
+SELECTCOM = SET_COUNTERCOM(TARGET)
+
+CALL SETFLAG, "狂野摇摆", TARGET
+
+@SET_COUNTERCOM(ARG)
+#FUNCTION
+#DIM LCOUNT
+;确率之母体決定
+LOCAL = ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位+ABL:ARG:接吻+ABL:ARG:肛虐+ABL:ARG:强暴+ABL:ARG:素股+ABL:ARG:道具
+IF LOCAL == 0
+	IF ARG == TARGET
+		IF TALENT:性别男
+			ABL:顔面骑乘 = 1
+			RETURNF 9
+		ELSE
+			ABL:顔面骑乘 = 1
+			RETURNF 1
+		ENDIF
+	ELSE
+		RETURNF -1
+	ENDIF
+ENDIF
+
+;PRINTFORML 确率母体 = {LOCAL}
+;FOR LCOUNT, 40, 51
+;	PRINTFORML %TEXT_RJ(ABLNAME:LCOUNT, 10)%率 ≒ {ABL:ARG:LCOUNT*100/LOCAL}％
+;NEXT
+
+LOCAL = 1 + RAND:LOCAL
+SELECTCASE LOCAL
+;手
+CASE IS <= ABL:ARG:手
+	RETURNF I:0
+;口
+CASE IS <= ABL:ARG:手+ABL:ARG:口
+	RETURNF I:1
+;胸
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸
+	RETURNF I:2
+;足
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足
+	RETURNF I:3
+;顔面骑乘
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘
+	RETURNF I:4
+;骑乘位
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位
+	RETURNF I:5
+;接吻
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位+ABL:ARG:接吻
+	RETURNF I:6
+;お尻
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位+ABL:ARG:接吻+ABL:ARG:肛虐
+	RETURNF I:7
+;强暴
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位+ABL:ARG:接吻+ABL:ARG:肛虐+ABL:ARG:强暴
+	RETURNF I:8
+;素股
+CASE IS <= ABL:ARG:手+ABL:ARG:口+ABL:ARG:胸+ABL:ARG:足+ABL:ARG:顔面骑乘+ABL:ARG:骑乘位+ABL:ARG:接吻+ABL:ARG:肛虐+ABL:ARG:强暴+ABL:ARG:素股
+	RETURNF I:9
+CASEELSE
+	RETURNF I:10
+ENDSELECT
+
+
+@CALC_COUNTER_ABL, ARG
+#DIM LCOUNT
+LOCAL:100 = TARGET
+TARGET = ARG
+;COMABLEで实行条件を判定するため之FLAGをセット
+FLAG:10 = 1
+
+;奉仕系之种别では、对应する得意技能之意味が强
+VARSET I
+
+SELECTCASE ABL:奉仕精神 - ABL:欲望 - TEQUIP:媚药/100
+CASE IS > 0
+	LOCAL:1 = (ABL:奉仕精神 - ABL:欲望 - TEQUIP:媚药/100)*2
+CASE IS < 0
+	LOCAL:2 = (TEQUIP:媚药/100 + ABL:欲望 - ABL:奉仕精神)*2
+ENDSELECT
+
+;ABL:手,手
+IF COND("调教側")
+	CALL COUNTER_ABL, 0, 5, 7, 8, 141
+ELSE
+	CALL COUNTER_ABL, 0, 90, 97, 105
+ENDIF
+IF ABL:手
+	ABL:手 += TALENT:献身 + LOCAL:1 + ABL:指技
+	SIF COND("弱点：手技", PLAYER)
+		ABL:手 += 5
+ENDIF
+
+;ABL:口,口
+IF COND("调教側")
+	CALL COUNTER_ABL, 1, 1
+ELSE
+	CALL COUNTER_ABL, 1, 91, 98, 150
+ENDIF
+IF ABL:口
+	ABL:口 += TALENT:献身 + LOCAL:1 + ABL:舌技
+	SIF COND("弱点：口技", PLAYER)
+		ABL:口 += 5
+ENDIF
+
+;ABL:胸,胸
+IF COND("调教側")
+ELSE
+	CALL COUNTER_ABL, 2, 82, 92, 104
+ENDIF
+IF ABL:胸
+	ABL:胸 += TALENT:献身 + TALENT:巨乳*3 + LOCAL:1 + ABL:魔乳
+	SIF COND("弱点：乳交", PLAYER)
+		ABL:胸 += 5
+ENDIF
+
+;ABL:足,足
+IF COND("调教側")
+ELSE
+	IF MAX(ABL:Ｓ属性 + TALENT:抖Ｓ, ABL:奉仕精神) + ABL:PLAYER:Ｍ属性 >= 2
+		CALL COUNTER_ABL, 3, 95
+	ELSE
+		ABL:足 = 0
+	ENDIF
+ENDIF
+IF ABL:足
+	ABL:足 += TALENT:傲慢 + TALENT:抖Ｓ + LOCAL:1 + ABL:足技
+	SIF COND("弱点：足技", PLAYER)
+		ABL:足 += 5
+ENDIF
+
+;ABL:顔面骑乘,顔面骑乘
+IF COND("调教側")
+	CALL COUNTER_ABL, 4, 98
+ELSE
+	;圣水事件は前提条件が厳しくレアな之で确率优遇
+	CALL COM_ABLE144
+	IF RESULT
+		CALL COUNTER_ABL, 4, 144
+	ELSEIF ABL:Ａ感觉 >= 3 || TALENT:性别男
+		CALL COUNTER_ABL, 4, 1, 9, 144
+	ELSE
+		CALL COUNTER_ABL, 4, 1, 144
+	ENDIF
+ENDIF
+IF ABL:顔面骑乘
+	ABL:顔面骑乘 += TALENT:好色 + TALENT:淫乱 + LOCAL:2 + ABL:腰技
+	SELECTCASE I:4
+	CASE 1
+		ABL:顔面骑乘 += TALENT:淫壷
+		SIF COND("弱点：♀", PLAYER)
+			ABL:顔面骑乘 += 5
+	CASE 9
+		ABL:顔面骑乘 += TALENT:尻穴狂
+		SIF COND("弱点：尻技", PLAYER)
+			ABL:顔面骑乘 += 5
+	CASE 144
+		;比较的レア事件な之で确率高め
+		ABL:顔面骑乘 += ABL:Ｓ属性*10 + TALENT:抖Ｓ*50
+		SIF TALENT:性变态
+			ABL:顔面骑乘 += 50
+		SELECTCASE BASE:尿意
+		CASE IS >= 20000
+			ABL:顔面骑乘 += 100
+		CASE IS >= 15000
+			ABL:顔面骑乘 += 50
+		ENDSELECT
+	ENDSELECT
+ENDIF
+
+;ABL:骑乘位,骑乘位
+IF COND("调教側")
+ELSE
+	;基本はＶ骑乘位だが、Ａと尿道でも出来るかで分岐
+	IF CHECK("Ａ插入") && CHECK("尿道插入")
+		;淫壷と尻穴狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫壷 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 == 0 && RAND:10
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68
+		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 && TALENT:尿道狂 == 0 && RAND:10
+			CALL COUNTER_ABL, 5, 75
+		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 && RAND:10
+			CALL COUNTER_ABL, 5, 83
+		ELSE
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 75, 83
+		ENDIF
+	ELSEIF CHECK("尿道插入")
+		;淫壷と尿道狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫壷 && TALENT:尿道狂 == 0 && RAND:10
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68
+		ELSEIF TALENT:淫壷 == 0 && TALENT:尿道狂 && RAND:10
+			CALL COUNTER_ABL, 5, 83
+		ELSE
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 83
+		ENDIF
+	ELSEIF CHECK("Ａ插入")
+		;淫壷と尻穴狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫壷 && TALENT:尻穴狂 == 0 && RAND:10
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68
+		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 && RAND:10
+			CALL COUNTER_ABL, 5, 75
+		ELSE
+			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 75
+		ENDIF
+	ELSE
+		CALL COUNTER_ABL, 5, 65, 66, 67, 68
+	ENDIF
+ENDIF
+IF ABL:骑乘位
+	;肛交骑乘位や尿道骑乘位はしてこないかも
+	IF I:5 >= 70 && I:5 <= 79 && TALENT:尻穴狂 == 0 && ABL:Ａ感觉 < 5
+		CALL COM_ABLE65
+		IF RESULT
+			SIF COND("发情期") || EXP:Ａ性交経験 < MIN(50, EXP:Ｖ性交経験)
+				I:5 = 65
+		ENDIF
+	ELSEIF I:5 == 83 && TALENT:尿道狂 == 0
+		CALL COM_ABLE65
+		IF RESULT
+			SIF COND("发情期") || EXP:尿道性交経験 < MIN(50, EXP:Ｖ性交経験)
+				I:5 = 65
+		ENDIF
+	ENDIF
+	ABL:骑乘位 += TALENT:好色 + TALENT:淫乱 + LOCAL:2 + ABL:腰技
+	SIF MARK:淫紋 && TALENT:性别男 == 0
+		ABL:骑乘位 += (MARK:淫紋 + 1)/2
+
+	SELECTCASE I:5
+	CASE 65 TO 69
+		SIF TARGET == ASSI
+			I:5 = 65
+		ABL:骑乘位 += ABL:Ｖ感觉 + TALENT:淫壷
+		SIF INSERT("Ｖ插入")
+			ABL:骑乘位 += 5
+		SIF COND("弱点：♀", PLAYER)
+			ABL:骑乘位 += 5
+	CASE 75
+		ABL:骑乘位 += ABL:Ａ感觉 + TALENT:尻穴狂
+		SIF INSERT("Ａ插入")
+			ABL:骑乘位 += 5
+		SIF COND("弱点：尻技", PLAYER)
+			ABL:骑乘位 += 5
+	CASE 83
+		ABL:骑乘位 += TALENT:尿道狂*3
+		SIF INSERT("尿道插入")
+			ABL:骑乘位 += 5
+	ENDSELECT
+ENDIF
+
+;ABL:接吻,接吻
+IF COND("调教側")
+	CALL COUNTER_ABL, 6, 6
+ELSE
+	CALL COUNTER_ABL, 6, 6
+ENDIF
+IF ABL:接吻
+	ABL:接吻 += TALENT:恋慕 + TALENT:荡唇 + LOCAL:2 + ABL:舌技
+	SIF COND("弱点：接吻", PLAYER)
+		ABL:接吻 += 5
+ENDIF
+
+;ABL:肛虐,肛虐
+IF COND("调教側")
+	CALL COUNTER_ABL, 7, 2, 142
+ELSE
+	CALL COUNTER_ABL, 7, 96
+ENDIF
+IF ABL:肛虐 && MAX(ABL:Ｓ属性 + TALENT:抖Ｓ, ABL:奉仕精神) + ABL:PLAYER:Ｍ属性 >= 6
+	ABL:肛虐 += ABL:Ｓ属性/2 + TALENT:抖Ｓ + ABL:PLAYER:Ｍ属性/2 + LOCAL:1
+	;Ａ调教知识
+	SIF GETBIT(TALENT:调教知识, 3)
+		ABL:肛虐 += 5
+ELSE
+	ABL:肛虐 = 0
+	I:7 = 0
+ENDIF
+
+;ABL:强暴,TARGET之阴茎使用or逆强暴
+IF COND("调教側")
+	CALL COUNTER_ABL, 8, 60, 61, 64, 65, 71, 75, 140
+ELSE
+	CALL COUNTER_ABL, 8, 4, 120, 126
+ENDIF
+IF ABL:强暴
+	ABL:强暴 += LOCAL:2 + ABL:腰技
+	IF TALENT:性别男 && TALENT:PLAYER:性别男
+		ABL:强暴 += ABL:男同属性
+	ELSEIF TALENT:性别男 == 0 && TALENT:PLAYER:性别男 == 0
+		ABL:强暴 += ABL:百合属性 + TALENT:通吃
+	ENDIF
+	SIF PENIS(TARGET)
+		ABL:强暴 += ABL:欲望/2
+	;性别男
+	SIF TALENT:性别男
+		ABL:强暴 += 5
+ENDIF
+
+;ABL:素股,素股
+IF COND("调教側")
+ELSE
+	CALL COUNTER_ABL, 9, 80, 93, 94
+ENDIF
+SIF ABL:素股
+	ABL:素股 += TALENT:献身 + LOCAL:1 + ABL:腰技/2
+
+;ABL:道具
+IF COND("调教側")
+ELSE
+	CALL COUNTER_ABL, 10, 304, 305
+ENDIF
+SIF ABL:道具
+	ABL:道具 += LOCAL:2 + TALENT:抖Ｓ*5
+
+;COMABLEで实行条件を判定するため之FLAGを解除
+FLAG:10 = 0
+TARGET = LOCAL:100
+
+
+@COUNTER_ABL, ARG, ARG:1, ARG:2, ARG:3, ARG:4, ARG:5, ARG:6, ARG:7, ARG:8, ARG:9
+#DIM LCOUNT
+ABL:(40 + ARG) = 0
+LOCAL = 1
+FOR LCOUNT, 1, 10
+	TRYCALLFORM COM_ABLE{ARG:LCOUNT}
+	IF RESULT
+		ABL:(40 + ARG) += 1
+		SIF RAND:LOCAL == 0 || I:ARG == 0
+			I:ARG = ARG:LCOUNT
+		LOCAL += 1
+	ENDIF
+	SIF ARG:(LCOUNT + 1) == 0
+		BREAK
+NEXT
+
+
+;ここで一括管理
+@COUNTER_SYS_1
+#DIM LCOUNT
+;反击之标志消去
+VARSET TFLAG, 0, 90, 98
+
+;Ｗ逆推や３Ｐ、脱力、挑逗之时には反击は无
+SIF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || SELECTCOM:2 >= 0 || STATE("脱力", TARGET) || TEQUIP:PLAYER:高潮管理 || COND("排泄：限界")
+	RETURN 0
+;反击してこない指令群
+SELECTCASE SELECTCOM
+CASE 13, 24, 133 TO 135, 138, 141 TO 149, 151, 170 TO 199, 260 TO 279
+	RETURN 0
+ENDSELECT
+
+$COUNTER_AGAIN
+;-------------------------------------------------
+;反击确率算出　反击が起き得る指令にはTFLAG:90を割り振る
+;-------------------------------------------------
+;秘法反击确率算出	TFLAG:94
+;反击で使ってくる秘法ひとつに付き20
+;-------------------------------------------------
+VARSET LOCAL
+FOR LCOUNT, 230, 230 + NUM("存在秘法")
+	;绝顶してると駄目
+	SIF NOWEX:绝顶数合计
+		BREAK
+	SIF USE_MAGIC(LCOUNT, "反击") == 0
+		CONTINUE
+
+	TFLAG:94 += 20
+
+	LOCAL += 1
+	SIF RAND:LOCAL == 0
+		TFLAG:97 = LCOUNT
+NEXT
+
+;-------------------------------------------------
+;反击判定　TFLAG:90
+;-------------------------------------------------
+;反击确定
+IF COUNTER_TRY()
+	;秘法反击
+	IF TFLAG:90 == 9
+		PRINTL ＜秘法咏唱＞
+		;誰にかけるかで分岐
+		SELECTCASE CONDS("反击：秘法")
+		CASE "小根术", "高敏术", "解强化术", "束缚术", "大根术", "快感术"
+			CALL TRAIN_MESSAGE_ARCANA, TFLAG:97, TARGET, PLAYER
+		CASEELSE
+			CALL TRAIN_MESSAGE_ARCANA, TFLAG:97, TARGET, TARGET
+		ENDSELECT
+
+		PRINTL 
+		CALL COUNTER_KOJO, "秘法"
+	ELSE
+		PRINTL 
+		CALL COUNTER_POWER
+		SELECTCASE CONDS("反击：强度")
+		CASE "失败"
+			;连续反击しているなら、わざわざしなかったとき之台词は喋らない
+			SIF TFLAG:95 == 0
+				CALL COUNTER_KOJO, CONDS("反击")
+			TFLAG:90 = 0
+			TFLAG:95 = 0
+		CASEELSE
+			;IF TFLAG:95
+			;	PRINTL ＜连续反击＞
+			;ELSE
+				PRINTL ＜反击＞
+			;ENDIF
+			TFLAG:95 += 1
+			CALL COUNTER_KOJO, CONDS("反击")
+		ENDSELECT
+	ENDIF
+;反击せず
+ELSE
+	TFLAG:90 = 0
+	TFLAG:95 = 0
+	;反击をしないとき之口上
+	SIF RAND:4 == 0 && TFLAG:95 == 0
+		CALL COUNTER_KOJO, CONDS("反击")
+ENDIF
+;SIF TFLAG:95
+;	GOTO COUNTER_AGAIN
+
+;-------------------------------------------------
+;击沈していないなら、恍惚チェック
+;-------------------------------------------------
+@COUNTER_SYS_2
+;-------------------------------------------------
+;恍惚状态から之復帰判定
+;-------------------------------------------------
+IF STATE("恍惚", PLAYER)
+	CALL COUNTER_REVIVAL
+	;恍惚から復帰（恍惚になった回合は復活しません）
+	IF STATE("恍惚", PLAYER) == 0
+		TFLAG:90 = 14
+		CALL COUNTER_KOJO, "恍惚から復帰"
+	ENDIF
+ELSE
+	CALL COUNTER_FASCINATION
+ENDIF
+;-------------------------------------------------
+;击沈判定
+;精力0时に助手は行动不可・主人は復活判定
+;-------------------------------------------------
+CALL COUNTER_DOWN
+
+RETURN 0
+
+@CHECK_OSHITAOSHI, ARG
+;ARG ms之时间之猶予で逆推之選択肢表示＆TEQUIP:逆推等之处理を行う
+LOCAL = MULTIPLY(ARG, 100 - LIMIT(ABL:ＬＶ - ABL:PLAYER:ＬＶ, -10, 5)*5)
+PRINTFORML  [0] 抵抗！
+PRINTFORML  [1] 顺从
+
+IF CONFIG("限制时间撤废")
+	CALL INPUT_SELECT, 2
+ELSE
+	TINPUT LOCAL, 100, 1
+ENDIF
+
+IF RESULT
+	TEQUIP:逆推 = 1
+	;插入中なら骑乘位へ
+	SIF INSERT("插入")
+		TEQUIP:体位 = CLEARBITS(TEQUIP:体位, 0, 9) + 1p5
+ENDIF
+
+@COUNTER_TRY()
+#FUNCTION
+;反击确率を算出してLOCALに代入
+LOCAL = 20
+;连续反击
+LOCAL -= TFLAG:95*50
+;胆怯
+LOCAL -= TALENT:胆怯*10
+;强硬
+LOCAL += TALENT:强硬*20
+;不关心
+LOCAL -= TALENT:不关心*3
+;好奇心
+LOCAL += TALENT:好奇心*3
+;保守
+LOCAL -= TALENT:保守*3
+;难以逾越的界线
+LOCAL -= TALENT:难以逾越的界线*10
+;喜欢受人注目
+LOCAL += TALENT:喜欢受人注目*3
+;看重贞操
+LOCAL -= TALENT:看重贞操*3
+;贞操无定
+LOCAL += TALENT:贞操无定*3
+;压抑
+LOCAL -= TALENT:压抑*10
+;开放
+LOCAL += TALENT:解放*10
+;抵抗
+LOCAL -= TALENT:抵抗*20
+;怕羞
+LOCAL -= TALENT:怕羞*5
+;不知耻
+LOCAL += TALENT:不知耻*3
+;献身的
+LOCAL += TALENT:献身*5
+;好色
+LOCAL += TALENT:好色*10
+;淫乱
+LOCAL += TALENT:淫乱*15
+;嫌恶性别男
+SIF TALENT:嫌恶性别男 && TALENT:PLAYER:性别男
+	LOCAL -= 20
+;抖Ｓ
+LOCAL += TALENT:抖Ｓ*20
+;恋慕
+LOCAL += TALENT:恋慕*20
+;妄信
+LOCAL += TALENT:妄信*10
+;小恶魔
+LOCAL += TALENT:小恶魔*10
+;抖Ｍ
+LOCAL -= TALENT:抖Ｍ*20
+;醉酒
+SIF STATE("醉酒", TARGET) || STATE("烂醉", TARGET)
+LOCAL -= 10
+;魔导人偶
+LOCAL += TALENT:魔导人偶*10
+;上位梦魇
+LOCAL += TALENT:上位梦魇*10
+;欲望
+LOCAL += ABL:欲望*2
+;奉仕精神
+LOCAL += ABL:奉仕精神*2
+;Ｍ属性
+LOCAL -= ABL:Ｍ属性*4
+;Ｓ属性
+LOCAL += ABL:Ｓ属性*4
+;欲情
+LOCAL += GET_PALAMLV(PALAM:欲情) * 3
+;恐怖
+LOCAL -= POWER(GET_PALAMLV(PALAM:恐怖), 2)
+;不快
+LOCAL -= GET_PALAMLV(PALAM:反感) * 2
+;绝顶
+LOCAL -= NOWEX:绝顶数合计 * 10
+;连续绝顶中
+LOCAL -= PALAM:连续绝顶COMBO数 * 5
+;插入时には積極的
+SIF INSERT("Ｖ插入") && NOWEX:Ｖ绝顶 == 0 && ABL:Ｖ感觉 + TALENT:Ｖ敏感 >= 3
+	LOCAL += 20
+SIF INSERT("Ａ插入") && NOWEX:Ａ绝顶 == 0 && ABL:Ａ感觉 + TALENT:Ａ敏感 >= 3
+	LOCAL += 20
+SIF INSERT("尿道插入") && NOWEX:尿道绝顶 == 0 && TALENT:尿道狂
+	LOCAL += 20
+;秘湯之沐浴剂+怕羞
+SIF TEQUIP:MASTER:沐浴剂 == 2 && TALENT:怕羞
+	LOCAL += 10
+;宝箱怪之１T目はボディ宝箱怪！
+SIF NUM("回合数") == 0 && NO:TARGET == 33 && CFLAG:8 < 4
+	LOCAL += 100
+;强绝顶なら反击してこない
+SIF MAX(NOWEX:Ｃ绝顶, NOWEX:Ｖ绝顶, NOWEX:Ａ绝顶, NOWEX:Ｂ绝顶, NOWEX:Ｍ绝顶, NOWEX:尿道绝顶) >= 2
+	LOCAL = 0
+;拘束、灌肠、触手时には反击しない（暫定）
+SIF TEQUIP:拘束 || TEQUIP:灌肠 || TEQUIP:触手 || TEQUIP:尿道ブジー
+	LOCAL = 0
+;排泄中
+SIF NOWEX:放尿 || NOWEX:排泄 || NOWEX:射精
+	LOCAL = 0
+;恍惚or反击してこない标志がONor二人で逆推中
+SIF STATE("恍惚", PLAYER) || CFLAG:9 || TEQUIP:Ｗ逆推
+	LOCAL = 0
+;插入时に外に出させるなら、さらにはしてこない
+SIF SHOOT("外") && BASE:PLAYER:绝顶 >= MAXBASE:PLAYER:绝顶 && INSERT("插入")
+	LOCAL = 0
+;假阴茎で插入された时には一方的
+SIF INSERT("Ｖ插入") && PENIS(PLAYER) == 0
+	LOCAL = 0
+;疲れている
+SIF BASE:体力 - DOWNBASE:体力 <= 500 || BASE:气力 - DOWNBASE:气力 <= 0
+	LOCAL = 0
+;大怪我
+SIF TALENT:Ｖ损伤 || TALENT:Ａ损伤
+	LOCAL = 0
+;ノンケ
+SIF TALENT:性别男 && TALENT:PLAYER:性别男 && ABL:男同属性 == 0
+	LOCAL = 0
+SIF TALENT:性别女 && TALENT:PLAYER:性别女 && ABL:百合属性 == 0
+	LOCAL = 0
+;やる气が无かったり观望だったり
+SELECTCASE CONDS("机嫌")
+CASE "观望", "没干劲"
+	LOCAL = 0
+ENDSELECT
+
+LOCAL:1 = SELECTCOM
+;什么也不做指令之时には反击率が高い
+SELECTCASE SELECTCOM
+CASE 139
+	IF LOCAL > 0 && COND("同时自慰标志") == 0
+		LOCAL += 50
+		LOCAL:1 = PREVCOM
+	ELSE
+		LOCAL = 0
+	ENDIF
+;玩弄尿道之时には反击なし
+CASE 15, 83, 151
+	LOCAL = 0
+ENDSELECT
+
+;マイナスまたは100％を超えていたら修正
+LOCAL = LIMIT(LOCAL, 0, 100)
+
+;什么也不做指令選択之时には前回指令を参照
+SELECTCASE LOCAL:1
+;Ｖ插入
+CASE 60 TO 69
+	TFLAG:90 = 1
+;Ａ插入
+CASE 70 TO 79
+	TFLAG:90 = 2
+;爱抚と道具
+CASE 0 TO 2, 4 TO 59
+	TFLAG:90 = 3
+;奉仕
+CASE 90 TO 119
+	TFLAG:90 = 4
+;SM
+CASE 130 TO 132, 136 TO 138
+	TFLAG:90 = 5
+ENDSELECT
+
+IF INSERT("Ｖ插入")
+	TFLAG:90 = 1
+ELSEIF INSERT("Ａ插入")
+	TFLAG:90 = 2
+ENDIF
+
+;秘法反击は绝顶してると駄目
+IF RAND:(LIMIT(COND("秘法反击"), 1, 70) ) > RAND:100
+	TFLAG:90 = 9
+	SIF LOCAL > 0 && COND("秘法反击") >= 40
+		LOCAL += 20
+ENDIF
+
+;逆推时は秘法之み
+SIF TEQUIP:逆推 && TFLAG:90 != 9
+	LOCAL = 0
+
+SIF FLAG:217
+	PRINTFORML 反击确率：{LOCAL}％
+SIF LOCAL > RAND:100 && TFLAG:90
+	RETURNF LOCAL
+
+RETURNF 0
+
+;汎用文
+@COUNTER_TEXT, ARGS
+;反击しない标志
+SIF CFLAG:9
+	RETURN 0
+SELECTCASE ARGS
+CASE "反击无"
+	;假阴茎で插入された时には一方的
+	IF (SELECTCOM >= 60 && SELECTCOM <= 79) && PENIS(PLAYER) == 0
+		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%激烈的抽送……
+	ELSEIF NOWEX:绝顶数合计
+		PRINTFORMW %CALLNAME:TARGET%处于恍惚之中…
+	ELSEIF TEQUIP:拘束
+		IF GETBIT(TEQUIP:拘束, 40)
+			PRINTFORMW %CALLNAME:TARGET%被绳子绑住无法动弹……
+		ELSE
+			PRINTFORMW %CALLNAME:TARGET%被拘束，无法行动……
+		ENDIF
+	ELSEIF TEQUIP:触手
+		PRINTFORMW %CALLNAME:TARGET%被蠕动的触手玩弄着……
+	ELSEIF TEQUIP:逆推
+		PRINTFORMW %CALLNAME:TARGET%俯视着%CALLNAME:PLAYER%露出了笑容……
+	ELSE
+		PRINTL 
+		PRINTFORMW %CALLNAME:TARGET%正在等待时机……
+	ENDIF
+CASE "Ｖ插入"
+	SELECTCASE CONDS("反击：强度")
+	CASE "必殺"
+		PRINTFORMW %CALLNAME:TARGET%巧妙地操使着腔壁，紧紧地吸住了%CALLNAME:PLAYER%的阴茎！
+	CASE "强"
+		PRINTFORMW %CALLNAME:TARGET%操使腔壁，套弄着%CALLNAME:PLAYER%的阴茎……
+	CASE "中"
+		PRINTFORMW %CALLNAME:TARGET%操使腔壁，套弄着%CALLNAME:PLAYER%的阴茎……
+	CASE "弱"
+		PRINTFORMW %CALLNAME:TARGET%操使腔壁，套弄着%CALLNAME:PLAYER%的阴茎……
+	CASEELSE
+		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%激烈的抽送……
+	ENDSELECT
+CASE "Ａ插入"
+	SELECTCASE CONDS("反击：强度")
+	CASE "必殺"
+		PRINTFORMW %CALLNAME:TARGET%一口气开始刺激起%CALLNAME:PLAYER%所有的敏感部位！
+	CASE "强"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "中"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "弱"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASEELSE
+		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%的蹂躏……
+	ENDSELECT
+CASE "爱抚"
+	SELECTCASE CONDS("反击：强度")
+	CASE "必殺"
+		PRINTFORMW %CALLNAME:TARGET%一口气开始刺激起%CALLNAME:PLAYER%所有的敏感部位！
+	CASE "强"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "中"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "弱"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASEELSE
+		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%的蹂躏……
+	ENDSELECT
+CASE "奉仕"
+	IF PENIS(PLAYER) == 0 || RAND:2
+		SELECTCASE CONDS("反击：强度")
+		CASE "必殺"
+			PRINTFORMW %CALLNAME:TARGET%一口气刺激着%CALLNAME:PLAYER%所有的敏感部位！
+		CASE "强"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地给予%CALLNAME:PLAYER%快感……
+		CASE "中"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地给予%CALLNAME:PLAYER%快感……
+		CASE "弱"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地给予%CALLNAME:PLAYER%快感……
+		CASEELSE
+			PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:PLAYER%着迷了……
+		ENDSELECT
+	ELSE
+		SELECTCASE CONDS("反击：强度")
+		CASE "必殺"
+			PRINTFORMW %CALLNAME:TARGET%激烈地套弄着%CALLNAME:PLAYER%的阴茎！
+		CASE "强"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地套弄着%CALLNAME:PLAYER%的阴茎……
+		CASE "中"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地套弄着%CALLNAME:PLAYER%的阴茎……
+		CASE "弱"
+			PRINTFORMW %CALLNAME:TARGET%无休无止地套弄着%CALLNAME:PLAYER%的阴茎……
+		CASEELSE
+			PRINTFORMW %CALLNAME:TARGET%对%CALLNAME:PLAYER%的阴茎着迷了……
+		ENDSELECT
+	ENDIF
+CASE "ＳＭ"
+	SELECTCASE CONDS("反击：强度")
+	CASE "必殺"
+		PRINTFORMW %CALLNAME:TARGET%一口气开始刺激%CALLNAME:PLAYER%所有的敏感部位！
+	CASE "强"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "中"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASE "弱"
+		PRINTFORMW %CALLNAME:TARGET%抓住空隙发起了反击……
+	CASEELSE
+		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%的蹂躏……
+	ENDSELECT
+ENDSELECT
+
+@COUNTER_POWER
+;必殺确率を算出
+SIF FLAG:217
+	PRINTFORML 必殺确率：{LIMIT(ABL:技巧*2-ABL:PLAYER:技巧+TALENT:上位梦魇*2, 0, 100)}％
+IF LIMIT(ABL:技巧*2-ABL:PLAYER:技巧+TALENT:上位梦魇*2, 0, 100) > RAND:100
+	LOCAL = 20000
+ELSE
+	;反击强度を算出してCに代入
+	;技巧等から反击之强さを決定しています。
+	LOCAL = LIMIT(RAND:10000 + LIMIT(ABL:技巧 - ABL:PLAYER:技巧, -10, 10)*(300 + RAND:201), 100, 10000)
+	LOCAL = MULTIPLY(LOCAL, 100+ABL:ＬＶ*10+ABL:奉仕精神*5+TALENT:上位梦魇*20-ABL:PLAYER:ＬＶ*10)
+ENDIF
+
+;女同士之场合TARGET之通吃・百合属性・百合成瘾で増减
+SIF TALENT:PLAYER:性别男 == 0 && TALENT:性别男 == 0
+	LOCAL = MULTIPLY(LOCAL, 75+TALENT:通吃*25+ABL:百合属性*3)
+
+;装饰品效果（精神力）
+LOCAL = DIVIDE(LOCAL, 100 + TALENT:PLAYER:精神力强化*2)
+;防强术
+SIF STATE("防强术", PLAYER)
+	TIMES LOCAL, 0.80
+;醉酒
+IF STATE("烂醉")
+	TIMES LOCAL, 0.40
+ELSEIF STATE("醉酒")
+	TIMES LOCAL, 0.80
+ENDIF
+
+SELECTCASE CONDS("反击")
+CASE "Ｖ插入", "Ａ插入"
+	LOCAL = MULTIPLY(LOCAL, 100 + STATE("精强术")*15)
+ENDSELECT
+
+;什么也不做场合には对象有利
+SIF SELECTCOM == 139
+	LOCAL += 500
+
+LOCAL = MULTIPLY(LOCAL, 100 + STATE("魅强术")*10)
+
+
+;テスト用
+SIF FLAG:217
+	PRINTFORML 反击强度：{LOCAL}
+;反击之威力によって、性行动(SOURCE:性行动)、达成(SOURCE:达成感)之ソースが上升
+SELECTCASE LOCAL
+;失败
+CASE IS < 500
+	SOURCE:性行动 += LOCAL
+	SOURCE:达成感 += LOCAL
+	TFLAG:96 = 0
+;弱
+CASE 500 TO 2999
+	SOURCE:性行动 += LOCAL/2 + 250
+	SOURCE:达成感 += LOCAL/2 + 250
+	TFLAG:96 = 1
+;中　MAX3000
+CASE 3000 TO 7999
+	SOURCE:性行动 += LOCAL/4 + 1000
+	SOURCE:达成感 += LOCAL/4 + 1000
+	TFLAG:96 = 2
+;强　MAX4500
+CASE 8000 TO 19999
+	SOURCE:性行动 += LOCAL/8 + 2000
+	SOURCE:达成感 += LOCAL/8 + 2000
+	TFLAG:96 = 3
+;必殺
+CASEELSE
+	SOURCE:性行动 += LOCAL/16 + 3250
+	SOURCE:达成感 += LOCAL/16 + 3250
+	TFLAG:96 = 4
+ENDSELECT
+
+BASE:PLAYER:绝顶 += LOCAL
+
+;射精槽増加之一时保存
+TCVAR:PLAYER:101 += LOCAL
+
+RETURN LOCAL
+
+
+@COUNTER_FASCINATION
+;恍惚、逆推判定
+SIF TEQUIP:爱之圈套 || TEQUIP:拘束 || TEQUIP:触手 || TEQUIP:尿道ブジー || COND("３Ｐ")
+	RETURN 0
+SIF STATE("击沈", PLAYER) || STATE("恍惚", PLAYER)
+	RETURN 0
+
+SELECTCASE SELECTCOM
+CASE 280, 304, 305
+	RETURN 0
+ENDSELECT
+
+;恍惚确率を算出する
+TFLAG:91 = TCVAR:PLAYER:1*3 + (TALENT:魅惑 + TALENT:迷之魅力 + TALENT:魅力 + ABL:技巧)*2 - ABL:PLAYER:技巧*4 + TALENT:上位梦魇*3 + COND("反击之强度")*2
+
+;弱点之处理
+SIF TFLAG:90
+	TFLAG:92 = CALCF("弱点突かれ", SELECTCOM)
+;二人で逆推
+IF TEQUIP:Ｗ逆推
+	TFLAG:91 += TALENT:ASSI:魅惑+TALENT:ASSI:迷之魅力+TALENT:ASSI:魅力+ABL:ASSI:技巧+ABL:ASSI:奉仕精神+TALENT:ASSI:上位梦魇 + 2
+	SIF TFLAG:90
+		TFLAG:92 += CALCF("弱点突かれ", SELECTCOM:1)
+ENDIF
+TFLAG:91 += TFLAG:92
+
+;防强术
+SIF STATE("防强术", PLAYER)
+	TFLAG:91 -= 20
+;醉酒
+SIF STATE("醉酒", PLAYER)
+	TFLAG:91 += 10
+;装饰品效果（精神力）
+TFLAG:91 = DIVIDE(TFLAG:91, 100 + TALENT:PLAYER:精神力强化*2)
+
+;弱点优遇措置
+TFLAG:91 = LIMIT(TFLAG:91, TFLAG:92, 100)
+;5％未满なら切捨て
+SIF TFLAG:91 < 5
+	TFLAG:91 = 0
+
+;テスト用
+SIF FLAG:217
+	PRINTFORML 恍惚确率：{TFLAG:91}％
+
+;恍惚、逆推判定
+;反击されているなら、恍惚になったりする
+IF COND("恍惚确率") > RAND:100 && TFLAG:90
+	PRINTL 
+	PRINTFORML %CALLNAME:PLAYER%陷入了恍惚……
+	TEQUIP:逆推 = 1
+	CALL ADD_STATE, PLAYER, "恍惚"
+	FORCEWAIT
+	;高潮管理中なら、解除
+	IF TEQUIP:高潮管理
+		TEQUIP:高潮管理 = 0
+		PRINTFORMW 主导权被%CALLNAME:TARGET%夺走，%CALLNAME:PLAYER%已经无法继续维持高潮管理了…！
+	ENDIF
+	IF BASE:气力 > 0
+		TFLAG:90 = 10
+		CALL COUNTER_KOJO, "恍惚"
+	ENDIF
+	PRINTL 
+ENDIF
+
+;以下、逆推状态でないなら逆推判定
+SIF TEQUIP:逆推
+	RETURN 0
+;やってこない状态
+SIF TEQUIP:眼罩 || TEQUIP:灌肠 || TEQUIP:触手 || TEQUIP:尿道ブジー || STATE("脱力", TARGET) || STATE("恍惚", PLAYER) || CFLAG:9
+	RETURN 0
+;大怪我
+SIF TALENT:Ｖ损伤 || TALENT:Ａ损伤
+	RETURN 0
+;性癖之問題
+SIF TALENT:PLAYER:性别男 && TALENT:性别男 && ABL:男同属性 == 0
+	RETURN 0
+SIF TALENT:PLAYER:性别女 && TALENT:性别女 && ABL:百合属性 == 0
+	RETURN 0
+;体位によっては无理
+SELECTCASE CONDS("体位")
+CASE "正常位", "屈曲位", "后背位"
+	RETURN 0
+ENDSELECT
+
+TFLAG:93 = ABL:欲望*5 + BASE:欲求不满*2 + (ABL:Ｓ属性 - ABL:Ｍ属性)*3 + COND("恍惚确率") - COND("绝顶", PLAYER)*5 - NOWEX:绝顶数合计*20
+SIF TALENT:强硬
+	TFLAG:93 += 30
+SIF TALENT:淫乱
+	TFLAG:93 += 20
+SIF TALENT:好色
+	TFLAG:93 += 15
+SIF STATE("醉酒", TARGET) || STATE("烂醉", TARGET)
+	TFLAG:93 += 30
+;イかされまくっても、逆推てこなくなる
+SIF BASE:性欲 >= MAXBASE:性欲
+	TFLAG:93 -= 20
+
+;装饰品（逆推率ＵＰ）
+SIF TALENT:PLAYER:逆推率 > 0
+	TFLAG:93 += TALENT:PLAYER:逆推率
+
+;气力による补正(プラスマイナス补正はここまでで済ませる)
+TFLAG:93 = TFLAG:93*BASE:气力/MAXBASE:气力
+;欲情による补正
+SELECTCASE PALAM:欲情
+CASE IS < 500
+	TIMES TFLAG:93 , 0.10
+CASE IS < 3000
+	TIMES TFLAG:93 , 0.30
+CASE IS < 10000
+	TIMES TFLAG:93 , 0.50
+CASE IS > 30000
+	TIMES TFLAG:93 , 1.20
+ENDSELECT
+
+;逆推頻度补正
+SIF TCVAR:152 > 0
+	TFLAG:93 /= TCVAR:152
+
+;逆推确率が０以下之场合は当然押し倒さない
+TFLAG:93 = MAX(TFLAG:93, 0)
+
+;テスト用
+SIF FLAG:217
+	PRINTFORML 逆推概率：{TFLAG:93}％
+
+IF COND("逆推确率") > RAND:100
+	;逆推頻度减少
+	TCVAR:152 += 5 + RAND:6
+
+	PRINTFORML %CALLNAME:TARGET%将%CALLNAME:PLAYER%推倒了！
+	LOCAL = LIMIT( (100 - COND("逆推确率") )*30, 1000, 10000)
+
+	CALL CHECK_OSHITAOSHI, LOCAL
+
+	IF TEQUIP:逆推
+		PRINTL 
+		TFLAG:90 = 11
+		IF RAND:2 && TALENT:性别女 && TALENT:不知耻 && (TALENT:强硬 || ABL:Ｓ属性 + ABL:PLAYER:Ｍ属性 >= 5) && COND("室内") && USE_V(TARGET)
+
+			PRINTL 
+			;PRINTFORML %CALLNAME:TARGET%飞跳到%CALLNAME:PLAYER%的脸上用大腿夹住、压上股间夺走视线朝床上逆推过去！
+			VARSET LOCAL
+			IF TEQUIP:六九式 == 0 && PENIS(PLAYER) && COND("指之使用")
+				CALL COM_ABLE99
+				LOCAL:1 = RESULT
+			ENDIF
+			IF INSERT("合体中") == 0 && PENIS(PLAYER) && COND("ベテラン：Ｖ性爱")
+				CALL COM_ABLE65
+				LOCAL:2 = RESULT
+			ENDIF
+
+			IF LOCAL:2 && RANDIF(2, LOCAL:1)
+				PRINTFORML %CALLNAME:TARGET%为了%CALLNAME:PLAYER%、理所当然的一样把阴茎放到自己的膣内吸吮了起来！
+
+				CALL SET_INSERT, TARGET, PLAYER, 65
+			ELSEIF LOCAL:1 && RAND:2
+				PRINTFORM %CALLNAME:TARGET%仰着脸把%CALLNAME:PLAYER%的阴茎用手握住、
+				IF RAND:2
+					PRINTFORML 跨在脸上的股间在鼻子上蹭呀蹭！
+				ELSE
+					PRINTFORML 屁屁像要压在脸上一样坐了上去！
+				ENDIF
+				TEQUIP:六九式 = 90
+				TEQUIP:PLAYER:六九式 = 1
+				TEQUIP:顔面骑乘 = 1
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%仰面跪着跨坐在%CALLNAME:PLAYER%的脸上，慢慢落下腰用股间把鼻和口都塞住了！
+				TEQUIP:顔面骑乘 = 1
+			ENDIF
+		ENDIF
+		CALL COUNTER_KOJO, "逆推"
+		PRINTFORMW %CALLNAME:PLAYER%被推倒了……！
+		IF TEQUIP:高潮管理
+			TEQUIP:高潮管理 = 0
+			PRINTFORMW 主导权被%CALLNAME:TARGET%夺走、%CALLNAME:PLAYER%已经无法再维持高潮管理了…！
+		ENDIF
+		;Ｈ氛围増加
+		TFLAG:33 += 5
+	ELSE
+		IF TALENT:恋慕 && PLAYER == MASTER
+			PRINTFORMW %CALLNAME:PLAYER%抱住了%CALLNAME:TARGET%，尽管放心交给自己好了、如此在耳边轻声说道…
+			IF CFLAG:9 == 0 && MOOD_HEART() >= 3
+				PRINTFORMW %CALLNAME:TARGET%放心把身体交托给了%CALLNAME:PLAYER%的样子…
+				CFLAG:9 = 1
+			ENDIF
+		ELSE
+			IF RAND:2 == 0
+				PRINTFORMW 却被%CALLNAME:PLAYER%轻松地挡到了一边！
+			ELSE
+				PRINTFORMW 但是%CALLNAME:PLAYER%迅速地避开了！
+			ENDIF
+			;Ｈ氛围减少
+			TFLAG:33 -= 5
+		ENDIF
+	ENDIF
+	PRINTL 
+ENDIF
+
+@COUNTER_DOWN
+;助手は指令を实行できなくなる
+IF ASSI
+	IF (ASSIPLAY || (SELECTCOM >= 160 && SELECTCOM <= 169) || TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || SELECTCOM:2 >= 0) && (BASE:ASSI:体力 < 500 || BASE:ASSI:精力 <= 0)
+		CALL ASSI_DOWN
+		TFLAG:90 = 15
+		CALL COUNTER_KOJO, "助手が限界"
+	ENDIF
+ENDIF
+;主人
+IF BASE:MASTER:精力 <= 0
+	PRINTFORMW %CALLNAME:MASTER%体力已达极限……
+	;斯道克が残っていれば復活
+	IF BASE:MASTER:斯道克 >= 1
+		IF TEQUIP:触手
+			PRINTFORMW %CALLNAME:MASTER%打起精神，重新开始操纵触手……！
+		ELSEIF STATE("恍惚", PLAYER)
+			PRINTFORMW %CALLNAME:MASTER%即使深陷恍惚，仍然振奋起精神……！
+		ELSE
+			PRINTFORMW %CALLNAME:MASTER%打起精神，满血复活了……！
+		ENDIF
+		;精力を限界まで回復
+		BASE:MASTER:精力 = MAXBASE:MASTER:精力
+		;斯道克を减少
+		BASE:MASTER:斯道克 -= 1
+		TFLAG:90 = 12
+		CALL COUNTER_KOJO, "斯道克使用"
+	;そうでなければ调教を强制終了
+	ELSE
+		PRINTFORMW ★★★%CALLNAME:MASTER%体力到达极限・调教结束★★★
+		CALL ADD_STATE, MASTER, "击沈"
+		TFLAG:90 = 13
+		CALL COUNTER_KOJO, "强制終了"
+		BEGIN AFTERTRAIN
+	ENDIF
+ENDIF
+RETURN 0
+
+@ASSI_DOWN
+SIF STATE("击沈", ASSI) || (BASE:ASSI:体力 >= 500 && BASE:ASSI:精力 > 0)
+	RETURN 0
+PRINTFORML ★助手击沉★
+PRINTFORMW %CALLNAME:ASSI%体力已达极限……
+PRINTFORMW 看来不能再勉强%CALLNAME:ASSI%参加调教了……
+CALL ADD_STATE, ASSI, "击沈"
+CALL SETFLAG, "助手击沈"
+
+
+@COUNTER_REVIVAL
+;復帰判定
+SIF STATE("恍惚", PLAYER) == 0
+	RETURN 0
+;復帰确率を算出して代入(母乳を饮んでいると復帰率减少)
+LOCAL = 10 + ABL:PLAYER:技巧*4 - ABL:技巧*4 - EXP_GAIN(74, PLAYER)*5
+SIF BASE:PLAYER:精力*2 >= MAXBASE:PLAYER:精力
+	LOCAL += 10
+SIF COND("绝顶", PLAYER) == 0
+	LOCAL += 5
+SIF ABL:PLAYER:ＬＶ > ABL:ＬＶ
+	LOCAL += LIMIT(ABL:PLAYER:ＬＶ - ABL:ＬＶ, 5, 20)
+;防强术
+SIF STATE("防强术", PLAYER)
+	LOCAL += 10
+;装饰品效果（技巧）
+SIF TALENT:PLAYER:技巧强化 > 0
+	LOCAL = MULTIPLY(LOCAL, 100 + TALENT:PLAYER:技巧强化)
+;１Ｔごとに復帰率が５％ＵＰ
+SELECTCASE TFLAG:99
+CASE 0
+	LOCAL = 0
+CASEELSE
+	LOCAL += (TFLAG:99 - 1)*5
+ENDSELECT
+;マイナスまたは100％を超えていたら修正
+LOCAL = LIMIT(LOCAL, 0, 100)
+SIF FLAG:217
+	PRINTFORML 復帰确率：{LOCAL}％
+
+IF LOCAL > RAND:100
+	PRINTFORML %CALLNAME:PLAYER%恢复了清醒！
+	CALL REMOVE_STATE, PLAYER, "恍惚"
+	;自动で逆推から復帰する之はオミット
+	;IF LOCAL > RAND:100 && TEQUIP:Ｗ逆推 == 0 && STATE("束缚术", PLAYER) == 0
+	;	PRINTFORMW %CALLNAME:PLAYER%从逆推状态中恢复回来了！
+	;	TEQUIP:逆推 = 0
+	;ENDIF
+ELSE
+	PRINTFORMW %CALLNAME:PLAYER%神志恍惚……
+	TFLAG:99 += 1
+ENDIF
+
+;-------------------------------------------------
+;特殊な技之管理
+;ARGSに技名、ARGに技之强さなどを代入
+;-------------------------------------------------
+@COUNTER_SKILL, ARGS, ARG
+#DIM LCOUNT
+
+VARSET LOCAL
+
+SELECTCASE ARGS
+CASE "风之爱抚"
+	SIF STATE("高敏术", PLAYER)
+		RETURN 0
+	PRINTFORML ＜%CALLNAME:TARGET%的风之爱抚！＞
+	PRINTFORML %CALLNAME:TARGET%卷起了和风！
+	PRINTFORMW 风儿温柔地爱抚着%CALLNAME:PLAYER%的全身！
+	IF 12 + LIMIT(ABL:ＬＶ - ABL:PLAYER:ＬＶ, -5, 5) >= RAND:20
+		PRINTFORMW %CALLNAME:PLAYER%变得敏感了！
+		CALL ADD_STATE, PLAYER, "高敏术"
+	ELSE
+		PRINTFORMW 但是对%CALLNAME:PLAYER%没有效果！
+	ENDIF
+CASE "ブラッドサック"
+	SELECTCASE ARG
+	;不发
+	CASE 0
+		PRINTFORML ＜%CALLNAME:TARGET%的BLOOD SUCK！＞
+		IF RAND:2 == 0 && TEQUIP:眼罩
+			IF RAND:3 == 0
+				PRINTFORML 但是%CALLNAME:TARGET%只是切开了空气…
+			ELSEIF RAND:2 == 0
+				PRINTFORML 但是%CALLNAME:TARGET%的獠牙咬空了…
+			ELSE
+				PRINTFORML 但是%CALLNAME:TARGET%的啃咬落空了…
+			ENDIF
+		ELSE
+			IF RAND:3 == 0
+				PRINTFORML 但是%CALLNAME:PLAYER%险险地躲开了%CALLNAME:TARGET%的獠牙！
+			ELSEIF RAND:2 == 0
+				PRINTFORML 但是%CALLNAME:PLAYER%轻松躲开了！
+			ELSE
+				PRINTFORML 但是%CALLNAME:PLAYER%闪身避开了！
+			ENDIF
+		ENDIF
+		RETURN 0
+	CASE IS < 10
+		LOCALS = ！
+	CASE IS < 20
+		LOCALS = ！！！
+	CASEELSE
+		LOCALS = ！！！！！
+	ENDSELECT
+
+	PRINTFORML ＜%CALLNAME:TARGET%的BLOOD SUCK%LOCALS%＞
+	PRINTFORML %CALLNAME:PLAYER%的精力减少了{ARG}！
+	SIF BASE:体力 < MAXBASE:体力
+		PRINTFORMW %CALLNAME:TARGET%的体力恢复了{LIMIT(MAXBASE:体力 - BASE:体力, 1, 100*ARG)}！
+	PRINTFORMW 伴随着吸血，难以名状的快感向%CALLNAME:PLAYER%襲来……！
+	BASE:PLAYER:精力 -= ARG
+	TCVAR:PLAYER:109 += ARG
+	BASE:体力 += LIMIT(MAXBASE:体力 - BASE:体力, 1, 100*ARG)
+
+	BASE:PLAYER:绝顶 += MAXBASE:PLAYER:绝顶 * ARG / 10
+	TCVAR:PLAYER:101 += MAXBASE:PLAYER:绝顶 * ARG / 10
+	;绝顶标志ON
+	TCVAR:PLAYER:2 = 1
+;-------------------------------------------------
+;口上から之呼び出し专用。
+;反击や指令内派生・追加として使う场合はこちらを呼び出す。
+;脱力を付加する之が目的な之で快感等は上升しない。上升させる场合は呼び出し时に处理を追加すること。
+;-------------------------------------------------
+CASE "熔融之吻"
+	;TARGETに口枷がはまっていると无理
+	SIF TEQUIP:口枷
+		RETURN 0
+	PRINTFORML ＜%CALLNAME:TARGET%的熔融之吻！＞
+	;调教者之口⇔梅罗娜之口之汚れが移动
+	CALL EQ_STAIN, PLAYER, TARGET, 0, 0
+
+	;接吻経験之増加
+	EXP:70 += 1
+	EXP:PLAYER:70 += 1
+
+	;皮肤硬化状态なら元に戻す。
+	IF STATE("皮肤硬化", PLAYER)
+		CALL REMOVE_STATE, PLAYER, "皮肤硬化"
+		PRINTFORML %CALLNAME:PLAYER%变得柔软了！
+		PRINTFORMW %CALLNAME:PLAYER%的皮肤硬化效果消失了！
+	;PLAYERが恍惚
+	ELSEIF STATE("恍惚", PLAYER)
+		PRINTFORMW %CALLNAME:TARGET%吻上了恍惚中的%CALLNAME:PLAYER%的唇，令理性进一步融化…
+		BASE:PLAYER:绝顶 += 500 * ABL:PLAYER:Ｍ感觉 * ABL:技巧
+	ELSEIF STATE("脱力", PLAYER)
+		PRINTFORML 在脱力状态下被亲吻，%CALLNAME:PLAYER%变得恍惚了！
+		CALL ADD_STATE, PLAYER, "恍惚"
+		FORCEWAIT
+	ELSE
+		PRINTFORMW %CALLNAME:PLAYER%は%CALLNAME:TARGET%脱力了！（造成快感减少！）
+		CALL ADD_STATE, PLAYER, "脱力"
+		;M感觉Lv3以上だと恍惚が付くかも
+		IF STATE("恍惚", PLAYER) == 0 && ABL:PLAYER:Ｍ感觉 >= 3 && RAND:3 == 0
+			PRINTFORML %CALLNAME:PLAYER%在%CALLNAME:TARGET%巧妙吻技的进一步攻势下，陷入了恍惚！
+			CALL ADD_STATE, PLAYER, "恍惚"
+			FORCEWAIT
+		ENDIF
+	ENDIF
+
+CASE "运命改竄"
+	PRINTFORMW ＜%CALLNAME:TARGET%的命运篡改！＞
+	LOCAL = CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ
+	PRINTFORM 给予了%CALLNAME:TARGET%
+	SETCOLOR SETCOLOR_DUMMY()
+	PRINTFORM 
+	RESETCOLOR
+	PRINTFORML {LOCAL}的快感
+	REDRAW 0
+	WAIT
+	CLEARLINE 1
+	PRINTFORM %CALLNAME:TARGET%给予了
+	SETCOLOR DEF_COLOR("黄色")
+	PRINT 
+	RESETCOLOR
+	PRINTFORML {LOCAL}的快感
+	REDRAW 1
+	WAIT
+	BASE:MASTER:绝顶 += LOCAL
+	CALL SET_SHOOT, PLAYER, "变更不可"
+	CUP:快Ｃ = 0
+	CUP:快Ｖ = 0
+	CUP:快Ａ = 0
+	CUP:快Ｂ = 0
+	CUP:快Ｍ = 0
+	CDOWN:0 = 0
+	CDOWN:1 = 0
+	CDOWN:2 = 0
+	CDOWN:14 = 0
+	CDOWN:15 = 0
+	NOWEX:Ｃ绝顶 = 0
+	NOWEX:Ｖ绝顶 = 0
+	NOWEX:Ａ绝顶 = 0
+	NOWEX:Ｂ绝顶 = 0
+	NOWEX:Ｍ绝顶 = 0
+	NOWEX:尿道绝顶 = 0
+
+CASE "运命检閲"
+	PRINTFORMW ＜%CALLNAME:TARGET%的命运检阅！＞
+	TEQUIP:运命检閲 = 0
+	LOCAL = RAND:6
+	SELECTCASE LOCAL
+	CASE 5
+		PRINT 『咏唱』
+	CASE 4
+		PRINT 『肛门』
+	CASE 3
+		PRINT 『接吻』
+	CASE 2
+		PRINT 『胸部』
+	CASE 1
+		PRINT 『私处』
+	CASE 0
+		PRINT 『爱抚』
+	ENDSELECT
+	SETBIT TEQUIP:运命检閲, LOCAL
+
+	LOCAL:1 = RAND:8
+	IF LOCAL:1 != LOCAL && LOCAL:1 <= 5
+		PRINT と
+		SELECTCASE LOCAL:1
+		CASE 5
+			PRINT 『咏唱』
+		CASE 4
+			PRINT 『肛门』
+		CASE 3
+			PRINT 『接吻』
+		CASE 2
+			PRINT 『胸部』
+		CASE 1
+			PRINT 『私处』
+		CASE 0
+			PRINT 『爱抚』
+		ENDSELECT
+		SETBIT TEQUIP:运命检閲, LOCAL:1
+	ENDIF
+	PRINTFORMW 被禁止了！
+ENDSELECT

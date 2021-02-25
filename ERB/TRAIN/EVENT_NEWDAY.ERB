@@ -1,0 +1,836 @@
+﻿;-------------------------------------------------
+;朝に起こる事件
+;-------------------------------------------------
+@EVENT_NEWDAY
+#DIM LCOUNT
+#DIM MEMO_EXP, 100
+
+;变数阴蒂ア
+VARSET LOCAL
+;TAGET之経験増加之判定で使う
+FOR LCOUNT, 0, 100
+	MEMO_EXP:LCOUNT = EXP:LCOUNT
+NEXT
+;朝事件之記录初期化
+CVARSET CFLAG, 90, 0
+
+;条件によって事件之种类が増える
+PLAYER = MASTER
+
+;最初にＳ属性事件之判定を行う(发生确率が低い)
+IF RAND:5 == 0
+	CALL BIND_AT_MORNING
+	IF RESULT == 1
+		BEGIN TURNEND
+		RETURN 1
+	ENDIF
+ENDIF
+;朝事件之決定
+CALL PLAY_AT_MORNING
+LOCALS = %STR:100%
+SIF LOCALS == ""
+	RETURN 0
+
+;基本回数は精力依存
+LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
+
+DRAWLINE
+SELECTCASE LOCALS
+CASE "朝逆正常位"
+	SIF TALENT:性别男
+		LOCAL += 1
+	LOCAL = MAX(LOCAL + ABL:欲望/2, 1)
+
+	CALL SIMULATE_TRAIN_FIRST
+	CALL SIMULATE_TRAIN_COM, 120, LOCAL
+	SIF EXP:射精経験 == MEMO_EXP:3
+		CALL SIMULATE_TRAIN_COM, 120, LOCAL
+
+	PRINTFORMW %CALLNAME:MASTER%在下腹部的\@ RAND:2 ? 袭击的冲击 # 开始蔓延的快感 \@下睁开了眼睛
+
+	PRINTFORMW 显然、%CALLNAME:TARGET%趁%CALLNAME:MASTER%正在睡觉的时候享受的侵犯着…
+	IF TARGET == ASSI
+		IF EXP:射精経験 > MEMO_EXP:3 && RAND:2
+			PRINTFORMW 彻底醒来的%CALLNAME:MASTER%挺起腰吩咐%CALLNAME:TARGET%好好侍奉、%CALLNAME:TARGET%一边享受精液射到小穴深处的感觉一边说出了尽今天的日程安排…
+
+		ELSE
+			PRINTFORMW 确认主人醒来、%CALLNAME:TARGET%慢慢的扭着腰用娇滴滴的声音开始说出%CALLNAME:MASTER%今天的行程…
+
+		ENDIF
+	;ＭＡＳＴＥＲ主导権な展开はまだできてない
+
+	;ELSEIF RAND:2
+	;	PRINTFORML %CALLNAME:MASTER%感觉到下半身的违和感醒了过来、看到%CALLNAME:TARGET%脱掉了自己内衣还把勃起的肉棒插了进来、
+	;	PRINTFORML 语无伦次的找了个借口一边妖艳的对着%CALLNAME:TARGET%笑着、一边张开腿邀请A…
+
+
+	ELSE
+		IF EXP:射精経験 > MEMO_EXP:3 && RAND:3 == 0
+			PRINTFORM %CALLNAME:TARGET%忍耐着射精的感觉直到%CALLNAME:MASTER%睡醒了、
+
+		ELSEIF RAND:2
+			PRINTFORM %CALLNAME:TARGET%通过小穴张力的变化感觉到%CALLNAME:MASTER%睡醒了、
+
+		ELSE
+			PRINTFORM 喜欢做熟睡中袭击这种事情的%CALLNAME:TARGET%用吻堵住了%CALLNAME:MASTER%的嘴、
+
+			CALL SIMULATE_TRAIN_COM, 6, 1 + RAND:2
+		ENDIF
+		IF EXP:射精経験 > MEMO_EXP:3 && RAND:3 == 0
+			PRINTFORMW %CALLNAME:TARGET%一边挺着腰大量的精液\@ COND("危险日", MASTER) ? 灌进危险日的子宫 # 很舒服的样子中出了 \@一边进行早上的问候…
+
+		ELSEIF ABL:腰技 >= 3 && RAND:3 == 0
+			PRINTFORMW %CALLNAME:TARGET%一边巧妙的扭着腰提升彼此之间的快感一边进行早上的问候…
+
+		ELSEIF ABL:Ｓ属性 >= 3 && RAND:2
+			PRINTFORMW %CALLNAME:TARGET%对早晨刚起来\@ RAND:2 ? 反抗软弱 # 动作迟钝 \@%CALLNAME:MASTER%\@ (EXP:射精経験 > LOCAL:3 && RAND:2) ? 满满的下种 # 更加激烈的侵犯 \@作为早安的问候…
+
+			CALL SIMULATE_TRAIN_COM, 120, 2
+		ELSE
+			PRINTFORMW %CALLNAME:TARGET%一边舒服的样子用力挺着腰一边进行早上的问候…
+
+		ENDIF
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+
+	;経験や珠など之獲得量计算
+	CALL SIMULATE_TRAIN_CALC
+	;結果发表
+	CALL SIMULATE_TRAIN_SHOW
+	CALL CALC, "欲求不满解消", TARGET, LOCAL
+CASE "朝舐阴"
+	SIF TALENT:性别男
+		LOCAL += 1
+	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:百合属性)/3, 1)
+	PRINTFORML 早晨、%CALLNAME:MASTER%睡醒后觉得有点暖和…
+	PRINTFORM 难道、感觉到什么似的气势汹汹的一下掀开了被子、看到里面是
+
+
+	IF ABL:百合属性 >= 3 && ABL:欲望 >= 5 && RAND:3 == 0
+		PRINTFORM 看起来面红耳赤
+
+	ELSEIF RAND:3 == 0
+		PRINTFORM 脸埋在股间
+
+	ELSEIF RAND:2
+		PRINTFORM 强行分开自己双腿
+
+	ELSE
+		PRINTFORM 把身体挤进双腿之间
+
+	ENDIF
+	PRINTFORMW 舔着自己小穴的%CALLNAME:TARGET%、
+	PRINTFORM %CALLNAME:TARGET%面带笑容的伸出舌头、
+	IF ABL:奉仕精神 >= 3 && RAND:2
+		PRINTFORML 把阴唇打扫干净作为早安的问候…
+
+		CALL SELF_KOJO, LOCALS
+
+	ELSE
+		PRINTFORML 进行早上的问候…
+
+		CALL SELF_KOJO, LOCALS
+	ENDIF
+	CALL SIMULATE_TRAIN, 98, LOCAL
+	IF ABL:百合属性 >= 3 && COND("外观：没穿胖次", MASTER) == 0 && RAND:2
+		PRINTFORML 在%CALLNAME:TARGET%离开房间之后%CALLNAME:MASTER%走到镜子前面、看到的是毫无防备的下半身
+
+		PRINTFORML …显然、%CALLNAME:TARGET%带走了胖次……
+	ENDIF
+	CALL CALC, "欲求不满解消", TARGET, 1
+CASE "朝足交"
+	LOCAL = MAX(LOCAL + (ABL:Ｓ属性 + ABL:足技)/3, 1)
+
+
+	PRINTFORML 早晨、%CALLNAME:TARGET%\@ PENIS(MASTER) ? 用足交 # 用脚惩罚私处 \@的方式叫醒了%CALLNAME:MASTER%后、
+
+	
+	CALL SELF_KOJO, LOCALS
+	CALL SIMULATE_TRAIN, 95, LOCAL
+	
+	PRINTFORM %CALLNAME:TARGET%
+	IF TALENT:坏心眼 || TALENT:小恶魔
+		IF EXP:精液経験 > MEMO_EXP:20
+			PRINTFORM 要求%CALLNAME:MASTER%把自己脚上沾上的精液舔干净、
+
+		ELSEIF PENIS(MASTER) == 0
+			PRINTFORM 要求%CALLNAME:MASTER%把自己脚上沾上的淫液舔干净、
+
+		ENDIF
+	ENDIF
+	PRINTFORML 一边一副沉浸在优越感中的表情一边进行早安问候…
+
+
+	CALL CALC, "欲求不满解消", TARGET, 1
+CASE "朝之母乳搾り"
+	LOCAL = MAX(LOCAL + MIN(GET_EXP_LV(EXP:喷乳経験), 5), 1)
+	;巨乳
+	IF TALENT:巨乳
+		PRINTFORML 早晨、来到厨房对%CALLNAME:TARGET%那巨大的乳房榨取母乳、
+
+		;孕娠または生产经历
+		IF TALENT:孕娠 || TALENT:生产经历 || TALENT:泌乳体質
+			IF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%因高潮而瞪大眼睛，带着一副恍惚的表情从乳房里喷出了乳汁…
+
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%脸上洋溢着慈爱的表情、气势汹汹的在榨出器中喷出了乳汁…
+
+			ENDIF
+		ENDIF
+	ELSE
+		PRINTFORML 早晨、%CALLNAME:TARGET%来到厨房自己用榨乳器榨出乳汁、
+
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+	;巨乳之场合、2倍之量が搾れ、半分を売りに出します
+	IF TALENT:巨乳
+		EXP:喷乳経験 += LOCAL * 2
+		PRINTFORML %EXPNAME:54%＋{LOCAL*2}
+		IF TALENT:献身 || TALENT:好色 || TALENT:泌乳体質
+			IF RAND:2 == 0
+				PRINTFORML %CALLNAME:TARGET%找到%CALLNAME:MASTER%、嫣然一笑微笑着招手…
+				PRINTFORML 靠近后、%CALLNAME:TARGET%抱住%CALLNAME:MASTER%的头、把还滴着乳汁的乳头高兴的塞进%CALLNAME:MASTER%嘴里挤了起来…
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%笑着递出了一杯啤酒杯的香浓乳汁、
+
+			ENDIF
+		ENDIF
+		PRINTFORML %PALAMNAME:4%之珠＋{LOCAL*60}
+		PRINTFORML %PALAMNAME:7%之珠＋{LOCAL*20}
+		PRINTFORMW %PALAMNAME:14%之珠＋{LOCAL*50}
+		JUEL:欲情 += LOCAL*60
+		JUEL:习得 += LOCAL*20
+		JUEL:快Ｂ += LOCAL*50
+		PRINTFORML %CALLNAME:MASTER%把%CALLNAME:TARGET%榨出来的{LOCAL*100*(TALENT:巨乳 + 1)}cc的乳汁分出半瓶装好、卖了出去
+		;出した人之プロフィールが现れる安心品質
+		PRINTFORML %CALLNAME:TARGET%的乳汁榨1次卖了%MONEY_C(LOCAL*250*(TALENT:巨乳 + 1) )%
+		PRINTFORML 所持金+%MONEY_C(LOCAL*250*(TALENT:巨乳 + 1) )%
+		MONEY += LOCAL*250*(TALENT:巨乳 + 1)
+	ELSE
+		EXP:喷乳経験 += LOCAL
+		PRINTFORML %EXPNAME:54%＋{LOCAL}
+		PRINTFORML %CALLNAME:TARGET%把装着榨出的乳汁的杯子递了过来。
+
+		PRINTFORML %PALAMNAME:4%之珠＋{LOCAL*60}
+		PRINTFORML %PALAMNAME:7%之珠＋{LOCAL*20}
+		PRINTFORML %PALAMNAME:14%之珠＋{LOCAL*50}
+		JUEL:欲情 += LOCAL*60
+		JUEL:习得 += LOCAL*20
+		JUEL:快Ｂ += LOCAL*50
+	ENDIF
+CASE "朝之新婚PLAY"
+	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:露阴癖)/3, 1)
+	PRINTFORML 早上起来后、从厨房飘来一阵香味、
+
+	PRINTFORML 在那里%CALLNAME:TARGET%裸体只穿着围裙做着早餐…
+	PRINTFORML ―――一时冲动从背后插了进去
+
+
+	CALL SELF_KOJO, LOCALS
+	CALL SIMULATE_TRAIN, 61, LOCAL
+
+	PRINTFORML 情不自禁早饭前和%CALLNAME:TARGET%做了{LOCAL}次…
+	SIF TALENT:怕羞
+		PRINTFORML %CALLNAME:TARGET%对%CALLNAME:MASTER%的行为有些抱怨、明明很高兴的样子…
+	CALL CALC, "欲求不满解消", TARGET, LOCAL
+CASE "朝乳交"
+	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:精液成瘾)/3, 1)
+		PRINTFORML 早上、睁开眼睛的同时感觉到小腹有不协调感、
+
+	;贫乳之场合
+	IF TALENT:贫乳
+		PRINTFORML 这种不协调感的来源是、%CALLNAME:TARGET%用乳房夹住了自己的肉棒、
+		PRINTFORML 显然乳交练习的很棒了……
+
+
+	;巨乳之场合
+	ELSEIF TALENT:巨乳
+		PRINTFORML 看着%CALLNAME:TARGET%用丰满的乳房夹着肉棒、上下摩擦、
+
+	;除此以外
+	ELSE
+		PRINTFORML 看着%CALLNAME:TARGET%用乳房摩擦着肉棒、同时吮吸着从龟头流出的液体、
+
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+
+	CALL SIMULATE_TRAIN, 92, LOCAL
+	IF EXP:精液経験 > MEMO_EXP:20
+		PRINTFORML 把精液射在%CALLNAME:TARGET%脸上作为早安的问候吧…
+
+	ELSE
+		PRINTFORML %CALLNAME:TARGET%把脸埋在股间作为早安的问候…
+	ENDIF
+	CALL CALC, "欲求不满解消", TARGET, 1
+CASE "朝骑乘位"
+	LOCAL = MAX(LOCAL + (ABL:Ｖ感觉 + ABL:精液成瘾)/3, 1)
+
+
+	PRINTFORML 早上起来腰上有种沉重感、
+
+	PRINTFORML 看到%CALLNAME:TARGET%正跨坐在上面喘息着……
+	CALL SELF_KOJO, LOCALS
+	IF TARGET == ASSI
+		IF RAND:2
+			PRINTFORMW 确认%CALLNAME:MASTER%醒来后、%CALLNAME:TARGET%满满的开始扭腰、娇滴滴的声音夹杂着今天的行程报告…
+
+		ELSE
+			PRINTFORMW 完全清醒过来的%CALLNAME:MASTER%、抓住%CALLNAME:TARGET%的腰向上挺了起来、今天的日程安排混合着喘气的声音呢…
+
+		ENDIF
+		LOCAL += 1
+	ENDIF
+	CALL SIMULATE_TRAIN, 65, LOCAL
+	IF EXP:MASTER:射精経験 > MEMO_EXP:3
+		IF TARGET != ASSI
+			PRINTFORML %CALLNAME:TARGET%一边接受着膣内射精、一边进行着早上的问好
+		ELSE
+			PRINTFORML 一边以骑乘位的姿势在%CALLNAME:TARGET%的小穴内射精一边醒来…
+		ENDIF
+	ELSE
+		PRINTFORML 骑乘位的姿势醒来过来…
+
+	ENDIF
+	CALL CALC, "欲求不满解消", TARGET, LOCAL
+CASE "朝接吻"
+	LOCAL = LIMIT(LOCAL/2 + (ABL:顺从 + ABL:奉仕精神)/5, 1, 1 + TALENT:相思相爱 + TALENT:荡唇)
+
+	;奉仕レベルが高いと、先に起きている确率が高い
+	IF ABL:奉仕精神 >= 3 && RANDFIX(2)
+		PRINTFORML 早上、在%CALLNAME:TARGET%\@ LOCAL >= 3 ? 香甜 # \@的吻中醒了过来
+
+	ELSE
+		IF TALENT:外表年龄 == 0 && RAND:2
+			PRINTFORML 早上、%CALLNAME:MASTER%在突然的摇晃身体和身上压着的重量中醒了过来、
+
+			PRINTFORMW 看到、%CALLNAME:TARGET%跨在自己胸口上摇晃…
+			PRINTFORMW 看到%CALLNAME:MASTER%睁开眼睛的%CALLNAME:TARGET%、把脸凑过来吻了一下、
+		ELSEIF TALENT:巨乳 && RAND:2
+			PRINTFORML 早上、醒来后觉得今天的枕头似乎出奇的柔软感觉很舒服……
+
+			IF TALENT:不知耻 && RAND:3 == 0
+				PRINT 全裸的
+
+			ELSEIF RAND:2
+				PRINT 只穿着内衣的
+
+			ENDIF
+			PRINTFORMW %CALLNAME:TARGET%钻到了床上、把%CALLNAME:MASTER%的头抱在胸上、
+			PRINTFORMW 看到%CALLNAME:MASTER%睁开眼睛的%CALLNAME:TARGET%、把脸凑过来吻了一下、
+		ELSE
+			PRINTFORML 早上、醒来发现身体有点沉重……
+
+			PRINTFORMW 不知何时钻到床上的%CALLNAME:TARGET%、抱着%CALLNAME:MASTER%当做枕头、
+			IF TALENT:相思相爱 && RAND:2
+				PRINTFORML 无法忍耐对%CALLNAME:MASTER%的爱意然后吻住了%CALLNAME:TARGET%的嘴、
+				PRINTFORML %CALLNAME:TARGET%梦见了什么开心的事的样子抓住%CALLNAME:MASTER%的脸、深深的吻了过来…
+
+			ELSE
+				PRINTFORMW 看到%CALLNAME:MASTER%睁开眼睛的%CALLNAME:TARGET%、把脸凑过来吻了一下…
+			ENDIF
+		ENDIF
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+
+	CALL SIMULATE_TRAIN, 6, LOCAL
+
+	IF ABL:奉仕精神 >= 3 && RANDFIX(2)
+		PRINTFORM %CALLNAME:TARGET%
+		IF RAND:4 && TALENT:怕羞 && TALENT:坦率 + TALENT:相思相爱 == 0
+			PRINTFORM 红着脸
+		ELSE
+			PRINTFORM 把%CALLNAME:MASTER%抱在怀里\@ TALENT:好色 ? 一边用手抚摸着股间一边 #  \@、
+		ENDIF
+		PRINTFORML 进行早安的问候
+
+	ENDIF
+	CALL CALC, "欲求不满解消", TARGET, 1
+CASE "朝口交"
+	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:精液成瘾)/3, 1)
+
+	PRINTFORML 早上、醒来就觉得下腹部有种奇妙的舒服…
+
+	CALL COM_ABLE99
+	IF RESULT && COND("脚之使用") && ABL:欲望 >= 3 && ABL:奉仕精神 >= 3 && CLO_ORI(TARGET,"外套") == 0 && RAND:2
+		PRINTFORM 睁开眼睛…打开双腿的姿势跨在身上的%CALLNAME:TARGET%
+
+		IF (TALENT:淫乱 && ABL:露阴癖 >= 5 && RAND:2) || CLO_ORI(TARGET,"西装","内衣") == 0 || COND("外观：没穿胖次")
+			IF RAND:3 == 0
+				PRINT 现在正在流着淫液小穴、
+
+			ELSEIF RAND:2
+				PRINT 完全发情了的小穴、
+
+			ELSE
+				PRINT 赤裸的小穴、
+
+			ENDIF
+		ELSEIF CLO_ORI(TARGET,"西装")
+			IF (ABL:欲望 >= 4 || TALENT:容易湿) && RAND:2
+				PRINTFORM 湿掉的胖次、
+
+			ELSEIF TALENT:外表年龄 >= 2
+				PRINTFORM 深入股间的胖次、
+
+			ELSE
+				PRINTFORM 可爱的少女胖次、
+
+			ENDIF
+		ELSE
+			IF (ABL:欲望 >= 4 || TALENT:容易湿) && RAND:2
+				PRINTFORM 湿掉的
+			ELSEIF TALENT:外表年龄 >= 2
+				PRINTFORM 深入股间的
+
+			ELSE
+				PRINTFORM 可爱的少女
+
+			ENDIF
+			IF EQUIP:胖次
+				PRINTFORM %PANTIES(TARGET, 1)%
+			ELSE
+				PRINTFORM 胖次、
+			ENDIF
+		ENDIF
+		PRINTL 映入眼帘
+
+		PRINTFORML 看来、%CALLNAME:TARGET%趁%CALLNAME:MASTER%正在睡觉的时候一边用股间摩擦脸一边口交…
+		SELECTCOM = 99
+	ELSE
+		PRINTFORML 看来、%CALLNAME:TARGET%趁%CALLNAME:MASTER%正在睡觉的时候进行口交…
+		SELECTCOM = 91
+	ENDIF
+
+	;六九式かで口上分岐させるなら、SELECTCOM == 99で六九式之时となる
+	CALL SELF_KOJO, LOCALS
+
+	CALL SIMULATE_TRAIN, SELECTCOM, LOCAL
+
+	;打扫口交
+	IF ABL:奉仕精神 + TALENT:献身 - (COND("包茎", MASTER) > 0) >= 3
+		;ＭＡＳＴＥＲが包茎
+		IF COND("包茎", MASTER) && ABL:奉仕精神 + TALENT:献身 >= 4 && RAND:3
+			PRINTFORM %CALLNAME:TARGET%把舌头伸进了%CALLNAME:MASTER%的
+			IF COND("真性包茎", MASTER)
+				PRINTFORML 龟头和包皮之间、用舌头把里面包皮垢清理干净后了进行早安的问候…
+			ELSE
+				PRINTFORML 包茎的肉棒把龟头从包皮里剥了出来、用舌头把里面包皮垢清理干净后了进行早安的问候…
+			ENDIF
+		ELSE
+			IF EXP:精液経験 > MEMO_EXP:20
+				PRINTFORML %CALLNAME:TARGET%把精液\@ ABL:精液成瘾 >= 3 ? 如对待美味般的 # 一点不浪费的 \@一饮而尽、以打扫口交当作早晨的打招呼
+			ELSE
+				PRINTFORML %CALLNAME:TARGET%对%CALLNAME:MASTER%的阴茎进行打扫口交作为早上的问候
+			ENDIF
+		ENDIF
+		PRINTFORML 打扫口交経験＋１
+		EXP:打扫口交経験 += 1
+	ELSEIF (TALENT:好色 || ABL:奉仕精神 >= 5) && COND("脚之使用") && CLO_ORI(TARGET,"内衣") && COND("外观：没穿胖次") == 0 && RAND:3 == 0
+		PRINTFORM 用还留着%CALLNAME:TARGET%体温的胖次擦干净%CALLNAME:MASTER%的肉棒
+		IF RAND:2
+			PRINTFORML 同时进行早安的问候…
+
+		ELSE
+			PRINTFORML 、脸上带着精液的同时进行早安的问候…
+
+		ENDIF
+
+	ELSEIF SELECTCOM == 99 && ABL:Ｓ属性 && RAND:2
+		PRINTFORML %CALLNAME:TARGET%习惯性的用股间压着%CALLNAME:MASTER%的脸上坐着、进行早安的问候…
+	ELSEIF EXP:精液経験 > MEMO_EXP:20 && RAND:3
+		IF ABL:Ｓ属性 >= 3 && RAND:2
+			PRINTFORML %CALLNAME:TARGET%把嘴里的精液咽下、伸出舌头舔着嘴唇进行早安的问候…
+		ELSEIF ABL:奉仕精神 >= 3 && RAND:2
+			PRINTFORML %CALLNAME:TARGET%=\@ ABL:精液成瘾 >= 3 ? 觉得美味的样子 # 一滴不落的 \@把精液喝了下去、然后用嘴清理的同时进行早安的问候…
+
+		ELSE
+			PRINTFORML %CALLNAME:TARGET%脸上沾满精液的进行早安的问候…
+		ENDIF
+	ELSE
+		PRINTFORM %CALLNAME:TARGET%脸埋在股间
+		IF COND("指之使用") && RAND:4 == 0
+			PRINTFORM 用手指沾着精液放进嘴里、微笑着
+
+		ELSEIF RAND:3 == 0
+			PRINTFORM 、一边吸吮的肉棒一边
+
+		ELSEIF RAND:2
+			PRINTFORM 一边含着肉棒、发出闷闷的声音
+
+		ELSE
+			PRINTFORM 的姿势
+		ENDIF
+		PRINTFORML 进行早安的问候…
+
+	ENDIF
+	CALL CALC, "欲求不满解消", TARGET, 1
+ENDSELECT
+
+;朝事件之記录
+IF LOCALS != "" && LOCAL
+	CFLAG:PLAYER:90 = NUM_EV(LOCALS)
+	CFLAG:90 = NUM_EV(LOCALS)
+	WAIT
+ENDIF
+
+
+@PLAY_AT_MORNING
+#DIM LCOUNT
+
+STR:100 = 
+;反发刻印が3あるとダメ
+SIF MARK:反发刻印 >= 3
+	RETURN 0
+
+VARSET LOCALS
+
+CALL COM_ABLE6
+SIF RESULT && TALENT:恋慕 && ABL:顺从 >= 3 && CHECK_COM("接吻")
+	LOCALS:0 = 朝接吻
+SIF TALENT:恋慕 && TALENT:泌乳体質 && ABL:顺从 >= 3 && ABL:奉仕精神 >= 3 && EXP:喷乳経験 >= 20
+	LOCALS:1 = 朝之母乳搾り
+CALL COM_ABLE95
+SIF RESULT && ABL:Ｓ属性 >= 3
+	LOCALS:2 = 朝足交
+CALL COM_ABLE98
+SIF RESULT && (ABL:百合属性 >= 3 || TALENT:性别男) && TALENT:MASTER:性别男 == 0
+	LOCALS:3 = 朝舐阴
+CALL COM_ABLE120
+SIF RESULT && PENIS(TARGET) && TALENT:童贞 == 0 && EXP:Ｖ插入経験 >= 20 && ABL:欲望 >= 3 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
+	LOCALS:4 = 朝逆正常位
+
+CALL COM_ABLE91
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 2 && ABL:奉仕精神 >= 2 && ABL:精液成瘾 >= 1
+	LOCALS:5 = 朝口交
+CALL COM_ABLE65
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:Ｖ感觉 >= 3 && TALENT:处女 + TALENT:性别男 + TALENT:PLAYER:童贞 == 0
+	LOCALS:6 = 朝骑乘位
+CALL COM_ABLE92
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:奉仕精神 >= 4 && TALENT:性别男 == 0
+	LOCALS:7 = 朝乳交
+CALL COM_ABLE61
+SIF RESULT && PENIS(MASTER) && ITEM:围裙 && TALENT:恋慕 && TALENT:处女 + TALENT:性别男 + TALENT:PLAYER:童贞 == 0
+	LOCALS:8 = 朝之新婚PLAY
+
+LOCAL = 1
+FOR LCOUNT, 0, 10
+	SIF LOCALS:LCOUNT == ""
+		CONTINUE
+	SIF RAND:LOCAL == 0
+		STR:100 = %LOCALS:LCOUNT%
+
+	LOCAL += 1
+NEXT
+
+RETURN 0
+
+;-------------------------------------------------
+;拘束されて弄ばれる事件
+;欲求不满事件に变更してみる
+;-------------------------------------------------
+@BIND_AT_MORNING
+#DIM LCOUNT
+VARSET LOCAL
+VARSET LOCALS
+;そもそもこ之种类之事件が起きるか之チェック
+CALL CHECK_BIND_AT_MORNING, TARGET, ""
+LOCALS = %STR:100%
+;TARGETがPLAY之条件を满たしているか？
+SIF LOCALS == ""
+	RETURN 0
+
+VARSET TARGET, 0, 1, 4
+
+;仲间を呼ぶｗ
+FOR LOCAL, 2, CHARANUM
+	SIF LOCAL == TARGET || LOCAL == MASTER
+		CONTINUE
+
+	CALL CHECK_BIND_AT_MORNING, LOCAL, LOCALS
+	LOCALS:9 = %STR:100%
+
+	;選択されているPLAYを许容できるなら欲求不满值を記录して、参加候补入り（ＭＡＸ二人）
+
+	IF LOCALS:9 == LOCALS
+		LOCAL:99 += 1
+		IF TARGET:1 == 0
+			TARGET:1 = LOCAL
+		ELSEIF TARGET:2 == 0
+			TARGET:2 = LOCAL
+		ELSEIF RAND:(LOCAL:99) <= 1
+			TARGET:(RAND:2 + 1) = LOCAL
+		ENDIF
+	ENDIF
+NEXT
+
+LOCALS:1 = %CALLNAME:TARGET%
+LOCALS:2 = %CALLNAME:TARGET%
+LOCAL = ABL:欲望 + RAND:(ABL:Ｓ属性 + 5) + TALENT:淫乱*2 + TALENT:恋慕
+
+IF TARGET:1 > 0
+	LOCALS:1 = %CALLNAME:TARGET%和%CALLNAME:(TARGET:1)%
+	LOCALS:2 = %CALLNAME:TARGET%们
+	LOCALS:3 = 二人
+	LOCAL:1 = ABL:(TARGET:1):欲望 + RAND:(ABL:(TARGET:1):Ｓ属性 + 1) + TALENT:(TARGET:1):淫乱*2 + TALENT:(TARGET:1):恋慕
+ENDIF
+IF TARGET:2 > 0
+	LOCALS:1 = %CALLNAME:TARGET%和%CALLNAME:(TARGET:1)%以及%CALLNAME:(TARGET:2)%
+	LOCALS:2 = %CALLNAME:TARGET%们
+	LOCALS:3 = ３人
+	LOCAL:2 = ABL:(TARGET:2):欲望 + RAND:(ABL:(TARGET:2):Ｓ属性 + 1) + TALENT:(TARGET:2):淫乱*2 + TALENT:(TARGET:2):恋慕
+ENDIF
+
+LOCAL:3 = 1 + (TARGET:1 > 0) + (TARGET:2 > 0)
+DRAWLINE
+
+CVARSET TEQUIP, 30, 1
+LOCAL:50 = ABL:MASTER:技巧
+ABL:MASTER:技巧 = 2
+
+CALL SIMULATE_TRAIN_FIRST, LOCAL:3
+
+SELECTCASE LOCALS
+CASE "朝ＳＭ"
+	PRINTFORMW 早晨、睡醒后发现身体动不了……
+	PRINTFORMW 不知什么时候被裸体绑在了床上
+	PRINTFORMW 俯视着这边的%LOCALS:1%、混杂着嗜虐和情欲的眼神打了个招呼……
+
+
+
+	CALL SELF_KOJO, LOCALS
+	PRINTL 
+	PRINTFORMW 就这样被%LOCALS:2%玩弄到夜晚……
+
+	FOR LCOUNT, 0, LOCAL:3
+		SWAP TARGET, TARGET:LCOUNT
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 1, MAX(LOCAL:LCOUNT/(2 + RAND:4), 1)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 6, MAX(LOCAL:LCOUNT/(3 + RAND:4), 1)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 9, MAX(LOCAL:LCOUNT/(2 + RAND:4), 1)
+		IF RAND:2
+			CALL COM_ABLE65
+			SIF RESULT && TALENT:处女 + TALENT:MASTER:童贞 == 0 && ABL:顺从+ABL:欲望+ABL:Ｖ感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
+				CALL SIMULATE_TRAIN_COM, 65, MAX(LOCAL:LCOUNT/(5 + RAND:5), 1 + RAND:3)
+		ENDIF
+		IF RAND:3 == 0
+			CALL COM_ABLE75
+			SIF RESULT && TALENT:Ａ处女 == 0 && EXP:PLAYER:Ａ插入経験 && ABL:Ａ感觉 >= MAX(3, ABL:Ｖ感觉) && ABL:顺从+ABL:欲望+ABL:Ａ感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
+				CALL SIMULATE_TRAIN_COM, 75, MAX(LOCAL:LCOUNT/(5 + RAND:5), 1 + RAND:3)
+		ENDIF
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 90, LOCAL:LCOUNT/(3 + RAND:3)
+		CALL SIMULATE_TRAIN_COM, 91, LOCAL:LCOUNT/(4 + RAND:3)
+		SIF RAND:2 && TALENT:巨乳
+			CALL SIMULATE_TRAIN_COM, 92, MAX(LOCAL:LCOUNT/(4 + RAND:3), 1)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 95, LOCAL:LCOUNT/(3 + RAND:3)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 96, LOCAL:LCOUNT/(4 + RAND:3)
+		SWAP TARGET, TARGET:LCOUNT
+	NEXT
+CASE "朝拘束骑乘位"
+	PRINTFORMW 早晨、醒来后发现身体很沉重……\@ TARGET:1 > 0 ? 不仅、呼吸困难… # \@
+
+	IF TARGET:1
+		PRINTFORM …花了点时间才弄明白现状、显然%CALLNAME:(TARGET:1)%脸上
+
+		SIF TARGET:2
+			PRINTFORM 、%CALLNAME:(TARGET:2)%手上、
+		PRINTFORMW 睡觉的时候股间被主人玩弄了
+		PRINTFORMW 而且、%CALLNAME:TARGET%很享受骑乘位的样子、从股间各种液体的样子就知道厉害了…
+
+
+		PRINTL 
+		PRINTFORMW 发现%CALLNAME:MASTER%醒来后%LOCALS:3%用嗜虐混杂着情欲的眼神盯着、相当奔放的玩弄起来…
+
+	ELSE
+		PRINTFORMW 显然、不知什么时候就已经被裸体绑在了床上了…
+		PRINTFORMW 重要的地方完全被暴露在空气中、看到%CALLNAME:TARGET%在腰上跨坐着、
+		PRINTFORMW 看来主人已经玩弄了不短的时间了、交合部都冒着白浊的泡泡、黏糊糊的…
+
+
+
+		PRINTL 
+		PRINTFORMW %CALLNAME:TARGET%用嗜虐混杂着情欲的眼神盯着、相当奔放的玩弄起来…
+
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+	PRINTL 
+	PRINTFORMW 就这样一直被%LOCALS:2%折磨到晚上、被狠狠的玩弄了……
+
+	FOR LCOUNT, 0, LOCAL:3
+		SWAP TARGET, TARGET:LCOUNT
+		CALL SIMULATE_TRAIN_COM, 1, LOCAL:LCOUNT/(2 + RAND:4)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 6, LOCAL:LCOUNT/(4 + RAND:4)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 9, LOCAL:LCOUNT/(2 + RAND:4)
+		CALL SIMULATE_TRAIN_COM, 65, LOCAL:LCOUNT
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 91, LOCAL:LCOUNT/(3 + RAND:3)
+		SIF RAND:2 && TALENT:巨乳
+			CALL SIMULATE_TRAIN_COM, 92, LOCAL:LCOUNT/(4 + RAND:3)
+		SIF RAND:4 == 0
+			CALL SIMULATE_TRAIN_COM, 95, LOCAL:LCOUNT/(5 + RAND:3)
+		SIF RAND:5 == 0
+			CALL SIMULATE_TRAIN_COM, 96, LOCAL:LCOUNT/(5 + RAND:3)
+		SWAP TARGET, TARGET:LCOUNT
+	NEXT
+CASE "朝拘束Ａ骑乘位"
+	PRINTFORMW 早晨、醒来后发现身体很沉重……\@ TARGET:1 > 0 ? 不仅、呼吸困难… # \@
+
+	IF TARGET:1
+		PRINTFORM …花了点时间才弄明白现状、显然%CALLNAME:(TARGET:1)%脸上
+
+		SIF TARGET:2
+			PRINTFORM 、%CALLNAME:(TARGET:2)%手上、
+		PRINTFORMW 睡觉的时候股间被主人玩弄了
+		PRINTFORMW 而且、%CALLNAME:TARGET%很享受肛门快感的样子、从股间各种液体的样子就知道厉害了…
+
+
+		PRINTL 
+		PRINTFORMW 发现%CALLNAME:MASTER%醒来后%LOCALS:3%用嗜虐混杂着情欲的眼神盯着、相当奔放的玩弄起来…
+
+	ELSE
+		PRINTFORMW 显然、不知什么时候就已经被裸体绑在了床上了…
+		PRINTFORMW 重要的地方完全被暴露在空气中、看到%CALLNAME:TARGET%在腰上跨坐着用肛门挤压着肉棒、
+		PRINTFORMW 看来主人已经玩弄了不短的时间了、交合部都冒着白浊的泡泡、黏糊糊的…
+
+
+
+		PRINTL 
+		PRINTFORMW %CALLNAME:TARGET%用嗜虐混杂着情欲的眼神盯着、相当奔放的玩弄起来…
+
+	ENDIF
+
+	CALL SELF_KOJO, LOCALS
+	PRINTL 
+	PRINTFORMW 就这样一直被%LOCALS:2%折磨到晚上、被狠狠的玩弄了……
+
+	FOR LCOUNT, 0, LOCAL:3
+		SWAP TARGET, TARGET:LCOUNT
+		CALL SIMULATE_TRAIN_COM, 1, MAX(LOCAL:LCOUNT/(2 + RAND:4), 1)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 6, LOCAL:LCOUNT/(4 + RAND:4)
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 9, LOCAL:LCOUNT/(2 + RAND:4)
+		CALL SIMULATE_TRAIN_COM, 75, LOCAL:LCOUNT
+		SIF RAND:2
+			CALL SIMULATE_TRAIN_COM, 91, LOCAL:LCOUNT/(3 + RAND:3)
+		SIF RAND:2 && TALENT:巨乳
+			CALL SIMULATE_TRAIN_COM, 92, LOCAL:LCOUNT/(4 + RAND:3)
+		SIF RAND:4 == 0
+			CALL SIMULATE_TRAIN_COM, 95, LOCAL:LCOUNT/(5 + RAND:3)
+		SIF RAND:5 == 0
+			CALL SIMULATE_TRAIN_COM, 96, LOCAL:LCOUNT/(5 + RAND:3)
+		SWAP TARGET, TARGET:LCOUNT
+	NEXT
+;今之ところこ之下は无
+CASE "朝拘束逆强暴"
+	PRINTFORMW 早上、睡醒后发现身体动不了……
+	PRINTFORMW 不知什么时候被裸体绑在了床上
+	PRINTFORMW 俯视着这边的%LOCALS:1%、混杂着嗜虐和情欲的眼神打了个招呼……
+
+
+
+	CALL SELF_KOJO, LOCALS
+	PRINTFORMW 就这样被%LOCALS:2%玩弄到夜晚……
+
+CASE "朝拘束逆肛交"
+	PRINTFORMW 早上、睡醒后发现身体动不了……
+	PRINTFORMW 不知什么时候被裸体绑在了床上
+	PRINTFORMW 俯视着这边的%LOCALS:1%、混杂着嗜虐和情欲的眼神打了个招呼……
+
+
+
+	CALL SELF_KOJO, LOCALS
+	PRINTFORMW 就这样被%LOCALS:2%玩弄到夜晚……
+
+ENDSELECT
+
+CALL SIMULATE_TRAIN_CALC
+CALL SIMULATE_TRAIN_SHOW
+
+WAIT
+
+;朝之拘束事件之記录
+CFLAG:MASTER:90 = NUM_EV(LOCALS)
+CFLAG:90 = NUM_EV(LOCALS)
+CALL CALC, "欲求不满解消", TARGET, LOCAL + LOCAL:1 + LOCAL:2
+IF TARGET:1 > 0
+	CFLAG:(TARGET:1):90 = NUM_EV(LOCALS)
+	CALL CALC, "欲求不满解消", TARGET:1, LOCAL + LOCAL:1 + LOCAL:2
+ENDIF
+IF TARGET:2 > 0
+	CFLAG:(TARGET:2):90 = NUM_EV(LOCALS)
+	CALL CALC, "欲求不满解消", TARGET:2, LOCAL + LOCAL:1 + LOCAL:2
+ENDIF
+
+CVARSET TEQUIP, 30, 0
+
+ABL:MASTER:技巧 = LOCAL:50
+RETURN 1
+
+
+@CHECK_BIND_AT_MORNING, ARG, ARGS
+#DIM LCOUNT
+
+STR:100 = 
+;欲求不满度が低いor欲望が3LV未满、好感觉が500未满、反发刻印あり
+SIF COND("欲求不满", ARG) == 0 || ABL:ARG:欲望 < 3 || CFLAG:ARG:2 < 500 || MARK:ARG:反发刻印 > 0
+	RETURN 0
+
+VARSET LOCALS
+
+;抖ＳorＳ属性5LVならＳＭコース
+IF TALENT:ARG:抖Ｓ || ABL:ARG:Ｓ属性 >= 5
+	IF ARGS == "朝ＳＭ"
+		STR:100 = 朝ＳＭ
+		RETURN 0
+	ENDIF
+	LOCALS:0 = 朝ＳＭ
+ENDIF
+
+CALL COM_ABLE65
+IF RESULT && PENIS(MASTER) && TALENT:ARG:处女 + TALENT:MASTER:童贞 == 0 && ABL:ARG:Ｖ感觉 >= 3 && EXP:ARG:Ｖ性交経験 >= 10 && EXP:ARG:腰技経験 >= 20
+	IF ARGS == "朝拘束骑乘位"
+		STR:100 = 朝拘束骑乘位
+		RETURN 0
+	ENDIF
+	LOCALS:1 = 朝拘束骑乘位
+ENDIF
+
+CALL COM_ABLE75
+IF RESULT && PENIS(MASTER) && EXP:MASTER:Ａ插入経験 && COND("ベテラン：Ａ性爱")
+	IF ARGS == "朝拘束Ａ骑乘位"
+		STR:100 = 朝拘束Ａ骑乘位
+		RETURN 0
+	ENDIF
+	LOCALS:2 = 朝拘束Ａ骑乘位
+ENDIF
+
+;欲求不满
+SIF COND("欲求不满") && (LOCALS:1 == "朝拘束骑乘位" || LOCALS:2 == "朝拘束Ａ骑乘位")
+	LOCALS:0 = 
+
+LOCAL = 1
+FOR LCOUNT, 0, 10
+	SIF LOCALS:LCOUNT == ""
+		CONTINUE
+	SIF RAND:LOCAL == 0
+		STR:100 = %LOCALS:LCOUNT%
+
+	LOCAL += 1
+NEXT
+
+;今之ところここまで
+RETURN 0
+

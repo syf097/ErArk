@@ -1,0 +1,800 @@
+﻿@EVENTCHECK_A
+SIF ASSI <= 0
+	RETURN 0
+
+;-------------------------------------------------------------------------------------------------
+;技能之成长
+;-------------------------------------------------------------------------------------------------
+CALL EX_ABLUP, ASSI
+
+;助手之LVUP
+SELECTCASE ABL:ASSI:助手
+CASE 0
+	SIF EXP:ASSI:助手経験 < 50
+		RETURN 0
+CASE 1
+	SIF EXP:ASSI:助手経験 < 200
+		RETURN 0
+CASE 2
+	SIF EXP:ASSI:助手経験 < 500
+		RETURN 0
+CASE 3
+	SIF EXP:ASSI:助手経験 < 1000
+		RETURN 0
+CASE 4
+	SIF EXP:ASSI:助手経験 < 2000
+		RETURN 0
+CASEELSE
+	RETURN 0
+ENDSELECT
+
+ABL:ASSI:助手 += 1
+PRINTL 
+PRINTFORML %CALLNAME:ASSI%对助手职责的理解加深了
+PRINTFORMW %CALLNAME:ASSI%的%ABLNAME:20%LV提升为{ABL:ASSI:助手}！
+;助手へ之指示呼び出し
+CALL ASSI_CHANGE_INDICATE, ASSI
+
+
+;-------------------------------------------------
+;启动助手的协助
+;优先顺位秘法＞道具＞其他
+;-------------------------------------------------
+@EVENT_ASSI_AUTO, ARGS
+;助手的协助
+SIF ASSI <= 0
+	RETURN 0
+LOCAL = TFLAG:16
+;?
+SELECTCASE ARGS
+CASE "打扫"
+	CALL EVENT_ASSI_OSOUJI
+CASE "调教开始"
+	CALL EVENT_ASSI_MAGIC, ARGS
+	CALL EVENT_ASSI_ITEM, ARGS
+	CALL EVENT_ASSI_OSOUJI
+	CALL EVENT_ASSI_SONG, ARGS
+	IF TFLAG:6
+		TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教开始前之准备后台词", ASSI
+		PRINTL 
+		PRINTFORMW %CALLNAME:ASSI%留意着两人的会话、做好了准备…
+	ENDIF
+CASEELSE
+	CALL EVENT_ASSI_MAGIC, ARGS
+	CALL EVENT_ASSI_ITEM, ARGS
+	CALL EVENT_ASSI_SONG, ARGS
+ENDSELECT
+
+TFLAG:16 = LOCAL
+
+@EVENT_ASSI_OSOUJI
+VARSET LOCAL
+;主人を打扫
+IF GETBIT(CFLAG:ASSI:35, 40)
+	IF PLAYER == MASTER && COND("绝顶", PLAYER) && INSERT("插入") == 0 && PENIS(MASTER)
+		SIF SHOOT("膣内") && CHECK_STAIN(STAIN:MASTER:Ｐ, "Ｖ")
+			LOCAL = 1
+		SIF SHOOT("Ａ") && CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ")
+			LOCAL = 2
+		SIF SHOOT("尿道") && CHECK_STAIN(STAIN:MASTER:Ｐ, "尿")
+			LOCAL = 3
+	ENDIF
+	SIF PLAYER == MASTER && CHECK_STAIN(STAIN:MASTER:Ｐ, "Ｐ恥垢") && COND("真性包茎", MASTER) == 0
+		LOCAL = 4
+ENDIF
+;对象を打扫
+IF GETBIT(CFLAG:ASSI:35, 41)
+	IF COND("绝顶", PLAYER) && INSERT("插入") == 0
+		SIF SHOOT("膣内") && STAIN:Ｖ != SET_STAIN(0, "Ｖ")
+			LOCAL:1 = 1
+		SIF SHOOT("Ａ") && STAIN:Ａ != SET_STAIN(0, "Ａ")
+			LOCAL:1 = 2
+		IF SHOOT("尿道")
+			IF PENIS(TARGET)
+				SIF STAIN:Ｐ != SET_STAIN(0, "Ｐ")
+					LOCAL:1 = 3
+			ELSE
+				SIF STAIN:Ｖ != SET_STAIN(0, "Ｖ")
+					LOCAL:1 = 3
+			ENDIF
+		ENDIF
+	ENDIF
+	SIF TALENT:性别女 && CHECK_CLO("Ｖ露出") && INSERT("背面座位") && CHECK_STAIN(STAIN:Ｖ, "尿") && NOWEX:绝顶漏尿
+		LOCAL:1 = 4
+ENDIF
+
+IF LOCAL && RANDIF(1, LOCAL:1)
+	SELECTCASE LOCAL
+	CASE 1
+		PRINTFORM %CALLNAME:ASSI%将刚刚从腔内拔出的%CALLNAME:MASTER%的阴茎
+		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+			PRINTFORMW 用蒸毛巾精心擦拭…
+		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+			PRINTFORMW 用嘴接住，细致地舔……
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
+			CALL SETFLAG, "打扫口交", ASSI, MASTER
+		ELSE
+			PRINTFORMW 用干净的布擦拭干净…
+		ENDIF
+	CASE 2
+		PRINTFORM %CALLNAME:ASSI%将刚刚从肛门拔出的%CALLNAME:MASTER%的阴茎
+		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+			PRINTFORMW 用蒸毛巾精心擦拭…
+		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+			PRINTFORMW 用嘴接住，细致地舔……
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
+			CALL SETFLAG, "打扫口交", ASSI, MASTER
+		ELSE
+			PRINTFORMW 用干净的布擦拭干净…
+		ENDIF
+	CASE 3
+		IF PENIS(TARGET)
+			PRINTFORM %CALLNAME:ASSI%は%CALLNAME:TARGET%之阴茎から抜き出されたばかり之%CALLNAME:MASTER%之ソレ
+		ELSE
+			PRINTFORM %CALLNAME:ASSI%将刚刚从尿道拔出的%CALLNAME:MASTER%的阴茎
+		ENDIF
+		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+			PRINTFORMW 用蒸毛巾精心擦拭…
+		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+			PRINTFORMW 用嘴接住，细致地舔……
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
+			CALL SETFLAG, "打扫口交", ASSI, MASTER
+		ELSE
+			PRINTFORMW 用干净的布擦拭干净…
+		ENDIF
+	CASE 4
+		PRINTFORM %CALLNAME:ASSI%把%CALLNAME:MASTER%的阴茎拿出来
+		;奉仕精神と献身で判定
+		IF ABL:ASSI:奉仕精神 + TALENT:ASSI:献身 >= 4 && COND("口之使用", ASSI)
+			PRINTFORMW 拉下包皮
+			PRINTFORMW 用舌头舔干净了……
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人にＰ恥垢打扫口交", ASSI
+			CALL SETFLAG, "打扫口交", ASSI, MASTER
+		ELSE
+			PRINTFORMW 用干净的布擦拭干净…
+		ENDIF
+	ENDSELECT
+	CALL RESET_STAIN_EX, "Ｐ", MASTER
+ELSEIF LOCAL:1
+	SELECTCASE LOCAL:1
+	CASE 1
+		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯后黏黏糊糊的阴部拨开、
+		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+			PRINTFORMW 用舌头仔细地舔净…
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
+			CALL SETFLAG, "打扫舐阴", ASSI, TARGET
+		ELSE
+			PRINTFORMW 用湿润的毛巾仔细地清理干净…
+		ENDIF
+		STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+	CASE 2
+		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯后还张开着的肛门扒开、
+		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && GETBIT(CFLAG:ASSI:12, 8) && COND("口之使用", ASSI) && RAND:2 == 0
+			PRINTFORMW 将舌头伸入，细心地舔舐起来…
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐Ａ", ASSI
+			CALL SETFLAG, "打扫舐Ａ", ASSI, TARGET
+		ELSE
+			PRINTFORMW 用湿润的毛巾仔细地清理干净…
+		ENDIF
+		STAIN:Ａ = SET_STAIN(0, "Ａ")
+	CASE 3
+		IF PENIS(TARGET)
+			PRINTFORM %CALLNAME:ASSI%は%CALLNAME:TARGET%之口を开けたままになっている阴茎を
+			IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+				PRINTFORMW 通过吮吸、细心的用舌头把污秽舔干净…
+				TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫口交", ASSI
+				CALL SETFLAG, "打扫口交", ASSI, TARGET
+			ELSE
+				PRINTFORMW 用湿润的毛巾仔细地清理干净…
+			ENDIF
+			STAIN:Ｐ = SET_STAIN(0, "Ｐ")
+		ELSE
+			PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯过的阴道打开、把尿道露出了
+			IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+				PRINTFORMW 、然后用舌头仔细舔净…
+				TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
+				CALL SETFLAG, "打扫舐阴", ASSI, TARGET
+			ELSE
+				PRINTFORMW 用湿润的毛巾仔细地清理干净…
+			ENDIF
+			STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+		ENDIF
+	CASE 4
+		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%打开就会漏尿的阴道打开、
+		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+			PRINTFORMW 用舌头仔细舔净后，啾地吮吸起尿道来…
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
+			CALL SETFLAG, "打扫舐阴", ASSI, TARGET
+		ELSE
+			PRINTFORMW 用湿润的毛巾仔细地清理干净…
+		ENDIF
+		STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+	ENDSELECT
+ENDIF
+IF LOCAL + LOCAL:1
+	PRINTL 
+	TFLAG:6 = 1
+	RETURN 1
+ENDIF
+
+
+@EVENT_ASSI_MAGIC, ARGS
+;检閲されているとダメ
+SIF COND("运命检閲：咏唱")
+	RETURN 0
+;行动済み
+SIF ARGS != "调教开始" && TFLAG:6
+	RETURN 0
+
+;解弱化术
+IF GETBIT(CFLAG:ASSI:35, 9) && STATE("恍惚", PLAYER) && USE_MAGIC(239, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 239, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;倍化术
+IF GETBIT(CFLAG:ASSI:35, 7) && STATE("倍化术", MASTER) == 0 && USE_MAGIC(237, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 237, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;回复术
+IF GETBIT(CFLAG:ASSI:35, 6) && BASE:体力 < MIN(1200, MAXBASE:体力 - 300) && USE_MAGIC(236, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 236, ASSI, TARGET
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;小根术
+IF GETBIT(CFLAG:ASSI:35, 0) && STATE("小根术", MASTER) == 0 && STATE("大根术", MASTER) == 0 && TALENT:妖精 && USE_MAGIC(230, "指令", ASSI)
+	;细かい条件
+	IF TALENT:处女
+	ELSEIF ABL:Ｖ扩张 >= SIZE("阴茎", PLAYER)
+	ELSE
+		CALL TRAIN_MESSAGE_ARCANA, 230, ASSI, PLAYER
+		TFLAG:6 = 1
+		IF ARGS != "调教开始"
+			PRINTL 
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+;全强术
+IF GETBIT(CFLAG:ASSI:35, 11) && (STATE("精强术", MASTER) == 0 || STATE("魅强术", MASTER) == 0 || STATE("防强术", MASTER) == 0) && USE_MAGIC(241, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 241, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;精强术
+IF GETBIT(CFLAG:ASSI:35, 2) && STATE("精强术", MASTER) == 0 && USE_MAGIC(232, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 232, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;魅强术
+IF GETBIT(CFLAG:ASSI:35, 3) && STATE("魅强术", MASTER) == 0 && USE_MAGIC(233, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 233, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;防强术
+IF GETBIT(CFLAG:ASSI:35, 4) && STATE("防强术", MASTER) == 0 && USE_MAGIC(234, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 234, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;高敏术
+IF GETBIT(CFLAG:ASSI:35, 1) && STATE("高敏术", MASTER) == 0 && USE_MAGIC(231, "指令", ASSI)
+	CALL TRAIN_MESSAGE_ARCANA, 231, ASSI, PLAYER
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;大根术
+IF GETBIT(CFLAG:ASSI:35, 12) && STATE("大根术", MASTER) == 0 && STATE("小根术", MASTER) == 0 && USE_MAGIC(242, "指令", ASSI)
+	;细かい条件
+	IF ABL:Ｖ扩张 >= MAX(SIZE("阴茎", PLAYER), 2)
+		CALL TRAIN_MESSAGE_ARCANA, 242, ASSI, PLAYER
+		TFLAG:6 = 1
+		IF ARGS != "调教开始"
+			PRINTL 
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+;皮肤硬化
+IF GETBIT(CFLAG:ASSI:35, 35) && STATE("皮肤硬化", MASTER) == 0
+	PRINTFORML ＜皮肤硬化＞
+	PRINTFORMW %CALLNAME:ASSI%把%CALLNAME:MASTER%变得像石头一样坚硬！
+	CALL ADD_STATE, MASTER, "皮肤硬化"
+	CALL ADD_STATE, ASSI, "皮肤硬化"
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 36) && (STATE("脱力", TARGET) == 0 || STATE("皮肤硬化", TARGET) )
+	PRINTFORML ＜熔融之吻＞
+
+	PRINTFORML %CALLNAME:ASSI%令人心神荡漾的亲吻！
+	IF STATE("皮肤硬化", TARGET)
+		CALL REMOVE_STATE, TARGET, "皮肤硬化"
+		PRINTFORML %CALLNAME:TARGET%变软了！
+		PRINTFORMW %CALLNAME:TARGET%的皮肤硬化效果消失！
+	ELSE
+		IF CHECK_COM("熔融之吻", ASSI)
+			PRINTFORMW %CALLNAME:TARGET%被%CALLNAME:ASSI%变成了脱力状态！
+			CALL ADD_STATE, TARGET, "脱力"
+		ELSE
+			PRINTFORMW 但是对%CALLNAME:TARGET%没有效果！
+		ENDIF
+	ENDIF
+	EXP:接吻経験 += 2
+	EXP:ASSI:接吻経験 += 2
+	TFLAG:6 = 1
+ENDIF
+
+@AUTO_INCENSE
+#DIM MEMO_ORDER
+
+;实行值之高さなどで判定
+CALL COM_ORDER, 1
+
+MEMO_ORDER = RESULT
+
+IF ITEM:麝香 && (MEMO_ORDER <= 0 || ITEM:麝香 > 2 || ITEM:茉莉香 + ITEM:薰衣草香 + ITEM:檀香 + ITEM:迷迭香 == 0)
+	TEQUIP:MASTER:薫香 = 1p6
+ELSEIF ITEM:薰衣草香 + ITEM:檀香 + ITEM:迷迭香 && (MEMO_ORDER < 20 || ITEM:茉莉香 == 0)
+	IF ITEM:迷迭香 && RANDIF(1, ITEM:薰衣草香, ITEM:檀香)
+		TEQUIP:MASTER:薫香 = 1p5 + 1p11
+	ELSEIF ITEM:檀香 && RANDIF(1, ITEM:薰衣草香)
+		TEQUIP:MASTER:薫香 = 1p5 + 1p8
+	ELSE
+		TEQUIP:MASTER:薫香 = 1p5
+	ENDIF
+ELSEIF ITEM:茉莉香
+	TEQUIP:MASTER:薫香 = 1p4
+ENDIF
+
+@EVENT_ASSI_ITEM, ARGS
+;触手
+SIF TEQUIP:触手
+	RETURN 0
+;行动済み
+SIF ARGS != "调教开始" && TFLAG:6
+	RETURN 0
+
+;薫香
+IF GETBIT(CFLAG:ASSI:35, 25) && TEQUIP:MASTER:薫香 == 0 && NUM("所持薫香")
+	PRINTFORML ＜\@ ARGS != "调教开始" ? オート # \@薫香＞
+
+	CALL AUTO_INCENSE
+	IF TEQUIP:MASTER:薫香
+		LOCALS = %TEXTS("薫香", TEQUIP:MASTER:薫香)%
+		ITEM:LOCALS -= 1
+		PRINTFORML %CALLNAME:ASSI%点燃了%LOCALS%！
+		TFLAG:6 = 1
+		IF ARGS != "调教开始"
+			PRINTL 
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+
+IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 45)
+	PRINTL ＜衣服を脱がす＞
+	CALL SETFLAG, "衣装全脱ぎ", TARGET
+	PRINTFORML %CALLNAME:ASSI%将%CALLNAME:TARGET%脱得不着寸缕！
+ENDIF
+
+;润滑液
+IF GETBIT(CFLAG:ASSI:35, 20) && TEQUIP:润滑液 == 0 && ITEM:润滑液 && MIN(PALAM:Ｖ润, PALAM:Ａ润) < 10000
+	PRINTFORML ＜\@ ARGS != "调教开始" ? オート # \@润滑液＞
+	CALL SETFLAG, "调教外润滑追加", 10000
+
+	SETBIT TEQUIP:润滑液, 0
+	ITEM:润滑液 -= 1
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORML %CALLNAME:ASSI%给%CALLNAME:TARGET%涂上了润滑液…
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;媚药
+IF GETBIT(CFLAG:ASSI:35, 21) && TEQUIP:媚药 == 0 && ITEM:媚药
+	PRINTFORML ＜\@ ARGS != "调教开始" ? 自动 # \@媚药＞
+	ITEM:媚药 -= 1
+	;调合知识や禁断之知识があれば效果ＵＰ
+	IF TALENT:ASSI:调合知识 && TALENT:ASSI:禁断之知识
+		TEQUIP:媚药 = 100
+	ELSEIF TALENT:ASSI:调合知识
+		TEQUIP:媚药 = 50
+	ENDIF
+	CALL ADD_STATE, TARGET, "媚药"
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORM %CALLNAME:ASSI%给%CALLNAME:TARGET%喝下了
+		SIF TALENT:ASSI:调合知识
+			PRINTFORM 经过特别调制的
+
+		PRINTFORML 媚药
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;利尿剂
+IF GETBIT(CFLAG:ASSI:35, 22) && TEQUIP:利尿剂 == 0 && ITEM:利尿剂 && TALENT:药毒耐性 == 0
+	PRINTFORML ＜\@ ARGS != "调教开始" ? 自动 # \@利尿剂＞
+	ITEM:利尿剂 -= 1
+	TEQUIP:利尿剂 = 1
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORML %CALLNAME:ASSI%给%CALLNAME:TARGET%喝下了利尿剂
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;镇静剂
+IF GETBIT(CFLAG:ASSI:35, 23) && TEQUIP:MASTER:药品 == 0 && ITEM:镇静剂
+	PRINTFORML ＜\@ ARGS != "调教开始" ? 自动 # \@镇静剂＞
+	ITEM:镇静剂 -= 1
+	TEQUIP:MASTER:药品 |= 1
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORML %CALLNAME:ASSI%给%CALLNAME:MASTER%喝下了镇静剂
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;排卵诱发剂
+IF GETBIT(CFLAG:ASSI:35, 24) && TEQUIP:排卵诱发剂 == 0 && ITEM:排卵诱发剂 && TALENT:药毒耐性 == 0 && COND("孕娠可能")
+	PRINTFORML ＜\@ ARGS != "调教开始" ? 自动 # \@排卵诱发剂＞
+	ITEM:排卵诱发剂 -= 1
+	TEQUIP:排卵诱发剂 = 1
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORML %CALLNAME:ASSI%给%CALLNAME:TARGET%喝下了排卵诱发剂…
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;沐浴剂
+IF GETBIT(CFLAG:ASSI:35, 26) && TEQUIP:浴室PLAY && TEQUIP:MASTER:沐浴剂 == 0 && ITEM:沐浴剂
+	PRINTFORML ＜\@ ARGS != "调教开始" ? 自动 # \@沐浴剂＞
+	ITEM:沐浴剂 -= 1
+	TEQUIP:MASTER:沐浴剂 = 1 + RAND:7
+	TFLAG:6 = 1
+	IF ARGS != "调教开始"
+		PRINTFORM %CALLNAME:ASSI%在浴缸中放入了
+		SELECTCASE TEQUIP:MASTER:沐浴剂
+		CASE 1
+			PRINTFORM 『泡泡浴剂』
+
+		CASE 2
+			PRINTFORM 『秘湯之沐浴剂』
+		CASE 3
+			PRINTFORM 『炭酸沐浴剂』
+		CASE 4
+			PRINTFORM 『玫瑰花瓣』
+
+		CASE 5
+			PRINTFORM 『死海沐浴剂』
+
+		CASE 6
+			PRINTFORM 『桧香沐浴剂』
+
+		CASE 7
+			PRINTFORM 『神秘沐浴剂』
+
+		ENDSELECT
+		PRINTFORML …
+		PRINTL 
+		RETURN 1
+	ENDIF
+ENDIF
+;摄影(摄影されたことがある对象に对して之み)
+IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 27) && TEQUIP:摄像机 == 0 && ITEM:摄像机 && ITEM:录像带 && FIRSTCOM(170)
+	PRINTL ＜摄影开始＞
+
+	ITEM:录像带 -= 1
+	TEQUIP:摄像机 = 1
+	TFLAG:6 = 1
+ENDIF
+
+
+@EVENT_ASSI_SONG, ARGS
+;行动済み
+SIF ARGS != "调教开始" && TFLAG:6
+	RETURN 0
+
+;平稳之歌
+IF GETBIT(CFLAG:ASSI:35, 30) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
+	;开始时にはTARGETが疲れていない限り歌わない
+	IF ARGS == "调教开始" && MAXBASE:体力 - BASE:体力 < 300
+	ELSE
+		PRINTFORML ＜平稳之歌＞
+		PRINTFORML %CALLNAME:ASSI%唱起了沉静温柔的曲调…
+		TEQUIP:演奏中 = 1
+		TEQUIP:ASSI:演奏中 = 10
+		TFLAG:6 = 1
+		IF ARGS != "调教开始"
+			PRINTL 
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+;罗曼司曲
+IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 31) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
+	PRINTFORML ＜罗曼司曲＞
+	PRINTFORML %CALLNAME:ASSI%唱起了美丽的歌谣。
+	PRINTFORML 气氛变得浪漫而淫靡…
+
+	TEQUIP:演奏中 = 2
+	TEQUIP:ASSI:演奏中 = 10
+	TFLAG:6 = 1
+;雨后轮舞曲
+ELSEIF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 32) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
+	PRINTFORML ＜雨后轮舞曲＞
+	PRINTFORML %CALLNAME:ASSI%开始了演奏！
+	PRINTFORML 四周流淌着美好的旋律…
+
+	TEQUIP:演奏中 = 3
+	TEQUIP:ASSI:演奏中 = 10
+	TFLAG:6 = 1
+ENDIF
+
+@ASSI_CHANGE_INDICATE, ARG
+#DIM MEMO_LINECOUNT
+MEMO_LINECOUNT = LINECOUNT
+REDRAW 0
+PRINTL 
+PRINTFORML %NAME:ARG%的能力足以完成{ABL:ARG:助手}项助手指示。
+PRINTFORML 要作何指示呢？
+VARSET LOCALS
+SIF TALENT:ARG:小根术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:0 = [ 0] \@ GETBIT(CFLAG:ARG:35, 0) ? ○ # － \@ 调教小妖精时自动小根术
+SIF TALENT:ARG:高敏术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:1 = [ 1] \@ GETBIT(CFLAG:ARG:35, 1) ? ○ # － \@ 维持高敏术
+SIF TALENT:ARG:精强术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:2 = [ 2] \@ GETBIT(CFLAG:ARG:35, 2) ? ○ # － \@ 维持精强术
+SIF TALENT:ARG:魅强术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:3 = [ 3] \@ GETBIT(CFLAG:ARG:35, 3) ? ○ # － \@ 维持魅强术
+SIF TALENT:ARG:防强术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:4 = [ 4] \@ GETBIT(CFLAG:ARG:35, 4) ? ○ # － \@ 维持防强术
+SIF TALENT:ARG:回复术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:6 = [ 6] \@ GETBIT(CFLAG:ARG:35, 6) ? ○ # － \@ 必要时咏唱回复术
+SIF TALENT:ARG:倍化术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:7 = [ 7] \@ GETBIT(CFLAG:ARG:35, 7) ? ○ # － \@ 维持倍化术
+SIF TALENT:ARG:解弱化术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:9 = [ 9] \@ GETBIT(CFLAG:ARG:35, 9) ? ○ # － \@ 陷入恍惚时咏唱解弱化术
+
+SIF TALENT:ARG:全强术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:11 = [11] \@ GETBIT(CFLAG:ARG:35, 11) ? ○ # － \@ 维持全强术
+SIF TALENT:ARG:大根术 || TALENT:ARG:魔法使 >= 2
+	LOCALS:12 = [12] \@ GETBIT(CFLAG:ARG:35, 12) ? ○ # － \@ 调教对象惯于性交时咏唱大根术
+
+LOCALS:20 = [20] \@ GETBIT(CFLAG:ARG:35, 20) ? ○ # － \@ 开局使用润滑液
+LOCALS:21 = [21] \@ GETBIT(CFLAG:ARG:35, 21) ? ○ # － \@ 开局使用媚药
+LOCALS:22 = [22] \@ GETBIT(CFLAG:ARG:35, 22) ? ○ # － \@ 适度使用利尿剂
+LOCALS:23 = [23] \@ GETBIT(CFLAG:ARG:35, 23) ? ○ # － \@ 开局使用镇静剂
+LOCALS:24 = [24] \@ GETBIT(CFLAG:ARG:35, 24) ? ○ # － \@ 适度使用排卵诱发剂
+LOCALS:25 = [25] \@ GETBIT(CFLAG:ARG:35, 25) ? ○ # － \@ 适度使用薫香
+LOCALS:26 = [26] \@ GETBIT(CFLAG:ARG:35, 26) ? ○ # － \@ 适度使用沐浴剂
+SIF ITEM:摄像机 || NOITEM
+	LOCALS:27 = [27] \@ GETBIT(CFLAG:ARG:35, 27) ? ○ # － \@ 开局录像（仅在调教对象有被录経験时）
+
+IF TALENT:ARG:歌唱技能
+	LOCALS:30 = [30] \@ GETBIT(CFLAG:ARG:35, 30) ? ○ # － \@ 适度的平稳之歌
+	LOCALS:31 = [31] \@ GETBIT(CFLAG:ARG:35, 31) ? ○ # － \@ 开局时罗曼司曲
+	LOCALS:32 = [32] \@ GETBIT(CFLAG:ARG:35, 32) ? ○ # － \@ 开局时雨后轮舞曲
+ENDIF
+SIF NO:ARG == 34
+	LOCALS:35 = [35] \@ GETBIT(CFLAG:ARG:35, 35) ? ○ # － \@ 维持皮肤硬化
+SIF NO:ARG == 35
+	LOCALS:36 = [36] \@ GETBIT(CFLAG:ARG:35, 36) ? ○ # － \@ 开局使用熔融之吻
+
+IF ABL:ARG:奉仕精神 >= 3
+	LOCALS:40 = [40] \@ GETBIT(CFLAG:ARG:35, 40) ? ○ # － \@ 保持主人身体清洁
+	LOCALS:41 = [41] \@ GETBIT(CFLAG:ARG:35, 41) ? ○ # － \@ 保持对手身体清洁
+ENDIF
+
+LOCALS:45 = [45] \@ GETBIT(CFLAG:ARG:35, 45) ? ○ # － \@ 开局脱光调教对象
+
+;SIF ABL:ARG:奉仕精神 >= 3
+;	LOCALS:50 = [50] \@ GETBIT(CFLAG:ARG:35, 50) ? ○ # － \@ 给御用商人杀必死
+
+FOR LOCAL, 0, 100
+	SIF LOCALS:LOCAL != ""
+		PRINTFORML  %LOCALS:LOCAL%
+NEXT
+PRINTFORML [100] 这就行了
+
+$INPUT_LOOP
+INPUT
+
+IF RESULT == 100
+	REDRAW 1
+	RETURN 0
+ELSEIF RESULT >= 0 && RESULT < 100 && LOCALS:RESULT != ""
+ELSE
+	GOTO INPUT_LOOP
+ENDIF
+
+LOCAL = RESULT
+INVERTBIT CFLAG:ARG:35, LOCAL
+
+IF NUM_BIT(CFLAG:ARG:35) > ABL:ARG:助手
+	PRINTFORMW 指示数目达到能力上限
+	INVERTBIT CFLAG:ARG:35, LOCAL
+ENDIF
+
+CLEARLINE LINECOUNT - MEMO_LINECOUNT
+RESTART
+
+
+;助手に指示する画面
+@ASSI_LIST_INDICATE, ARG
+IF ABL:ARG:助手 == 0
+	PRINT 助手LV为０，无法给予指示
+	RETURN 0
+ENDIF
+
+SIF GETBIT(CFLAG:ARG:35, 0)
+	PRINT [小根术]
+SIF GETBIT(CFLAG:ARG:35, 1)
+	PRINT [高敏术]
+SIF GETBIT(CFLAG:ARG:35, 2)
+	PRINT [精强术]
+SIF GETBIT(CFLAG:ARG:35, 3)
+	PRINT [魅强术]
+SIF GETBIT(CFLAG:ARG:35, 4)
+	PRINT [防强术]
+SIF GETBIT(CFLAG:ARG:35, 6)
+	PRINT [回复术]
+SIF GETBIT(CFLAG:ARG:35, 7)
+	PRINT [倍化术]
+SIF GETBIT(CFLAG:ARG:35, 9)
+	PRINT [解弱化术]
+SIF GETBIT(CFLAG:ARG:35, 11)
+	PRINT [全强术]
+SIF GETBIT(CFLAG:ARG:35, 12)
+	PRINT [大根术]
+SIF GETBIT(CFLAG:ARG:35, 20)
+	PRINT [润滑液]
+SIF GETBIT(CFLAG:ARG:35, 21)
+	PRINT [媚药]
+SIF GETBIT(CFLAG:ARG:35, 22)
+	PRINT [利尿剂]
+SIF GETBIT(CFLAG:ARG:35, 23)
+	PRINT [镇静剂]
+SIF GETBIT(CFLAG:ARG:35, 24)
+	PRINT [排卵诱发剂]
+SIF GETBIT(CFLAG:ARG:35, 25)
+	PRINT [薫香]
+SIF GETBIT(CFLAG:ARG:35, 26)
+	PRINT [沐浴剂]
+SIF GETBIT(CFLAG:ARG:35, 27)
+	PRINT [摄影]
+SIF GETBIT(CFLAG:ARG:35, 30)
+	PRINT [平稳之歌]
+SIF GETBIT(CFLAG:ARG:35, 31)
+	PRINT [罗曼司曲]
+SIF GETBIT(CFLAG:ARG:35, 32)
+	PRINT [雨后轮舞曲]
+SIF GETBIT(CFLAG:ARG:35, 35)
+	PRINT [皮肤硬化]
+SIF GETBIT(CFLAG:ARG:35, 36)
+	PRINT [熔融之吻]
+SIF GETBIT(CFLAG:ARG:35, 40)
+	PRINT [擦拭主人]
+SIF GETBIT(CFLAG:ARG:35, 41)
+	PRINT [擦拭对手]
+SIF GETBIT(CFLAG:ARG:35, 45)
+	PRINT [对手全裸]
+SIF GETBIT(CFLAG:ARG:35, 50)
+	PRINT [杀必死]
+
+LOCAL:1 = ABL:ARG:助手 - NUM_BIT(CFLAG:ARG:35)
+IF LOCAL:1 > 0
+	FOR LOCAL, 0, LOCAL:1
+		PRINT []
+	NEXT
+ENDIF
+
+
+@ASSI_LIST_ABL, ARG
+SIF ARG != MASTER
+	PRINTFORM 精{BASE:ARG:精力, 2} 
+PRINTFORM 技{ABL:ARG:技巧, 2} 
+SIF ARG != MASTER
+	PRINTFORM 助{ABL:ARG:助手} 
+
+;相性や百合ッ气、男同属性
+IF TARGET
+	;IF TALENT:ARG:性别男 == 0 && TALENT:性别男 == 0
+	;	PRINTFORM 百合{ABL:ARG:百合属性} 
+	;ELSEIF TALENT:ARG:性别男 && TALENT:性别男
+	;	PRINTFORM 男同{ABL:ARG:男同属性} 
+	;ENDIF
+	LOCAL = NO:ARG
+	IF ARG != TARGET
+		IF RELATION:LOCAL >= 200
+			PRINT 相性:☆ 
+		ELSEIF RELATION:LOCAL >= 150
+			PRINT 相性:◎ 
+		ELSEIF RELATION:LOCAL >= 120
+			PRINT 相性:○ 
+		ENDIF
+	ENDIF
+ENDIF
+SIF TALENT:ARG:针术
+	PRINT 针 
+SIF TALENT:ARG:调合知识
+	PRINT 调合 
+SIF TALENT:ARG:解放
+	PRINT 解放 
+SIF TALENT:ARG:无视脏污
+	PRINT 无视脏污 
+SIF TALENT:ARG:百发百中
+	PRINT 百发百中 
+SIF TALENT:ARG:召唤之天才
+	PRINT 召唤之天才 
+SIF TALENT:ARG:召唤之天災
+	PRINT 召唤之天災 
+SIF TALENT:ARG:通吃
+	PRINT 通吃 
+SIF TALENT:ARG:抖Ｓ
+	PRINT 抖Ｓ 
+SIF TALENT:ARG:妖狐
+	PRINT 妖狐 
+SIF TALENT:ARG:魅惑
+	PRINT 魅惑 
+SIF TALENT:ARG:迷之魅力
+	PRINT 迷之魅力 
+SIF TALENT:ARG:治疗
+	PRINT 治疗 
+SIF TALENT:ARG:扶她
+	PRINT 扶她 
+SIF TALENT:ARG:性别男
+	PRINT ♂ 
+SIF TALENT:ARG:禁断之知识
+	PRINT 禁断之知识 
+
+
+SIF TALENT:ARG:魔法使
+	PRINT 魔法 
+SIF TALENT:ARG:调教知识
+	PRINTFORM %CONDS("调教知识", ARG)% 
+SIF TALENT:ARG:甜言蜜语
+	PRINT 甜言蜜语 
+SIF TALENT:ARG:高潮管理
+	PRINT 高潮管理
+SIF TALENT:ARG:歌唱技能
+	PRINT 歌唱 

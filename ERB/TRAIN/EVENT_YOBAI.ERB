@@ -1,0 +1,385 @@
+﻿;-------------------------------------------------
+;夜に起こる事件
+;欲求不满な人たち之ために乱交PLAYを调整
+;-------------------------------------------------
+@EVENT_YOBAI
+#DIM LCOUNT
+
+;夜事件之記录初期化
+CVARSET CFLAG, 91
+CVARSET CFLAG, 96
+;主动夜袭标志
+CVARSET CSTR, 61
+
+VARSET LOCAL
+;夜事件之決定。内容は CSTR:主动夜袭 に入っている
+CALL PLAY_AT_EVENING
+SIF CSTR:主动夜袭 == ""
+	RETURN 0
+
+;基本回数は精力依存
+LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
+
+DRAWLINE
+SIF COND("大被同眠")
+	PRINTFORML ＜%CALLNAME:TARGET%的房间里＞
+
+
+SELECTCASE CSTR:主动夜袭
+
+CASE "主动夜袭骑乘位"
+	CVARSET TEQUIP, 30, 1
+
+	;基本回数は精力依存
+	LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
+
+	;PRINTL ＜主动夜袭＞
+	;口上之前后が凝っている角色用
+	CALL SELF_KOJO, "主动夜袭骑乘位口上操作"
+	IF CONFIG("地之文ＯＦＦ")
+		CALL SELF_KOJO, CSTR:主动夜袭
+	ELSE
+		IF COND("大被同眠")
+			PRINTFORMW %CALLNAME:MASTER%躺在床上、被%CALLNAME:TARGET%抱住了、
+		ELSE
+			PRINTFORMW %CALLNAME:MASTER%在床上准备睡觉了的时候、突然%CALLNAME:TARGET%进入了房间、
+		ENDIF
+		;[傲慢][自大][坏心眼][强硬]持ちなら分岐
+		IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
+			PRINTFORMW 「……」
+			PRINTFORMW 沉默着、用充满欲火的眼睛瞪着、
+		;[怕羞][清纯]持ち之场合分岐
+		ELSEIF TALENT:怕羞 || TALENT:清纯
+			PRINTFORMW 带着忧郁和欲望之火的眼神、眼睛朝上看着%CALLNAME:MASTER%问了、
+			SELECTCASE NO:TARGET
+		CASE 16
+				PRINTFORMW 「…呜…%CNAME("二人称")%、那个、呐。 ……明、明白的吧？」
+		CASE 9, 30, 32, 37
+				PRINTFORMW 「……那个……对不起了！！」
+		CASEELSE
+				PRINTFORMW 「……」
+			ENDSELECT
+		;[纯情][献身][小恶魔][妄信]持ちなら分岐
+		ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+			PRINTFORMW 「……」
+			PRINTFORMW 沉默着、用带着欲望眼神微笑着盯着%CALLNAME:MASTER%、
+		ENDIF
+		PRINTFORMW 就那样推倒了%CALLNAME:MASTER%、用小穴吸住%CALLNAME:MASTER%的肉棒开始激烈的侵犯起来、
+
+	CALL SELF_KOJO, CSTR:主动夜袭
+
+		;[傲慢][自大][坏心眼][强硬]持ちなら分岐
+		IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
+			PRINTFORMW %CALLNAME:TARGET%发出脏话混杂着妩媚的娇声、不断淫乱的扭着腰渴望滋润子宫…
+		;[怕羞][清纯]持ち之场合分岐
+		ELSEIF TALENT:怕羞 || TALENT:清纯
+			PRINTFORML %CALLNAME:TARGET%多次同时发出轻声的欢喜的悲鸣和道歉的话、
+			PRINTFORMW 天真的扭着腰腰渴望滋润子宫…
+		;[纯情][献身][小恶魔][妄信]持ちなら分岐
+		ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+			PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰腰渴望滋润子宫…
+		;[开朗][好色][承认快感]持ち之场合分岐
+		ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:承认快感
+			PRINTFORMW %CALLNAME:TARGET%眯起眼睛微笑着、不断用肛门撞击着腰腰渴望滋润子宫…
+		ELSE
+			PRINTFORMW 扭曲的贪图饥饿的野兽嘴里流出的口水、治愈子宫的渴望…
+		ENDIF
+	ENDIF
+	CALL SIMULATE_TRAIN, 65, LOCAL
+
+	CALL CALC, "欲求不满解消", TARGET, LOCAL
+
+	PRINTFORM 好几次高潮后、
+	IF TALENT:偏爱 || TALENT:相思相爱
+		PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
+		;一緒に眠った标志。朝之对象として优先。
+		CFLAG:MASTER:96 = TARGET
+		CFLAG:96 = MASTER
+	ELSE
+		PRINTFORM 恋慕的%CALLNAME:TARGET%は
+		;对象がいっぱいいるときは紳士協定
+		IF RAND:CHARANUM >= 5
+			PRINTFORMW 洗净身体、依依不舍的走回自己的房间…
+		ELSE
+			PRINTFORMW 抱住%CALLNAME:MASTER%、就这样陷入沉睡…
+			CFLAG:MASTER:96 = TARGET
+			CFLAG:96 = MASTER
+		ENDIF
+	ENDIF
+	CVARSET TEQUIP, 30, 0
+CASE "主动夜袭Ａ骑乘位"
+	CVARSET TEQUIP, 30, 1
+
+	;基本回数は精力依存
+	LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
+
+	;PRINTL ＜主动夜袭＞
+	IF COND("大被同眠")
+		PRINTFORMW %CALLNAME:MASTER%躺在床上、被%CALLNAME:TARGET%抱住了、
+	ELSE
+		PRINTFORMW %CALLNAME:MASTER%在床上准备睡觉了的时候、突然%CALLNAME:TARGET%进入了房间、
+	ENDIF
+	;[傲慢][自大][坏心眼][强硬]持ちなら分岐
+	IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
+		PRINTFORMW 「……」
+		PRINTFORMW 沉默着、用充满欲火的眼睛瞪着%CALLNAME:MASTER%、
+	;[怕羞][清纯]持ち之场合分岐
+	ELSEIF TALENT:怕羞 || TALENT:清纯
+		PRINTFORMW 带着忧郁和欲望之火的眼神、眼睛朝上看着%CALLNAME:MASTER%问了、
+		SELECTCASE NO:TARGET
+	CASE 16
+			PRINTFORMW 「…呜…%CNAME("二人称")%、那个、呐。 ……明、明白的吧？」
+	CASE 9, 30, 32, 37
+			PRINTFORMW 「……那个……对不起了！！」
+	CASEELSE
+			PRINTFORMW 「……」
+		ENDSELECT
+	;[纯情][献身][小恶魔][妄信]持ちなら分岐
+	ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+		PRINTFORMW 「……」
+		PRINTFORMW 沉默着、用带着欲望眼神微笑着盯着%CALLNAME:MASTER%、
+	ENDIF
+	PRINTFORMW 就那样\@ TALENT:性别男 ? %CALLNAME:TARGET% # 少女 \@把%CALLNAME:MASTER%推倒了、用污秽的穴吸住%CALLNAME:MASTER%的肉棒开始激烈的侵犯起来
+
+		CALL SELF_KOJO, CSTR:主动夜袭
+	;[傲慢][自大][坏心眼][强硬]持ちなら分岐
+	IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
+		PRINTFORMW %CALLNAME:TARGET%发出脏话混杂着妩媚的娇声、不断淫乱的扭着腰贪图着肛门的肉欲…
+	;[怕羞][清纯]持ち之场合分岐
+	ELSEIF TALENT:怕羞 || TALENT:清纯
+		PRINTFORML %CALLNAME:TARGET%多次同时发出轻声的欢喜的悲鸣和道歉的话、
+		PRINTFORMW 天真的扭着腰贪图着肛门的肉欲…
+	;[纯情][献身][小恶魔][妄信]持ちなら分岐
+	ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+		PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰贪图着肛门的肉欲…
+	;[开朗][好色][承认快感]持ち之场合分岐
+	ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:承认快感
+		PRINTFORMW %CALLNAME:TARGET%眯起眼睛微笑着、不断用肛门撞击着腰贪图着肛门的肉欲…
+	ELSE
+		PRINTFORMW 被调教后的肛门不堪的吸食那样吞吐着、想要一直这样贪图着肉欲…
+	ENDIF
+	CALL SIMULATE_TRAIN, 75, LOCAL
+
+	CALL CALC, "欲求不满解消", TARGET, LOCAL
+
+	PRINTFORM 好几次高潮后、
+	IF TALENT:偏爱 || TALENT:相思相爱
+		PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
+		;一緒に眠った标志。朝之对象として优先。
+		CFLAG:MASTER:96 = TARGET
+		CFLAG:96 = MASTER
+	ELSE
+		PRINTFORM 恋慕的%CALLNAME:TARGET%
+		;对象がいっぱいいるときは紳士協定
+		IF RAND:CHARANUM >= 5
+			PRINTFORMW 洗净身体、依依不舍的走回自己的房间…
+		ELSE
+			PRINTFORMW 抱住%CALLNAME:MASTER%、就这样陷入沉睡…
+			CFLAG:MASTER:96 = TARGET
+			CFLAG:96 = MASTER
+		ENDIF
+	ENDIF
+	CVARSET TEQUIP, 30, 0
+
+CASE "旁边陪着睡"
+	LOCAL = 1
+	;PRINTL ＜旁边陪着睡？＞
+	IF COND("大被同眠")
+		PRINTFORMW %CALLNAME:MASTER%躺在床上、穿着睡衣的%CALLNAME:TARGET%若无其事的躺到床上、
+		CALL SELF_KOJO, CSTR:主动夜袭
+		PRINTFORMW 然后、带着满足一般的表情抱住%CALLNAME:MASTER%、就这样睡着了……
+	ELSE
+		PRINTFORM %CALLNAME:MASTER%睡着后、
+		IF RAND:3 == 0
+			PRINT 抱着枕头的
+		ELSEIF RAND:2
+			PRINT 穿着睡衣的
+		ELSE
+			PRINT 穿着可爱的怪兽睡衣的
+		ENDIF
+		PRINTFORMW %CALLNAME:TARGET%悄悄的潜入了房间、
+		PRINTFORMW 显然、是想要和%CALLNAME:MASTER%一起睡…
+		PRINTFORMW 小声的叫了几声确认%CALLNAME:MASTER%没有装睡、%CALLNAME:TARGET%若无其事的钻进被子、
+		CALL SELF_KOJO, CSTR:主动夜袭
+		PRINTFORMW 然后、带着满足一般的表情抱住%CALLNAME:MASTER%、就这样睡着了……
+	ENDIF
+	CFLAG:MASTER:96 = TARGET
+	CFLAG:96 = MASTER
+CASE "主动夜袭接吻"
+	IF TALENT:恋慕 && CFLAG:2 >= 3000 && TALENT:荡唇
+		LOCAL = RAND:3 + 1
+	ELSEIF TALENT:恋慕 && CFLAG:2 >= 3000 
+		LOCAL = RAND:2 + 1
+	ELSE
+		LOCAL = 1
+	ENDIF
+	;PRINTL ＜主动夜袭接吻＞
+	IF COND("大被同眠")
+		PRINTFORMW %CALLNAME:MASTER%在床上开始睡觉了、被%CALLNAME:TARGET%若无其事的抱住了、
+	ELSE
+		PRINTFORMW %CALLNAME:MASTER%睡着后、%CALLNAME:TARGET%偷偷潜入房间、
+	ENDIF
+	PRINTFORMW %CALLNAME:TARGET%看着%CALLNAME:MASTER%的睡颜、抑制不了感情吻了上去、
+	CALL SELF_KOJO, CSTR:主动夜袭
+	PRINTFORMW 发现没有弄醒%CALLNAME:MASTER%很高兴、不断如饥似渴的反复吻着……
+	CALL SIMULATE_TRAIN, 6, LOCAL
+
+	IF COND("大被同眠") == 0
+		PRINTFORML 偷偷的行为暂时结束、一边回忆嘴唇残留的触感、
+		PRINTFORMW %CALLNAME:TARGET%依依不舍的离开了房间……
+	ENDIF
+
+	CALL CALC, "欲求不满解消", TARGET, 1
+
+;以下は乱交事件(TARGET:1 > 0 は确实)
+CASEELSE
+	CSTR:乱交 = %CSTR:主动夜袭%
+	CALL EVENT_RANKOU, "复数主动夜袭"
+ENDSELECT
+PRINTL 
+
+;夜事件之記录
+IF CSTR:主动夜袭 != ""
+	CFLAG:PLAYER:91 = NUM_EV(CSTR:主动夜袭)
+	CFLAG:91 = NUM_EV(CSTR:主动夜袭)
+	DRAWLINE
+ENDIF
+
+
+;取り合い之ような寝取り之ような
+SELECTCASE CSTR:主动夜袭
+CASE "主动夜袭Ａ骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
+	TARGET:1 = FIND_COND("主动夜袭可能", "淫乱", "相思相爱")
+	SIF TARGET:1 == 0 || TALENT:相思相爱 == 0 || COND("大被同眠")  || CFLAG:MASTER:96 == 0
+		RETURN 0
+
+	;实行可能指令之确认
+	CALL CHECK_COM_ABLE, TARGET:1
+		VARSET LOCAL
+	SIF PENIS(MASTER) && CANTRAIN("逆推骑乘位", TARGET:1) && TALENT:(TARGET:1):处女 == 0 && TALENT:PLAYER:童贞 == 0
+		LOCAL = 65
+	SIF PENIS(MASTER) == 0 && CANTRAIN("逆推正常位奉仕", TARGET:1) && TALENT:(TARGET:1):童贞 == 0 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
+		LOCAL = 120
+	IF LOCAL == 65
+
+			PRINTFORMW %CALLNAME:(TARGET:1)%跨在被偷偷脱掉内衣的%CALLNAME:MASTER%身上、慢慢坐下…
+			PRINTFORMW 发现%CALLNAME:MASTER%因股间的快感醒来睁开眼睛后迅速堵住%CALLNAME:MASTER%的嘴、%CALLNAME:(TARGET:1)%为了被%CALLNAME:TARGET%发现而压低声音欲火焚身的扭着腰…
+			PRINTFORMW 在心爱的梦魇旁边做这样的事产生的背德感、只是追求快乐的%CALLNAME:(TARGET:1)%巧妙的腰技让%CALLNAME:MASTER%毫无还手之力的高潮了…
+			PRINTFORMW %CALLNAME:(TARGET:1)%在滚烫的精液射进子宫的时候闭上了眼睛、露出满足陶醉的表情、再次开始扭腰…！
+			PRINTFORMW 在%CALLNAME:(TARGET:1)%满足之前、就在心爱的%CALLNAME:TARGET%旁边一直%TEXTR("被玩弄", "被作为玩物", "被作为奴隶", "被榨精")%…
+			CALL SIMULATE_TRAIN, 65, BASE:(TARGET:1):精力/20 + LIMIT(RAND:(BASE:(TARGET:1):精力/10 + 1), 0, BASE:(TARGET:1):精力/15)
+	ELSEIF LOCAL == 120
+			IF PENIS(TARGET:1)
+				PRINTFORMW %CALLNAME:(TARGET:1)%确认%CALLNAME:TARGET%在旁边睡得很熟后、悄悄脱掉%CALLNAME:MASTER%的内衣并分开双腿…
+				PRINTFORMW 然后用唾液润滑了下滚烫的肉棒、一口气贯穿了%CALLNAME:MASTER%…！
+				IF ABL:(TARGET:1):Ｓ属性 >= 5
+						PRINTFORM 身体被贯穿的冲击让%CALLNAME:MASTER%醒了过来、%CALLNAME:(TARGET:1)%
+					;狼女系
+					IF BASE:(TARGET:1):斯道克
+						PRINTFORM 每次活动都会剧烈颤抖、
+					ELSE
+						IF RAND:2 == 0
+							PRINTFORM 「%CALLNAME:TARGET%发现也没关系
+						ELSE
+							PRINTFORM 一边轻声耳语「如果看到母狗在这种地方被侵犯%CALLNAME:TARGET%会怎么想
+						ENDIF
+						SELECTCASE BASE:(TARGET:1):种族思考
+						;猫又系
+					CASE 6
+							PRINTFORM 喵～？」
+						;葛叶系
+					CASE 16
+							PRINTFORM 呢？」
+						;かな
+					CASE 2, 4, 15, 21, 23, 26, 28, 29, 31, 33, 39, 40, 41, 47, 50, 59
+							PRINTFORM ？
+					CASE 34
+							PRINTFORM 啊？」
+						;かしら
+					CASEELSE
+							PRINTFORM 呢哦？」
+						ENDSELECT
+						PRINTFORM 之类的话、
+					ENDIF
+					PRINTFORMW 一边欲火焚身的那样抽插…！
+					PRINTFORMW 害怕被发现的%CALLNAME:MASTER%用手捂着自己的嘴不发出声音、就这样被%CALLNAME:(TARGET:1)%为了发泄性欲而侵犯了…
+					PRINTFORMW 沉睡的爱人%CALLNAME:TARGET%的旁边、就那样被%CALLNAME:(TARGET:1)%狠狠的%TEXTR("下种", "腔内射精", "侵犯", "强奸")%了…
+				ELSE
+					PRINTFORMW 发现%CALLNAME:MASTER%因身体被贯穿的冲击醒来睁开眼睛后迅速堵住%CALLNAME:MASTER%的嘴、慢慢地、在快感的引诱下开始扭起腰来…
+					PRINTFORMW %CALLNAME:MASTER%一边觉得这是对%CALLNAME:TARGET%的背叛、一边在不久之后开始配合着%CALLNAME:(TARGET:1)%的腰技自己也扭了起来…
+					PRINTFORMW 虽然被%CALLNAME:(TARGET:1)%に%TEXTR("下种", "腔内射精", "侵犯", "强奸")%、但还是在爱人%CALLNAME:TARGET%的旁边%TEXTR("高潮", "去", "绝顶", "沉迷于快乐")%了…
+				ENDIF
+				CALL SIMULATE_TRAIN, 120, BASE:(TARGET:1):精力/20 + LIMIT(RAND:(BASE:(TARGET:1):精力/10 + 1), 0, BASE:(TARGET:1):精力/15)
+			ELSE
+			ENDIF
+		ENDIF
+
+ENDSELECT
+
+;-------------------------------------------------
+;主动夜袭事件之決定。何をやるかは CSTR:主动夜袭 で記录する
+;复数PLAYは短く「乱交」と表記する
+;-------------------------------------------------
+@PLAY_AT_EVENING
+#DIM LCOUNT
+;随机選択に用いる
+#DIM NUM_FIND
+
+
+SIF COND("主动夜袭可能") == 0 || TIME == 0 || COND("手一杯", MASTER)
+	RETURN 0
+
+;反发刻印が3あるとダメ
+SIF MARK:反发刻印 >= 3
+	RETURN 0
+
+;实行可能指令之确认
+CALL CHECK_COM_ABLE, TARGET
+
+;まずは乱交かどうか。欲求不满な人が多いと乱交になりやすい
+IF COND("乱交可能") && (CHARA_NUM("欲求不满で乱交可能") >= 3 + RANDFIX(7) || (FIND_COND("相性◎", "乱交可能") && RAND:3 == 0) )
+	CALL EVENT_RANKOU_SET, "复数主动夜袭"
+	;乱交PLAYが实行可能ならば決定
+	SIF CSTR:主动夜袭 != ""
+		RETURN 1
+ENDIF
+
+
+;以下は通常之一人で之主动夜袭
+NUM_FIND = 0
+
+FOR LCOUNT, 0, 10
+	SELECTCASE LCOUNT
+	CASE 0
+		SIF PENIS(PLAYER) == 0 || TALENT:处女 || TALENT:PLAYER:童贞 || CANTRAIN("逆推骑乘位") == 0
+			CONTINUE
+		LOCALS = 主动夜袭骑乘位
+	CASE 1
+		SIF PENIS(PLAYER) == 0 || EXP:PLAYER:Ａ插入経験 == 0 || CANTRAIN("逆推肛交骑乘位") == 0
+			CONTINUE
+		LOCALS = 主动夜袭Ａ骑乘位
+
+	;欲求不满or大被同眠发生时には、ここより上之過激なPLAYを优先する
+	CASE 2
+		SIF NUM_FIND && COND("欲求不满") + COND("大被同眠")
+			BREAK
+
+		SIF (COND("欲求不满") || TALENT:外表年龄) && COND("大被同眠") == 0
+			CONTINUE
+		LOCALS = 旁边陪着睡
+	CASE 3
+		SIF TALENT:恋慕 == 0 || CANTRAIN("接吻") == 0
+			CONTINUE
+		LOCALS = 主动夜袭接吻
+	CASEELSE
+		BREAK
+	ENDSELECT
+
+	NUM_FIND += 1
+
+	SIF RAND:NUM_FIND
+		CONTINUE
+
+	CSTR:主动夜袭 = %LOCALS%
+NEXT
+

@@ -1,0 +1,179 @@
+﻿;INFOから呼び出す
+@NEW_PRINT_PALAM
+#DIM LCOUNT
+#DIM BAR_SIZE
+#DIM ROW_SIZE
+#DIM MEMO
+
+ROW_SIZE = CONFIG("画面表示：参数４列") ? 4 # 3
+BAR_SIZE = CONFIG("画面表示：参数４列") ? 4 # 10
+
+FOR LCOUNT, 0, 16
+	IF CONFIG("画面表示：参数４列")
+		; 0.快Ｃ  1.快Ｖ  2.快Ａ 14.快Ｂ
+		;15.快Ｍ  4.恭顺  5.欲情  6.屈服
+		; 3.Ｖ润 12.Ａ润  8.恥情  7.习得 
+		; 9.苦痛 10.恐怖 11.反感 13.抑郁
+		SELECTCASE LCOUNT
+		CASE 0
+			LOCAL = 0
+		CASE 1
+			LOCAL = 1
+		CASE 2
+			LOCAL = 2
+		CASE 3
+			LOCAL = 14
+		CASE 4
+			LOCAL = 15
+		CASE 5
+			LOCAL = 4
+		CASE 6
+			LOCAL = 5
+		CASE 7
+			LOCAL = 6
+		CASE 8
+			LOCAL = 3
+		CASE 9
+			LOCAL = 12
+		CASE 10
+			LOCAL = 8
+		CASE 11
+			LOCAL = 7
+		CASE 12
+			LOCAL = 9
+		CASE 13
+			LOCAL = 10
+		CASE 14
+			LOCAL = 11
+		CASE 15
+			LOCAL = 13
+		ENDSELECT
+	ELSE
+		;参数を表示する顺番を普べ替える
+		;15.快Ｍ  5.欲情  9.苦痛
+		;14.快Ｂ  4.恭顺 10.恐怖
+		; 0.快Ｃ  6.屈服 11.反感
+		; 1.快Ｖ  8.恥情  3.Ｖ润
+		; 2.快Ａ  7.习得 12.Ａ润
+		;13.抑郁
+		SELECTCASE LCOUNT
+		CASE 0
+			LOCAL = 15
+		CASE 1
+			LOCAL = 5
+		CASE 2
+			LOCAL = 9
+		CASE 3
+			LOCAL = 14
+		CASE 4
+			LOCAL = 4
+		CASE 5
+			LOCAL = 10
+		CASE 6
+			LOCAL = 0
+		CASE 7
+			LOCAL = 6
+		CASE 8
+			LOCAL = 11
+		CASE 9
+			LOCAL = 1
+		CASE 10
+			LOCAL = 8
+		CASE 11
+			LOCAL = 3
+		CASE 12
+			LOCAL = 2
+		CASE 13
+			LOCAL = 7
+		CASE 14
+			LOCAL = 12
+		CASE 15
+			LOCAL = 13
+			SIF PALAM:抑郁 == 0
+				CONTINUE
+		ENDSELECT
+	ENDIF
+
+	SELECTCASE LOCAL
+	CASE 0 TO 2, 14, 15
+		SIF PALAM:LOCAL >= 10000
+			SETCOLOR DEF_COLOR("黄色")
+	ENDSELECT
+
+	PRINTFORM %PALAMNAME:LOCAL%%TEXTS("调教参数之ＬＶ", GET_PALAMLV(PALAM:LOCAL) )%
+
+	RESETCOLOR
+
+	SELECTCASE LOCAL
+	CASE 0
+		IF NOWEX:Ｃ绝顶 + NOWEX:尿道绝顶
+			CALL PRINT_BAR, "ＰＡＬＡＭ绝顶", PALAM:LOCAL, 0, BAR_SIZE
+		ELSE
+			CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+		ENDIF
+	CASE 1
+		IF NOWEX:Ｖ绝顶
+			CALL PRINT_BAR, "ＰＡＬＡＭ绝顶", PALAM:LOCAL, 0, BAR_SIZE
+		ELSE
+			CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+		ENDIF
+	CASE 2
+		IF NOWEX:Ａ绝顶
+			CALL PRINT_BAR, "ＰＡＬＡＭ绝顶", PALAM:LOCAL, 0, BAR_SIZE
+		ELSE
+			CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+		ENDIF
+	CASE 14
+		IF NOWEX:Ｂ绝顶
+			CALL PRINT_BAR, "ＰＡＬＡＭ绝顶", PALAM:LOCAL, 0, BAR_SIZE
+		ELSE
+			CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+		ENDIF
+	CASE 15
+		IF NOWEX:Ｍ绝顶
+			CALL PRINT_BAR, "ＰＡＬＡＭ绝顶", PALAM:LOCAL, 0, BAR_SIZE
+		ELSE
+			CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+		ENDIF
+	CASEELSE
+		CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:LOCAL, 0, BAR_SIZE
+	ENDSELECT
+	PRINTFORM %PALAM_NUM(PALAM:LOCAL)%
+
+	SIF ( (LCOUNT + 1) % ROW_SIZE) == 0
+		PRINTL 
+NEXT
+SIF (LCOUNT + 1) % ROW_SIZE
+	PRINTL 
+
+@PALAM_NUM(ARG)
+#FUNCTIONS
+;999999を超えたらkMGTP
+;Emueraではペタ程度（64ビット）まで扱えると之こと
+VARSET LOCALS
+FOR LOCAL, 0, 5
+	SIF ARG < 100000
+		BREAK
+	SELECTCASE LOCAL
+	CASE 0
+		LOCALS = k
+	CASE 1
+		LOCALS = M
+	CASE 2
+		LOCALS = G
+	CASE 3
+		LOCALS = T
+	CASE 4
+		LOCALS = P
+	ENDSELECT
+	ARG /= 1000
+NEXT
+;数值之桁数に应じて间隔を调整
+IF STRLENS(LOCALS)
+	LOCALS = {ARG,5}%LOCALS%%BL(1)%
+ELSE
+	LOCALS = {ARG,6}%BL(1)%
+ENDIF
+
+RETURNF LOCALS
+
