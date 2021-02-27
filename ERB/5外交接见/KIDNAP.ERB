@@ -1,0 +1,91 @@
+﻿@KIDNAP,ARG
+#DIM LIST,20
+#DIM INDEX
+$INPUT_LOOP
+PRINTL 通过消耗碎片来掌握角色的弱点对其进行胁迫，使其加入罗德岛
+PRINTFORML 注意无论胁迫成功还是失败都会降低和%COUNTRY_NAME:ARG%的关系
+PRINTL 胁迫对象：
+DRAWLINE
+INDEX=0
+VARSET LIST,0
+REPEAT CHARANUM
+    IF BASE:COUNT:当前所属==ARG
+        PRINTFORML [{INDEX}]%NAME:COUNT%
+        LIST:INDEX=COUNT
+        INDEX++
+    ENDIF
+REND
+DRAWLINE
+PRINTL [999]返回
+
+
+INPUT
+SIF RESULT==999
+    RETURN
+IF RESULT<=INDEX&&RESULT>=0
+    PRINTFORML 当前势力情报碎片数：{INTEL_FRAG:ARG}
+    PRINTFORML 胁迫该角色需要碎片数：{BASE:(LIST:RESULT):42}
+    IF INTEL_FRAG:ARG<BASE:(LIST:RESULT):42
+        PRINTW 碎片不足
+        GOTO INPUT_LOOP
+    ENDIF
+    PRINTL 你确定要消耗碎片来掌握该角色的弱点对其进行胁迫吗？
+    PRINT [1]是      
+    PRINTL [2]让我再想想
+    LOCAL = LIST:RESULT
+    INPUT
+    IF RESULT ==1
+        CALL THREATING,LOCAL
+        SELECTCASE RESULT
+            CASE 0
+                PRINTFORMW 你的计划成功了，%COUNTRY_NAME:ARG%方面只是以为这是普通的挖角，关系略微降低
+                COUNTRY_好感度:ARG -= 20
+            CASE 1
+                PRINTFORMW %COUNTRY_NAME:ARG%方面几乎与你切断了外交关系，其他势力也发来谴责
+                REPEAT COUNTRY_NUM
+                    IF COUNT==ARG
+                        COUNTRY_好感度:COUNT -= 1000
+                    ELSE
+                        COUNTRY_好感度:COUNT -= 100
+                    ENDIF
+                REND
+            CASE 3
+                PRINTW 由于掌握着弱点，你的行为并没有被捅出去，但关系仍收到了影响
+                COUNTRY_好感度:ARG -= 200
+        ENDSELECT
+        RETURN
+    ENDIF
+ENDIF
+GOTO INPUT_LOOP
+
+@THREATING,ARG
+LOCAL=RAND:100
+IF LOCAL<20
+PRINTW 胁迫成功
+; CALLFORM THREAT_{NO:ARG}(0)  ;胁迫口上
+RETURN 0
+ELSE 
+; CALLFORM THREAT_{NO:ARG}(1)  ;胁迫口上
+PRINTL 胁迫失败
+PRINTL 你打算怎么做
+PRINT [1]绑架 [2]动手抢人（战斗） [3]算了，等待其他机会
+INPUT
+SELECTCASE RESULT
+    CASE 1 
+        LOCAL=RAND:100
+        IF LOCAL<10
+        PRINTL 绑架成功
+        ; CALLFORM THREAT_{NO:ARG}(2)  ;胁迫口上
+        RETURN 0
+        ELSE
+        PRINTL 绑架失败
+        PRINTL 你的行为被公之于众，引起了轩然大波
+        RETURN 1
+        ENDIF
+    CASE 2
+        PRINTW 未做完
+        RETURN 2
+    CASE 3
+        RETURN 3
+ENDSELECT
+ENDIF

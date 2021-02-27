@@ -23,10 +23,12 @@ IF RESULT<ARG
     CLEARLINE 100
     PRINTL □ 选择干员 □---------------------------------------------------------
     FOR COUNT,2,CHARANUM
-        IF BASE:COUNT:11==0 
-            PRINTFORML [{COUNT}]%CALLNAME:COUNT%    {BASE:COUNT:10}
-        ELSE
-            PRINTFORML [已在编队中]%CALLNAME:COUNT%    {BASE:COUNT:10}
+        IF BASE:COUNT:40==0
+            IF BASE:COUNT:11==0 
+                PRINTFORML [{COUNT}]%CALLNAME:COUNT%    {BASE:COUNT:10}
+            ELSE
+                PRINTFORML [已在编队中]%CALLNAME:COUNT%    {BASE:COUNT:10}
+            ENDIF
         ENDIF    
     NEXT
     PRINT [999]返回  [900]撤下
