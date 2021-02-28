@@ -9,7 +9,7 @@
 ;	IF RESULT == 0
 ;	ELSEIF RESULT == 1
 ;	ENDIF
-;便利な関数だが、RESULT == 0 && ABL:Ｖ感觉 >= 3 みたいな、条件も同时についているも之には向かない之で注意。
+;便利な関数だが、RESULT == 0 && ABL:V感觉 >= 3 みたいな、条件も同时についているも之には向かない之で注意。
 ;また、[100] やめる　など、番号を追加したい时には　INPUT_SELECT, 2, 100　とすること。
 ;-------------------------------------------------
 @INPUT_SELECT, ARG, ARG:1, ARG:2, ARG:3, ARG:4, ARG:5, ARG:6, ARG:7, ARG:8, ARG:9, ARG:10
@@ -425,12 +425,12 @@ SELECTCASE ARGS
 CASE "折り返し文字数"
 	RETURNF 78
 CASE "目标金额"
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		RETURNF 100000
 	RETURNF 1000000
-CASE "目标金额：ＮＯＲＭＡＬ"
+CASE "目标金额：ＮＯＲMAL"
 	RETURNF 1000000
-CASE "目标金额：ＥＡＳＹ"
+CASE "目标金额：ＥASＹ"
 	RETURNF 100000
 CASE "回合数"
 	SIF ARG == 0 && TARGET
@@ -501,12 +501,12 @@ CASE "最大レベル"
 	SELECTCASE ARG
 	CASE 2 TO 5, 14, 16
 		RETURNF 10
-	;ＶＡ扩张ＬＶは暫定10
+	;VA扩张LVは暫定10
 	CASE 23, 26
 		RETURNF 10
-	;ＬＶは难易度で变化
+	;LVは难易度で变化
 	CASE 90
-		IF CONFIG("ＨＡＲＤ")
+		IF CONFIG("ＨAＲＤ")
 			RETURNF 50
 		ELSE
 			RETURNF 30
@@ -551,7 +551,7 @@ CASE "宝珠：淫壷取得"
 	LOCAL = 100000
 	SIF TALENT:ARG:淫核 + TALENT:ARG:淫壷 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
-	SIF TALENT:ARG:Ｖ敏感
+	SIF TALENT:ARG:V敏感
 		LOCAL /= 2
 CASE "宝珠：尻穴狂取得"
 	SIF ARG == 0 && TARGET
@@ -567,7 +567,7 @@ CASE "宝珠：淫乳取得"
 	LOCAL = 100000
 	SIF TALENT:ARG:淫核 + TALENT:ARG:淫壷 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
-	SIF TALENT:ARG:Ｂ敏感
+	SIF TALENT:ARG:B敏感
 		LOCAL /= 2
 CASE "宝珠：荡唇取得"
 	SIF ARG == 0 && TARGET
@@ -575,23 +575,23 @@ CASE "宝珠：荡唇取得"
 	LOCAL = 100000
 	SIF TALENT:ARG:淫核 + TALENT:ARG:淫壷 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
-	SIF TALENT:ARG:Ｍ敏感
+	SIF TALENT:ARG:M敏感
 		LOCAL /= 2
 CASE "宝珠：性变态取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 50000
-CASE "宝珠：抖Ｍ取得"
+CASE "宝珠：抖M取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:抖Ｓ
+	SIF TALENT:ARG:抖S
 		LOCAL = 300000
-CASE "宝珠：抖Ｓ取得"
+CASE "宝珠：抖S取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:抖Ｍ
+	SIF TALENT:ARG:抖M
 		LOCAL = 300000
 CASE "宝珠：秘法习得"
 	SIF ARG == 0 && TARGET
@@ -644,10 +644,10 @@ CASE "咖啡屋之肉棒比率"
 	NEXT
 	LOCAL = LOCAL * 100 / MAX(CHARA_NUM("フロア店员"), 1)
 CASE "贫乳之上限"
-	;AAA～Ａ
+	;AAA～A
 	RETURNF 3
 CASE "普乳之上限"
-	;Ｂ～Ｄ
+	;B～Ｄ
 	RETURNF 6
 CASE "巨乳之上限"
 	;ＦorＧorＨ
@@ -884,12 +884,12 @@ CASE "潮喷き可能"
 
 	;漏尿癖などがあるなら条件緩和
 	IF TALENT:ARG:漏尿癖 || TEQUIP:ARG:导尿管 || ABL:ARG:尿道扩张 >= 0
-		SIF MAX(NOWEX:ARG:Ｃ绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:Ｖ绝顶, NOWEX:ARG:Ａ绝顶, NOWEX:ARG:Ｂ绝顶, NOWEX:ARG:Ｍ绝顶) < 2
+		SIF MAX(NOWEX:ARG:C绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:V绝顶, NOWEX:ARG:A绝顶, NOWEX:ARG:B绝顶, NOWEX:ARG:M绝顶) < 2
 			RETURNF 0
-		SIF MAX(NOWEX:ARG:Ｃ绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:Ｖ绝顶) == 0 && MAX(NOWEX:ARG:Ａ绝顶, NOWEX:ARG:Ｂ绝顶, NOWEX:ARG:Ｍ绝顶) < 3
+		SIF MAX(NOWEX:ARG:C绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:V绝顶) == 0 && MAX(NOWEX:ARG:A绝顶, NOWEX:ARG:B绝顶, NOWEX:ARG:M绝顶) < 3
 			RETURNF 0
 	ELSE
-		SIF MAX(NOWEX:ARG:Ｃ绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:Ｖ绝顶) < 3 || NOWEX:ARG:绝顶数合计 < 5
+		SIF MAX(NOWEX:ARG:C绝顶 + NOWEX:ARG:尿道绝顶, NOWEX:ARG:V绝顶) < 3 || NOWEX:ARG:绝顶数合计 < 5
 			RETURNF 0
 		SIF BASE:ARG:尿意 < 10000
 			RETURNF 0
@@ -984,18 +984,18 @@ CASE "犄角"
 		RETURNF 1
 
 ;～自慰中はTARGET之み
-CASE "Ｃ自慰中"
+CASE "C自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 0)
-CASE "Ｖ自慰中"
+CASE "V自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
-CASE "Ａ自慰中"
+CASE "A自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
-CASE "Ｂ自慰中"
+CASE "B自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 3)
 
 CASE "淋浴自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 10)
-CASE "Ｖ按摩棒自慰中"
+CASE "V按摩棒自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 11)
 CASE "肛用按摩棒自慰中"
 	RETURNF GETBIT(CHECK_ONANIE(SELECTCOM), 12)
@@ -1042,13 +1042,13 @@ CASE "排泄：限界"
 
 CASE "运命检閲：爱抚"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 0)
-CASE "运命检閲：Ｖ"
+CASE "运命检閲：V"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 1)
 CASE "运命检閲：胸"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 2)
 CASE "运命检閲：接吻"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 3)
-CASE "运命检閲：Ａ"
+CASE "运命检閲：A"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 4)
 CASE "运命检閲：咏唱"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 5)
@@ -1093,7 +1093,7 @@ CASE "偏爱的体位中"
 		RETURNF 0
 	SIF GETBIT(TALENT:ARG:中意的体位, 19) && SELECTCOM == 80
 		RETURNF 1
-	IF INSERT("Ｖ插入", ARG)
+	IF INSERT("V插入", ARG)
 		IF GETBIT(TALENT:ARG:中意的体位, 0) && INSERT("正常位", ARG)
 			RETURNF 1
 		ELSEIF GETBIT(TALENT:ARG:中意的体位, 1) && INSERT("后背位", ARG)
@@ -1110,7 +1110,7 @@ CASE "偏爱的体位中"
 			RETURNF 1
 		ENDIF
 	ENDIF
-	IF INSERT("Ａ插入", ARG)
+	IF INSERT("A插入", ARG)
 		IF GETBIT(TALENT:ARG:中意的体位, 10) && INSERT("正常位", ARG)
 			RETURNF 1
 		ELSEIF GETBIT(TALENT:ARG:中意的体位, 11) && INSERT("后背位", ARG)
@@ -1148,7 +1148,7 @@ CASE "偏爱的体位中"
 CASE "中出され量"
 	IF SHOOT("膣内", PLAYER)
 		RETURNF EXP_GAIN(17, TARGET)
-	ELSEIF SHOOT("Ａ", PLAYER)
+	ELSEIF SHOOT("A", PLAYER)
 		LOCAL = EXP_GAIN(18, TARGET)
 	ELSE
 		RETURNF 0
@@ -1218,7 +1218,7 @@ CASE "子宮口松弛度"
 	ELSEIF TALENT:ARG:淫壷 && TALENT:ARG:生产经历
 		IF EXP:ARG:子宮経験 >= 50 && EXP:ARG:子宮奸経験
 			RETURNF 2
-		ELSEIF EXP:ARG:子宮経験 >= 50 || (EXP:ARG:子宮経験 >= 20 && EX:ARG:Ｖ绝顶 >= 5)
+		ELSEIF EXP:ARG:子宮経験 >= 50 || (EXP:ARG:子宮経験 >= 20 && EX:ARG:V绝顶 >= 5)
 			SIF MARK:ARG:淫紋 >= 4
 				RETURNF 2
 			RETURNF 1
@@ -1227,7 +1227,7 @@ CASE "子宮口松弛度"
 	ELSEIF TALENT:ARG:淫壷 || TALENT:ARG:生产经历
 		IF EXP:ARG:子宮経験 >= 100 && (EXP_GAIN(68, ARG) || EXP:ARG:子宮奸経験 >= 5)
 			RETURNF 2
-		ELSEIF EXP:ARG:子宮経験 >= 100 || (TALENT:ARG:淫壷 && EXP:ARG:子宮経験 >= 50 && EX:ARG:Ｖ绝顶 >= 10)
+		ELSEIF EXP:ARG:子宮経験 >= 100 || (TALENT:ARG:淫壷 && EXP:ARG:子宮経験 >= 50 && EX:ARG:V绝顶 >= 10)
 			SIF MARK:ARG:淫紋 >= 4
 				RETURNF 2
 			RETURNF 1
@@ -1547,9 +1547,9 @@ CASE "性癖：内向"
 	RETURNF GETBIT(TALENT:ARG:性癖, 6)
 CASE "性癖：胆怯"
 	RETURNF GETBIT(TALENT:ARG:性癖, 7)
-CASE "性癖：抖Ｓ"
+CASE "性癖：抖S"
 	RETURNF GETBIT(TALENT:ARG:性癖, 8)
-CASE "性癖：抖Ｍ"
+CASE "性癖：抖M"
 	RETURNF GETBIT(TALENT:ARG:性癖, 9)
 CASE "性癖：傲慢"
 	RETURNF GETBIT(TALENT:ARG:性癖, 10)
@@ -1629,9 +1629,9 @@ CASE "爱抚・奉仕知识"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 0)
 CASE "好为人师"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 1)
-CASE "ＳＭ知识"
+CASE "SM知识"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 2)
-CASE "Ａ调教知识"
+CASE "A调教知识"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 3)
 CASE "性器扩张知识"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 4)
@@ -1650,7 +1650,7 @@ CASE "夜"
 CASE "调教終了可能"
 	SIF CONFIG("调教配置模式")
 		RETURNF 0
-	SIF CONFIG("ＨＡＲＤ") == 0 || TEQUIP:逆推 == 0
+	SIF CONFIG("ＨAＲＤ") == 0 || TEQUIP:逆推 == 0
 		RETURNF 1
 	IF ASSI && TEQUIP:Ｗ逆推
 		SIF COND("满足", TARGET) && COND("满足", ASSI)
@@ -1712,15 +1712,15 @@ CASE "主动夜袭可能"
 	;相思相爱による主动夜袭限制有
 	SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
 		RETURNF 0
-	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
 		RETURNF 0
-	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:顺从+ABL:ARG:欲望+MAX(ABL:ARG:Ｖ感觉, ABL:ARG:A感觉)+ABL:ARG:奉仕精神 > 10) && BASE:ARG:体力 >= 500
+	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:顺从+ABL:ARG:欲望+MAX(ABL:ARG:V感觉, ABL:ARG:A感觉)+ABL:ARG:奉仕精神 > 10) && BASE:ARG:体力 >= 500
 		RETURNF 1
 CASE "主动朝袭可能"
 	;相思相爱による主动夜袭限制有だと主动朝袭も禁止
 	SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
 		RETURNF 0
-	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
 		RETURNF 0
 	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:欲望 >= 3) && BASE:ARG:体力 >= 800
 		RETURNF 1
@@ -1773,7 +1773,7 @@ CASE "一晩开放可能"
 	SIF CFLAG:ARG:70
 		RETURNF 0
 	;怪我があるとダメ
-	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
 		RETURNF 0
 	SIF CFLAG:ARG:49
 		RETURNF 1
@@ -1782,7 +1782,7 @@ CASE "一晩开放可能"
 	;	RETURNF 0
 	SIF TALENT:ARG:好色 == 0 && ABL:ARG:顺从 < 4 && MARK:ARG:屈服刻印 < 3 && MARK:ARG:淫紋 == 0
 		RETURNF 0
-	;SIF (TALENT:ARG:处女 || TALENT:ARG:性别 == 1) && (TALENT:ARG:Ａ处女 || ABL:ARG:A感觉 < 3)
+	;SIF (TALENT:ARG:处女 || TALENT:ARG:性别 == 1) && (TALENT:ARG:A处女 || ABL:ARG:A感觉 < 3)
 	;	RETURNF 0
 
 	;どちらか之穴を使えるor女性对象ができないとダメ
@@ -1799,11 +1799,11 @@ CASE "一晩开放实行予定"
 	SIF COND("大被同眠", ARG)
 		RETURNF 0
 	;怪我があるとダメ
-	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
 		RETURNF 0
 	;どちらか之穴を使えないとダメ
-	IF COND("ベテラン：Ｖ性爱", ARG) && COND("外观：Ｖ独占", ARG) == 0
-	ELSEIF COND("ベテラン：Ａ性爱", ARG) && COND("外观：Ａ独占", ARG) == 0
+	IF COND("ベテラン：V性爱", ARG) && COND("外观：V独占", ARG) == 0
+	ELSEIF COND("ベテラン：A性爱", ARG) && COND("外观：A独占", ARG) == 0
 	;女性が对象にできるならＯＫ
 	ELSEIF COND("一晩开放：女对象", ARG)
 	ELSE
@@ -1878,7 +1878,7 @@ CASE "巨臀"
 	SIF TALENT:ARG:妖精 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 
-	;とりあえず臀部サイズがＳ以下だと巨臀之資格无
+	;とりあえず臀部サイズがS以下だと巨臀之資格无
 	SELECTCASE BASE:ARG:臀部
 	CASE IS <= 86
 		RETURNF 0
@@ -1928,7 +1928,7 @@ CASE "小臀"
 	SIF TALENT:ARG:妖精 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 
-	;とりあえず臀部サイズがＭ以上だと小臀之資格无
+	;とりあえず臀部サイズがM以上だと小臀之資格无
 	SELECTCASE BASE:ARG:臀部
 	CASE IS >= 87
 		RETURNF 0
@@ -1993,7 +1993,7 @@ CASE "外观：腋毛"
 	ELSEIF GETBIT(CFLAG:ARG:368, 7)
 		RETURNF 7
 	ENDIF
-CASE "外观：Ｖ扩张"
+CASE "外观：V扩张"
 	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	IF GETBIT(CFLAG:ARG:368, 11)
@@ -2005,7 +2005,7 @@ CASE "外观：Ｖ扩张"
 	ELSEIF GETBIT(CFLAG:ARG:368, 14)
 		RETURNF 4
 	ENDIF
-CASE "外观：Ａ扩张"
+CASE "外观：A扩张"
 	IF GETBIT(CFLAG:ARG:368, 16)
 		RETURNF 1
 	ELSEIF GETBIT(CFLAG:ARG:368, 17)
@@ -2015,7 +2015,7 @@ CASE "外观：Ａ扩张"
 	ELSEIF GETBIT(CFLAG:ARG:368, 19)
 		RETURNF 4
 	ENDIF
-CASE "外观：Ａ准备"
+CASE "外观：A准备"
 	IF GETBIT(CFLAG:ARG:368, 21)
 		RETURNF 1
 	ELSEIF GETBIT(CFLAG:ARG:368, 22)
@@ -2026,7 +2026,7 @@ CASE "外观：Ａ准备"
 CASE "外观：肠洗浄"
 	SIF GETBIT(CFLAG:ARG:368, 21) || GETBIT(CFLAG:ARG:368, 23)
 		RETURNF 1
-CASE "外观：Ａ润滑液"
+CASE "外观：A润滑液"
 	SIF GETBIT(CFLAG:ARG:368, 22) || GETBIT(CFLAG:ARG:368, 23)
 		RETURNF 1
 CASE "外观：Ｐ准备"
@@ -2045,16 +2045,16 @@ CASE "Ｐ不潔"
 		RETURNF 0
 	SIF GETBIT(BASE:ARG:老废物, 0)
 		RETURNF 1
-CASE "外观：Ｖ准备"
+CASE "外观：V准备"
 	IF GETBIT(CFLAG:ARG:368, 28)
 		RETURNF 1
 	ENDIF
-CASE "外观：Ｖ掃除"
+CASE "外观：V掃除"
 	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 28) == 0
 		RETURNF 1
-CASE "Ｖ不潔"
+CASE "V不潔"
 	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(BASE:ARG:老废物, 1)
@@ -2094,12 +2094,12 @@ CASE "外观：性行为之限制"
 	CASEELSE
 		RETURNF 6
 	ENDSELECT
-CASE "外观：Ｖ独占"
+CASE "外观：V独占"
 	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 41)
 		RETURNF 1
-CASE "外观：Ａ独占"
+CASE "外观：A独占"
 	SIF GETBIT(CFLAG:ARG:368, 42)
 		RETURNF 1
 CASE "外观：口独占"
@@ -2119,49 +2119,49 @@ CASE "外观：完全独占"
 
 
 CASE "ベテラン：性爱"
-	SIF COND("ベテラン：Ｖ性爱", ARG) || COND("ベテラン：Ａ性爱", ARG)
+	SIF COND("ベテラン：V性爱", ARG) || COND("ベテラン：A性爱", ARG)
 		RETURNF 1
-CASE "ベテラン：Ｖ性爱"
-	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || TALENT:ARG:Ｖ损伤
+CASE "ベテラン：V性爱"
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || TALENT:ARG:V损伤
 		RETURNF 0
-	SIF EXP:ARG:V经验 < 50 || EXP:ARG:Ｖ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:Ｖ感觉 < 2
+	SIF EXP:ARG:V经验 < 50 || EXP:ARG:V性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:V感觉 < 2
 		RETURNF 0
 	;妖精は巨根を插入られるくらい扩张が進んでないとダメ
-	SIF TALENT:ARG:妖精 && ABL:ARG:Ｖ扩张 < 2
+	SIF TALENT:ARG:妖精 && ABL:ARG:V扩张 < 2
 		RETURNF 0
-	SIF COND("一晩开放中", ARG) && COND("外观：Ｖ独占", ARG)
+	SIF COND("一晩开放中", ARG) && COND("外观：V独占", ARG)
 		RETURNF 0
 	IF TALENT:ARG:淫壷
 		SIF TALENT:ARG:尻穴狂 == 0
 			RETURNF 4
-		SIF ABL:ARG:Ｖ感觉 > ABL:ARG:A感觉
+		SIF ABL:ARG:V感觉 > ABL:ARG:A感觉
 			RETURNF 3
 		RETURNF 2
 	ENDIF
 	RETURNF 1
-CASE "ベテラン：Ａ性爱"
-	SIF TALENT:ARG:Ａ处女 || TALENT:ARG:Ａ损伤 || ABL:ARG:Ａ扩张 < 2
+CASE "ベテラン：A性爱"
+	SIF TALENT:ARG:A处女 || TALENT:ARG:A损伤 || ABL:ARG:A扩张 < 2
 		RETURNF 0
-	SIF EXP:ARG:A经验 < 50 || EXP:ARG:Ａ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:A感觉 < 2
+	SIF EXP:ARG:A经验 < 50 || EXP:ARG:A性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:A感觉 < 2
 		RETURNF 0
-	SIF COND("一晩开放中", ARG) && COND("外观：Ａ独占", ARG)
+	SIF COND("一晩开放中", ARG) && COND("外观：A独占", ARG)
 		RETURNF 0
 	;妖精は巨根を插入られるくらい扩张が進んでないとダメ
-	SIF TALENT:ARG:妖精 && ABL:ARG:Ａ扩张 < 2
+	SIF TALENT:ARG:妖精 && ABL:ARG:A扩张 < 2
 		RETURNF 0
 	IF TALENT:ARG:尻穴狂
 		SIF TALENT:ARG:淫壷 == 0
 			RETURNF 4
-		SIF ABL:ARG:A感觉 > ABL:ARG:Ｖ感觉
+		SIF ABL:ARG:A感觉 > ABL:ARG:V感觉
 			RETURNF 3
 		RETURNF 2
 	ENDIF
 	RETURNF 1
 
-CASE "Ａ性向"
-	SIF COND("ベテラン：Ａ性爱", ARG) >= 3
+CASE "A性向"
+	SIF COND("ベテラン：A性爱", ARG) >= 3
 		RETURNF 1
-;ＶＡ性爱两方とも无理なときに之み参照する
+;VA性爱两方とも无理なときに之み参照する
 ;これが1だと女性之对象もする。2だと女性之对象しかしない
 CASE "一晩开放：女对象"
 	SIF TALENT:ARG:嫌恶性别男
@@ -2171,7 +2171,7 @@ CASE "一晩开放：女对象"
 		SIF TALENT:ARG:童贞
 			RETURNF 0
 		;まぁ経験は即使没有也良いだろ
-		;SIF EXP:ARG:Ｖ插入経験 < 20 || EXP:ARG:腰技経験 < 20
+		;SIF EXP:ARG:V插入経験 < 20 || EXP:ARG:腰技経験 < 20
 		;	RETURNF 0
 		SIF COND("外观：Ｐ独占", ARG)
 			RETURNF 0
@@ -2190,7 +2190,7 @@ CASE "一晩开放：女对象"
 CASE "最新录像之价格"
 	RETURNF CFLAG:ARG:65
 
-CASE "人气：ＡＶ"
+CASE "人气：AV"
 	SIF GETBIT(TALENT:ARG:人气, 1)
 		RETURNF 1
 	;直近３本之价格が$5, 000以上or１０作以上に出演して最高额が$10, 000越え
@@ -2272,7 +2272,7 @@ CASE "恋慕取得可能"
 		RETURNF 0
 	SIF CFLAG:ARG:2 >= 2500 && (CFLAG:ARG:2 - 2500)/5 + EXP:ARG:奉仕快乐経験 >= 500
 		RETURNF 1
-	SIF CONFIG("ＥＡＳＹ") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:奉仕快乐経験 >= 300
+	SIF CONFIG("ＥASＹ") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:奉仕快乐経験 >= 300
 		RETURNF 1
 CASE "淫乱取得可能"
 	;欲望が3以上、绝顶経験や精液経験など之合计が1000以上、自慰成瘾と精液成瘾之合计3以上、今回之绝顶数が10以上で淫乱
@@ -2281,17 +2281,17 @@ CASE "淫乱取得可能"
 	SIF EXP:ARG:绝顶経験*10 + EXP:ARG:射精経験*10 + EXP:ARG:自慰経験 + EXP:ARG:精液経験 + EXP:ARG:异常経験*100 >= 1000 && ABL:ARG:自慰成瘾 + ABL:ARG:精液成瘾 >= 3
 		RETURNF 1
 CASE "淫核取得不可能"
-	RETURNF (JUEL:ARG:快Ｃ < NUM("宝珠：淫核取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:C感觉 < 4)*4 + (EX:ARG:Ｃ绝顶 < 20)*32 + TALENT:ARG:淫核*64
+	RETURNF (JUEL:ARG:快C < NUM("宝珠：淫核取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:C感觉 < 4)*4 + (EX:ARG:C绝顶 < 20)*32 + TALENT:ARG:淫核*64
 CASE "尿道狂取得不可能"
-	RETURNF (JUEL:ARG:快Ｃ < NUM("宝珠：尿道狂取得", ARG) ) + (ABL:ARG:欲望 < 4)*4 + (EX:ARG:尿道绝顶 < 10)*32 + TALENT:ARG:尿道狂*64
+	RETURNF (JUEL:ARG:快C < NUM("宝珠：尿道狂取得", ARG) ) + (ABL:ARG:欲望 < 4)*4 + (EX:ARG:尿道绝顶 < 10)*32 + TALENT:ARG:尿道狂*64
 CASE "淫壷取得不可能"
-	RETURNF (JUEL:ARG:快Ｖ < NUM("宝珠：淫壷取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｖ感觉 < 4)*4 + (EX:ARG:Ｖ绝顶 < 20)*32 + TALENT:ARG:淫壷*64
+	RETURNF (JUEL:ARG:快V < NUM("宝珠：淫壷取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:V感觉 < 4)*4 + (EX:ARG:V绝顶 < 20)*32 + TALENT:ARG:淫壷*64
 CASE "尻穴狂取得不可能"
-	RETURNF (JUEL:ARG:快Ａ < NUM("宝珠：尻穴狂取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:A感觉 < 4)*4 + (EX:ARG:Ａ绝顶 < 20)*32 + TALENT:ARG:尻穴狂*64
+	RETURNF (JUEL:ARG:快A < NUM("宝珠：尻穴狂取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:A感觉 < 4)*4 + (EX:ARG:A绝顶 < 20)*32 + TALENT:ARG:尻穴狂*64
 CASE "淫乳取得不可能"
-	RETURNF (JUEL:ARG:快Ｂ < NUM("宝珠：淫乳取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｂ感觉 < 4)*4 + (EX:ARG:Ｂ绝顶 < 20)*32 + TALENT:ARG:淫乳*64
+	RETURNF (JUEL:ARG:快B < NUM("宝珠：淫乳取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:B感觉 < 4)*4 + (EX:ARG:B绝顶 < 20)*32 + TALENT:ARG:淫乳*64
 CASE "荡唇取得不可能"
-	RETURNF (JUEL:ARG:快Ｍ < NUM("宝珠：荡唇取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｍ感觉 < 4)*4 + (EX:ARG:Ｍ绝顶 < 20)*32 + TALENT:ARG:荡唇*64
+	RETURNF (JUEL:ARG:快M < NUM("宝珠：荡唇取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:M感觉 < 4)*4 + (EX:ARG:M绝顶 < 20)*32 + TALENT:ARG:荡唇*64
 
 CASE "秘法獲得可能"
 	;大魔法使は覚えるまでも无い
@@ -2309,11 +2309,11 @@ CASE "秘法习得可能"
 		RETURNF 0
 	RETURNF 1
 CASE "性变态取得不可能"
-	RETURNF  (JUEL:欲情 < NUM("宝珠：性变态取得", ARG) ) + (EXP_GAIN(30) + EXP_GAIN(32) + EXP_GAIN(36) < 200)*2 + (ABL:露阴癖 + ABL:Ｍ属性 + ABL:Ｓ属性 < 9)*4 + TALENT:性变态*64
-CASE "抖Ｍ取得不可能"
-	RETURNF (JUEL:欲情 < NUM("宝珠：抖Ｍ取得", ARG) ) + (EXP:被虐快乐経験 < 400 && EXP:紧縛経験 < 800)*2 + (ABL:Ｍ属性 < 5)*4 + TALENT:抖Ｍ*64
-CASE "抖Ｓ取得不可能"
-	RETURNF (JUEL:欲情 < NUM("宝珠：抖Ｓ取得", ARG) ) + (EXP:嗜虐快乐経験 < 1000)*2 + (ABL:Ｓ属性 < 5)*4 + TALENT:抖Ｓ*64
+	RETURNF  (JUEL:欲情 < NUM("宝珠：性变态取得", ARG) ) + (EXP_GAIN(30) + EXP_GAIN(32) + EXP_GAIN(36) < 200)*2 + (ABL:露阴癖 + ABL:M属性 + ABL:S属性 < 9)*4 + TALENT:性变态*64
+CASE "抖M取得不可能"
+	RETURNF (JUEL:欲情 < NUM("宝珠：抖M取得", ARG) ) + (EXP:被虐快乐経験 < 400 && EXP:紧縛経験 < 800)*2 + (ABL:M属性 < 5)*4 + TALENT:抖M*64
+CASE "抖S取得不可能"
+	RETURNF (JUEL:欲情 < NUM("宝珠：抖S取得", ARG) ) + (EXP:嗜虐快乐経験 < 1000)*2 + (ABL:S属性 < 5)*4 + TALENT:抖S*64
 
 CASE "素質獲得可能"
 	SIF EXP:経験值 < NUM("経験值：素質獲得")
@@ -2395,7 +2395,7 @@ CASE "童贞猎取标志"
 CASE "打扫口交标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 4)
 
-CASE "Ａ打扫口交标志"
+CASE "A打扫口交标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 5)
 CASE "自慰标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 6)
@@ -2404,7 +2404,7 @@ CASE "打扫舐阴标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 7)
 CASE "子宮刺激标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 8)
-CASE "Ａ奉仕标志"
+CASE "A奉仕标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 9)
 CASE "针术标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 10)
@@ -2430,9 +2430,9 @@ CASE "镇痛麻醉标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 20)
 CASE "下部露出させた"
 	RETURNF GETBIT(TCVAR:ARG:10, 21)
-CASE "Ａ处女丧失标志"
+CASE "A处女丧失标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 22)
-CASE "Ａ处女篡夺标志"
+CASE "A处女篡夺标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 23)
 CASE "饮用母乳标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 24)
@@ -2474,7 +2474,7 @@ CASE "膀胱内浴尿标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 41)
 CASE "追加接吻标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 42)
-CASE "打扫舐Ａ标志"
+CASE "打扫舐A标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 43)
 CASE "尿打扫口交标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 44)
@@ -2509,14 +2509,14 @@ CASE "乱交参加中"
 CASE "乱交可能"
 	SIF COND("乱交参加済み", ARG)
 		RETURNF 0
-	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤 || MARK:ARG:反发刻印 || BASE:ARG:体力 < 800 || EXP:ARG:调教回数 == 0
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤 || MARK:ARG:反发刻印 || BASE:ARG:体力 < 800 || EXP:ARG:调教回数 == 0
 		RETURNF 0
 	;欲求不满か好色か淫乱かご无沙汰が必要
 	SIF BASE:ARG:欲求不满 == 0 && TALENT:ARG:好色 == 0 && TALENT:ARG:淫乱 == 0 && COND("ご无沙汰", ARG) == 0
 		RETURNF 0
 	;参加条件
-	IF COND("ベテラン：Ｖ性爱", ARG) && ABL:ARG:Ｖ扩张 + TALENT:ARG:淫壷 >= SIZE("阴茎", MASTER)
-	ELSEIF COND("ベテラン：Ａ性爱", ARG) && ABL:ARG:Ａ扩张 + TALENT:ARG:尻穴狂 >= SIZE("阴茎", MASTER)
+	IF COND("ベテラン：V性爱", ARG) && ABL:ARG:V扩张 + TALENT:ARG:淫壷 >= SIZE("阴茎", MASTER)
+	ELSEIF COND("ベテラン：A性爱", ARG) && ABL:ARG:A扩张 + TALENT:ARG:尻穴狂 >= SIZE("阴茎", MASTER)
 	ELSEIF ABL:ARG:奉仕精神 >= 3
 	ELSE
 		RETURNF 0
@@ -2543,7 +2543,7 @@ CASE "相性○"
 
 ;主に一晩开放で之襲击属性に使用
 CASE "强奸Ｐ"
-	LOCAL = TALENT:ARG:粗野*2 + TALENT:ARG:力量 + TALENT:ARG:刚强 + TALENT:ARG:傲慢 + TALENT:ARG:强硬 + TALENT:ARG:抖Ｓ*3 + (ABL:ARG:Ｓ属性 + 1)/2
+	LOCAL = TALENT:ARG:粗野*2 + TALENT:ARG:力量 + TALENT:ARG:刚强 + TALENT:ARG:傲慢 + TALENT:ARG:强硬 + TALENT:ARG:抖S*3 + (ABL:ARG:S属性 + 1)/2
 
 	;欲求不满に寄る补正有
 	LOCAL += BASE:ARG:欲求不满/3
@@ -2552,12 +2552,12 @@ CASE "和奸Ｐ"
 	LOCAL = TALENT:ARG:内向 + TALENT:ARG:保守 + TALENT:ARG:开朗*2 + TALENT:ARG:鼓舞*2 + TALENT:魅惑*2 + TALENT:ARG:献身*5 + ABL:ARG:奉仕精神
 	RETURNF LOCAL
 CASE "肉便器Ｐ"
-	LOCAL = TALENT:ARG:性变态*3 + TALENT:ARG:抖Ｍ*5 + ABL:ARG:Ｍ属性
+	LOCAL = TALENT:ARG:性变态*3 + TALENT:ARG:抖M*5 + ABL:ARG:M属性
 
 	;欲求不满に寄る补正大
-	IF TALENT:ARG:性变态 && TALENT:ARG:抖Ｍ
+	IF TALENT:ARG:性变态 && TALENT:ARG:抖M
 		LOCAL += BASE:ARG:欲求不满
-	ELSEIF (TALENT:ARG:性变态 || TALENT:ARG:抖Ｍ) && ABL:ARG:Ｍ属性 >= 3
+	ELSEIF (TALENT:ARG:性变态 || TALENT:ARG:抖M) && ABL:ARG:M属性 >= 3
 		LOCAL += BASE:ARG:欲求不满/2
 	ENDIF
 	RETURNF LOCAL
@@ -2608,31 +2608,31 @@ CASE "咖啡屋：乱交"
 		RETURNF 1
 CASE "咖啡屋：性爱"
 
-	IF COND("咖啡屋：Ｖ性爱", ARG) || COND("咖啡屋：Ａ性爱", ARG) || COND("咖啡屋：插入", ARG)
+	IF COND("咖啡屋：V性爱", ARG) || COND("咖啡屋：A性爱", ARG) || COND("咖啡屋：插入", ARG)
 		SIF CFLAG:ARG:31 == 0
 			RETURNF 1
 	ENDIF
-CASE "咖啡屋：Ｖ性爱"
-	SIF COND("外观：Ｖ独占", ARG)
+CASE "咖啡屋：V性爱"
+	SIF COND("外观：V独占", ARG)
 		RETURNF 0
 	;素質や経験的な否定条件
 	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 && ABL:ARG:欲望 < 4
 		RETURNF 0
-	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || EXP:ARG:Ｖ性交経験 < 20
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || EXP:ARG:V性交経験 < 20
 		RETURNF 0
-	SIF MIN(ABL:ARG:欲望, ABL:ARG:Ｖ感觉, ABL:ARG:精液成瘾) < 3
+	SIF MIN(ABL:ARG:欲望, ABL:ARG:V感觉, ABL:ARG:精液成瘾) < 3
 		RETURNF 0
 	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 && BASE:ARG:欲求不满 < 3
 		RETURNF 0
 	SIF CFLAG:ARG:31 == 0
 		RETURNF 1
-CASE "咖啡屋：Ａ性爱"
-	SIF COND("外观：Ａ独占", ARG)
+CASE "咖啡屋：A性爱"
+	SIF COND("外观：A独占", ARG)
 		RETURNF 0
 	;素質や経験的な否定条件
 	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 && ABL:ARG:欲望 < 4
 		RETURNF 0
-	SIF EXP:ARG:Ａ性交経験 < 20
+	SIF EXP:ARG:A性交経験 < 20
 		RETURNF 0
 	IF TALENT:ARG:性别 == 1
 		SIF COND("男孩子？", ARG) == 0 || ABL:ARG:男同属性 < 3 || TALENT:ARG:尻穴狂 == 0
@@ -2751,493 +2751,493 @@ CASE "圣诞树"
 
 ;种族や角色之判定用
 ;口上セレクタを考慮する際にはCFLAG:209之值を添えること
-CASE "Ｃ您"
+CASE "C您"
 	SIF NO:ARG == 0
 		RETURNF 1
-CASE "Ｃ梦魇"
+CASE "C梦魇"
 	SIF NO:ARG == 1 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ阿斯莫德"
+CASE "C阿斯莫德"
 	SIF NO:ARG == 1 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ莉莉丝"
+CASE "C莉莉丝"
 	SIF NO:ARG == 1 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ魅魔"
+CASE "C魅魔"
 	SIF NO:ARG == 1
 		RETURNF 1
-CASE "Ｃ魅魔１"
+CASE "C魅魔１"
 	SIF NO:ARG == 1 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ魅魔２"
+CASE "C魅魔２"
 	SIF NO:ARG == 1 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ爱露普"
+CASE "C爱露普"
 	SIF NO:ARG == 2 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ莉莉姆"
+CASE "C莉莉姆"
 	SIF NO:ARG == 2 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ因普"
+CASE "C因普"
 	SIF NO:ARG == 2
 		RETURNF 1
 
-CASE "Ｃ阿娜温"
+CASE "C阿娜温"
 	SIF NO:ARG == 3 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ森精"
+CASE "C森精"
 	SIF NO:ARG == 3 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ树仙"
+CASE "C树仙"
 	SIF NO:ARG == 3
 		RETURNF 1
-CASE "Ｃ树仙１"
+CASE "C树仙１"
 	SIF NO:ARG == 3 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ树仙２"
+CASE "C树仙２"
 	SIF NO:ARG == 3 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ涼南希"
+CASE "C涼南希"
 	SIF NO:ARG == 4 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ泰坦尼亚"
+CASE "C泰坦尼亚"
 	SIF NO:ARG == 4 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ皮克西"
+CASE "C皮克西"
 	SIF NO:ARG == 4
 		RETURNF 1
-CASE "Ｃ皮克西１"
+CASE "C皮克西１"
 	SIF NO:ARG == 4 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ皮克西２"
+CASE "C皮克西２"
 	SIF NO:ARG == 4 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ皮克西３"
+CASE "C皮克西３"
 	SIF NO:ARG == 4 && CFLAG:ARG:209 == 3
 		RETURNF 1
 
-CASE "Ｃ温蒂妮"
+CASE "C温蒂妮"
 	SIF NO:ARG == 5 && CFLAG:ARG:8 == 1
 		RETURNF 1
-CASE "Ｃ气精灵"
+CASE "C气精灵"
 	SIF NO:ARG == 5 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ希尔芙"
+CASE "C希尔芙"
 	SIF NO:ARG == 5
 		RETURNF 1
 
-CASE "Ｃ妖怪猫"
+CASE "C妖怪猫"
 	SIF NO:ARG == 6 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ斯芬克斯"
+CASE "C斯芬克斯"
 	SIF NO:ARG == 6 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ猫又"
+CASE "C猫又"
 	SIF NO:ARG == 6
 		RETURNF 1
 
-CASE "Ｃ刻耳柏洛丝"
+CASE "C刻耳柏洛丝"
 	SIF NO:ARG == 7 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ狼女"
+CASE "C狼女"
 	SIF NO:ARG == 7
 		RETURNF 1
-CASE "Ｃ狼女１"
+CASE "C狼女１"
 	SIF NO:ARG == 7 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ狼女２"
+CASE "C狼女２"
 	SIF NO:ARG == 7 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ狼女３"
+CASE "C狼女３"
 	SIF NO:ARG == 7 && CFLAG:ARG:209 == 3
 		RETURNF 1
 
-CASE "Ｃ班西"
+CASE "C班西"
 	SIF NO:ARG == 8 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ阿尔芭丝特"
+CASE "C阿尔芭丝特"
 	SIF NO:ARG == 8 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ村女"
+CASE "C村女"
 	SIF NO:ARG == 8
 		RETURNF 1
-CASE "Ｃ村女１"
+CASE "C村女１"
 	SIF NO:ARG == 8 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ村女２"
+CASE "C村女２"
 	SIF NO:ARG == 8 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "ＣＶ班西"
+CASE "CV班西"
 	SIF NO:ARG == 9 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "ＣＶ阿尔芭丝特"
+CASE "CV阿尔芭丝特"
 	SIF NO:ARG == 9 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "ＣＶ村女"
+CASE "CV村女"
 	SIF NO:ARG == 9
 		RETURNF 1
-CASE "ＣＶ村女１"
+CASE "CV村女１"
 	SIF NO:ARG == 9 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "ＣＶ村女２"
+CASE "CV村女２"
 	SIF NO:ARG == 9 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ梅莉裘恩"
+CASE "C梅莉裘恩"
 	SIF NO:ARG == 10 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ厄客德娜"
+CASE "C厄客德娜"
 	SIF NO:ARG == 10 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ拉米亚"
+CASE "C拉米亚"
 	SIF NO:ARG == 10
 		RETURNF 1
-CASE "Ｃ拉米亚１"
+CASE "C拉米亚１"
 	SIF NO:ARG == 10 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ拉米亚２"
+CASE "C拉米亚２"
 	SIF NO:ARG == 10 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ塞壬"
+CASE "C塞壬"
 	SIF NO:ARG == 11 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ摩莉甘"
+CASE "C摩莉甘"
 	SIF NO:ARG == 11 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ哈比"
+CASE "C哈比"
 	SIF NO:ARG == 11
 		RETURNF 1
-CASE "Ｃ哈比１"
+CASE "C哈比１"
 	SIF NO:ARG == 11 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ哈比２"
+CASE "C哈比２"
 	SIF NO:ARG == 11 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ沙罗曼蛇"
+CASE "C沙罗曼蛇"
 	SIF NO:ARG == 12 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ翼龙"
+CASE "C翼龙"
 	SIF NO:ARG == 12 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ蜥蜴女"
+CASE "C蜥蜴女"
 	SIF NO:ARG == 12
 		RETURNF 1
-CASE "Ｃ蜥蜴女１"
+CASE "C蜥蜴女１"
 	SIF NO:ARG == 12 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ蜥蜴女２"
+CASE "C蜥蜴女２"
 	SIF NO:ARG == 12 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ利维坦"
+CASE "C利维坦"
 	SIF NO:ARG == 13 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ人鱼"
+CASE "C人鱼"
 	SIF NO:ARG == 13
 		RETURNF 1
 
-CASE "Ｃ荼枳尼天"
+CASE "C荼枳尼天"
 	SIF NO:ARG == 14 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ飞天"
+CASE "C飞天"
 	SIF NO:ARG == 14
 		RETURNF 1
 
-CASE "Ｃ卡律布狄丝"
+CASE "C卡律布狄丝"
 	SIF NO:ARG == 15 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ海妖"
+CASE "C海妖"
 	SIF NO:ARG == 15
 		RETURNF 1
-CASE "Ｃ海妖１", "Ｃ长編海妖"
+CASE "C海妖１", "C长編海妖"
 	SIF NO:ARG == 15 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ海妖２", "Ｃ短編海妖"
+CASE "C海妖２", "C短編海妖"
 	SIF NO:ARG == 15 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ妲己"
+CASE "C妲己"
 	SIF NO:ARG == 16 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ玉藻"
+CASE "C玉藻"
 	SIF NO:ARG == 16 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ葛叶"
+CASE "C葛叶"
 	SIF NO:ARG == 16
 		RETURNF 1
 
-CASE "Ｃ恩普莎"
+CASE "C恩普莎"
 	SIF NO:ARG == 17 && CFLAG:ARG:8 == 1
 		RETURNF 1
-CASE "Ｃ玛耶丝特莱"
+CASE "C玛耶丝特莱"
 	SIF NO:ARG == 17 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ梅芙女王"
+CASE "C梅芙女王"
 	SIF NO:ARG == 17
 		RETURNF 1
-CASE "Ｃ梅芙女王１"
+CASE "C梅芙女王１"
 	SIF NO:ARG == 17 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ梅芙女王２"
+CASE "C梅芙女王２"
 	SIF NO:ARG == 17 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ娜修嘉斯达"
+CASE "C娜修嘉斯达"
 	SIF NO:ARG == 18 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ尸罗"
+CASE "C尸罗"
 	SIF NO:ARG == 18 && CFLAG:ARG:8 == 3
 		RETURNF 1
-CASE "Ｃ阿拉克涅"
+CASE "C阿拉克涅"
 	SIF NO:ARG == 18
 		RETURNF 1
 
-CASE "Ｃ女巫"
+CASE "C女巫"
 	SIF NO:ARG == 19
 		RETURNF 1
 
-CASE "Ｃ加百列"
+CASE "C加百列"
 	SIF NO:ARG == 20 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ天使"
+CASE "C天使"
 	SIF NO:ARG == 20
 		RETURNF 1
 
-CASE "Ｃ路西法"
+CASE "C路西法"
 	SIF NO:ARG == 21
 		RETURNF 1
 
-CASE "Ｃ初芽"
+CASE "C初芽"
 	SIF NO:ARG == 22 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ女忍"
+CASE "C女忍"
 	SIF NO:ARG == 22
 		RETURNF 1
-CASE "Ｃ女忍１"
+CASE "C女忍１"
 	SIF NO:ARG == 22 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ女忍２"
+CASE "C女忍２"
 	SIF NO:ARG == 22 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ白兔"
+CASE "C白兔"
 	SIF NO:ARG == 23
 		RETURNF 1
 
-CASE "Ｃ莎乐美"
+CASE "C莎乐美"
 	SIF NO:ARG == 24
 		RETURNF 1
-CASE "Ｃ莎乐美１"
+CASE "C莎乐美１"
 	SIF NO:ARG == 24 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ莎乐美２"
+CASE "C莎乐美２"
 	SIF NO:ARG == 24 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ卡蜜拉"
+CASE "C卡蜜拉"
 	SIF NO:ARG == 25 && CFLAG:ARG:8 == 2
 		RETURNF 1
-CASE "Ｃ吸血姬"
+CASE "C吸血姬"
 	SIF NO:ARG == 25
 		RETURNF 1
-CASE "Ｃ吸血姬１"
+CASE "C吸血姬１"
 	SIF NO:ARG == 25 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ吸血姬２"
+CASE "C吸血姬２"
 	SIF NO:ARG == 25 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ吸血姬３"
+CASE "C吸血姬３"
 	SIF NO:ARG == 25 && CFLAG:ARG:209 == 3
 		RETURNF 1
 
-CASE "Ｃ龙骑兵"
+CASE "C龙骑兵"
 	SIF NO:ARG == 26
 		RETURNF 1
 
-CASE "Ｃ女占卜家"
+CASE "C女占卜家"
 	SIF NO:ARG == 27
 		RETURNF 1
 
-CASE "Ｃ女士兵"
+CASE "C女士兵"
 	SIF NO:ARG == 28
 		RETURNF 1
 
-CASE "Ｃ史莱姆"
+CASE "C史莱姆"
 	SIF NO:ARG == 29
 		RETURNF 1
 
-CASE "Ｃ双角兽"
+CASE "C双角兽"
 	SIF NO:ARG == 30 && CFLAG:ARG:8 == 1
 		RETURNF 1
-CASE "Ｃ独角兽"
+CASE "C独角兽"
 	SIF NO:ARG == 30
 		RETURNF 1
-CASE "Ｃ独角兽１"
+CASE "C独角兽１"
 	SIF NO:ARG == 30 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ独角兽２"
+CASE "C独角兽２"
 	SIF NO:ARG == 30 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ哥布林"
+CASE "C哥布林"
 	SIF NO:ARG == 31
 		RETURNF 1
-CASE "Ｃ哥布林１"
+CASE "C哥布林１"
 	SIF NO:ARG == 31 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ哥布林２"
+CASE "C哥布林２"
 	SIF NO:ARG == 31 && CFLAG:ARG:209 == 2
 		RETURNF 1
 
-CASE "Ｃ玛夏"
+CASE "C玛夏"
 	SIF NO:ARG == 32
 		RETURNF 1
 
-CASE "Ｃ玛蒙"
+CASE "C玛蒙"
 	SIF NO:ARG == 33 && CFLAG:ARG:8 == 4
 		RETURNF 1
-CASE "Ｃ宝箱怪"
+CASE "C宝箱怪"
 	SIF NO:ARG == 33
 		RETURNF 1
-CASE "Ｃ斯图娜"
+CASE "C斯图娜"
 	SIF NO:ARG == 34
 		RETURNF 1
-CASE "Ｃ梅罗娜"
+CASE "C梅罗娜"
 	SIF NO:ARG == 35
 		RETURNF 1
-CASE "Ｃセルマ"
+CASE "Cセルマ"
 	SIF NO:ARG == 36
 		RETURNF 1
-CASE "Ｃ芙蕾德莉卡"
+CASE "C芙蕾德莉卡"
 	SIF NO:ARG == 37
 		RETURNF 1
-CASE "Ｃ爱丝普拉娜"
+CASE "C爱丝普拉娜"
 	SIF NO:ARG == 38
 		RETURNF 1
-CASE "Ｃ莉兹・拉兹"
+CASE "C莉兹・拉兹"
 	SIF NO:ARG == 39
 		RETURNF 1
-CASE "Ｃ萝柯・芭萝柯"
+CASE "C萝柯・芭萝柯"
 	SIF NO:ARG == 40
 		RETURNF 1
-CASE "Ｃ炸脖龙"
+CASE "C炸脖龙"
 	SIF NO:ARG == 41
 		RETURNF 1
-CASE "Ｃ捆攫妖"
+CASE "C捆攫妖"
 	SIF NO:ARG == 42
 		RETURNF 1
-CASE "Ｃ捆攫妖１"
+CASE "C捆攫妖１"
 	SIF NO:ARG == 42 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ捆攫妖２"
+CASE "C捆攫妖２"
 	SIF NO:ARG == 42 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ伽伽鸟"
+CASE "C伽伽鸟"
 	SIF NO:ARG == 43
 		RETURNF 1
-CASE "Ｃ小铃"
+CASE "C小铃"
 	SIF NO:ARG == 44
 		RETURNF 1
-CASE "Ｃ小铃１"
+CASE "C小铃１"
 	SIF NO:ARG == 44 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ小铃２"
+CASE "C小铃２"
 	SIF NO:ARG == 44 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ小铃３"
+CASE "C小铃３"
 	SIF NO:ARG == 44 && CFLAG:ARG:209 == 3
 		RETURNF 1
 
-CASE "Ｃ克莉斯汀"
+CASE "C克莉斯汀"
 	SIF NO:ARG == 45
 		RETURNF 1
-CASE "Ｃ克拉拉"
+CASE "C克拉拉"
 	SIF NO:ARG == 46
 		RETURNF 1
-CASE "Ｃ贝尔娜多忒"
+CASE "C贝尔娜多忒"
 	SIF NO:ARG == 47
 		RETURNF 1
-CASE "Ｃ爱丝忒"
+CASE "C爱丝忒"
 	SIF NO:ARG == 48
 		RETURNF 1
-CASE "Ｃ芬布尔薇特"
+CASE "C芬布尔薇特"
 	SIF NO:ARG == 49
 		RETURNF 1
-CASE "Ｃ斯黛拉"
+CASE "C斯黛拉"
 	SIF NO:ARG == 50
 		RETURNF 1
-CASE "Ｃオリビア"
+CASE "Cオリビア"
 	SIF NO:ARG == 51
 		RETURNF 1
-CASE "Ｃ露薇莎"
+CASE "C露薇莎"
 	SIF NO:ARG == 52
 		RETURNF 1
-CASE "Ｃファミリア"
+CASE "Cファミリア"
 	SIF NO:ARG == 53
 		RETURNF 1
-CASE "Ｃ梅尔娅"
+CASE "C梅尔娅"
 	SIF NO:ARG == 54
 		RETURNF 1
-CASE "Ｃ少女"
+CASE "C少女"
 	SIF NO:ARG == 55
 		RETURNF 1
-CASE "Ｃ萨菲"
+CASE "C萨菲"
 	SIF NO:ARG == 56
 		RETURNF 1
-CASE "Ｃ黒萨菲"
+CASE "C黒萨菲"
 	SIF NO:ARG == 57
 		RETURNF 1
-CASE "Ｃ三月兔"
+CASE "C三月兔"
 	SIF NO:ARG == 58
 		RETURNF 1
-CASE "Ｃ朵洛雷丝"
+CASE "C朵洛雷丝"
 	SIF NO:ARG == 59
 		RETURNF 1
-CASE "Ｃ蜜蜂娘"
+CASE "C蜜蜂娘"
 	SIF NO:ARG == 60
 		RETURNF 1
-CASE "Ｃ蜜蜂娘１"
+CASE "C蜜蜂娘１"
 	SIF NO:ARG == 60 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ蜜蜂娘２"
+CASE "C蜜蜂娘２"
 	SIF NO:ARG == 60 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ战乙女"
+CASE "C战乙女"
 	SIF NO:ARG == 61
 		RETURNF 1
-CASE "Ｃ拉尔斯"
+CASE "C拉尔斯"
 	SIF NO:ARG == 94
 		RETURNF 1
-CASE "Ｃ拉尔斯１"
+CASE "C拉尔斯１"
 	SIF NO:ARG == 94 && CFLAG:ARG:209 == 1
 		RETURNF 1
-CASE "Ｃ拉尔斯２"
+CASE "C拉尔斯２"
 	SIF NO:ARG == 94 && CFLAG:ARG:209 == 2
 		RETURNF 1
-CASE "Ｃ儿子"
+CASE "C儿子"
 	SIF NO:ARG == 95
 		RETURNF 1
-CASE "Ｃアイゼクト"
+CASE "Cアイゼクト"
 	SIF NO:ARG == 96
 		RETURNF 1
-CASE "Ｃ娘"
+CASE "C娘"
 	SIF NO:ARG == 97
 		RETURNF 1
-CASE "Ｃ娘１９"
+CASE "C娘１９"
 	SIF NO:ARG == 97 && CFLAG:ARG:209 == 19
 		RETURNF 1
-CASE "Ｃ娘２２"
+CASE "C娘２２"
 	SIF NO:ARG == 97 && CFLAG:ARG:209 == 22
 		RETURNF 1
-CASE "Ｃ娘３３"
+CASE "C娘３３"
 	SIF NO:ARG == 97 && CFLAG:ARG:209 == 33
 		RETURNF 1
-CASE "Ｃ娘８５７"
+CASE "C娘８５７"
 	SIF NO:ARG == 97 && CFLAG:ARG:209 == 857
 		RETURNF 1
 
@@ -3351,7 +3351,7 @@ CASE "尿道扩张度"
 	ELSE
 		LOCALS = %CSTR:ARG:3%
 	ENDIF
-CASE "Ｖ尿道之初期扩张度"
+CASE "V尿道之初期扩张度"
 	LOCALS = 10/10/10/10/10/10/10/10/10/10/
 	SIF TALENT:ARG:妖精
 		LOCALS = %ADDNUM_STR(LOCALS, -5)%
@@ -3377,9 +3377,9 @@ CASE "调教知识"
 	CASE 1p1
 		LOCALS = 好为人师
 	CASE 1p2
-		LOCALS = ＳＭ知识
+		LOCALS = SM知识
 	CASE 1p3
-		LOCALS = Ａ调教知识
+		LOCALS = A调教知识
 	CASE 1p4
 		LOCALS = 性器扩张知识
 	CASE 1p5
@@ -3667,7 +3667,7 @@ CASE "胸部罩杯"
 	CASEELSE
 
 		VARSET LOCALS
-		SPLIT "---, AAA, AA, Ａ, Ｂ, Ｃ, Ｄ, Ｅ, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, Ｌ, Ｍ, Ｎ, Ｏ, Ｐ, Ｑ, Ｒ, Ｓ, Ｔ, Ｕ, Ｖ, Ｗ, Ｘ, Ｙ, Ｚ", ", ", LOCALS
+		SPLIT "---, AAA, AA, A, B, C, Ｄ, Ｅ, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, L, M, Ｎ, Ｏ, Ｐ, Ｑ, Ｒ, S, Ｔ, Ｕ, V, Ｗ, Ｘ, Ｙ, Ｚ", ", ", LOCALS
 		LOCALS = %LOCALS:(BASE:ARG:罩杯)%
 	ENDSELECT
 CASE "お尻"
@@ -3693,11 +3693,11 @@ CASE "臀部サイズ"
 	CASE 77 TO 81
 		LOCALS = SS
 	CASE 82 TO 86
-		LOCALS = Ｓ
+		LOCALS = S
 	CASE 87 TO 91
-		LOCALS = Ｍ
+		LOCALS = M
 	CASE 92 TO 96
-		LOCALS = Ｌ
+		LOCALS = L
 	CASE 97 TO 101
 		LOCALS = LL
 	CASE 102 TO 106
@@ -3776,15 +3776,15 @@ CASE "反击"
 	CASE 0
 		LOCALS = 反击无
 	CASE 1
-		LOCALS = Ｖ插入
+		LOCALS = V插入
 	CASE 2
-		LOCALS = Ａ插入
+		LOCALS = A插入
 	CASE 3
 		LOCALS = 爱抚
 	CASE 4
 		LOCALS = 奉仕
 	CASE 5
-		LOCALS = ＳＭ
+		LOCALS = SM
 	CASE 9
 		LOCALS = 秘法
 	CASE 10
@@ -4501,7 +4501,7 @@ ENDSELECT
 SWAPCHARA ARG, ARG:1
 
 ;-------------------------------------------------
-;Emuera之命令SORTCHARA之ＳＱＮ对应版
+;Emuera之命令SORTCHARA之SＱＮ对应版
 ;ARGSにはソート之条件、ARGS:1には升顺か降顺之どちらかが入る
 ;-------------------------------------------------
 @SORT_CHARA, ARGS, ARGS:1
@@ -4521,8 +4521,8 @@ CASE "升顺"
 		SORTCHARA CFLAG:2
 	CASE "最后上对象的日期"
 		SORTCHARA CFLAG:97
-	CASE "ＬＶ"
-		SORTCHARA ABL:ＬＶ
+	CASE "LV"
+		SORTCHARA ABL:LV
 	CASE "评价点数"
 		SORTCHARA CFLAG:44
 	CASE "身长"
@@ -4538,8 +4538,8 @@ CASEELSE
 		SORTCHARA CFLAG:2, BACK
 	CASE "最后上对象的日期"
 		SORTCHARA CFLAG:97, BACK
-	CASE "ＬＶ"
-		SORTCHARA ABL:ＬＶ, BACK
+	CASE "LV"
+		SORTCHARA ABL:LV, BACK
 	CASE "评价点数"
 		SORTCHARA CFLAG:44, BACK
 	CASE "身长"
@@ -4646,7 +4646,7 @@ CASE 126
 	IF GETBITS(ARG:1, 1, 2)
 		LOCALS = 人气(
 		SIF GETBIT(ARG:1, 1)
-			LOCALS = %LOCALS%ＡＶ＆
+			LOCALS = %LOCALS%AV＆
 		SIF GETBIT(ARG:1, 2)
 			LOCALS = %LOCALS%咖啡屋＆
 		LOCALS = %SUBSTRING(LOCALS, 0, STRLENS(LOCALS) - 2)%)
@@ -4698,9 +4698,9 @@ CASE 185
 	CASE 1p1
 		LOCALS = %LOCALS%(好为人师)
 	CASE 1p2
-		LOCALS = %LOCALS%(ＳＭ)
+		LOCALS = %LOCALS%(SM)
 	CASE 1p3
-		LOCALS = %LOCALS%(Ａ)
+		LOCALS = %LOCALS%(A)
 	CASE 1p4
 		LOCALS = %LOCALS%(性器扩张)
 	CASE 1p5
@@ -4805,7 +4805,7 @@ CASE "灌肠"
 CASE "性爱"
 	LOCAL = 60
 	LOCAL:1 = 69
-CASE "Ａ性爱"
+CASE "A性爱"
 	LOCAL = 70
 	LOCAL:1 = 79
 CASE "拳交"
@@ -4852,7 +4852,7 @@ RETURNF RESULTS
 ;ハートマーク！！ ちょっと、ハートマークは一时休止
 @HEART()
 #FUNCTIONS
-CHKFONT "ＭＳ 哥特"
+CHKFONT "MS 哥特"
 ;IF RESULT
 ;	;UNICODE 0x2764
 ;	;SETFONT "Lucida Sans Unicode"
@@ -4992,18 +4992,18 @@ SIF ARG:1 < 0
 PRINTPLAINFORM [
 
 GETFONT
-CHKFONT "ＭＳ 哥特"
+CHKFONT "MS 哥特"
 SIF RESULT
-	SETFONT "ＭＳ 哥特"
+	SETFONT "MS 哥特"
 
 VARSET LOCAL
 VARSET LOCALS
 ;色と記号之設定
 IF CONFIG("画面表示：カラーバー")
 	SELECTCASE ARGS
-	CASE "ＰＡＬＡＭ绝顶"
+	CASE "ＰALAM绝顶"
 		LOCAL = DEF_COLOR("ショッキング粉红色")
-	CASE "ＰＡＬＡＭ"
+	CASE "ＰALAM"
 		LOCAL = ((DEF_COLOR("白")/65536)/10*(10-MIN(10, GET_PALAMLV(ARG))))*65536
 		LOCAL += (((DEF_COLOR("白")/256)%256)/10*(10-MIN(10, GET_PALAMLV(ARG))))*256
 		LOCAL += ((DEF_COLOR("白")%256)/10*(10-MIN(10, GET_PALAMLV(ARG))))
@@ -5065,7 +5065,7 @@ ENDIF
 
 ;PALAM形式之バー之最大值之算出
 SELECTCASE ARGS
-CASE "ＰＡＬＡＭ", "ＰＡＬＡＭ绝顶"
+CASE "ＰALAM", "ＰALAM绝顶"
 	IF GET_PALAMLV(ARG) >= 16
 		ARG:1 = PALAM_LV(16)
 	ELSE
@@ -5081,7 +5081,7 @@ CASE IS <= 0
 	PRINTPLAINFORM %LOCALS:1 * ARG:2%
 CASE IS >= ARG:1
 	SELECTCASE ARGS
-	CASE "黄色槽", "白色槽", "", "ＰＡＬＡＭ"
+	CASE "黄色槽", "白色槽", "", "ＰALAM"
 		SIF ARG:2 >= 3
 			LOCALS:2 = MAX
 	ENDSELECT
@@ -5089,9 +5089,9 @@ CASE IS >= ARG:1
 		IF LOCALS:2 != "" && LOCAL == ARG:2/2 - STRLENS(LOCALS:2)/2
 			SETFONT RESULTS
 			PRINTPLAINFORM %LOCALS:2%
-			CHKFONT "ＭＳ 哥特"
+			CHKFONT "MS 哥特"
 			SIF RESULT
-				SETFONT "ＭＳ 哥特"
+				SETFONT "MS 哥特"
 			LOCAL += STRLENS(LOCALS:2) - 1
 		ELSE
 			PRINTPLAINFORM %LOCALS%

@@ -1,6 +1,6 @@
 ﻿;SOURCEとUP之違いを轻く确认。
-;例えば、SOURCE:快Ｃは快Ｃから恭顺などが发生する等、”快感を得て望ましいか？”を含んだ要素。
-;CUP:快Ｃは纯粋に快Ｃ之みに影響する。
+;例えば、SOURCE:快Cは快Cから恭顺などが发生する等、”快感を得て望ましいか？”を含んだ要素。
+;CUP:快Cは纯粋に快C之みに影響する。
 ;-------------------------------------------------
 ;SOURCE之计算
 ;あらかじめ回合之开始と終了时に计算されている补正值TCVAR:600～649を用いて计算する
@@ -27,13 +27,13 @@ VARSET CUP
 ;-------------------------------------------------
 ;SOURCEに补正を加える
 ;-------------------------------------------------
-;SOURCE:快Ｃ(快Ｃ)～SOURCE:快Ｍ(快Ｍ)
+;SOURCE:快C(快C)～SOURCE:快M(快M)
 FOR LCOUNT, 0, 20
 	SIF SOURCE:LCOUNT <= 0
 		CONTINUE
 	SELECTCASE LCOUNT
 	CASE 0 TO 2, 17, 18
-		;快乐之SOURCEには、补正值に应じたＢＯＮＵＳを加える
+		;快乐之SOURCEには、补正值に应じたBＯＮＵSを加える
 		SELECTCASE TCVAR:(600 + LCOUNT)
 		CASE IS > 0
 			SOURCE:LCOUNT += TCVAR:(600 + LCOUNT)*10
@@ -50,19 +50,19 @@ NEXT
 ;同じ指令之连续实行による上下之处理（快乐と消費体力气力は1.5倍）
 ;-------------------------------------------------
 IF COND("连续实行")
-	TIMES SOURCE:快Ｃ, 1.50
-	TIMES SOURCE:快Ｖ, 1.50
-	TIMES SOURCE:快Ａ, 1.50
-	TIMES SOURCE:快Ｂ, 1.50
-	TIMES SOURCE:快Ｍ, 1.50
+	TIMES SOURCE:快C, 1.50
+	TIMES SOURCE:快V, 1.50
+	TIMES SOURCE:快A, 1.50
+	TIMES SOURCE:快B, 1.50
+	TIMES SOURCE:快M, 1.50
 ENDIF
 ;高潮管理
 IF TEQUIP:高潮管理
-	TIMES SOURCE:快Ｃ, 0.50
-	TIMES SOURCE:快Ｖ, 0.50
-	TIMES SOURCE:快Ａ, 0.50
-	TIMES SOURCE:快Ｂ, 0.50
-	TIMES SOURCE:快Ｍ, 0.50
+	TIMES SOURCE:快C, 0.50
+	TIMES SOURCE:快V, 0.50
+	TIMES SOURCE:快A, 0.50
+	TIMES SOURCE:快B, 0.50
+	TIMES SOURCE:快M, 0.50
 ENDIF
 ;倍化术（体力气力については@CALC之CASE "体力气力减少"にて）
 IF STATE("倍化术", PLAYER) && TEQUIP:逆推 == 0
@@ -83,7 +83,7 @@ CALL SOURCE_NOTCVABM
 ;-------------------------------------------------
 ;素質などによるCUP之上下之处理
 ;-------------------------------------------------
-;CUP:快Ｃ(快Ｃ) ～ CUP:快Ｍ(快Ｍ)
+;CUP:快C(快C) ～ CUP:快M(快M)
 FOR LCOUNT, 0, 16
 	SIF CUP:LCOUNT <= 0
 		CONTINUE
@@ -109,10 +109,10 @@ CASE "调教知识(爱抚・奉仕)"
 		SELECTCASE SELECTCOM
 		;PLAYヤーが爱抚
 		CASE 0 TO 2, 4 TO 12
-			TIMES CUP:快Ｃ, 1.50
-			TIMES CUP:快Ｖ, 1.50
-			TIMES CUP:快Ａ, 1.50
-			TIMES CUP:Ｖ润, 1.50
+			TIMES CUP:快C, 1.50
+			TIMES CUP:快V, 1.50
+			TIMES CUP:快A, 1.50
+			TIMES CUP:V润, 1.50
 			TIMES CUP:恭顺, 1.50
 			TIMES CUP:欲情, 1.50
 			TIMES CUP:屈服, 1.50
@@ -121,8 +121,8 @@ CASE "调教知识(爱抚・奉仕)"
 			TIMES CUP:恐怖, 0.50
 			TIMES CUP:反感, 0.50
 			TIMES CUP:抑郁, 0.50
-			TIMES CUP:快Ｂ, 1.50
-			TIMES CUP:快Ｍ, 1.50
+			TIMES CUP:快B, 1.50
+			TIMES CUP:快M, 1.50
 		ENDSELECT
 	ENDSELECT
 CASE "调教知识(好为人师)"
@@ -139,13 +139,13 @@ CASE "调教知识(好为人师)"
 			ENDSELECT
 		ENDIF
 	ENDSELECT
-CASE "调教知识(ＳＭ)"
+CASE "调教知识(SM)"
 	SELECTCASE ARGS
 	CASE "调教指令", "試算"
 		SELECTCASE SELECTCOM
-		;ＳＭPLAY
+		;SMPLAY
 		CASE 130 TO 159
-			TIMES CUP:Ｖ润, 1.50
+			TIMES CUP:V润, 1.50
 			TIMES CUP:恭顺, 1.50
 			TIMES CUP:欲情, 1.50
 			TIMES CUP:屈服, 1.50
@@ -154,14 +154,14 @@ CASE "调教知识(ＳＭ)"
 			TIMES CUP:抑郁, 0.50
 		ENDSELECT
 	ENDSELECT
-CASE "调教知识(Ａ)"
+CASE "调教知识(A)"
 	SELECTCASE ARGS
 	CASE "调教指令", "試算"
 		SELECTCASE SELECTCOM
-		;PLAYヤーが对象之Ａを弄る
+		;PLAYヤーが对象之Aを弄る
 		CASE 2, 9, 33, 70 TO 79, 136, 137, 142, 202, 308
-			TIMES CUP:快Ａ, 1.50
-			TIMES CUP:Ｖ润, 1.50
+			TIMES CUP:快A, 1.50
+			TIMES CUP:V润, 1.50
 			TIMES CUP:恭顺, 1.50
 			TIMES CUP:欲情, 1.50
 			TIMES CUP:屈服, 1.50
@@ -181,10 +181,10 @@ CASE "调教知识(道具)"
 		;道具全般
 		CASE 2
 			IF TEQUIP:肛用按摩棒
-				TIMES CUP:快Ｃ, 1.50
-				TIMES CUP:快Ｖ, 1.50
-				TIMES CUP:快Ａ, 1.50
-				TIMES CUP:Ｖ润, 1.50
+				TIMES CUP:快C, 1.50
+				TIMES CUP:快V, 1.50
+				TIMES CUP:快A, 1.50
+				TIMES CUP:V润, 1.50
 				TIMES CUP:恭顺, 1.50
 				TIMES CUP:欲情, 1.50
 				TIMES CUP:屈服, 1.50
@@ -192,15 +192,15 @@ CASE "调教知识(道具)"
 				TIMES CUP:恐怖, 0.50
 				TIMES CUP:反感, 0.50
 				TIMES CUP:抑郁, 0.50
-				TIMES CUP:快Ｂ, 1.50
-				TIMES CUP:快Ｍ, 1.50
+				TIMES CUP:快B, 1.50
+				TIMES CUP:快M, 1.50
 			ENDIF
 		CASE 8
 			IF TEQUIP:按摩棒
-				TIMES CUP:快Ｃ, 1.50
-				TIMES CUP:快Ｖ, 1.50
-				TIMES CUP:快Ａ, 1.50
-				TIMES CUP:Ｖ润, 1.50
+				TIMES CUP:快C, 1.50
+				TIMES CUP:快V, 1.50
+				TIMES CUP:快A, 1.50
+				TIMES CUP:V润, 1.50
 				TIMES CUP:恭顺, 1.50
 				TIMES CUP:欲情, 1.50
 				TIMES CUP:屈服, 1.50
@@ -208,14 +208,14 @@ CASE "调教知识(道具)"
 				TIMES CUP:恐怖, 0.50
 				TIMES CUP:反感, 0.50
 				TIMES CUP:抑郁, 0.50
-				TIMES CUP:快Ｂ, 1.50
-				TIMES CUP:快Ｍ, 1.50
+				TIMES CUP:快B, 1.50
+				TIMES CUP:快M, 1.50
 			ENDIF
 		CASE 30 TO 59
-			TIMES CUP:快Ｃ, 1.50
-			TIMES CUP:快Ｖ, 1.50
-			TIMES CUP:快Ａ, 1.50
-			TIMES CUP:Ｖ润, 1.50
+			TIMES CUP:快C, 1.50
+			TIMES CUP:快V, 1.50
+			TIMES CUP:快A, 1.50
+			TIMES CUP:V润, 1.50
 			TIMES CUP:恭顺, 1.50
 			TIMES CUP:欲情, 1.50
 			TIMES CUP:屈服, 1.50
@@ -223,11 +223,11 @@ CASE "调教知识(道具)"
 			TIMES CUP:恐怖, 0.50
 			TIMES CUP:反感, 0.50
 			TIMES CUP:抑郁, 0.50
-			TIMES CUP:快Ｂ, 1.50
-			TIMES CUP:快Ｍ, 1.50
-		;ＳＭ関连之道具
+			TIMES CUP:快B, 1.50
+			TIMES CUP:快M, 1.50
+		;SM関连之道具
 		CASE 131 TO 137, 148, 149
-			TIMES CUP:Ｖ润, 1.20
+			TIMES CUP:V润, 1.20
 			TIMES CUP:恭顺, 1.20
 			TIMES CUP:欲情, 1.20
 			TIMES CUP:屈服, 1.20
@@ -241,7 +241,7 @@ CASE "调教知识(道具)"
 CASE "调教知识(露出PLAY)"
 	TIMES CUP:恥情, 1.50
 	IF CUP:恥情 >= 3000
-		TIMES CUP:Ｖ润, 1.50
+		TIMES CUP:V润, 1.50
 		TIMES CUP:欲情, 1.50
 		TIMES CUP:屈服, 1.50
 		TIMES CUP:恐怖, 0.50
@@ -250,48 +250,48 @@ CASE "调教知识(露出PLAY)"
 	ENDIF
 ENDSELECT
 
-;感觉ＬＶによる快感上升之上限措置
-IF CUP:快Ｃ
-	;PRINTFORM 本来之Ｃ快感 = {CUP:快Ｃ}　→　
-	CUP:快Ｃ = CALCF("快感上升之上限措置", CUP:快Ｃ, ABL:C感觉, PENIS(TARGET) + TALENT:淫核 + TALENT:C敏感 - TALENT:Ｃ钝感)
-	;PRINTFORML 修正后之Ｃ快感 = {CUP:快Ｃ}
+;感觉LVによる快感上升之上限措置
+IF CUP:快C
+	;PRINTFORM 本来之C快感 = {CUP:快C}　→　
+	CUP:快C = CALCF("快感上升之上限措置", CUP:快C, ABL:C感觉, PENIS(TARGET) + TALENT:淫核 + TALENT:C敏感 - TALENT:C钝感)
+	;PRINTFORML 修正后之C快感 = {CUP:快C}
 ENDIF
-IF CUP:快Ｖ
-	;PRINTFORM 本来之Ｖ快感 = {CUP:快Ｖ}　→　
-	CUP:快Ｖ = CALCF("快感上升之上限措置", CUP:快Ｖ, ABL:Ｖ感觉, TALENT:淫壷 + TALENT:Ｖ敏感 - TALENT:Ｖ钝感)
-	;PRINTFORML 修正后之Ｖ快感 = {CUP:快Ｖ}
+IF CUP:快V
+	;PRINTFORM 本来之V快感 = {CUP:快V}　→　
+	CUP:快V = CALCF("快感上升之上限措置", CUP:快V, ABL:V感觉, TALENT:淫壷 + TALENT:V敏感 - TALENT:V钝感)
+	;PRINTFORML 修正后之V快感 = {CUP:快V}
 ENDIF
-IF CUP:快Ａ
-	;PRINTFORM 本来之Ａ快感 = {CUP:快Ａ}　→　
-	CUP:快Ａ = CALCF("快感上升之上限措置", CUP:快Ａ, ABL:A感觉, TALENT:尻穴狂 + TALENT:A敏感 - TALENT:Ａ钝感)
-	;PRINTFORML 修正后之Ａ快感 = {CUP:快Ａ}
+IF CUP:快A
+	;PRINTFORM 本来之A快感 = {CUP:快A}　→　
+	CUP:快A = CALCF("快感上升之上限措置", CUP:快A, ABL:A感觉, TALENT:尻穴狂 + TALENT:A敏感 - TALENT:A钝感)
+	;PRINTFORML 修正后之A快感 = {CUP:快A}
 ENDIF
-IF CUP:快Ｂ
-	;PRINTFORM 本来之Ｂ快感 = {CUP:快Ｂ}　→　
-	CUP:快Ｂ = CALCF("快感上升之上限措置", CUP:快Ｂ, ABL:Ｂ感觉, TALENT:淫乳 + TALENT:Ｂ敏感 - TALENT:Ｂ钝感)
-	;PRINTFORML 修正后之Ｂ快感 = {CUP:快Ｂ}
+IF CUP:快B
+	;PRINTFORM 本来之B快感 = {CUP:快B}　→　
+	CUP:快B = CALCF("快感上升之上限措置", CUP:快B, ABL:B感觉, TALENT:淫乳 + TALENT:B敏感 - TALENT:B钝感)
+	;PRINTFORML 修正后之B快感 = {CUP:快B}
 ENDIF
-IF CUP:快Ｍ
-	;PRINTFORM 本来之Ｍ快感 = {CUP:快Ｍ}　→　
-	CUP:快Ｍ = CALCF("快感上升之上限措置", CUP:快Ｍ, ABL:Ｍ感觉, TALENT:荡唇 + TALENT:Ｍ敏感 - TALENT:Ｍ钝感)
-	;PRINTFORML 修正后之Ｍ快感 = {CUP:快Ｍ}
+IF CUP:快M
+	;PRINTFORM 本来之M快感 = {CUP:快M}　→　
+	CUP:快M = CALCF("快感上升之上限措置", CUP:快M, ABL:M感觉, TALENT:荡唇 + TALENT:M敏感 - TALENT:M钝感)
+	;PRINTFORML 修正后之M快感 = {CUP:快M}
 ENDIF
 
-;痛覚による快感补正（ペナルティだが、抖Ｍな人にはちょっとだけご褒美）
+;痛覚による快感补正（ペナルティだが、抖Mな人にはちょっとだけご褒美）
 IF CUP:苦痛 >= 100
-	LOCAL = LIMIT(100 - GET_PALAMLV(CUP:苦痛)*20 + ABL:Ｍ属性*20, 10, 110)
-	CUP:快Ｃ = MULTIPLY(CUP:快Ｃ, LOCAL)
-	CUP:快Ｖ = MULTIPLY(CUP:快Ｖ, LOCAL)
-	CUP:快Ａ = MULTIPLY(CUP:快Ａ, LOCAL)
-	CUP:快Ｂ = MULTIPLY(CUP:快Ｂ, LOCAL)
-	CUP:快Ｍ = MULTIPLY(CUP:快Ｍ, LOCAL)
+	LOCAL = LIMIT(100 - GET_PALAMLV(CUP:苦痛)*20 + ABL:M属性*20, 10, 110)
+	CUP:快C = MULTIPLY(CUP:快C, LOCAL)
+	CUP:快V = MULTIPLY(CUP:快V, LOCAL)
+	CUP:快A = MULTIPLY(CUP:快A, LOCAL)
+	CUP:快B = MULTIPLY(CUP:快B, LOCAL)
+	CUP:快M = MULTIPLY(CUP:快M, LOCAL)
 ENDIF
 
 ;-------------------------------------------------
 ;爱液处理(欲情)
 ;-------------------------------------------------
-;欲情之值に应じてＶ润増加
-IF TALENT:性别 != 1 && CUP:欲情 > 0 && PALAM:Ｖ润 < 30000
+;欲情之值に应じてV润増加
+IF TALENT:性别 != 1 && CUP:欲情 > 0 && PALAM:V润 < 30000
 	;MAX500
 	LOCAL = MIN(DOWN_PALAMLV(CUP:欲情, 2), 500)
 
@@ -302,15 +302,15 @@ IF TALENT:性别 != 1 && CUP:欲情 > 0 && PALAM:Ｖ润 < 30000
 	ELSEIF TALENT:不易湿
 		LOCAL = DOWN_PALAMLV(LOCAL)
 	ENDIF
-	SELECTCASE PALAM:Ｖ润
+	SELECTCASE PALAM:V润
 	CASE IS <= 3000
-		CUP:Ｖ润 += LOCAL
+		CUP:V润 += LOCAL
 	CASE IS <= 10000
-		CUP:Ｖ润 += LOCAL / 3
+		CUP:V润 += LOCAL / 3
 	CASE IS <= 30000
-		CUP:Ｖ润 += LOCAL / 5
+		CUP:V润 += LOCAL / 5
 	CASEELSE
-		CUP:Ｖ润 += LOCAL / 10
+		CUP:V润 += LOCAL / 10
 	ENDSELECT
 ENDIF
 
@@ -332,15 +332,15 @@ IF ARGS != "試算"
 	ENDSELECT
 	;弱点突き之Ｈ氛围を追加
 	IF MARK:反抗刻印 < 3 && CUP:恐怖 + CUP:反感 + CUP:抑郁 < 500
-		IF CUP:快Ｃ && TALENT:淫核 + TALENT:C敏感
+		IF CUP:快C && TALENT:淫核 + TALENT:C敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快Ｖ && TALENT:淫壷 + TALENT:Ｖ敏感
+		ELSEIF CUP:快V && TALENT:淫壷 + TALENT:V敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快Ａ && TALENT:尻穴狂 + TALENT:A敏感
+		ELSEIF CUP:快A && TALENT:尻穴狂 + TALENT:A敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快Ｂ && TALENT:淫乳 + TALENT:Ｂ敏感
+		ELSEIF CUP:快B && TALENT:淫乳 + TALENT:B敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快Ｍ && TALENT:荡唇 + TALENT:Ｍ敏感
+		ELSEIF CUP:快M && TALENT:荡唇 + TALENT:M敏感
 			TFLAG:33 += 1
 		ENDIF
 	ENDIF
@@ -357,11 +357,11 @@ VARSET SOURCE
 ;快乐之ソース
 ;-------------------------------------------------
 @SOURCE_CVABM
-CUP:快Ｃ += SOURCE:快Ｃ
-CUP:快Ｖ += SOURCE:快Ｖ
-CUP:快Ａ += SOURCE:快Ａ
-CUP:快Ｂ += SOURCE:快Ｂ
-CUP:快Ｍ += SOURCE:快Ｍ
+CUP:快C += SOURCE:快C
+CUP:快V += SOURCE:快V
+CUP:快A += SOURCE:快A
+CUP:快B += SOURCE:快B
+CUP:快M += SOURCE:快M
 
 ;恭顺,欲情,屈服之上升量については上升するにつれ緩やかになるも之とする
 VARSET LOCAL, 100
@@ -393,7 +393,7 @@ ELSE
 	LOCAL:1 = 0
 ENDIF
 
-LOCAL:2 = SOURCE:快Ｃ + SOURCE:快Ｖ + SOURCE:快Ａ + SOURCE:快Ｂ + SOURCE:快Ｍ
+LOCAL:2 = SOURCE:快C + SOURCE:快V + SOURCE:快A + SOURCE:快B + SOURCE:快M
 SELECTCASE LOCAL:2
 ;MAX 1000
 CASE IS < 500
@@ -416,18 +416,18 @@ CUP:欲情 += LOCAL:2 * LOCAL:0 / 100
 CUP:屈服 += LOCAL:2 * (LOCAL:0 + 40) / 400
 CUP:抑郁 += LOCAL:2 * LOCAL:1 / 100
 
-LOCAL:3 = SOURCE:快Ｃ*TALENT:淫核 + SOURCE:快Ｖ*TALENT:淫壷 + SOURCE:快Ａ*TALENT:尻穴狂 + SOURCE:快Ｂ*TALENT:淫乳 + SOURCE:快Ｍ*TALENT:荡唇
+LOCAL:3 = SOURCE:快C*TALENT:淫核 + SOURCE:快V*TALENT:淫壷 + SOURCE:快A*TALENT:尻穴狂 + SOURCE:快B*TALENT:淫乳 + SOURCE:快M*TALENT:荡唇
 LOCAL:4 = GET_PALAMLV(LOCAL:3) * 500
 ;成瘾之ソース：CUP:恭顺,5,6に影響
 SOURCE:成瘾充足 += LOCAL:4 * LOCAL:0 / 100
-;ＶがあるならＶ润も上升
+;VがあるならV润も上升
 IF TALENT:性别 != 1
 	IF TALENT:容易湿
-		CUP:Ｖ润 += UP_PALAMLV(LOCAL:4 * LOCAL:0 / 300)
+		CUP:V润 += UP_PALAMLV(LOCAL:4 * LOCAL:0 / 300)
 	ELSEIF TALENT:不易湿
-		CUP:Ｖ润 += DOWN_PALAMLV(LOCAL:4 * LOCAL:0 / 300)
+		CUP:V润 += DOWN_PALAMLV(LOCAL:4 * LOCAL:0 / 300)
 	ELSE
-		CUP:Ｖ润 += LOCAL:4 * LOCAL:0 / 300
+		CUP:V润 += LOCAL:4 * LOCAL:0 / 300
 	ENDIF
 ENDIF
 ;-------------------------------------------------
@@ -584,13 +584,13 @@ CASE 5
 	TIMES C, 0.05
 ENDSELECT
 
-;抖Ｍッ气＆抖Ｍ
-IF TALENT:抖Ｍ
+;抖Mッ气＆抖M
+IF TALENT:抖M
 	TIMES B, 0.50
 	TIMES C, 0.01
 	TIMES D, 4.00
 ELSE
-	SELECTCASE ABL:Ｍ属性
+	SELECTCASE ABL:M属性
 	CASE 0
 		D = 0
 	CASE 1
@@ -617,7 +617,7 @@ IF TALENT:性变态
 	TIMES D, 2.00
 ENDIF
 
-SELECTCASE ABL:PLAYER:Ｓ属性
+SELECTCASE ABL:PLAYER:S属性
 CASE 1
 	TIMES C, 1.20
 CASE 2
@@ -656,8 +656,8 @@ CUP:屈服 += A + B/2 + D
 CUP:苦痛 += A
 CUP:恐怖 += B
 CUP:反感 += C
-;Ｍ属性があるとPALAM:欲情も上がる
-;そ之とき调教者が【抖Ｓ】だと效果的
+;M属性があるとPALAM:欲情も上がる
+;そ之とき调教者が【抖S】だと效果的
 CUP:欲情 += D
 
 ;-------------------------------------------------
@@ -711,7 +711,7 @@ CASEELSE
 	TIMES A, 0.10
 ENDSELECT
 
-SELECTCASE ABL:Ｍ属性 + TALENT:抖Ｍ
+SELECTCASE ABL:M属性 + TALENT:抖M
 CASE 0
 
 CASE 1
@@ -757,13 +757,13 @@ CUP:恐怖 += A
 ;-------------------------------------------------
 A = SOURCE:液体追加
 
-CUP:Ｖ润 += A
+CUP:V润 += A
 ;-------------------------------------------------
-;Ａ液体追加之ソース
+;A液体追加之ソース
 ;-------------------------------------------------
-A = SOURCE:Ａ液体追加
+A = SOURCE:A液体追加
 
-CUP:Ａ润 += A
+CUP:A润 += A
 
 ;-------------------------------------------------
 ;欲情追加之ソース
@@ -815,8 +815,8 @@ IF TALENT:性变态
 	TIMES A, 1.50
 	TIMES C, 0.50
 ENDIF
-;抖Ｍ
-IF TALENT:抖Ｍ
+;抖M
+IF TALENT:抖M
 	TIMES A, 1.50
 	TIMES B, 1.50
 	TIMES C, 0.50
@@ -894,13 +894,13 @@ ENDSELECT
 ;性变态
 SIF TALENT:性变态
 	TIMES A, 0.50
-;抖Ｍ
-SIF TALENT:抖Ｍ
+;抖M
+SIF TALENT:抖M
 	TIMES A, 0.50
 
-IF TALENT:性变态 && TALENT:抖Ｍ
+IF TALENT:性变态 && TALENT:抖M
 	TIMES B, 0.50
-ELSEIF TALENT:性变态 || TALENT:抖Ｍ
+ELSEIF TALENT:性变态 || TALENT:抖M
 	TIMES B, 0.20
 ELSE
 	B = 0
@@ -954,7 +954,7 @@ VARSET LOCALS
 ;-------------------------------------------------
 ;快乐刻印
 ;-------------------------------------------------
-LOCAL = CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ
+LOCAL = CUP:快C + CUP:快V + CUP:快A + CUP:快B + CUP:快M
 IF LOCAL >= 3000 && LOCAL < 10000 && MARK:快乐刻印 <= 0
 	MARK:快乐刻印 = 1
 ELSEIF LOCAL >= 10000 && LOCAL < 30000 && MARK:快乐刻印 <= 1
@@ -1082,7 +1082,7 @@ FORCEWAIT
 ;-------------------------------------------------
 @EXP_GOT_CHECK
 VARSET LOCAL
-LOCAL = CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:Ｖ润 + CUP:欲情 + CUP:快Ｂ + CUP:快Ｍ
+LOCAL = CUP:快C + CUP:快V + CUP:快A + CUP:V润 + CUP:欲情 + CUP:快B + CUP:快M
 
 SELECTCASE CUP:习得
 CASE IS < 100
@@ -1170,8 +1170,8 @@ IF GETBIT(TCVAR:29, 2) || GETBIT(TCVAR:29, 3)
 	;嗜虐快乐はLOCAL:2
 	LOCAL:2 = LOCAL
 
-	;Ｓ属性
-	SIF ABL:Ｓ属性 >= 3
+	;S属性
+	SIF ABL:S属性 >= 3
 		LOCAL:2 += 1
 
 	;媚药
@@ -1212,7 +1212,7 @@ IF PLAYER != MASTER
 ENDIF
 
 ;羞恥快乐之チェック
-LOCAL += (CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ)/20 + CUP:欲情/2
+LOCAL += (CUP:快C + CUP:快V + CUP:快A + CUP:快B + CUP:快M)/20 + CUP:欲情/2
 SELECTCASE ABL:露阴癖
 CASE 0
 	TIMES LOCAL, 0.20
@@ -1250,9 +1250,9 @@ ENDIF
 
 
 ;被虐快乐之チェック
-LOCAL += (CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ)/20 + CUP:欲情/10
+LOCAL += (CUP:快C + CUP:快V + CUP:快A + CUP:快B + CUP:快M)/20 + CUP:欲情/10
 
-SELECTCASE ABL:Ｍ属性
+SELECTCASE ABL:M属性
 CASE 0
 	TIMES LOCAL, 0.20
 CASE 1
@@ -1267,7 +1267,7 @@ ENDSELECT
 
 SIF TALENT:性变态
 	TIMES LOCAL, 1.50
-SIF TALENT:抖Ｍ
+SIF TALENT:抖M
 	TIMES LOCAL, 1.50
 
 IF LOCAL >= 3200 && CUP:苦痛 >= 3000
@@ -1293,11 +1293,11 @@ ELSE
 ENDIF
 
 
-;调教知识によるＢＯＮＵＳ
+;调教知识によるBＯＮＵS
 SELECTCASE TALENT_NAME(185, TALENT:PLAYER:调教知识, PLAYER)
 CASE "调教知识(好为人师)"
 	TIMES LOCAL:1, 1.50
-CASE "调教知识(ＳＭ)"
+CASE "调教知识(SM)"
 	TIMES LOCAL:2, 1.50
 	TIMES LOCAL:4, 1.50
 CASE "调教知识(露出PLAY)"
@@ -1330,19 +1330,19 @@ IF LOCAL:4 > 0
 	EXP:被虐快乐経験 += LOCAL:4
 	TFLAG:27 = LOCAL:4
 ENDIF
-;Ｈ氛围ＢＯＮＵＳ
+;Ｈ氛围BＯＮＵS
 TFLAG:33 += (LOCAL:1 + LOCAL:2 + LOCAL:3 + LOCAL:4)/8
 
 
 ;PLAYERが助手之时には嗜虐快乐経験を得るかも
 SIF PLAYER == MASTER || CUP:苦痛 < 100
 	RETURN 0
-;上之被虐快乐経験に、抖Ｓ＆Ｓ属性で补正
+;上之被虐快乐経験に、抖S＆S属性で补正
 LOCAL:1 += GET_PALAMLV(CUP:苦痛)
-SIF TALENT:PLAYER:抖Ｓ
+SIF TALENT:PLAYER:抖S
 	LOCAL:1 += GET_PALAMLV(CUP:苦痛*2)
-;Ｓ属性
-SIF ABL:PLAYER:Ｓ属性 >= 3
+;S属性
+SIF ABL:PLAYER:S属性 >= 3
 	LOCAL:1 += GET_PALAMLV(CUP:苦痛*3)
 EXP:PLAYER:嗜虐快乐経験 += LOCAL:1
 

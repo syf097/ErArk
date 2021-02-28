@@ -93,9 +93,9 @@ RESTART
 @CONFIG(ARGS)
 #FUNCTION
 SELECTCASE ARGS
-CASE "ＳＨＯＰ非表示"
+CASE "SＨＯＰ非表示"
 	RETURNF GETBIT(FLAG:2, 0)
-CASE "ＳＨＯＰ１割引"
+CASE "SＨＯＰ１割引"
 	RETURNF GETBIT(FLAG:2, 1)
 CASE "自动购入"
 	RETURNF FLAG:9
@@ -165,9 +165,9 @@ CASE "腋毛"
 	RETURNF GETBIT(FLAG:207, 10)
 CASE "调教过滤"
 	RETURNF FLAG:209
-CASE "Ｖ调教过滤"
+CASE "V调教过滤"
 	RETURNF GETBIT(FLAG:209, 0)
-CASE "Ａ调教过滤"
+CASE "A调教过滤"
 	RETURNF GETBIT(FLAG:209, 1)
 
 CASE "实行值过滤"
@@ -184,9 +184,9 @@ CASE "爱抚系非表示"
 	RETURNF GETBIT(FLAG:210, 0)
 CASE "道具系非表示"
 	RETURNF GETBIT(FLAG:210, 1)
-CASE "Ｖ性爱系非表示"
+CASE "V性爱系非表示"
 	RETURNF GETBIT(FLAG:210, 2)
-CASE "Ａ性爱系非表示"
+CASE "A性爱系非表示"
 	RETURNF GETBIT(FLAG:210, 3)
 CASE "特殊性爱系非表示"
 	RETURNF GETBIT(FLAG:210, 4)
@@ -194,7 +194,7 @@ CASE "奉仕系非表示"
 	RETURNF GETBIT(FLAG:210, 5)
 CASE "调教者に插入系非表示"
 	RETURNF GETBIT(FLAG:210, 6)
-CASE "ＳＭ・调教系非表示"
+CASE "SM・调教系非表示"
 	RETURNF GETBIT(FLAG:210, 7)
 CASE "助手系非表示"
 	RETURNF GETBIT(FLAG:210, 8)
@@ -214,9 +214,9 @@ CASE "调教配置模式"
 CASE "非表示指令之表示"
 	RETURNF GETBIT(FLAG:210, 21)
 
-CASE "项目表示过滤：Ｂ"
+CASE "项目表示过滤：B"
 	RETURNF GETBIT(FLAG:210, 30)
-CASE "项目表示过滤：Ｃ"
+CASE "项目表示过滤：C"
 	RETURNF GETBIT(FLAG:210, 31)
 
 CASE "调教配置模式：非表示指令隐藏"
@@ -257,13 +257,13 @@ CASE "助手对象でも恋慕適用"
 	RETURNF FLAG:218
 CASE "难易度"
 	RETURNF FLAG:220
-CASE "ＥＡＳＹ"
+CASE "ＥASＹ"
 	SIF FLAG:220 == 1
 		RETURNF 1
-CASE "ＮＯＲＭＡＬ"
+CASE "ＮＯＲMAL"
 	SIF FLAG:220 == 0
 		RETURNF 1
-CASE "ＨＡＲＤ"
+CASE "ＨAＲＤ"
 	SIF FLAG:220 == 2
 		RETURNF 1
 CASE "召唤事故"
@@ -343,15 +343,15 @@ CASE "探索ボス"
 
 CASE "等级限制器"
 	RETURNF FLAG:247
-CASE "等级限制器：－10ＬＶ"
+CASE "等级限制器：－10LV"
 	RETURNF GETBIT(FLAG:247, 11)
-CASE "等级限制器：－５ＬＶ"
+CASE "等级限制器：－５LV"
 	RETURNF GETBIT(FLAG:247, 12)
 CASE "等级限制器：和对手相同"
 	RETURNF GETBIT(FLAG:247, 13)
-CASE "等级限制器：＋５ＬＶ"
+CASE "等级限制器：＋５LV"
 	RETURNF GETBIT(FLAG:247, 14)
-CASE "等级限制器：＋10ＬＶ"
+CASE "等级限制器：＋10LV"
 	RETURNF GETBIT(FLAG:247, 15)
 
 CASE "経験表示詰め"
@@ -360,9 +360,9 @@ CASE "恋慕と淫乱之任意獲得"
 	RETURNF FLAG:251
 CASE "调教对象变更不可"
 	RETURNF FLAG:252
-CASE "ＶＡ详细表示"
+CASE "VA详细表示"
 	RETURNF GETBIT(FLAG:254, 0)
-CASE "ＶＡ详细表示：手动ＬＶＵＰ"
+CASE "VA详细表示：手动LVＵＰ"
 	RETURNF GETBIT(FLAG:254, 1)
 
 CASE "咖啡屋描写"
@@ -567,9 +567,9 @@ CASE "调教全般"
 CASE "系统＆事件全般"
 	PRINTFORM  [ 0] \@ CONFIG("难易度") ? ○ # －\@ 现在的难易度：
 	SETCOLOR DEF_COLOR("暗黄色")
-	IF CONFIG("ＨＡＲＤ")
+	IF CONFIG("ＨAＲＤ")
 		PRINTL HARD
-	ELSEIF CONFIG("ＥＡＳＹ")
+	ELSEIF CONFIG("ＥASＹ")
 		PRINTL EASY
 	ELSE
 		PRINTL NORMAL
@@ -582,10 +582,10 @@ CASE "系统＆事件全般"
 	PRINTFORML ＆\@ CONFIG("相思相爱：主动夜袭限制") ? 限制夜袭 # 不限制夜袭 \@
 	RESETCOLOR
 	PRINTFORML  [ 3] \@ CONFIG("経験表示詰め") ? ○ # －\@ 在显示能力时，不显示未获得的経験
-	PRINTFORM  [ 4] \@ CONFIG("ＶＡ详细表示") ? ○ # －\@ 详细显示Ｖ和Ａ能力：
+	PRINTFORM  [ 4] \@ CONFIG("VA详细表示") ? ○ # －\@ 详细显示V和A能力：
 	SETCOLOR DEF_COLOR("暗黄色")
-	IF CONFIG("ＶＡ详细表示")
-		PRINTFORML 显示，并且ＶＡ扩张ＬＶ的变化为\@ CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") ? 手动 # 自动 \@进行
+	IF CONFIG("VA详细表示")
+		PRINTFORML 显示，并且VA扩张LV的变化为\@ CONFIG("VA详细表示：手动LVＵＰ") ? 手动 # 自动 \@进行
 	ELSE
 		PRINTFORML 不显示
 	ENDIF
@@ -671,7 +671,7 @@ CASE "系统＆事件全般"
 	CASE 3
 		CALL SETCONFIG, "経験表示詰め"
 	CASE 4
-		CALL SETCONFIG, "ＶＡ详细表示"
+		CALL SETCONFIG, "VA详细表示"
 	CASE 5
 		CALL SETCONFIG, "召唤事故"
 	CASE 6
@@ -1560,20 +1560,20 @@ CASE "恋慕と淫乱之任意獲得"
 	ELSE
 		PRINTFORMW 恋爱的龙卷风横扫一切！（满足条件时自动获得）
 	ENDIF
-CASE "ＶＡ详细表示"
+CASE "VA详细表示"
 	REDRAW 0
-	PRINTFORML 设定Ｖ与Ａ的扩张度／名器度的显示
+	PRINTFORML 设定V与A的扩张度／名器度的显示
 	PRINTFORML 当前设置如下。请进行详细设定。
 	IF GETBIT(FLAG:11, 0) == 0
 		PRINTFORM （通过[ 1]设置为手动提升扩张等级时、
 		CALL PRINT_COLORTEXT, "只限一次", DEF_COLOR("黄色")
-		PRINTFORML 可以初始化所有人物的ＶＡ扩张等级）
+		PRINTFORML 可以初始化所有人物的VA扩张等级）
 	ENDIF
-	PRINTFORML  [ 0] \@ CONFIG("ＶＡ详细表示") ? ○ # － \@ 详细显示（会出现在人物的能力页面）
-	PRINTFORML  [\@ CONFIG("ＶＡ详细表示") ? {1, 2} # × \@] \@ CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") ? ○ # － \@ 手动提升Ｖ扩张度和Ａ扩张度等级（前提是设置为详细显示）
+	PRINTFORML  [ 0] \@ CONFIG("VA详细表示") ? ○ # － \@ 详细显示（会出现在人物的能力页面）
+	PRINTFORML  [\@ CONFIG("VA详细表示") ? {1, 2} # × \@] \@ CONFIG("VA详细表示：手动LVＵＰ") ? ○ # － \@ 手动提升V扩张度和A扩张度等级（前提是设置为详细显示）
 	PRINTFORML [100] 返回
 
-	IF CONFIG("ＶＡ详细表示")
+	IF CONFIG("VA详细表示")
 		CALL INPUT_SELECT, 2, 100
 	ELSE
 		CALL INPUT_SELECT, 1, 100
@@ -1585,30 +1585,30 @@ CASE "ＶＡ详细表示"
 		RETURN 0
 	CASE 0
 		INVERTBIT FLAG:254, 0
-		SIF CONFIG("ＶＡ详细表示") == 0
+		SIF CONFIG("VA详细表示") == 0
 			FLAG:254 = 0
 	CASE 1
 		INVERTBIT FLAG:254, 1
 		;たった一度之初期化
-		IF CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") && GETBIT(FLAG:11, 0) == 0
-			PRINTFORML 将所有人物的Ｖ扩张度和Ａ扩张度初始化吗？
+		IF CONFIG("VA详细表示：手动LVＵＰ") && GETBIT(FLAG:11, 0) == 0
+			PRINTFORML 将所有人物的V扩张度和A扩张度初始化吗？
 			PRINTFORML 只能初始化一次，请想清纯
 			PRINTFORML [ 0] 是的
 			PRINTFORML [ 1] 算了
 			CALL INPUT_SELECT, 2
 			IF RESULT == 0
 				FOR LCOUNT, 1, CHARANUM
-					ABL:LCOUNT:Ｖ扩张 = 0
-					ABL:LCOUNT:Ａ扩张 = 0
+					ABL:LCOUNT:V扩张 = 0
+					ABL:LCOUNT:A扩张 = 0
 					CALL GET_EXABL2, LCOUNT
 				NEXT
 				SETBIT FLAG:11, 0
 			ENDIF
-		;自动ＬＶを選んだなら早速ＬＶＵＰ
-		ELSEIF CONFIG("ＶＡ详细表示：手动ＬＶＵＰ") == 0
+		;自动LVを選んだなら早速LVＵＰ
+		ELSEIF CONFIG("VA详细表示：手动LVＵＰ") == 0
 			FOR LCOUNT, 1, CHARANUM
-				ABL:LCOUNT:Ｖ扩张 = CALCF("Ｖ扩张之上限", LCOUNT)
-				ABL:LCOUNT:Ａ扩张 = CALCF("Ａ扩张之上限", LCOUNT)
+				ABL:LCOUNT:V扩张 = CALCF("V扩张之上限", LCOUNT)
+				ABL:LCOUNT:A扩张 = CALCF("A扩张之上限", LCOUNT)
 			NEXT
 		ENDIF
 	ENDSELECT
@@ -1618,9 +1618,9 @@ CASE "ＶＡ详细表示"
 CASE "咖啡屋"
 	INVERTBIT FLAG:258, 0
 	IF CONFIG(ARGS)
-		PRINTW 不发生Ｅｖｅｎｔ
+		PRINTW 不发生ＥVｅｎｔ
 	ELSE
-		PRINTW Ｅｖｅｎｔ随时间发生
+		PRINTW ＥVｅｎｔ随时间发生
 	ENDIF
 CASE "寝取られ"
 	INVERTBIT FLAG:262, 0
@@ -2222,7 +2222,7 @@ CASE 200
 		CASE 3
 			CHOICES = 最近一次床战
 		CASE 4
-			CHOICES = ＬＶ
+			CHOICES = LV
 		CASE 5
 			CHOICES = 评价点数
 		CASE 6

@@ -20,9 +20,9 @@ CASE "绝顶之記录"
 	;どこ之绝顶かで記录するも之を取捨選択。まだ开发中
 
 ;ARG:1がARG:2之ARG（种别）を插入た
-;"Ｖ插入阴茎", 3, TARGET, PLAYER　ならTARGETがPLAYER之大きさ3之阴茎を插入た场合となる
+;"V插入阴茎", 3, TARGET, PLAYER　ならTARGETがPLAYER之大きさ3之阴茎を插入た场合となる
 ;関数之书式变更之可能性ある感じだ…
-CASE "Ｖ插入阴茎", "Ｖ插入按摩棒", "Ｖ插入拳交", "Ｖ插入按摩棒"
+CASE "V插入阴茎", "V插入按摩棒", "V插入拳交", "V插入按摩棒"
 	;ARG:2はマイナス之值を取り得る
 	SIF ARG < 0 || ARG:1 < 0
 		RETURN 0
@@ -47,20 +47,20 @@ CASE "Ｖ插入阴茎", "Ｖ插入按摩棒", "Ｖ插入拳交", "Ｖ插入按�
 
 	;插入たも之：{大きさ}＠入れた人＃{日付}＊{回数}
 	SELECTCASE ARGS
-	CASE "Ｖ插入阴茎"
+	CASE "V插入阴茎"
 		MEMOS = 阴茎：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ｖ插入按摩棒"
+	CASE "V插入按摩棒"
 		MEMOS = 按摩棒：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ｖ插入拳交"
+	CASE "V插入拳交"
 		MEMOS = 拳交：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ｖ插入按摩棒"
+	CASE "V插入按摩棒"
 		MEMOS = 按摩棒：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
 	ENDSELECT
 
 	VARSET LOCALS
 
 	;記录を分解する
-	SPLIT CSTR:(ARG:1):Ｖ插入履历, "/", LOCALS
+	SPLIT CSTR:(ARG:1):V插入履历, "/", LOCALS
 
 	;MEMOS:9に一旦記录する
 	MEMOS:9 = 
@@ -92,12 +92,12 @@ CASE "Ｖ插入阴茎", "Ｖ插入按摩棒", "Ｖ插入拳交", "Ｖ插入按�
 	SIF MEMOS != ""
 		MEMOS:9 = %MEMOS%1/%MEMOS:9%
 
-	CSTR:(ARG:1):Ｖ插入履历 = %MEMOS:9%
+	CSTR:(ARG:1):V插入履历 = %MEMOS:9%
 
 	;确认用
-	;PRINTFORML CSTR:Ｖ插入履历 = %CSTR:(ARG:1):Ｖ插入履历%
+	;PRINTFORML CSTR:V插入履历 = %CSTR:(ARG:1):V插入履历%
 
-CASE "Ａ插入阴茎", "Ａ插入按摩棒", "Ａ插入拳交", "Ａ插入按摩棒"
+CASE "A插入阴茎", "A插入按摩棒", "A插入拳交", "A插入按摩棒"
 	;ARG:2はマイナス之值を取り得る
 	SIF ARG < 0 || ARG:1 < 0
 		RETURN 0
@@ -118,20 +118,20 @@ CASE "Ａ插入阴茎", "Ａ插入按摩棒", "Ａ插入拳交", "Ａ插入按�
 
 	;插入たも之：{大きさ}＠入れた人＃{日付}＊{回数}
 	SELECTCASE ARGS
-	CASE "Ａ插入阴茎"
+	CASE "A插入阴茎"
 		MEMOS = 阴茎：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ａ插入按摩棒"
+	CASE "A插入按摩棒"
 		MEMOS = 按摩棒：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ａ插入拳交"
+	CASE "A插入拳交"
 		MEMOS = 拳交：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
-	CASE "Ａ插入按摩棒"
+	CASE "A插入按摩棒"
 		MEMOS = 按摩棒：%TOSTR(ARG)%＠%MEMOS%＃%TOSTR(DAY)%＊
 	ENDSELECT
 
 	VARSET LOCALS
 
 	;記录を分解する
-	SPLIT CSTR:(ARG:1):Ａ插入履历, "/", LOCALS
+	SPLIT CSTR:(ARG:1):A插入履历, "/", LOCALS
 
 	;MEMOS:9に一旦記录する
 	MEMOS:9 = 
@@ -163,10 +163,10 @@ CASE "Ａ插入阴茎", "Ａ插入按摩棒", "Ａ插入拳交", "Ａ插入按�
 	SIF MEMOS != ""
 		MEMOS:9 = %MEMOS%1/%MEMOS:9%
 
-	CSTR:(ARG:1):Ａ插入履历 = %MEMOS:9%
+	CSTR:(ARG:1):A插入履历 = %MEMOS:9%
 
 	;确认用
-	;PRINTFORML CSTR:Ａ插入履历 = %CSTR:(ARG:1):Ａ插入履历%
+	;PRINTFORML CSTR:A插入履历 = %CSTR:(ARG:1):A插入履历%
 
 ;ARG:1がARG:2にARG之量だけ中出等された
 CASE "膣内精液経験", "肛内精液経験", "饮精経験", "乳内精液経験", "膀胱精液経験"
@@ -226,9 +226,9 @@ CASE "膣内精液経験", "肛内精液経験", "饮精経験", "乳内精液�
 		CALL CHECK_PREGNANT, ARG:1, ARG * MEMO, MEMOS
 
 		IF COND("调教中")
-			CALL ADD_STAIN, ARG:1, "Ｖ", "精液"
-			EX:(ARG:1):Ｖ中出 += 1
-			NOWEX:(ARG:1):Ｖ中出 += 1
+			CALL ADD_STAIN, ARG:1, "V", "精液"
+			EX:(ARG:1):V中出 += 1
+			NOWEX:(ARG:1):V中出 += 1
 			;液体追加之ソース
 			SIF ARG:1 != MASTER
 				SOURCE:(ARG:1):液体追加 += ARG * 100 * MEMO
@@ -240,12 +240,12 @@ CASE "膣内精液経験", "肛内精液経験", "饮精経験", "乳内精液�
 		EXP:(ARG:1):肛内精液経験 += ARG * MEMO
 
 		IF COND("调教中")
-			CALL ADD_STAIN, ARG:1, "Ａ", "精液"
-			EX:(ARG:1):Ａ中出 += 1
-			NOWEX:(ARG:1):Ａ中出 += 1
+			CALL ADD_STAIN, ARG:1, "A", "精液"
+			EX:(ARG:1):A中出 += 1
+			NOWEX:(ARG:1):A中出 += 1
 			;液体追加之ソース
 			SIF ARG:1 != MASTER
-				SOURCE:(ARG:1):Ａ液体追加 += ARG * 200 * MEMO
+				SOURCE:(ARG:1):A液体追加 += ARG * 200 * MEMO
 		ENDIF
 
 		;記录を分解する
@@ -254,7 +254,7 @@ CASE "膣内精液経験", "肛内精液経験", "饮精経験", "乳内精液�
 		EXP:(ARG:1):饮精経験 += ARG * MEMO
 
 		IF COND("调教中")
-			CALL ADD_STAIN, ARG:1, "Ｍ", "精液"
+			CALL ADD_STAIN, ARG:1, "M", "精液"
 			EX:(ARG:1):口内射精 += 1
 			NOWEX:(ARG:1):口内射精 += 1
 		ENDIF
@@ -264,7 +264,7 @@ CASE "膣内精液経験", "肛内精液経験", "饮精経験", "乳内精液�
 		EXP:(ARG:1):乳内精液経験 += ARG * MEMO
 
 		IF COND("调教中")
-			CALL ADD_STAIN, ARG:1, "Ｂ", "精液"
+			CALL ADD_STAIN, ARG:1, "B", "精液"
 			EX:(ARG:1):乳内射精 += 1
 			NOWEX:(ARG:1):乳内射精 += 1
 		ENDIF
@@ -437,9 +437,9 @@ CASE "饮尿"
 	IF PENIS(ARG:1)
 		STAIN:(ARG:1):Ｐ = SET_STAIN(STAIN:(ARG:1):Ｐ, "尿")
 	ELSE
-		STAIN:(ARG:1):Ｖ = SET_STAIN(STAIN:(ARG:1):Ｖ, "尿")
+		STAIN:(ARG:1):V = SET_STAIN(STAIN:(ARG:1):V, "尿")
 	ENDIF
-	STAIN:ARG:Ｍ = SET_STAIN(STAIN:ARG:Ｍ, "尿")
+	STAIN:ARG:M = SET_STAIN(STAIN:ARG:M, "尿")
 	TEQUIP:(ARG:1):利尿剂 = 0
 	BASE:(ARG:1):尿意 = 0
 	NOWEX:(ARG:1):放尿 += 1
@@ -464,15 +464,15 @@ CASE "打扫口交"
 	;打扫口交标志
 	SETBIT TCVAR:ARG:10, 4
 
-	;Ａ打扫口交标志
-	SIF CHECK_STAIN(STAIN:(ARG:1):Ｐ, "Ａ") && EXP_GAIN(16, ARG:1)
+	;A打扫口交标志
+	SIF CHECK_STAIN(STAIN:(ARG:1):Ｐ, "A") && EXP_GAIN(16, ARG:1)
 		SETBIT TCVAR:ARG:10, 5
 
 	;尿打扫口交标志
 	SIF CHECK_STAIN(STAIN:(ARG:1):Ｐ, "尿") && PREVEX("放尿", ARG:1)
 		SETBIT TCVAR:ARG:10, 44
 
-	;口交経験は他で得ているだろうがＢＯＮＵＳで更に１追加
+	;口交経験は他で得ているだろうがBＯＮＵSで更に１追加
 	EXP:ARG:口交経験 += 1
 	EXP:ARG:打扫口交経験 += 1
 	SIF CHECK_STAIN(STAIN:(ARG:1):Ｐ, "精液")
@@ -514,36 +514,36 @@ CASE "打扫舐阴"
 	SETBIT TCVAR:ARG:10, 7
 
 	;尿打扫舐阴标志
-	SIF CHECK_STAIN(STAIN:(ARG:1):Ｖ, "尿") && PREVEX("放尿", ARG:1)
+	SIF CHECK_STAIN(STAIN:(ARG:1):V, "尿") && PREVEX("放尿", ARG:1)
 		SETBIT TCVAR:ARG:10, 45
 
-	;舐阴経験は他で得ているだろうがＢＯＮＵＳで更に１追加
+	;舐阴経験は他で得ているだろうがBＯＮＵSで更に１追加
 	EXP:ARG:舐阴経験 += 1
 	EXP:ARG:打扫舐阴経験 += 1
-	SIF CHECK_STAIN(STAIN:(ARG:1):Ｖ, "精液")
+	SIF CHECK_STAIN(STAIN:(ARG:1):V, "精液")
 		EXP:ARG:精液経験 += 1
 
-	;ARG之口⇔ARG:1之Ｖ之汚れが移动
+	;ARG之口⇔ARG:1之V之汚れが移动
 	CALL EQ_STAIN, ARG, ARG:1, 0, 3
 
-	;PRINTFORML CHECK_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢") = {CHECK_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢")}
-	;そ之后ARG:1之Ｖ之汚れリセット…Ｖ恥垢があると挙动が复杂
-	IF CHECK_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢")
+	;PRINTFORML CHECK_STAIN(STAIN:(ARG:1):V, "V恥垢") = {CHECK_STAIN(STAIN:(ARG:1):V, "V恥垢")}
+	;そ之后ARG:1之V之汚れリセット…V恥垢があると挙动が复杂
+	IF CHECK_STAIN(STAIN:(ARG:1):V, "V恥垢")
 		IF (ARG == PLAYER && CHECK_COM("恥垢打扫舐阴", 1) ) || (ARG == TARGET && CHECK_COM("恥垢打扫舐阴", 98) )
 			EXP:ARG:打扫舐阴経験 += 1
 			SETBIT TCVAR:ARG:10, 47
-			CALL RESET_STAIN_EX, "Ｖ", ARG:1
+			CALL RESET_STAIN_EX, "V", ARG:1
 		ELSE
-			CALL RESET_STAIN_EX, "Ｖ", ARG:1
-			STAIN:(ARG:1):Ｖ = SET_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢")
+			CALL RESET_STAIN_EX, "V", ARG:1
+			STAIN:(ARG:1):V = SET_STAIN(STAIN:(ARG:1):V, "V恥垢")
 		ENDIF
 	ELSE
-		CALL RESET_STAIN_EX, "Ｖ", ARG:1
+		CALL RESET_STAIN_EX, "V", ARG:1
 	ENDIF
 
-	;PRINTFORML CHECK_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢") = {CHECK_STAIN(STAIN:(ARG:1):Ｖ, "Ｖ恥垢")}
+	;PRINTFORML CHECK_STAIN(STAIN:(ARG:1):V, "V恥垢") = {CHECK_STAIN(STAIN:(ARG:1):V, "V恥垢")}
 
-CASE "打扫舐Ａ"
+CASE "打扫舐A"
 	IF ARG:1 == 0
 		SELECTCASE ARG
 		CASE TARGET
@@ -553,24 +553,24 @@ CASE "打扫舐Ａ"
 		ENDSELECT
 	ENDIF
 
-	;打扫舐Ａ标志
+	;打扫舐A标志
 	SETBIT TCVAR:ARG:10, 43
 
-	;舐A经验は他で得ているだろうがＢＯＮＵＳで更に１追加
+	;舐A经验は他で得ているだろうがBＯＮＵSで更に１追加
 	EXP:ARG:舐A经验 += 1
 	EXP:ARG:打扫舐A经验 += 1
-	SIF CHECK_STAIN(STAIN:(ARG:1):Ａ, "精液")
+	SIF CHECK_STAIN(STAIN:(ARG:1):A, "精液")
 		EXP:ARG:精液経験 += 1
 
-	;ARG之口⇔ARG:1之Ａ之汚れが移动
+	;ARG之口⇔ARG:1之A之汚れが移动
 	CALL EQ_STAIN, ARG, ARG:1, 0, 4
-	;そ之后ARG:1之Ａ之汚れリセット
-	CALL RESET_STAIN_EX, "Ａ", ARG:1
+	;そ之后ARG:1之A之汚れリセット
+	CALL RESET_STAIN_EX, "A", ARG:1
 CASE "饮用母乳"
 	SIF ARG:1 == 0 && TARGET
 		ARG:1 = TARGET
-	STAIN:(ARG:1):Ｂ = SET_STAIN(STAIN:(ARG:1):Ｂ, "母乳")
-	STAIN:ARG:Ｍ = SET_STAIN(STAIN:ARG:Ｍ, "母乳")
+	STAIN:(ARG:1):B = SET_STAIN(STAIN:(ARG:1):B, "母乳")
+	STAIN:ARG:M = SET_STAIN(STAIN:ARG:M, "母乳")
 	CALL EQ_STAIN, ARG, ARG:1, 0, 5
 	BASE:(ARG:1):喷乳 = LIMIT(BASE:(ARG:1):喷乳 - 7000, 0, MAXBASE:(ARG:1):喷乳)
 	EXP:(ARG:1):授乳経験 += 1
@@ -654,10 +654,10 @@ CASE "射精＆绝顶事件标志"
 		LOCALS = 绝顶：胸
 	ELSEIF SHOOT("手")
 		LOCALS = 绝顶：手
-	ELSEIF SHOOT("Ｖ中出")
-		LOCALS = 绝顶：Ｖ中出
-	ELSEIF SHOOT("Ａ中出")
-		LOCALS = 绝顶：Ａ中出
+	ELSEIF SHOOT("V中出")
+		LOCALS = 绝顶：V中出
+	ELSEIF SHOOT("A中出")
+		LOCALS = 绝顶：A中出
 	ELSEIF SHOOT("接吻")
 		LOCALS = 绝顶：接吻
 	ELSEIF SHOOT("顔面骑乘")
@@ -720,12 +720,12 @@ CASE "排泄"
 			CASE IS <= 2
 				PRINTFORML 从肛门喷撒出了肠内被\@ COND("温泉灌肠") ? 大量的小便 # 灌肠液 \@稀释过的污物。
 			CASE IS <= 6
-				PRINTFORML 肠内充满着的大量\@ CHECK_STAIN(STAIN:Ａ, "精液") ? 混合着精液的 # \@污物从肛门激烈地喷射了出来。
+				PRINTFORML 肠内充满着的大量\@ CHECK_STAIN(STAIN:A, "精液") ? 混合着精液的 # \@污物从肛门激烈地喷射了出来。
 			CASEELSE
-				PRINTFORML 在灌肠的刺激下，排泄出了大量\@ CHECK_STAIN(STAIN:Ａ, "精液") ? 混合着精液 # \@的软粪，随后又一边放屁，一边从肛门拉出了有点便秘的硬块，积成了小山样的一堆。
+				PRINTFORML 在灌肠的刺激下，排泄出了大量\@ CHECK_STAIN(STAIN:A, "精液") ? 混合着精液 # \@的软粪，随后又一边放屁，一边从肛门拉出了有点便秘的硬块，积成了小山样的一堆。
 			ENDSELECT
 		ENDIF
-		SELECTCASE MIN(ABL:Ｍ属性, (ABL:露阴癖 + 1)/2)
+		SELECTCASE MIN(ABL:M属性, (ABL:露阴癖 + 1)/2)
 		CASE 0
 			PRINTFORMW %CALLNAME:TARGET%露出苦闷和耻辱的表情…
 		CASE 1
@@ -738,7 +738,7 @@ CASE "排泄"
 			PRINTFORMW %CALLNAME:TARGET%精神恍惚地享受着在\@ PLAYER == MASTER && TALENT:恋慕 ? 最爱的人 # 别人 \@面前排泄的恥辱与解放感…
 		CASE IS >= 5
 			PRINTFORML %CALLNAME:TARGET%尽情地品尝着排泄感与羞耻心。
-			IF TALENT:性别 == 1 || INSERT("Ｖ插入") || RAND:2
+			IF TALENT:性别 == 1 || INSERT("V插入") || RAND:2
 				PRINTFORMW 沉浸在快感中，露出了松弛淫荡的表情，放出大量污物的肛门满溢着解放感…
 			ELSE
 				PRINTFORMW 沉浸在快感中，露出了松弛淫荡的表情。从肛门放出大量污物的同时，腔口也滴答滴答地流出了爱液…
@@ -757,11 +757,11 @@ CASE "排泄"
 	TEQUIP:肛用按摩棒 = 0
 	CLEARBIT TEQUIP:扩张扩张气囊, 1
 	TEQUIP:灌肠 = 0
-	PALAM:Ａ润 /= 2
+	PALAM:A润 /= 2
 	BASE:排泄欲 = 0
 	BASE:排泄物 = 0
 	;汚れリセット
-	STAIN:Ａ = SET_STAIN(0, "Ａ")
+	STAIN:A = SET_STAIN(0, "A")
 CASE "调教者交代"
 	;本格的に交代したならポジション解消
 	IF ARG
@@ -820,7 +820,7 @@ CASE "尿道扩张"
 	ENDSELECT
 
 	;TALENT:扩张补正や调教知识(性器扩张)があると扩张する之が格段に乐
-	;调教知识によるＢＯＮＵＳ
+	;调教知识によるBＯＮＵS
 	SELECTCASE TALENT_NAME(185, TALENT:PLAYER:调教知识, PLAYER)
 	CASE "调教知识(性器扩张)"
 		LOCAL += 4
@@ -884,11 +884,11 @@ CASE "尿道扩张"
 			CSTR:3 = %CSTR:3%%LOCALS:LCOUNT%/
 		NEXT
 	ENDIF
-CASE "Ｖ扩张", "Ａ扩张"
+CASE "V扩张", "A扩张"
 	;ARGに插入されるも之之大きさ、ARG:1に硬さが代入されている
 
 	VARSET LOCAL
-	;调教知识によるＢＯＮＵＳ(损伤しづらくなる)
+	;调教知识によるBＯＮＵS(损伤しづらくなる)
 	SELECTCASE TALENT_NAME(185, TALENT:PLAYER:调教知识, PLAYER)
 	CASE "调教知识(性器扩张)"
 		LOCAL -= 1
@@ -896,25 +896,25 @@ CASE "Ｖ扩张", "Ａ扩张"
 
 	;まずは损伤を现る
 	SELECTCASE ARGS
-	CASE "Ｖ扩张"
-		LOCAL += ARG - ABL:Ｖ扩张 - 1
+	CASE "V扩张"
+		LOCAL += ARG - ABL:V扩张 - 1
 		IF ARG:1 <= 2 || TALENT:史莱姆 || SELECTCOM == 106 || CUP:苦痛 < 3000 || (SELECTCOM == 304 && TEQUIP:逆推)
-		ELSEIF TALENT:Ｖ损伤 < LOCAL
-			SIF EXP:Ｖ损伤経験 < LOCAL
-				EXP:Ｖ损伤経験 = LOCAL
+		ELSEIF TALENT:V损伤 < LOCAL
+			SIF EXP:V损伤経験 < LOCAL
+				EXP:V损伤経験 = LOCAL
 
-			TALENT:Ｖ损伤 = LOCAL
+			TALENT:V损伤 = LOCAL
 			;Ｈ氛围激减
 			TFLAG:33 -= 30 * LOCAL
 		ENDIF
-	CASE "Ａ扩张"
-		LOCAL += ARG - ABL:Ａ扩张 - 1
+	CASE "A扩张"
+		LOCAL += ARG - ABL:A扩张 - 1
 		IF ARG:1 <= 2 || TALENT:史莱姆 || SELECTCOM == 107 || CUP:苦痛 < 3000 || (SELECTCOM == 305 && TEQUIP:逆推)
-		ELSEIF TALENT:Ａ损伤 < LOCAL
-			SIF EXP:Ａ损伤経験 < LOCAL
-				EXP:Ａ损伤経験 = LOCAL
+		ELSEIF TALENT:A损伤 < LOCAL
+			SIF EXP:A损伤経験 < LOCAL
+				EXP:A损伤経験 = LOCAL
 
-			TALENT:Ａ损伤 = LOCAL
+			TALENT:A损伤 = LOCAL
 			;Ｈ氛围激减
 			TFLAG:33 -= 30 * LOCAL
 		ENDIF
@@ -925,19 +925,19 @@ CASE "Ｖ扩张", "Ａ扩张"
 		RETURN 0
 
 	SELECTCASE ARGS
-	CASE "Ｖ扩张"
-		LOCAL:1 = ARG - ABL:Ｖ扩张
+	CASE "V扩张"
+		LOCAL:1 = ARG - ABL:V扩张
 		;EXP:V扩张经验が0-4なら5, 5-19なら20,…と返す
 		LOCAL:2 = EXP_LV(GET_EXP_LV(EXP:V扩张经验) + 1)
 		LOCAL:3 = 53
-	CASE "Ａ扩张"
-		LOCAL:1 = ARG - ABL:Ａ扩张
+	CASE "A扩张"
+		LOCAL:1 = ARG - ABL:A扩张
 		LOCAL:2 = EXP_LV(GET_EXP_LV(EXP:A扩张经验) + 1)
 		LOCAL:3 = 57
 	ENDSELECT
 
-	;插入するも之之大きさ-扩张ＬＶを现る。值が大きいほど扩张経験増加量が多い
-	;なお、(插入するも之之大きさ-扩张ＬＶ)が１以下之场合で插入するも之が柔らかい时(硬さが２以下)は扩张経験増加は１まで
+	;插入するも之之大きさ-扩张LVを现る。值が大きいほど扩张経験増加量が多い
+	;なお、(插入するも之之大きさ-扩张LV)が１以下之场合で插入するも之が柔らかい时(硬さが２以下)は扩张経験増加は１まで
 	SELECTCASE LOCAL:1
 	CASE IS <= -2
 		IF ARG >= 4
@@ -1006,7 +1006,7 @@ CASE "Ｖ扩张", "Ａ扩张"
 			ENDSELECT
 		ENDSELECT
 
-		;(大きさ之ＬＶ, 上限) = (1, 1), (2, 2), (3, 5), (4, 10), (5, 20), …, (n, 5n)
+		;(大きさ之LV, 上限) = (1, 1), (2, 2), (3, 5), (4, 10), (5, 20), …, (n, 5n)
 		SELECTCASE ARG
 		CASE 1
 			LOCAL = MIN(LOCAL, 1)
@@ -1021,7 +1021,7 @@ CASE "Ｖ扩张", "Ａ扩张"
 		ENDSELECT
 	ENDIF
 
-	;调教知识による経験獲得之ＢＯＮＵＳ
+	;调教知识による経験獲得之BＯＮＵS
 	SELECTCASE TALENT_NAME(185, TALENT:PLAYER:调教知识, PLAYER)
 	CASE "调教知识(性器扩张)"
 		LOCAL *= 2
@@ -1045,10 +1045,10 @@ CASE "Ｐ润变动处理"
 		;素股系
 		CASE 93, 94
 			SIF PALAM:ARG:Ｐ润 < 3000
-				CUP:ARG:Ｐ润 += PALAM:Ｖ润 / 3
+				CUP:ARG:Ｐ润 += PALAM:V润 / 3
 		;助手性交
 		CASE 160
-			CUP:ARG:Ｐ润 += PALAM:ASSI:Ｖ润 / 4
+			CUP:ARG:Ｐ润 += PALAM:ASSI:V润 / 4
 		;助手口交
 		CASE 162
 			SIF PALAM:ARG:Ｐ润 < 3000
@@ -1080,16 +1080,16 @@ CASE "润滑追加"
 	SIF ARG:1 == 0 && TARGET
 		ARG:1 = TARGET
 	SIF TALENT:(ARG:1):性别男 == 0
-		CUP:(ARG:1):Ｖ润 += ARG
-	CUP:(ARG:1):Ａ润 += ARG
+		CUP:(ARG:1):V润 += ARG
+	CUP:(ARG:1):A润 += ARG
 	SIF PENIS(ARG:1)
 		CUP:(ARG:1):Ｐ润 += ARG
 CASE "调教外润滑追加"
 	SIF ARG:1 == 0 && TARGET
 		ARG:1 = TARGET
 	SIF TALENT:(ARG:1):性别男 == 0
-		PALAM:(ARG:1):Ｖ润 += ARG
-	PALAM:(ARG:1):Ａ润 += ARG
+		PALAM:(ARG:1):V润 += ARG
+	PALAM:(ARG:1):A润 += ARG
 	SIF PENIS(ARG:1)
 		PALAM:(ARG:1):Ｐ润 += ARG
 
@@ -1253,7 +1253,7 @@ CASE "人物初始化"
 	LOCAL = EXP:ARG:绝顶経験 + BASE:ARG:欲求不满 * 20 + ABL:ARG:自慰成瘾 * 100 + RAND:100 - RAND:100
 	LOCAL -= TALENT:ARG:反抗心*50 + TALENT:ARG:冷静*30 + TALENT:ARG:抵抗*30 + TALENT:ARG:否认快感*30
 	LOCAL += TALENT:ARG:承认快感*30 + TALENT:ARG:好色*50 + TALENT:ARG:淫乱*100 + TALENT:ARG:恋慕*50
-	LOCAL += COND("外观：Ｖ扩张", ARG)*20 + COND("外观：Ａ扩张", ARG)*10
+	LOCAL += COND("外观：V扩张", ARG)*20 + COND("外观：A扩张", ARG)*10
 
 	SELECTCASE ABL:ARG:欲望
 	CASE 2
@@ -1298,7 +1298,7 @@ CASE "人物初始化"
 	;-------------------------------------------------
 	IF TALENT:ARG:性别 != 1
 		LOCAL = 0
-		;欲情之值に应じてＶ润増加
+		;欲情之值に应じてV润増加
 		SELECTCASE PALAM:ARG:欲情
 		;MAX100
 		CASE IS < 500
@@ -1316,7 +1316,7 @@ CASE "人物初始化"
 		LOCAL += MARK:ARG:淫紋*100
 
 		;按摩棒を入れているなら+大きさ*100
-		LOCAL += COND("外观：Ｖ扩张", ARG) * 100
+		LOCAL += COND("外观：V扩张", ARG) * 100
 
 		;史莱姆判定
 		SIF TALENT:ARG:史莱姆
@@ -1331,12 +1331,12 @@ CASE "人物初始化"
 			LOCAL = DOWN_PALAMLV(LOCAL)
 		ENDIF
 
-		PALAM:ARG:Ｖ润 += LIMIT(LOCAL, 0, 6000)
+		PALAM:ARG:V润 += LIMIT(LOCAL, 0, 6000)
 	ENDIF
 
 
-	IF COND("外观：Ａ润滑液", ARG) && TEQUIP:ARG:润滑液 == 0 && (ITEM:润滑液 || MONEY >= ITEMPRICE:润滑液)
-		PALAM:ARG:Ａ润 += 10000
+	IF COND("外观：A润滑液", ARG) && TEQUIP:ARG:润滑液 == 0 && (ITEM:润滑液 || MONEY >= ITEMPRICE:润滑液)
+		PALAM:ARG:A润 += 10000
 		SETBIT TEQUIP:ARG:润滑液, 0
 		IF ITEM:润滑液
 			ITEM:润滑液 -= 1
@@ -1345,14 +1345,14 @@ CASE "人物初始化"
 		ENDIF
 		RETURN 0
 	ENDIF
-	;史莱姆だけＢＯＮＵＳ
+	;史莱姆だけBＯＮＵS
 	SIF TALENT:ARG:史莱姆
-		PALAM:ARG:Ａ润 += LIMIT(LOCAL, 0, 6000)
+		PALAM:ARG:A润 += LIMIT(LOCAL, 0, 6000)
 
 	LOCAL = 0
-	;いくつか之条件でＡ润追加
+	;いくつか之条件でA润追加
 	IF TALENT:ARG:肠液分泌体質
-		;欲情之值に应じてＡ润増加
+		;欲情之值に应じてA润増加
 		SELECTCASE PALAM:ARG:欲情
 		CASE IS < 500
 		;MAX100
@@ -1366,16 +1366,16 @@ CASE "人物初始化"
 		ENDSELECT
 	ENDIF
 	;肛用按摩棒を入れているなら+大きさ*100
-	LOCAL += COND("外观：Ａ扩张", ARG) * 100
+	LOCAL += COND("外观：A扩张", ARG) * 100
 
 	;史莱姆
 	IF TALENT:ARG:史莱姆
-		PALAM:ARG:Ａ润 = MAX(LOCAL, PALAM:ARG:Ａ润)
+		PALAM:ARG:A润 = MAX(LOCAL, PALAM:ARG:A润)
 	ELSE
-		PALAM:ARG:Ａ润 += LIMIT(LOCAL, 0, 6000)
+		PALAM:ARG:A润 += LIMIT(LOCAL, 0, 6000)
 	ENDIF
 
-CASE "调教开始前Ｂ"
+CASE "调教开始前B"
 	;开始前之経験を記憶
 	CALL RESET_EXP_GAIN, ARG
 	;满足チェックをリセット
@@ -1445,8 +1445,8 @@ CASE "回合終了"
 	;逆推确率补正之变动
 	SIF TCVAR:ARG:152 > 0 && TEQUIP:ARG:逆推 == 0
 		TCVAR:ARG:152 -= 1
-	IF CONFIG("精液灌肠") && (COND("精液灌肠", ARG) || NOWEX:ARG:Ａ中出) && BASE:ARG:排泄物 && COND("液体灌肠", ARG) < 2 && COND("空气灌肠", ARG) == 0
-		BASE:ARG:排泄欲 += NOWEX:ARG:Ａ中出*500 + NOWEX:ARG:Ａ绝顶*200 + NOWEX:ARG:绝顶数合计*100
+	IF CONFIG("精液灌肠") && (COND("精液灌肠", ARG) || NOWEX:ARG:A中出) && BASE:ARG:排泄物 && COND("液体灌肠", ARG) < 2 && COND("空气灌肠", ARG) == 0
+		BASE:ARG:排泄欲 += NOWEX:ARG:A中出*500 + NOWEX:ARG:A绝顶*200 + NOWEX:ARG:绝顶数合计*100
 		;精液灌肠标志ＯＮ
 		TEQUIP:ARG:灌肠 = 1p10
 	ENDIF
@@ -1459,7 +1459,7 @@ CASE "回合終了"
 	ENDIF
 	;绝顶しているなら、连续绝顶コンボ数を变化させる
 	IF NOWEX:ARG:绝顶数合计
-		PALAM:ARG:连续绝顶COMBO数 += (NOWEX:ARG:Ｃ绝顶 + NOWEX:ARG:尿道绝顶 > 0) + (NOWEX:ARG:Ｖ绝顶 > 0) + (NOWEX:ARG:Ａ绝顶 > 0) + (NOWEX:ARG:Ｂ绝顶 > 0) + (NOWEX:ARG:Ｍ绝顶 > 0)
+		PALAM:ARG:连续绝顶COMBO数 += (NOWEX:ARG:C绝顶 + NOWEX:ARG:尿道绝顶 > 0) + (NOWEX:ARG:V绝顶 > 0) + (NOWEX:ARG:A绝顶 > 0) + (NOWEX:ARG:B绝顶 > 0) + (NOWEX:ARG:M绝顶 > 0)
 		PALAM:ARG:补正值 += NOWEX:ARG:绝顶数合计
 		EX:ARG:连续绝顶 = MAX(EX:ARG:连续绝顶, PALAM:ARG:连续绝顶COMBO数)
 	;绝顶しなかった场合コンボ終了
@@ -1481,9 +1481,9 @@ CASE "回合終了"
 CASE "射精槽"
 	;LVに应じて槽増加
 	IF ARG == MASTER
-		LOCAL = 10000 + (ABL:ARG:ＬＶ - 1)*1000
-	ELSEIF ABL:ARG:ＬＶ > 0
-		LOCAL = 10000 + (ABL:ARG:ＬＶ - 1)*1000
+		LOCAL = 10000 + (ABL:ARG:LV - 1)*1000
+	ELSEIF ABL:ARG:LV > 0
+		LOCAL = 10000 + (ABL:ARG:LV - 1)*1000
 	ELSE
 		LOCAL = 10000
 	ENDIF
@@ -1540,10 +1540,10 @@ CASE "体勢戻し"
 	CASE 1, 9, 99, 144, 282
 	;奉仕系指令は实行值依存
 	CASE 90 TO 92, 97, 105
-		SIF TALENT:性别 == 1 || (TCVAR:28 < 30 && ABL:欲望 + ABL:Ｓ属性 < 5)
+		SIF TALENT:性别 == 1 || (TCVAR:28 < 30 && ABL:欲望 + ABL:S属性 < 5)
 			TEQUIP:顔面骑乘 = 0
 	CASE 95
-		SIF PENIS(PLAYER) == 0 || (TCVAR:28 < 30 && ABL:欲望 + ABL:Ｓ属性 < 5)
+		SIF PENIS(PLAYER) == 0 || (TCVAR:28 < 30 && ABL:欲望 + ABL:S属性 < 5)
 			TEQUIP:顔面骑乘 = 0
 	CASEELSE
 		TEQUIP:顔面骑乘 = 0
@@ -1675,11 +1675,11 @@ CASE "今回调教指令"
 		IF SELECTCOM:1 == 1
 			STR:0 = %STR:0% ＆ 顔面骑乘
 		ELSEIF SELECTCOM:1 == 9
-			STR:0 = %STR:0% ＆ Ａ顔面骑乘
+			STR:0 = %STR:0% ＆ A顔面骑乘
 		ELSEIF SELECTCOM:1 >= 90 && SELECTCOM:1 <= 119 && SELECTCOM == SELECTCOM:1
 			STR:0 = Ｗ%TRAINNAME:(SELECTCOM:1)%
 		ELSEIF SELECTCOM:1 == 98
-			STR:0 = %STR:0% ＆ Ｖ奉仕
+			STR:0 = %STR:0% ＆ V奉仕
 		ELSEIF (SELECTCOM:1 == 126 && SELECTCOM == 120) || (SELECTCOM:1 == 120 && SELECTCOM == 126)
 			STR:0 = 二穴插入
 		;助手之行动は記述しない
@@ -1730,7 +1730,7 @@ CASE "童贞猎取标志"
 CASE "打扫口交标志"
 	SETBIT TCVAR:ARG:10, 4
 ;上之ほうにある"打扫口交"内でもONになる
-CASE "Ａ打扫口交标志"
+CASE "A打扫口交标志"
 	SETBIT TCVAR:ARG:10, 5
 CASE "自慰标志"
 	SETBIT TCVAR:ARG:10, 6
@@ -1739,7 +1739,7 @@ CASE "打扫舐阴标志"
 	SETBIT TCVAR:ARG:10, 7
 CASE "子宮刺激标志"
 	SETBIT TCVAR:ARG:10, 8
-CASE "Ａ奉仕标志"
+CASE "A奉仕标志"
 	SETBIT TCVAR:ARG:10, 9
 CASE "针术标志"
 	SETBIT TCVAR:ARG:10, 10
@@ -1766,9 +1766,9 @@ CASE "镇痛麻醉标志"
 ;これについては"下部露出：文本有", "下部露出：文本无"内でも同大人之标志立てを行う
 CASE "下部露出させた"
 	SETBIT TCVAR:ARG:10, 21
-CASE "Ａ处女丧失标志"
+CASE "A处女丧失标志"
 	SETBIT TCVAR:ARG:10, 22
-CASE "Ａ处女篡夺标志"
+CASE "A处女篡夺标志"
 	SETBIT TCVAR:ARG:10, 23
 CASE "饮用母乳标志"
 	SETBIT TCVAR:ARG:10, 24
@@ -1810,8 +1810,8 @@ CASE "膀胱内浴尿标志"
 	SETBIT TCVAR:ARG:10, 41
 CASE "追加接吻标志"
 	SETBIT TCVAR:ARG:10, 42
-;上之ほうにある"打扫舐Ａ"内でもONになる
-CASE "打扫舐Ａ标志"
+;上之ほうにある"打扫舐A"内でもONになる
+CASE "打扫舐A标志"
 	SETBIT TCVAR:ARG:10, 43
 ;上之ほうにある"打扫口交"内でもONになる
 CASE "尿打扫口交标志"
@@ -1888,9 +1888,9 @@ CASE "属性"
 		SETBIT LOCAL, 6
 	SIF TALENT:ARG:胆怯
 		SETBIT LOCAL, 7
-	SIF TALENT:ARG:抖Ｓ
+	SIF TALENT:ARG:抖S
 		SETBIT LOCAL, 8
-	SIF TALENT:ARG:抖Ｍ
+	SIF TALENT:ARG:抖M
 		SETBIT LOCAL, 9
 	SIF TALENT:ARG:傲慢
 		SETBIT LOCAL, 10
@@ -2056,7 +2056,7 @@ CASE "一般人对象之性行为初期設定"
 	EJAC:PLAYER = 5000
 	BASE:PLAYER:精力 = MAXBASE:PLAYER:精力
 	BASE:PLAYER:绝顶 = 0
-	ABL:PLAYER:ＬＶ = 1
+	ABL:PLAYER:LV = 1
 	TEQUIP:逆推 = 1
 	;计算开始
 	CALL SIMULATE_TRAIN_FIRST
@@ -2503,7 +2503,7 @@ CASE "経験取得"
 		;媚药
 		SIF TEQUIP:媚药
 			EXP:自慰経験 += 1
-		;绝顶した之なら、経験にＢＯＮＵＳ
+		;绝顶した之なら、経験にBＯＮＵS
 		SIF NOWEX:绝顶数合计
 			EXP:自慰経験 += 1
 		SIF GETBIT(CHECK_ONANIE(ARG), 1)
@@ -2563,54 +2563,54 @@ CASE "経験取得"
 		EXP:PLAYER:刺激尿道経験 += 1
 	CASE 31, 106, 201
 		EXP:V经验 += 1
-		;大きいと経験ＢＯＮＵＳ
+		;大きいと経験BＯＮＵS
 		SIF SIZE("按摩棒", TARGET) >= 3
 			EXP:V经验 += 1
-		IF SIZE("按摩棒", TARGET) >= MAX(ABL:Ｖ扩张 - 1, 2)
-			EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:Ｖ扩张 + 1
-			CALL SETFLAG, "Ｖ扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
+		IF SIZE("按摩棒", TARGET) >= MAX(ABL:V扩张 - 1, 2)
+			EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:V扩张 + 1
+			CALL SETFLAG, "V扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
 		ENDIF
 		IF ARG == 201
-			CALL SETFLAG, "Ｖ插入按摩棒", SIZE("按摩棒", TARGET), TARGET, -5
+			CALL SETFLAG, "V插入按摩棒", SIZE("按摩棒", TARGET), TARGET, -5
 		ELSE
-			CALL SETFLAG, "Ｖ插入按摩棒", SIZE("按摩棒", TARGET)
+			CALL SETFLAG, "V插入按摩棒", SIZE("按摩棒", TARGET)
 		ENDIF
 	CASE 33, 107, 202
 		EXP:PLAYER:肛虐経験 += 1
 		EXP:A经验 += 1
-		;大きいと経験ＢＯＮＵＳ
+		;大きいと経験BＯＮＵS
 		IF SIZE("肛用按摩棒", TARGET) >= 3
 			EXP:A经验 += 1
 			EXP:PLAYER:肛虐経験 += 1
 		ENDIF
-		IF SIZE("肛用按摩棒", TARGET) >= MAX(ABL:Ａ扩张 - 1, 2)
-			EXP:A经验 += SIZE("肛用按摩棒", TARGET) - ABL:Ａ扩张 + 1
-			CALL SETFLAG, "Ａ扩张", SIZE("肛用按摩棒", TARGET), HARD("肛用按摩棒", TARGET)
+		IF SIZE("肛用按摩棒", TARGET) >= MAX(ABL:A扩张 - 1, 2)
+			EXP:A经验 += SIZE("肛用按摩棒", TARGET) - ABL:A扩张 + 1
+			CALL SETFLAG, "A扩张", SIZE("肛用按摩棒", TARGET), HARD("肛用按摩棒", TARGET)
 		ENDIF
 		IF ARG == 202
-			CALL SETFLAG, "Ａ插入按摩棒", SIZE("肛用按摩棒", TARGET), TARGET, -5
+			CALL SETFLAG, "A插入按摩棒", SIZE("肛用按摩棒", TARGET), TARGET, -5
 		ELSE
-			CALL SETFLAG, "Ａ插入按摩棒", SIZE("肛用按摩棒", TARGET)
+			CALL SETFLAG, "A插入按摩棒", SIZE("肛用按摩棒", TARGET)
 		ENDIF
 	CASE 39
 		EXP:V经验 += 1
 	CASE 60 TO 69, 177, 120 TO 124
 		EXP:V经验 += 1
 		IF PENIS(PLAYER)
-			EXP:Ｖ性交経験 += 1
-			EXP:PLAYER:Ｖ插入経験 += 1
-			;大きいと経験ＢＯＮＵＳ
+			EXP:V性交経験 += 1
+			EXP:PLAYER:V插入経験 += 1
+			;大きいと経験BＯＮＵS
 			IF SIZE("阴茎", PLAYER) >= 2
 				EXP:V经验 += 1
-				EXP:Ｖ性交経験 += 1
+				EXP:V性交経験 += 1
 			ENDIF
 		ENDIF
-		IF SIZE("阴茎", PLAYER) >= MAX(ABL:Ｖ扩张 + 1, 2)
-			EXP:V经验 += SIZE("阴茎", PLAYER) - ABL:Ｖ扩张
-			CALL SETFLAG, "Ｖ扩张", SIZE("阴茎", PLAYER), HARD("阴茎", PLAYER)
+		IF SIZE("阴茎", PLAYER) >= MAX(ABL:V扩张 + 1, 2)
+			EXP:V经验 += SIZE("阴茎", PLAYER) - ABL:V扩张
+			CALL SETFLAG, "V扩张", SIZE("阴茎", PLAYER), HARD("阴茎", PLAYER)
 		ENDIF
 
-		CALL SETFLAG, "Ｖ插入阴茎", SIZE("阴茎", PLAYER)
+		CALL SETFLAG, "V插入阴茎", SIZE("阴茎", PLAYER)
 
 		SELECTCASE ARG
 		CASE 63
@@ -2621,13 +2621,13 @@ CASE "経験取得"
 		CASE 66
 			EXP:V经验 += 1
 			SIF PENIS(PLAYER)
-				EXP:Ｖ性交経験 += 1
+				EXP:V性交経験 += 1
 		CASE 67
 			EXP:V经验 += 1
 
 			EXP:子宮経験 += 1
 			SIF PENIS(PLAYER)
-				EXP:Ｖ性交経験 += 1
+				EXP:V性交経験 += 1
 		CASE 68
 
 			EXP:子宮経験 += 2
@@ -2639,21 +2639,21 @@ CASE "経験取得"
 		EXP:A经验 += 1
 		EXP:PLAYER:肛虐経験 += 1
 		IF PENIS(PLAYER)
-			EXP:Ａ性交経験 += 1
-			EXP:PLAYER:Ａ插入経験 += 1
-			;大きいと経験ＢＯＮＵＳ
+			EXP:A性交経験 += 1
+			EXP:PLAYER:A插入経験 += 1
+			;大きいと経験BＯＮＵS
 			IF SIZE("阴茎", PLAYER) >= 2
 				EXP:A经验 += 1
-				EXP:Ａ性交経験 += 1
+				EXP:A性交経験 += 1
 				EXP:PLAYER:肛虐経験 += 1
 			ENDIF
 		ENDIF
-		IF SIZE("阴茎", PLAYER) >= MAX(ABL:Ａ扩张 + 1, 2)
-			EXP:A经验 += SIZE("阴茎", PLAYER) - ABL:Ａ扩张
-			CALL SETFLAG, "Ａ扩张", SIZE("阴茎", PLAYER), HARD("阴茎", PLAYER)
+		IF SIZE("阴茎", PLAYER) >= MAX(ABL:A扩张 + 1, 2)
+			EXP:A经验 += SIZE("阴茎", PLAYER) - ABL:A扩张
+			CALL SETFLAG, "A扩张", SIZE("阴茎", PLAYER), HARD("阴茎", PLAYER)
 		ENDIF
 
-		CALL SETFLAG, "Ａ插入阴茎", SIZE("阴茎", PLAYER)
+		CALL SETFLAG, "A插入阴茎", SIZE("阴茎", PLAYER)
 
 		SELECTCASE ARG
 		CASE 73
@@ -2670,15 +2670,15 @@ CASE "経験取得"
 		EXP:PLAYER:腰技経験 += 1
 		IF CHECK_COM("双头按摩棒PLAY")
 			EXP:V经验 += 1
-			IF SIZE("按摩棒", TARGET) >= MAX(ABL:Ｖ扩张 - 1, 2)
-				EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:Ｖ扩张
-				CALL SETFLAG, "Ｖ扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
+			IF SIZE("按摩棒", TARGET) >= MAX(ABL:V扩张 - 1, 2)
+				EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:V扩张
+				CALL SETFLAG, "V扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
 			ENDIF
 			SWAP TARGET, PLAYER
 			EXP:V经验 += 1
-			IF SIZE("按摩棒", PLAYER) >= MAX(ABL:Ｖ扩张 - 1, 2)
-				EXP:V经验 += SIZE("按摩棒", PLAYER) - ABL:Ｖ扩张
-				CALL SETFLAG, "Ｖ扩张", SIZE("按摩棒", PLAYER), HARD("按摩棒", TARGET)
+			IF SIZE("按摩棒", PLAYER) >= MAX(ABL:V扩张 - 1, 2)
+				EXP:V经验 += SIZE("按摩棒", PLAYER) - ABL:V扩张
+				CALL SETFLAG, "V扩张", SIZE("按摩棒", PLAYER), HARD("按摩棒", TARGET)
 			ENDIF
 			SWAP TARGET, PLAYER
 		ENDIF
@@ -2686,8 +2686,8 @@ CASE "経験取得"
 		EXP:PLAYER:手交経験 += 1
 		EXP:PLAYER:腰技経験 += 1
 	CASE 82
-		EXP:Ｂ性交経験 += 1
-		EXP:PLAYER:Ｂ插入経験 += 1
+		EXP:B性交経験 += 1
+		EXP:PLAYER:B插入経験 += 1
 		IF TEQUIP:逆推
 			EXP:乳交経験 += 1
 		ELSE
@@ -2779,12 +2779,12 @@ CASE "経験取得"
 		IF TEQUIP:扩张扩张气囊 == 1
 			EXP:V经验 += 2
 			EXP:V扩张经验 += 2
-			CALL SETFLAG, "Ｖ插入按摩棒", ABL:Ｖ扩张 + 1
+			CALL SETFLAG, "V插入按摩棒", ABL:V扩张 + 1
 		ELSEIF TEQUIP:扩张扩张气囊 == 2
 			EXP:PLAYER:肛虐経験 += 2
 			EXP:A经验 += 2
 			EXP:A扩张经验 += 2
-			CALL SETFLAG, "Ａ插入按摩棒", ABL:Ａ扩张 + 1
+			CALL SETFLAG, "A插入按摩棒", ABL:A扩张 + 1
 		ENDIF
 	CASE 138
 		EXP:PLAYER:放尿経験 += 1
@@ -2814,24 +2814,24 @@ CASE "経験取得"
 	CASE 141 TO 143
 		IF ARG == 141 || ARG == 143
 			EXP:V经验 += 5
-			IF SIZE("拳交", PLAYER) >= ABL:Ｖ扩张 - 1
-				EXP:V经验 += SIZE("拳交", TARGET) - ABL:Ｖ扩张 + 1
-				CALL SETFLAG, "Ｖ扩张", SIZE("拳交", PLAYER), HARD("拳交", PLAYER)
+			IF SIZE("拳交", PLAYER) >= ABL:V扩张 - 1
+				EXP:V经验 += SIZE("拳交", TARGET) - ABL:V扩张 + 1
+				CALL SETFLAG, "V扩张", SIZE("拳交", PLAYER), HARD("拳交", PLAYER)
 			ENDIF
 			SIF SIZE("拳交", PLAYER) >= 3
-				EXP:Ｖ拳交経験 += 1
-			CALL SETFLAG, "Ｖ插入拳交", SIZE("拳交", PLAYER)
+				EXP:V拳交経験 += 1
+			CALL SETFLAG, "V插入拳交", SIZE("拳交", PLAYER)
 		ENDIF
 		IF ARG == 142 || ARG == 143
 			EXP:PLAYER:肛虐経験 += 5
 			EXP:A经验 += 5
-			IF SIZE("拳交", PLAYER) >= ABL:Ａ扩张 - 1
-				EXP:A经验 += SIZE("拳交", PLAYER) - ABL:Ａ扩张 + 1
-				CALL SETFLAG, "Ａ扩张", SIZE("拳交", PLAYER), HARD("拳交", PLAYER)
+			IF SIZE("拳交", PLAYER) >= ABL:A扩张 - 1
+				EXP:A经验 += SIZE("拳交", PLAYER) - ABL:A扩张 + 1
+				CALL SETFLAG, "A扩张", SIZE("拳交", PLAYER), HARD("拳交", PLAYER)
 			ENDIF
 			SIF SIZE("拳交", PLAYER) >= 3
-				EXP:Ａ拳交経験 += 1
-			CALL SETFLAG, "Ａ插入拳交", SIZE("拳交", PLAYER)
+				EXP:A拳交経験 += 1
+			CALL SETFLAG, "A插入拳交", SIZE("拳交", PLAYER)
 		ENDIF
 		EXP:PLAYER:手交経験 += 1
 	CASE 144
@@ -2863,9 +2863,9 @@ CASE "経験取得"
 		IF TEQUIP:尿道ブジー
 			;连续实行（尿道扩张之方は、飛んだ后で増加する处理アリ）
 			IF PREVCOM == SELECTCOM
-				EXP:尿道経験 += 1 + (ABL:PLAYER:Ｓ属性 + 1)/2
-				EXP:露出経験 += 1 + (ABL:PLAYER:Ｓ属性 + 1)/2
-				EXP:PLAYER:刺激尿道経験 += 1 + (ABL:PLAYER:Ｓ属性 + 1)/2
+				EXP:尿道経験 += 1 + (ABL:PLAYER:S属性 + 1)/2
+				EXP:露出経験 += 1 + (ABL:PLAYER:S属性 + 1)/2
+				EXP:PLAYER:刺激尿道経験 += 1 + (ABL:PLAYER:S属性 + 1)/2
 			ENDIF
 
 			EXP:尿道経験 += 1
@@ -2881,18 +2881,18 @@ CASE "経験取得"
 		EXP:ASSI:V经验 += 1
 		EXP:ASSI:腰技経験 += 1
 		IF PENIS(PLAYER)
-			EXP:PLAYER:Ｖ插入経験 += 1
-			EXP:ASSI:Ｖ性交経験 += 1
+			EXP:PLAYER:V插入経験 += 1
+			EXP:ASSI:V性交経験 += 1
 		ENDIF
-		CALL SETFLAG, "Ｖ插入阴茎", SIZE("阴茎", PLAYER), ASSI, PLAYER
+		CALL SETFLAG, "V插入阴茎", SIZE("阴茎", PLAYER), ASSI, PLAYER
 	CASE 161
 		EXP:腰技経験 += 1
 		EXP:ASSI:V经验 += 1
 		IF PENIS(TARGET)
-			EXP:Ｖ插入経験 += 1
-			EXP:ASSI:Ｖ性交経験 += 1
+			EXP:V插入経験 += 1
+			EXP:ASSI:V性交経験 += 1
 		ENDIF
-		CALL SETFLAG, "Ｖ插入阴茎", SIZE("阴茎", TARGET), ASSI, TARGET
+		CALL SETFLAG, "V插入阴茎", SIZE("阴茎", TARGET), ASSI, TARGET
 	CASE 162
 		EXP:ASSI:口交経験 += 1
 	CASE 210
@@ -2900,22 +2900,22 @@ CASE "経験取得"
 			EXP:口交経験 += 1
 		IF TEQUIP:按摩棒
 			EXP:V经验 += 1
-			;大きいと経験ＢＯＮＵＳ
+			;大きいと経験BＯＮＵS
 			SIF SIZE("按摩棒", TARGET) >= 3
 				EXP:V经验 += 1
-			IF SIZE("按摩棒", TARGET) >= MAX(ABL:Ｖ扩张 - 1, 2)
-				EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:Ｖ扩张 + 1
-				CALL SETFLAG, "Ｖ扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
+			IF SIZE("按摩棒", TARGET) >= MAX(ABL:V扩张 - 1, 2)
+				EXP:V经验 += SIZE("按摩棒", TARGET) - ABL:V扩张 + 1
+				CALL SETFLAG, "V扩张", SIZE("按摩棒", TARGET), HARD("按摩棒", TARGET)
 			ENDIF
 		ENDIF
 		IF TEQUIP:肛用按摩棒
 			EXP:A经验 += 1
-			;大きいと経験ＢＯＮＵＳ
+			;大きいと経験BＯＮＵS
 			SIF SIZE("肛用按摩棒", TARGET) >= 3
 				EXP:A经验 += 1
-			IF SIZE("肛用按摩棒", TARGET) >= MAX(ABL:Ａ扩张 - 1, 2)
-				EXP:A经验 += SIZE("肛用按摩棒", TARGET) - ABL:Ａ扩张 + 1
-				CALL SETFLAG, "Ａ扩张", SIZE("肛用按摩棒", TARGET), HARD("按摩棒", TARGET)
+			IF SIZE("肛用按摩棒", TARGET) >= MAX(ABL:A扩张 - 1, 2)
+				EXP:A经验 += SIZE("肛用按摩棒", TARGET) - ABL:A扩张 + 1
+				CALL SETFLAG, "A扩张", SIZE("肛用按摩棒", TARGET), HARD("按摩棒", TARGET)
 			ENDIF
 		ENDIF
 	CASE 260
@@ -2935,22 +2935,22 @@ CASE "経験取得"
 		EXP:紧縛経験 += 5
 	CASE 304
 		EXP:V经验 += 3
-		EXP:Ｖ性交経験 += 3
-		IF SIZE("龙") >= ABL:Ｖ扩张 - 1
-			EXP:V经验 += SIZE("龙") - ABL:Ｖ扩张 + 1
-			CALL SETFLAG, "Ｖ扩张", SIZE("龙"), HARD("龙")
+		EXP:V性交経験 += 3
+		IF SIZE("龙") >= ABL:V扩张 - 1
+			EXP:V经验 += SIZE("龙") - ABL:V扩张 + 1
+			CALL SETFLAG, "V扩张", SIZE("龙"), HARD("龙")
 		ENDIF
-		EXP:Ｖ龙奸経験 += 1
-		CALL SETFLAG, "Ｖ插入阴茎", SIZE("龙"), TARGET, -3
+		EXP:V龙奸経験 += 1
+		CALL SETFLAG, "V插入阴茎", SIZE("龙"), TARGET, -3
 	CASE 305
 		EXP:A经验 += 3
-		EXP:Ａ性交経験 += 3
-		IF SIZE("龙") >= ABL:Ａ扩张 - 1
-			EXP:A经验 += SIZE("龙") - ABL:Ａ扩张 + 1
-			CALL SETFLAG, "Ａ扩张", SIZE("龙"), HARD("龙")
+		EXP:A性交経験 += 3
+		IF SIZE("龙") >= ABL:A扩张 - 1
+			EXP:A经验 += SIZE("龙") - ABL:A扩张 + 1
+			CALL SETFLAG, "A扩张", SIZE("龙"), HARD("龙")
 		ENDIF
-		EXP:Ａ龙奸経験 += 1
-		CALL SETFLAG, "Ａ插入阴茎", SIZE("龙"), TARGET, -3
+		EXP:A龙奸経験 += 1
+		CALL SETFLAG, "A插入阴茎", SIZE("龙"), TARGET, -3
 	CASE 307
 		EXP:V经验 += 1
 		EXP:史莱姆経験 += 1
@@ -2993,10 +2993,10 @@ CASE "経験取得"
 		NEXT
 	ENDSELECT
 CASE "体力气力减少"
-	;苦痛からくる体力・气力之减少 ABL:Ｍ属性をみる
-	LOCAL = MULTIPLY(CUP:苦痛, 100 - ABL:Ｍ属性*15)
-	;抖Ｍ
-	SIF TALENT:抖Ｍ
+	;苦痛からくる体力・气力之减少 ABL:M属性をみる
+	LOCAL = MULTIPLY(CUP:苦痛, 100 - ABL:M属性*15)
+	;抖M
+	SIF TALENT:抖M
 		TIMES LOCAL, 0.50
 
 	LOCAL = GETPALAMLV(LOCAL, 9)
@@ -3044,9 +3044,9 @@ CASE "体力气力减少"
 	SIF BASE:精力 <= 0 && DOWNBASE:气力 > 0
 		DOWNBASE:气力 += 30
 
-	;损伤している场合には１ＬＶにつき50
-	DOWNBASE:气力 += (TALENT:Ｖ损伤 + TALENT:Ａ损伤)*50
-	DOWNBASE:体力 += (TALENT:Ｖ损伤 + TALENT:Ａ损伤)*50
+	;损伤している场合には１LVにつき50
+	DOWNBASE:气力 += (TALENT:V损伤 + TALENT:A损伤)*50
+	DOWNBASE:体力 += (TALENT:V损伤 + TALENT:A损伤)*50
 
 	;BASEからDOWNBASEを引く
 	BASE:体力 = MAX(BASE:体力 - DOWNBASE:体力, 0)
@@ -3103,7 +3103,7 @@ CASE "绝顶させた处理"
 			LOCAL = 2
 			IF SHOOT("膣内")
 				CALL SETFLAG, "膣内精液経験", COND("绝顶", PLAYER), ARG
-			ELSEIF SHOOT("Ａ")
+			ELSEIF SHOOT("A")
 				CALL SETFLAG, "肛内精液経験", COND("绝顶", PLAYER), ARG
 			ELSEIF SHOOT("尿道")
 				CALL SETFLAG, "膀胱精液経験", COND("绝顶", PLAYER), ARG
@@ -3118,11 +3118,11 @@ CASE "绝顶させた处理"
 			;液体追加之ソース
 			IF SHOOT("观察")
 				SOURCE:ARG:液体追加 += COND("绝顶", PLAYER) * LOCAL * 100
-			ELSEIF SHOOT("Ａ观察")
-				SOURCE:ARG:Ａ液体追加 += COND("绝顶", PLAYER) * LOCAL * 100
+			ELSEIF SHOOT("A观察")
+				SOURCE:ARG:A液体追加 += COND("绝顶", PLAYER) * LOCAL * 100
 			ELSEIF SHOOT("股间")
 				SOURCE:ARG:液体追加 += COND("绝顶", PLAYER) * LOCAL * 50
-				SOURCE:ARG:Ａ液体追加 += COND("绝顶", PLAYER) * LOCAL * 50
+				SOURCE:ARG:A液体追加 += COND("绝顶", PLAYER) * LOCAL * 50
 			ENDIF
 		ENDIF
 		;SIF TALENT:PLAYER:一般人
@@ -3131,7 +3131,7 @@ CASE "绝顶させた处理"
 			;饮精绝顶。何って之はないけどフレーバー的な
 			IF SHOOT("口") && NOWEX:ARG:绝顶数合计 && ABL:ARG:精液成瘾
 				SIF FLAG:8
-					CALL PRINTL_COLORTEXT, "饮精绝顶（成瘾充足之ソースにＢＯＮＵＳが发生します）", DEF_COLOR("黄色")
+					CALL PRINTL_COLORTEXT, "饮精绝顶（成瘾充足之ソースにBＯＮＵSが发生します）", DEF_COLOR("黄色")
 				SOURCE:ARG:成瘾充足 += 3000
 			ENDIF
 			EXP:ARG:精液経験 += COND("绝顶", PLAYER) * LOCAL
@@ -3159,10 +3159,10 @@ CASE "绝顶させた处理"
 			IF SHOOT("口")
 				SIF COND("弱点：饮精", ARG)
 					SOURCE:ARG:成瘾充足 += 3000
-			ELSEIF SHOOT("Ｖ中出")
+			ELSEIF SHOOT("V中出")
 				SIF COND("弱点：腔内射精", ARG)
 					SOURCE:ARG:成瘾充足 += 3000
-			ELSEIF SHOOT("Ａ中出")
+			ELSEIF SHOOT("A中出")
 				SIF COND("弱点：肛内射精", ARG)
 					SOURCE:ARG:成瘾充足 += 3000
 			ELSEIF SHOOT("乳头奸")
@@ -3181,21 +3181,21 @@ CASE "绝顶させた处理"
 		IF SHOOT("口")
 			;梦魇之口⇔调教者之Ｐ之汚れが移动
 			CALL EQ_STAIN, ARG, PLAYER, 0, 2
-			CALL ADD_STAIN, ARG, "Ｍ", "精液"
+			CALL ADD_STAIN, ARG, "M", "精液"
 		;胸に汚れを追加
 		ELSEIF SHOOT("胸")
-			CALL ADD_STAIN, ARG, "Ｂ", "精液"
-		;Ｖに汚れを追加
-		ELSEIF SHOOT("Ｖ中出") || SHOOT("股间")
+			CALL ADD_STAIN, ARG, "B", "精液"
+		;Vに汚れを追加
+		ELSEIF SHOOT("V中出") || SHOOT("股间")
 			;摩擦胖次
 			IF SELECTCOM == 97
-				STAIN:Ｖ = SET_STAIN(STAIN:Ｖ, "精液")
+				STAIN:V = SET_STAIN(STAIN:V, "精液")
 			ELSE
-				CALL ADD_STAIN, ARG, "Ｖ", "精液"
+				CALL ADD_STAIN, ARG, "V", "精液"
 			ENDIF
-		;Ａに汚れを追加
-		ELSEIF SHOOT("Ａ中出")
-			CALL ADD_STAIN, ARG, "Ａ", "精液"
+		;Aに汚れを追加
+		ELSEIF SHOOT("A中出")
+			CALL ADD_STAIN, ARG, "A", "精液"
 		;手や胖次に汚れを追加
 		ELSEIF SHOOT("手")
 			;摩擦胖次
@@ -3339,8 +3339,8 @@ CASE "调教补正值"
 	VARSET TCVAR:ARG:0, 0, 600, 649
 
 	;まずはSOURCE补正（下之ほうにCUP补正もあり）
-	;ＣＶＡＢＭ之快感补正
-	;～感觉ＬＶや淫～系之素質によって对象之技巧やＬＶやＨ氛围で之マイナス修正が无视されます
+	;CVABM之快感补正
+	;～感觉LVや淫～系之素質によって对象之技巧やLVやＨ氛围で之マイナス修正が无视されます
 	FOR LCOUNT, 0, 5
 		VARSET LOCAL
 		LOCAL += TALENT:ARG:承认快感*20 + STATE("魅强术", PLAYER)*10
@@ -3393,7 +3393,7 @@ CASE "调教补正值"
 		LOCAL:2 = MAX(-50, (ABL:PLAYER:技巧 - ABL:ARG:技巧)*25)
 
 		;EASYモード
-		IF CONFIG("ＥＡＳＹ")
+		IF CONFIG("ＥASＹ")
 			SIF LOCAL < 0
 				LOCAL /= 2
 			LOCAL:1 = MAX(LOCAL:1, 0)
@@ -3411,7 +3411,7 @@ CASE "调教补正值"
 		CASE 1
 			SIF LOCAL:1 > 0 || (LOCAL:1 < 0 && TALENT:ARG:淫壷 == 0)
 				LOCAL += LOCAL:1
-			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:Ｖ感觉 < 5 && TALENT:ARG:Ｖ敏感 == 0)
+			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:V感觉 < 5 && TALENT:ARG:V敏感 == 0)
 				LOCAL += LOCAL:2
 			TCVAR:ARG:601 += LOCAL + TALENT:ARG:淫壷*20 + MARK:ARG:淫紋*10
 		CASE 2
@@ -3423,13 +3423,13 @@ CASE "调教补正值"
 		CASE 3
 			SIF LOCAL:1 > 0 || (LOCAL:1 < 0 && TALENT:ARG:淫乳 == 0)
 				LOCAL += LOCAL:1
-			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:Ｂ感觉 < 5 && TALENT:ARG:Ｂ敏感 == 0)
+			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:B感觉 < 5 && TALENT:ARG:B敏感 == 0)
 				LOCAL += LOCAL:2
 			TCVAR:ARG:617 += LOCAL + TALENT:ARG:淫乳*20
 		CASE 4
 			SIF LOCAL:1 > 0 || (LOCAL:1 < 0 && TALENT:ARG:荡唇 == 0)
 				LOCAL += LOCAL:1
-			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:Ｍ感觉 < 5 && TALENT:ARG:Ｍ敏感 == 0)
+			SIF LOCAL:2 > 0 || (LOCAL:2 < 0 && ABL:ARG:M感觉 < 5 && TALENT:ARG:M敏感 == 0)
 				LOCAL += LOCAL:2
 			TCVAR:ARG:618 += LOCAL + TALENT:ARG:荡唇*20
 		ENDSELECT
@@ -3439,9 +3439,9 @@ CASE "调教补正值"
 		TCVAR:ARG:617 += 50
 	SIF COND("发情期", ARG)
 		TCVAR:ARG:601 += 100
-	;ＶＡ损伤
-	TCVAR:ARG:601 -= 200 * TALENT:ARG:Ｖ损伤
-	TCVAR:ARG:602 -= 200 * TALENT:ARG:Ａ损伤
+	;VA损伤
+	TCVAR:ARG:601 -= 200 * TALENT:ARG:V损伤
+	TCVAR:ARG:602 -= 200 * TALENT:ARG:A损伤
 
 	;快感以外
 	IF TALENT:ARG:魔导人偶
@@ -3480,7 +3480,7 @@ CASE "调教补正值"
 		ENDIF
 	ENDIF
 
-	;逆推ＢＯＮＵＳ
+	;逆推BＯＮＵS
 	IF TEQUIP:ARG:逆推
 		TCVAR:ARG:606 -= 50
 		TCVAR:ARG:609 -= 100
@@ -3490,15 +3490,15 @@ CASE "调教补正值"
 	ENDIF
 
 	;放任生长
-	IF COND("阴毛", ARG) == 7 && CHECK_CLO("Ｖ露出", ARG)
+	IF COND("阴毛", ARG) == 7 && CHECK_CLO("V露出", ARG)
 		TCVAR:ARG:612 += 30
 	;光溜溜
-	ELSEIF COND("阴毛", ARG) >= 2 && COND("阴毛", ARG) <= 3 && CHECK_CLO("Ｖ露出", ARG)
+	ELSEIF COND("阴毛", ARG) >= 2 && COND("阴毛", ARG) <= 3 && CHECK_CLO("V露出", ARG)
 		TCVAR:ARG:612 += 20
 	ENDIF
 
 	;性器穿环
-	SIF CHECK_CLO("Ｖ露出", ARG)
+	SIF CHECK_CLO("V露出", ARG)
 		TCVAR:ARG:612 += TALENT:ARG:阴蒂穿环*20 + TALENT:ARG:阴唇穿环*10
 	SIF CHECK_CLO("乳首露出", ARG)
 		TCVAR:ARG:612 += TALENT:ARG:乳头穿环*10
@@ -3527,8 +3527,8 @@ CASE "调教补正值"
 		TCVAR:ARG:613 -= 200
 	ENDSELECT
 
-	;ＶＡ损伤
-	LOCAL:1 = EXP_GAIN(64, ARG) + EXP_GAIN(65, ARG) + TALENT:ARG:Ｖ损伤 + TALENT:ARG:Ａ损伤
+	;VA损伤
+	LOCAL:1 = EXP_GAIN(64, ARG) + EXP_GAIN(65, ARG) + TALENT:ARG:V损伤 + TALENT:ARG:A损伤
 	IF LOCAL:1
 		LOCAL += LOCAL:1 * 50
 		TCVAR:ARG:609 += LOCAL:1 * 50
@@ -3613,7 +3613,7 @@ CASE "调教补正值"
 		TCVAR:ARG:615 -= 10
 	ENDIF
 
-	;SOURCE:快Ｃ(快Ｃ)～SOURCE:快Ｍ(快Ｍ)之补正值之最終結果
+	;SOURCE:快C(快C)～SOURCE:快M(快M)之补正值之最終結果
 	FOR LCOUNT, 600, 620
 		;マイナスPALAM之ソースは、最低值が-99。其他は、-80
 		SELECTCASE LCOUNT
@@ -3633,30 +3633,30 @@ CASE "调教补正值"
 		TCVAR:ARG:622 -= 10
 	ENDSELECT
 	;阴蒂や乳首之露出、勃起具合。穿环优遇。
-	TCVAR:ARG:620 += CALCF("Ｃ发情", ARG)*5
-	TCVAR:ARG:634 += CALCF("Ｂ发情", ARG)*5
+	TCVAR:ARG:620 += CALCF("C发情", ARG)*5
+	TCVAR:ARG:634 += CALCF("B发情", ARG)*5
 	IF STATE("小根术", PLAYER) && TALENT:ARG:妖精 == 0
-		SIF INSERT("Ｖ插入")
+		SIF INSERT("V插入")
 			TCVAR:ARG:621 -= 30
-		SIF INSERT("Ａ插入")
+		SIF INSERT("A插入")
 			TCVAR:ARG:622 -= 30
 		SIF INSERT("尿道插入")
 			TCVAR:ARG:620 -= 30
 	ENDIF
 	SIF TALENT:ARG:性别 == 1
 		TCVAR:ARG:622 += 20
-	;装饰品效果（ＣＶＡＢＭ强化）
-	SIF TALENT:PLAYER:Ｃ强化 > 0
-		TCVAR:ARG:620 += TALENT:PLAYER:Ｃ强化
-	SIF TALENT:PLAYER:Ｖ强化 > 0
-		TCVAR:ARG:621 += TALENT:PLAYER:Ｖ强化
-	SIF TALENT:PLAYER:Ａ强化 > 0
-		TCVAR:ARG:622 += TALENT:PLAYER:Ａ强化
-	SIF TALENT:PLAYER:Ｂ强化 > 0
-		TCVAR:ARG:634 += TALENT:PLAYER:Ｂ强化
-	SIF TALENT:PLAYER:Ｍ强化 > 0
-		TCVAR:ARG:635 += TALENT:PLAYER:Ｍ强化
-	;～感觉ＬＶや淫～系之素質によって对象之技巧やＬＶなどで之マイナス修正が无视されます
+	;装饰品效果（CVABM强化）
+	SIF TALENT:PLAYER:C强化 > 0
+		TCVAR:ARG:620 += TALENT:PLAYER:C强化
+	SIF TALENT:PLAYER:V强化 > 0
+		TCVAR:ARG:621 += TALENT:PLAYER:V强化
+	SIF TALENT:PLAYER:A强化 > 0
+		TCVAR:ARG:622 += TALENT:PLAYER:A强化
+	SIF TALENT:PLAYER:B强化 > 0
+		TCVAR:ARG:634 += TALENT:PLAYER:B强化
+	SIF TALENT:PLAYER:M强化 > 0
+		TCVAR:ARG:635 += TALENT:PLAYER:M强化
+	;～感觉LVや淫～系之素質によって对象之技巧やLVなどで之マイナス修正が无视されます
 	FOR LCOUNT, 0, 5
 		VARSET LOCAL
 
@@ -3688,11 +3688,11 @@ CASE "调教补正值"
 		;-------------------------------------------------
 		;LVで快感之补正をする（快乐系）
 		;-------------------------------------------------
-		LOCAL:1 = MAX(-100, (ABL:PLAYER:ＬＶ - ABL:ARG:ＬＶ)*10)
+		LOCAL:1 = MAX(-100, (ABL:PLAYER:LV - ABL:ARG:LV)*10)
 
 		;补正がマイナス之时には技巧で緩和
 		IF LOCAL:1 < 0
-			SIF CONFIG("ＥＡＳＹ")
+			SIF CONFIG("ＥASＹ")
 				LOCAL:1 /= 2
 			LOCAL:1 = MIN(LOCAL:1 + ABL:PLAYER:技巧*10, 0)
 		ENDIF
@@ -3704,7 +3704,7 @@ CASE "调教补正值"
 				LOCAL:1 = 0
 			TCVAR:ARG:620 += LOCAL + LOCAL:1
 		CASE 1
-			SIF LOCAL:1 < 0 && (TALENT:ARG:Ｖ敏感 || ABL:ARG:Ｖ感觉 >= 5 || TALENT:ARG:淫壷)
+			SIF LOCAL:1 < 0 && (TALENT:ARG:V敏感 || ABL:ARG:V感觉 >= 5 || TALENT:ARG:淫壷)
 				LOCAL:1 = 0
 			TCVAR:ARG:621 += LOCAL + LOCAL:1
 		CASE 2
@@ -3712,11 +3712,11 @@ CASE "调教补正值"
 				LOCAL:1 = 0
 			TCVAR:ARG:622 += LOCAL + LOCAL:1
 		CASE 3
-			SIF LOCAL:1 < 0 && (TALENT:ARG:Ｂ敏感 || ABL:ARG:Ｂ感觉 >= 5 || TALENT:ARG:淫乳)
+			SIF LOCAL:1 < 0 && (TALENT:ARG:B敏感 || ABL:ARG:B感觉 >= 5 || TALENT:ARG:淫乳)
 				LOCAL:1 = 0
 			TCVAR:ARG:634 += LOCAL + LOCAL:1
 		CASE 4
-			SIF LOCAL:1 < 0 && (TALENT:ARG:Ｍ敏感 || ABL:ARG:Ｍ感觉 >= 5 || TALENT:ARG:荡唇)
+			SIF LOCAL:1 < 0 && (TALENT:ARG:M敏感 || ABL:ARG:M感觉 >= 5 || TALENT:ARG:荡唇)
 				LOCAL:1 = 0
 			TCVAR:ARG:635 += LOCAL + LOCAL:1
 		ENDSELECT
@@ -3933,25 +3933,25 @@ CASE "调教补正值"
 			TCVAR:ARG:633 = 200
 	ENDSELECT
 
-	;逆推or称賛ＢＯＮＵＳ
+	;逆推or称賛BＯＮＵS
 	IF TEQUIP:ARG:逆推 || TEQUIP:ARG:称賛指令から之派生标志
 		TCVAR:ARG:630 -= 100
 		TCVAR:ARG:631 -= 200
 		TCVAR:ARG:633 -= 100
 	ENDIF
 
-	;六九式ＢＯＮＵＳ
+	;六九式BＯＮＵS
 	IF TEQUIP:ARG:六九式
 		TCVAR:ARG:625 += 50
 		TCVAR:ARG:628 += 50
 	ENDIF
 
-	;以下ＳＭ系。Ｍ属性と抖Ｍで色々緩和
-	LOCAL = ABL:ARG:Ｍ属性*5 + TALENT:ARG:抖Ｍ*10
+	;以下SM系。M属性と抖Mで色々緩和
+	LOCAL = ABL:ARG:M属性*5 + TALENT:ARG:抖M*10
 	;眼罩
 	IF TEQUIP:ARG:眼罩
 		TCVAR:ARG:624 += LOCAL - 10
-		TCVAR:ARG:625 += ABL:ARG:Ｍ属性*5
+		TCVAR:ARG:625 += ABL:ARG:M属性*5
 		TCVAR:ARG:626 += 20
 		TCVAR:ARG:627 -= 50
 		TCVAR:ARG:630 += 20
@@ -3990,7 +3990,7 @@ CASE "调教补正值"
 			LOCAL:1 += 30
 
 		TCVAR:ARG:624 -= 30 + LOCAL:1/2 - LOCAL
-		TCVAR:ARG:625 += ABL:ARG:Ｍ属性*5
+		TCVAR:ARG:625 += ABL:ARG:M属性*5
 		TCVAR:ARG:626 += LOCAL:1
 		TCVAR:ARG:627 -= LOCAL:1
 		TCVAR:ARG:630 += LOCAL:1
@@ -3999,7 +3999,7 @@ CASE "调教补正值"
 	;口枷
 	IF TEQUIP:ARG:口枷
 		TCVAR:ARG:624 -= 20 - LOCAL
-		TCVAR:ARG:625 += ABL:ARG:Ｍ属性*5
+		TCVAR:ARG:625 += ABL:ARG:M属性*5
 		TCVAR:ARG:626 += 20
 		TCVAR:ARG:627 -= 10
 		TCVAR:ARG:630 += 10
@@ -4076,7 +4076,7 @@ CASE "调教补正值"
 	CASE 7
 		TCVAR:ARG:630 += 20
 	ENDSELECT
-	;野外PLAY…花園、森林、水边、海はＢＯＮＵＳあり
+	;野外PLAY…花園、森林、水边、海はBＯＮＵSあり
 	IF COND("森林", ARG) || COND("花園", ARG) || COND("水边", ARG) || COND("海", ARG)
 		SIF COND("森林", ARG)
 			TCVAR:ARG:625 += 20
@@ -4186,8 +4186,8 @@ CASE "调教补正值"
 		TCVAR:ARG:633 += 20
 	ENDIF
 
-	;Ｖ润はある程度以上は増えずらい
-	SELECTCASE PALAM:ARG:Ｖ润
+	;V润はある程度以上は増えずらい
+	SELECTCASE PALAM:ARG:V润
 	CASE IS <= 10000
 	CASE IS <= 30000
 		TCVAR:ARG:623 -= 100
@@ -4196,7 +4196,7 @@ CASE "调教补正值"
 	CASE IS <= 100000
 		TCVAR:ARG:623 -= 400
 	ENDSELECT
-	;CUP:快Ｃ(快Ｃ) ～ CUP:快Ｍ(快Ｍ)之补正值之最終結果
+	;CUP:快C(快C) ～ CUP:快M(快M)之补正值之最終結果
 	FOR LCOUNT, 620, 640
 		SELECTCASE LCOUNT
 		CASE 630, 631, 633
@@ -4217,11 +4217,11 @@ CASE "被射敏感"
 		RETURN 0
 
 	;以下でどこに射精される之に弱いかを決める
-	LOCAL:0 = EXP:ARG:饮精経験 * (ABL:ARG:Ｍ感觉 + TALENT:ARG:Ｍ敏感 - TALENT:ARG:Ｍ钝感 + TALENT:ARG:荡唇*2)
-	LOCAL:1 = EXP:ARG:膣内精液経験 * (ABL:ARG:Ｖ感觉 + TALENT:ARG:Ｖ敏感 - TALENT:ARG:Ｖ钝感 + TALENT:ARG:淫壷*2)
-	LOCAL:2 = EXP:ARG:肛内精液経験 * (ABL:ARG:A感觉 + TALENT:ARG:A敏感 - TALENT:ARG:Ａ钝感 + TALENT:ARG:尻穴狂*2)
+	LOCAL:0 = EXP:ARG:饮精経験 * (ABL:ARG:M感觉 + TALENT:ARG:M敏感 - TALENT:ARG:M钝感 + TALENT:ARG:荡唇*2)
+	LOCAL:1 = EXP:ARG:膣内精液経験 * (ABL:ARG:V感觉 + TALENT:ARG:V敏感 - TALENT:ARG:V钝感 + TALENT:ARG:淫壷*2)
+	LOCAL:2 = EXP:ARG:肛内精液経験 * (ABL:ARG:A感觉 + TALENT:ARG:A敏感 - TALENT:ARG:A钝感 + TALENT:ARG:尻穴狂*2)
 	;以下は难易度高い之でサービスとして他よりもなりやすい
-	LOCAL:3 = EXP:ARG:乳内精液経験 * 10 * (ABL:ARG:Ｂ感觉 + TALENT:ARG:Ｂ敏感 - TALENT:ARG:Ｂ钝感 + TALENT:ARG:淫乳*2)
+	LOCAL:3 = EXP:ARG:乳内精液経験 * 10 * (ABL:ARG:B感觉 + TALENT:ARG:B敏感 - TALENT:ARG:B钝感 + TALENT:ARG:淫乳*2)
 	LOCAL:4 = EXP:ARG:膀胱精液経験 * 5 * TALENT:ARG:尿道性感
 	;上之パ回合之うち最大之值をセット
 	LOCAL:9 = MAX(LOCAL:0, LOCAL:1, LOCAL:2, LOCAL:3, LOCAL:4)
@@ -4243,11 +4243,11 @@ CASE "被射敏感部位之变化"
 		RETURN 0
 
 	;以下でどこに射精される之に弱いかを決める
-	;ＶＡ以外之部位はサービスとして他よりもなりやすい
-	LOCAL:0 = EXP:ARG:饮精経験 * 3 * (ABL:ARG:Ｍ感觉 + TALENT:ARG:Ｍ敏感 - TALENT:ARG:Ｍ钝感 + TALENT:ARG:荡唇*2)
-	LOCAL:1 = EXP:ARG:膣内精液経験 * (ABL:ARG:Ｖ感觉 + TALENT:ARG:Ｖ敏感 - TALENT:ARG:Ｖ钝感 + TALENT:ARG:淫壷*2 + MARK:ARG:淫紋)
-	LOCAL:2 = EXP:ARG:肛内精液経験 * (ABL:ARG:A感觉 + TALENT:ARG:A敏感 - TALENT:ARG:Ａ钝感 + TALENT:ARG:尻穴狂*2)
-	LOCAL:3 = EXP:ARG:乳内精液経験 * 10 * (ABL:ARG:Ｂ感觉 + TALENT:ARG:Ｂ敏感 - TALENT:ARG:Ｂ钝感 + TALENT:ARG:淫乳*2)
+	;VA以外之部位はサービスとして他よりもなりやすい
+	LOCAL:0 = EXP:ARG:饮精経験 * 3 * (ABL:ARG:M感觉 + TALENT:ARG:M敏感 - TALENT:ARG:M钝感 + TALENT:ARG:荡唇*2)
+	LOCAL:1 = EXP:ARG:膣内精液経験 * (ABL:ARG:V感觉 + TALENT:ARG:V敏感 - TALENT:ARG:V钝感 + TALENT:ARG:淫壷*2 + MARK:ARG:淫紋)
+	LOCAL:2 = EXP:ARG:肛内精液経験 * (ABL:ARG:A感觉 + TALENT:ARG:A敏感 - TALENT:ARG:A钝感 + TALENT:ARG:尻穴狂*2)
+	LOCAL:3 = EXP:ARG:乳内精液経験 * 10 * (ABL:ARG:B感觉 + TALENT:ARG:B敏感 - TALENT:ARG:B钝感 + TALENT:ARG:淫乳*2)
 	LOCAL:4 = EXP:ARG:膀胱精液経験 * 5 * TALENT:ARG:尿道性感
 	;上之パ回合之うち最大之值をセット
 	LOCAL:9 = MAX(LOCAL:0, LOCAL:1, LOCAL:2, LOCAL:3, LOCAL:4)
@@ -4280,19 +4280,19 @@ CASE "中意的体位"
 	ENDIF
 	;bitで管理する
 	;0正常位, 1后背位, 2屈曲位, 3对面座位, 4背面座位, 5奉仕骑乘位, 6逆推骑乘位, 9特になし
-	;10～16はＡ体位, 19黒桃Ａ, 20～26は尿道体位
+	;10～16はA体位, 19黒桃A, 20～26は尿道体位
 
 	VARSET LOCAL
 
 	;初期設定
-	IF TALENT:ARG:中意的体位 == 0 && MAX(EXP:ARG:Ｖ性交経験, EXP:ARG:Ａ性交経験, EXP:ARG:腰技経験) >= 10
+	IF TALENT:ARG:中意的体位 == 0 && MAX(EXP:ARG:V性交経験, EXP:ARG:A性交経験, EXP:ARG:腰技経験) >= 10
 		LOCAL:0 = TALENT:ARG:清纯 + TALENT:ARG:坦率 + TALENT:ARG:优雅
 		LOCAL:1 = TALENT:ARG:好色 + TALENT:ARG:粗野
 		LOCAL:2 = TALENT:ARG:低姿态
 		LOCAL:3 = TALENT:ARG:内向 + TALENT:ARG:胆怯
 		LOCAL:4 = TALENT:ARG:开朗
 		LOCAL:5 = TALENT:ARG:坏心眼 + TALENT:ARG:献身
-		LOCAL:6 = TALENT:ARG:好色 + TALENT:ARG:强硬 + TALENT:ARG:抖Ｓ + TALENT:ARG:傲慢
+		LOCAL:6 = TALENT:ARG:好色 + TALENT:ARG:强硬 + TALENT:ARG:抖S + TALENT:ARG:傲慢
 		LOCAL:9 = TALENT:ARG:阴郁 + TALENT:ARG:冷静
 		SIF ABL:ARG:百合属性 >= 3
 			LOCAL:19 = TALENT:ARG:通吃 + TALENT:ARG:嫌恶性别男
@@ -4304,7 +4304,7 @@ CASE "中意的体位"
 			RETURN 0
 		ENDIF
 
-		SIF ABL:ARG:A感觉 > MAX(ABL:ARG:Ｖ感觉, 2)
+		SIF ABL:ARG:A感觉 > MAX(ABL:ARG:V感觉, 2)
 			LOCAL:10 = 10
 
 		SELECTCASE LOCAL:90
@@ -4341,7 +4341,7 @@ CASE "中意的体位"
 		LOCAL:14 = NUM_STR(CSTR:ARG:2, "肛交背面座位")
 		LOCAL:15 = NUM_STR(CSTR:ARG:2, "肛交骑乘位")
 		LOCAL:16 = NUM_STR(CSTR:ARG:2, "逆推肛交骑乘位")
-		LOCAL:19 = NUM_STR(CSTR:ARG:2, "黒桃Ａ")
+		LOCAL:19 = NUM_STR(CSTR:ARG:2, "黒桃A")
 		LOCAL:20 = NUM_STR(CSTR:ARG:2, "尿道插入")
 		LOCAL:26 = NUM_STR(CSTR:ARG:2, "逆推尿道骑乘位")
 		;今まで之中意的体位之ポイントは？
@@ -4369,7 +4369,7 @@ CASE "中意的体位"
 		;PRINTFORML LOCAL:30 = {LOCAL:30}, LOCAL:40 = {LOCAL:40}, LOCAL:41 = {LOCAL:41}, 
 		;10以上、今まで之中意的体位之ポイント之最大值を上回っていると中意的体位が变化する
 		IF LOCAL:(LOCAL:40) - 10 >= LOCAL:30
-			;(正常位～奉仕骑乘位)、逆推骑乘位、(Ａ正常位～Ａ奉仕骑乘位)、逆推Ａ骑乘位、磨镜 之中から上位二つを選ぶ
+			;(正常位～奉仕骑乘位)、逆推骑乘位、(A正常位～A奉仕骑乘位)、逆推A骑乘位、磨镜 之中から上位二つを選ぶ
 			TALENT:ARG:中意的体位 = 0
 			SETBIT TALENT:ARG:中意的体位, LOCAL:40
 
@@ -4431,8 +4431,8 @@ CASE "每天之阴毛＆腋毛处理"
 		ENDSELECT
 	;剃るなと指示されていない
 	ELSE
-		;抖Ｍッ气や露阴癖が高いと、たま～に光溜溜にします
-		IF COND("阴毛", ARG) >= 4 && RAND:30 == 0 && MAX(ABL:ARG:露阴癖 - 1, ABL:ARG:Ｍ属性) >= 3
+		;抖Mッ气や露阴癖が高いと、たま～に光溜溜にします
+		IF COND("阴毛", ARG) >= 4 && RAND:30 == 0 && MAX(ABL:ARG:露阴癖 - 1, ABL:ARG:M属性) >= 3
 			BASE:ARG:阴毛 = 300
 			;PRINTFORMW %CALLNAME:ARG%的阴毛被剃得光溜溜地……
 		;食い込んでいる衣装之时には剃り整えます
@@ -4530,7 +4530,7 @@ CASE "妖精化"
 	TALENT:ARG:高大 = 0
 	TALENT:ARG:娇小 = 1
 	TALENT:ARG:妖精 = 1
-	CALL CALC, "ＢＷＨ计測", ARG
+	CALL CALC, "BＷＨ计測", ARG
 CASE "娇小化"
 	LOCAL = 125 + RAND:10 + RAND:6 + RAND:6
 	SIF TALENT:ARG:幼稚
@@ -4544,7 +4544,7 @@ CASE "娇小化"
 	TALENT:ARG:高大 = 0
 	TALENT:ARG:娇小 = 1
 	TALENT:ARG:妖精 = 0
-	CALL CALC, "ＢＷＨ计測", ARG
+	CALL CALC, "BＷＨ计測", ARG
 CASE "普通体型化"
 	LOCAL = 145 + RAND:11 + RAND:5 + RAND:5
 	SELECTCASE BASE:ARG:身长
@@ -4557,13 +4557,13 @@ CASE "普通体型化"
 	ENDSELECT
 	TALENT:ARG:高大 = 0
 	TALENT:ARG:娇小 = 0
-	CALL CALC, "ＢＷＨ计測", ARG
+	CALL CALC, "BＷＨ计測", ARG
 CASE "高大化"
 	BASE:ARG:身长 = MAX(164 + RAND:9 + RAND:9, BASE:ARG:身长 + 10)
 	TALENT:ARG:高大 = 1
 	TALENT:ARG:娇小 = 0
-	CALL CALC, "ＢＷＨ计測", ARG
-CASE "ＢＷＨ计測"
+	CALL CALC, "BＷＨ计測", ARG
+CASE "BＷＨ计測"
 	VARSET LOCAL
 	;ゴールデンカノン (胸部 = 身长*0.54, 腰部 = 身长*0.38, 臀部 = 身长*0.54)を参考
 	;ちなみに、ゴールデンカノン比は当然同时”腰部は略细で臀部は大きめ”である
@@ -4711,8 +4711,8 @@ CASE "胸部アップ"
 
 	VARSET LOCAL
 	LOCAL:2 = CALCF("胸部罩杯", CALCF("胸部罩杯计算值", TARGET) )
-	;今回得た快Ｂ之珠之量で成果が決まる
-	LOCAL = GOTJUEL:快Ｂ * TALENT:将来性 / 100
+	;今回得た快B之珠之量で成果が決まる
+	LOCAL = GOTJUEL:快B * TALENT:将来性 / 100
 	SELECTCASE LOCAL
 	CASE 0
 		RETURN 0
@@ -4845,11 +4845,11 @@ CASE "尿道扩张之壁"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 
-	;だいたいＰ尿道は15mm、Ｖ尿道は30mmぐらいが壁
+	;だいたいＰ尿道は15mm、V尿道は30mmぐらいが壁
 	IF PENIS(ARG)
 		LOCAL = (2) * MIN_STR(CONDS("Ｐ尿道之初期扩张度", ARG) ) + SIZE("基本阴茎サイズ", ARG)*3
 	ELSE
-		LOCAL = (2) * MIN_STR(CONDS("Ｖ尿道之初期扩张度", ARG) ) + BASE:ARG:身长/30
+		LOCAL = (2) * MIN_STR(CONDS("V尿道之初期扩张度", ARG) ) + BASE:ARG:身长/30
 	ENDIF
 	RETURNF LOCAL
 CASE "尿道扩张之限界"
@@ -4858,11 +4858,11 @@ CASE "尿道扩张之限界"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 
-	;だいたいＰ尿道は25mm、Ｖ尿道は40mmぐらいが壁
+	;だいたいＰ尿道は25mm、V尿道は40mmぐらいが壁
 	IF PENIS(ARG)
 		LOCAL = (3) * MIN_STR(CONDS("Ｐ尿道之初期扩张度", ARG) ) + SIZE("基本阴茎サイズ", ARG)*6
 	ELSE
-		LOCAL = (3) * MIN_STR(CONDS("Ｖ尿道之初期扩张度", ARG) ) + BASE:ARG:身长/15
+		LOCAL = (3) * MIN_STR(CONDS("V尿道之初期扩张度", ARG) ) + BASE:ARG:身长/15
 	ENDIF
 	RETURNF LOCAL
 CASE "阴茎观察"
@@ -4913,7 +4913,7 @@ CASE "百合・男同度"
 	CASE 161, 504
 		RETURNF 7
 	ENDSELECT
-CASE "Ｖ扩张之上限"
+CASE "V扩张之上限"
 	SIF ARG < 0
 		RETURNF 0
 	SIF ARG == 0 && TARGET
@@ -4923,8 +4923,8 @@ CASE "Ｖ扩张之上限"
 	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女
 		RETURNF 0
 
-	;V扩张经验、Ｖ破壊経験、娇小でない、生产经历などで判定。
-	;Ｖ活用LV之方も同时に用いることが多い。
+	;V扩张经验、V破壊経験、娇小でない、生产经历などで判定。
+	;V活用LV之方も同时に用いることが多い。
 
 	LOCAL = 1 + MIN(GET_EXP_LV(EXP:ARG:V扩张经验), 6)
 	;娇小なら-1
@@ -4937,7 +4937,7 @@ CASE "Ｖ扩张之上限"
 	;好色
 	;SIF TALENT:ARG:好色 && LOCAL < 2
 	;	LOCAL += 1
-	;V经验が多くて、Ｖ扩张LVが２未满なら+1
+	;V经验が多くて、V扩张LVが２未满なら+1
 	SIF EXP:ARG:V经验 >= 100 && LOCAL < 2
 		LOCAL += 1
 	SIF EXP:ARG:V经验 >= 300 && LOCAL < 2
@@ -4945,7 +4945,7 @@ CASE "Ｖ扩张之上限"
 	SIF EXP:ARG:V经验 >= 50 && LOCAL <= 0
 		LOCAL += 1
 
-CASE "Ａ扩张之上限"
+CASE "A扩张之上限"
 	SIF ARG < 0
 		RETURNF 0
 	SIF ARG == 0 && TARGET
@@ -4953,7 +4953,7 @@ CASE "Ａ扩张之上限"
 
 	LOCAL = LIMIT(GET_EXP_LV(EXP:ARG:A扩张经验) - 1, 0, 6)
 
-	;A经验が多いと、扩张経験无でもＡ扩张LVが２まで獲得可能
+	;A经验が多いと、扩张経験无でもA扩张LVが２まで獲得可能
 	SIF EXP:ARG:A经验 >= 50
 		LOCAL += 1
 	SIF EXP:ARG:A经验 >= 150 || EXP:ARG:A扩张经验 >= 5
@@ -4965,8 +4965,8 @@ CASE "Ａ扩张之上限"
 	;好色
 	;SIF TALENT:ARG:好色 && LOCAL < 2
 	;	LOCAL += 1
-	;SIF EXP:ARG:Ａ损伤経験 - TALENT:ARG:Ａ损伤 > 0
-	;	LOCAL += 1 + MIN(2, (EXP:ARG:Ａ损伤経験 - TALENT:ARG:Ａ损伤)/3)
+	;SIF EXP:ARG:A损伤経験 - TALENT:ARG:A损伤 > 0
+	;	LOCAL += 1 + MIN(2, (EXP:ARG:A损伤経験 - TALENT:ARG:A损伤)/3)
 	;娇小なら扩张が停滞する
 	IF TALENT:ARG:娇小
 		SIF LOCAL >= 3
@@ -4991,7 +4991,7 @@ CASE "尿道刺激"
 	CASEELSE
 		LOCAL = 2500
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 200
 	SIF TALENT:C敏感
 		LOCAL += 200
@@ -5015,7 +5015,7 @@ CASE "尿道刺激"
 	ENDSELECT
 	SIF ARG:1
 		LOCAL = LOCAL * ARG:1 / 100
-CASE "Ｃ刺激"
+CASE "C刺激"
 	SELECTCASE ABL:C感觉
 	CASE 0
 		LOCAL = 100
@@ -5030,7 +5030,7 @@ CASE "Ｃ刺激"
 	CASEELSE
 		LOCAL = 8000
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 500
 	SIF TALENT:C敏感
 		LOCAL += 500
@@ -5052,37 +5052,37 @@ CASE "Ｃ刺激"
 	ENDSELECT
 	SIF ARG:1
 		LOCAL = LOCAL * ARG:1 / 100
-CASE "Ｖ刺激"
-	SELECTCASE ABL:Ｖ感觉
+CASE "V刺激"
+	SELECTCASE ABL:V感觉
 	CASE 0
 		LOCAL = 100
 	CASE 1 TO 2
-		LOCAL = 300*ABL:Ｖ感觉
+		LOCAL = 300*ABL:V感觉
 	CASE 3 TO 5
-		LOCAL = 500*ABL:Ｖ感觉
+		LOCAL = 500*ABL:V感觉
 	CASE 6 TO 8
-		LOCAL = 600*ABL:Ｖ感觉
+		LOCAL = 600*ABL:V感觉
 	CASE 9
 		LOCAL = 6000
 	CASEELSE
 		LOCAL = 8000
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 500
-	SIF TALENT:Ｖ敏感
+	SIF TALENT:V敏感
 		LOCAL += 500
 	SELECTCASE ARG
 	;道具之使用（基本值）
 	CASE 0
 	;舌や指などで刺激(緩やかな上升)
 	CASE 1
-		LOCAL = MULTIPLY(LOCAL, 30 + ABL:Ｖ感觉*10)
+		LOCAL = MULTIPLY(LOCAL, 30 + ABL:V感觉*10)
 	;性爱や按摩棒など(急激な上升)
 	CASE 2
-		LOCAL = MULTIPLY(LOCAL, 20 + ABL:Ｖ感觉*20)
+		LOCAL = MULTIPLY(LOCAL, 20 + ABL:V感觉*20)
 	;拳交、龙奸など上级者向け(極端な上升)
 	CASE 3
-		LOCAL = MULTIPLY(LOCAL, MAX(ABL:Ｖ感觉*30 - 100, (ABL:Ｖ感觉 + 1)*5) )
+		LOCAL = MULTIPLY(LOCAL, MAX(ABL:V感觉*30 - 100, (ABL:V感觉 + 1)*5) )
 	ENDSELECT
 	SIF ARG:1
 		LOCAL = LOCAL * ARG:1 / 100
@@ -5101,7 +5101,7 @@ CASE "刺激肛门"
 	CASEELSE
 		LOCAL = 8000
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 500
 	SIF TALENT:A敏感
 		LOCAL += 500
@@ -5120,65 +5120,65 @@ CASE "刺激肛门"
 	ENDSELECT
 	SIF ARG:1
 		LOCAL = LOCAL * ARG:1 / 100
-CASE "Ｂ刺激"
-	SELECTCASE ABL:Ｂ感觉
+CASE "B刺激"
+	SELECTCASE ABL:B感觉
 	CASE 0
 		LOCAL = 100
 	CASE 1 TO 2
-		LOCAL = 300*ABL:Ｂ感觉
+		LOCAL = 300*ABL:B感觉
 	CASE 3 TO 5
-		LOCAL = 500*ABL:Ｂ感觉
+		LOCAL = 500*ABL:B感觉
 	CASE 6 TO 8
-		LOCAL = 600*ABL:Ｂ感觉
+		LOCAL = 600*ABL:B感觉
 	CASE 9
 		LOCAL = 6000
 	CASEELSE
 		LOCAL = 8000
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 500
-	SIF TALENT:Ｂ敏感
+	SIF TALENT:B敏感
 		LOCAL += 500
 	SELECTCASE ARG
 	;道具之使用（基本值）
 	CASE 0
 	;舌や指などで刺激(緩やかな上升)
 	CASE 1
-		LOCAL = MULTIPLY(LOCAL, 30 + ABL:Ｂ感觉*10)
+		LOCAL = MULTIPLY(LOCAL, 30 + ABL:B感觉*10)
 	;乳交など(刺激は副産物。弱め)
 	CASE 2
 		LOCAL = MULTIPLY(LOCAL, 30)
 	;性爱や按摩棒など(急激な上升)
 	CASE 3
-		LOCAL = MULTIPLY(LOCAL, 20 + ABL:Ｂ感觉*20)
+		LOCAL = MULTIPLY(LOCAL, 20 + ABL:B感觉*20)
 	ENDSELECT
 	SIF ARG:1
 		LOCAL = LOCAL * ARG:1 / 100
-CASE "Ｍ刺激"
-	SELECTCASE ABL:Ｍ感觉
+CASE "M刺激"
+	SELECTCASE ABL:M感觉
 	CASE 0
 		LOCAL = 100
 	CASE 1 TO 2
-		LOCAL = 300*ABL:Ｍ感觉
+		LOCAL = 300*ABL:M感觉
 	CASE 3 TO 5
-		LOCAL = 500*ABL:Ｍ感觉
+		LOCAL = 500*ABL:M感觉
 	CASE 6 TO 8
-		LOCAL = 600*ABL:Ｍ感觉
+		LOCAL = 600*ABL:M感觉
 	CASE 9
 		LOCAL = 6000
 	CASEELSE
 		LOCAL = 8000
 	ENDSELECT
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		LOCAL += 500
-	SIF TALENT:Ｍ敏感
+	SIF TALENT:M敏感
 		LOCAL += 500
 	SELECTCASE ARG
 	;道具之使用（基本值）
 	CASE 0
 	;接吻(緩やかな上升)
 	CASE 1
-		LOCAL = MULTIPLY(LOCAL, 30 + ABL:Ｍ感觉*10)
+		LOCAL = MULTIPLY(LOCAL, 30 + ABL:M感觉*10)
 	;口交など(刺激は副産物。弱め)
 	CASE 2
 		LOCAL = MULTIPLY(LOCAL, 30)
@@ -5206,17 +5206,17 @@ CASE "快感上升之上限措置"
 	;敏感,钝感,特化素質补正
 	ARG:1 = MAX(ARG:1 + ARG:2, 0)
 
-	;媚药ＢＯＮＵＳ
+	;媚药BＯＮＵS
 	IF TEQUIP:媚药
 		ARG:1 += MAX(TEQUIP:媚药/100, 1)
 		ARG:2 += TEQUIP:媚药/300
 	ENDIF
 
-	;对象之弱点をついている场合は、ＬＶが５以上違っていればＢＯＮＵＳ！
-	SIF ABL:PLAYER:ＬＶ - ABL:ＬＶ >= 5 && ARG:2 > 0
-		ARG:1 += (ABL:PLAYER:ＬＶ - ABL:ＬＶ)/5
+	;对象之弱点をついている场合は、LVが５以上違っていればBＯＮＵS！
+	SIF ABL:PLAYER:LV - ABL:LV >= 5 && ARG:2 > 0
+		ARG:1 += (ABL:PLAYER:LV - ABL:LV)/5
 
-	;弱点突いている场合には绝顶补正ＢＯＮＵＳ
+	;弱点突いている场合には绝顶补正BＯＮＵS
 	IF ARG:1 <= 0 && ARG:2 > 0
 		ARG:1 = 0
 		SIF EX:绝顶数合计
@@ -5320,8 +5320,8 @@ CASE "快乐补正"
 			ARG = MULTIPLY(ARG, 100 + LOCAL:1/2)
 	ENDSELECT
 
-	;ABL:Ｓ属性とEXP:嗜虐快乐経験をみる
-	LOCAL:1 = MIN(ABL:Ｓ属性*10 + EXP:嗜虐快乐経験/20 + TALENT:抖Ｓ*30, 100)
+	;ABL:S属性とEXP:嗜虐快乐経験をみる
+	LOCAL:1 = MIN(ABL:S属性*10 + EXP:嗜虐快乐経験/20 + TALENT:抖S*30, 100)
 	SELECTCASE SELECTCOM
 	CASE 95, 105
 		ARG = MULTIPLY(ARG, 100 + LOCAL:1)
@@ -5355,13 +5355,13 @@ CASE "基礎补正"
 		LOCAL += (ABL:技巧 + (TEQUIP:逆推 > 0) - ABL:PLAYER:技巧)*20
 	ENDIF
 	;LV之差などによる补正
-	IF ABL:ＬＶ > ABL:PLAYER:ＬＶ
-		LOCAL += (ABL:ＬＶ - ABL:PLAYER:ＬＶ)*10
+	IF ABL:LV > ABL:PLAYER:LV
+		LOCAL += (ABL:LV - ABL:PLAYER:LV)*10
 	ELSE
-		LOCAL += (ABL:ＬＶ - ABL:PLAYER:ＬＶ)*5
+		LOCAL += (ABL:LV - ABL:PLAYER:LV)*5
 	ENDIF
 
-	SIF LOCAL > 0 && CONFIG("ＥＡＳＹ")
+	SIF LOCAL > 0 && CONFIG("ＥASＹ")
 		LOCAL /= 3
 
 	;媚药
@@ -5393,13 +5393,13 @@ CASE "基礎补正"
 		
 		IF TALENT:相思相爱
 			TIMES ARG, 2.00
-			;３分之一にも达していないなら、さらにＢＯＮＵＳ
+			;３分之一にも达していないなら、さらにBＯＮＵS
 			SIF ARG*3 < MAXBASE:PLAYER:绝顶
 				ARG += MAXBASE:PLAYER:绝顶 / 5
 		ELSEIF TALENT:偏爱
 			SIF TALENT:偏爱
 				TIMES ARG, 1.20
-			;５分之一にも达していないなら、さらにＢＯＮＵＳ
+			;５分之一にも达していないなら、さらにBＯＮＵS
 			SIF ARG*5 < MAXBASE:PLAYER:绝顶
 				ARG += MAXBASE:PLAYER:绝顶 / 8
 		ENDIF
@@ -5418,7 +5418,7 @@ CASE "基礎补正"
 				SIF COND("性癖：尿道", MASTER)
 					LOCAL += 1
 			ENDSELECT
-			;ヒット数に应じてＢＯＮＵＳ
+			;ヒット数に应じてBＯＮＵS
 			SELECTCASE LOCAL
 			CASE 1
 				ARG += (ARG*10)/100 + 2000
@@ -5475,15 +5475,15 @@ CASE "实行值による欲情追加"
 		LOCALS = 奉仕精神
 	;嗜虐中心
 	ELSEIF GETBIT(TCVAR:29, 3)
-		LOCALS = Ｓ属性
+		LOCALS = S属性
 	ELSEIF GETBIT(TCVAR:29, 0) && GETBIT(TCVAR:29, 2)
 		LOCALS = 奉仕精神
-		SIF ABL:Ｓ属性 > ABL:奉仕精神
-			LOCALS = Ｓ属性
+		SIF ABL:S属性 > ABL:奉仕精神
+			LOCALS = S属性
 	ELSEIF GETBIT(TCVAR:29, 0)
 		LOCALS = 奉仕精神
 	ELSEIF GETBIT(TCVAR:29, 2)
-		LOCALS = Ｓ属性
+		LOCALS = S属性
 	ELSE
 		RETURNF 0
 	ENDIF
@@ -5508,9 +5508,9 @@ CASE "实行值による欲情追加"
 	;TARGETとPLAYER之性别により参照するABLが变わる。PLAYERに阴茎ありなら精液成瘾。
 	IF PENIS(PLAYER)
 		LOCALS:1 = 精液成瘾
-	;女性に男が奉仕なら抖Ｍッ气
+	;女性に男が奉仕なら抖Mッ气
 	ELSEIF TALENT:性别 == 1
-		LOCALS:1 = Ｍ属性
+		LOCALS:1 = M属性
 	;女同士なら百合ッ气
 	ELSE
 		LOCALS:1 = 百合属性
@@ -5542,7 +5542,7 @@ CASE "阴茎喜欢度";剔除成性交喜好度
 		LOCAL += 1
 	SIF TALENT:ARG:淫壷 || TALENT:ARG:尻穴狂
 		LOCAL += 1
-CASE "Ｃ发情"
+CASE "C发情"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	;0通常 1皮之下で勃起 2顔を出す 3ギンギン
@@ -5555,7 +5555,7 @@ CASE "Ｃ发情"
 		LOCAL += 1
 	SIF TALENT:ARG:阴蒂穿环
 		LOCAL = MAX(LOCAL + 1, 2)
-CASE "Ｖ发情"
+CASE "V发情"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	;0通常 1发情 2ビショビショ 3爱液駄々漏れ
@@ -5564,14 +5564,14 @@ CASE "Ｖ发情"
 	;欲情(媚药)
 	SIF PALAM:ARG:欲情 >= 10000 || TEQUIP:ARG:媚药
 		LOCAL += 1
-	SIF ABL:ARG:Ｖ感觉 >= 3 && PALAM:ARG:欲情 >= 3000
+	SIF ABL:ARG:V感觉 >= 3 && PALAM:ARG:欲情 >= 3000
 		LOCAL += 1
 	;绝顶
-	SIF EX:ARG:Ｖ绝顶 || EX:ARG:绝顶数合计 >= 3
+	SIF EX:ARG:V绝顶 || EX:ARG:绝顶数合计 >= 3
 		LOCAL += 1
-	SIF EX:ARG:Ｖ绝顶 >= 3 || EX:ARG:绝顶数合计 >= 10
+	SIF EX:ARG:V绝顶 >= 3 || EX:ARG:绝顶数合计 >= 10
 		LOCAL += 1
-CASE "Ｂ发情"
+CASE "B发情"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	;0通常 1しこりはじめ 2勃起 3ギンギン
@@ -5580,7 +5580,7 @@ CASE "Ｂ发情"
 	;欲情(媚药)
 	SIF PALAM:ARG:欲情 >= 10000 || TEQUIP:ARG:媚药
 		LOCAL += 1
-	SIF ABL:ARG:Ｂ感觉 >= 3 && PALAM:ARG:欲情 >= 3000
+	SIF ABL:ARG:B感觉 >= 3 && PALAM:ARG:欲情 >= 3000
 		LOCAL += 1
 CASE "绝顶"
 	;射精条件を满たしているか？
@@ -5629,11 +5629,11 @@ CASE "绝顶之原因"
 	IF PENIS(PLAYER) == 0
 		LOCAL = 30
 
-		;调教者Ｖ插入
-		IF INSERT("Ｖ插入", PLAYER, ARG)
+		;调教者V插入
+		IF INSERT("V插入", PLAYER, ARG)
 			LOCAL = 32
-		;调教者Ａ插入
-		ELSEIF INSERT("Ａ插入", PLAYER, ARG)
+		;调教者A插入
+		ELSEIF INSERT("A插入", PLAYER, ARG)
 			LOCAL = 35
 		;自慰
 		ELSEIF TEQUIP:PLAYER:自慰
@@ -5643,7 +5643,7 @@ CASE "绝顶之原因"
 			;接吻、舐阴、舐肛など、口へ之刺激
 			CASE 1, 4, 6, 9, 104
 				LOCAL = 31
-			;舐阴强制や逆强暴など、Ｖへ之刺激
+			;舐阴强制や逆强暴など、Vへ之刺激
 			CASE 80, 98, 120 TO 124
 				LOCAL = 32
 			;足交系
@@ -5664,20 +5664,20 @@ CASE "绝顶之原因"
 		;不慮之射精之场合は素股(身体)で射精となるようにする
 		LOCAL = 7
 
-		;Ｖ插入
-		IF INSERT("Ｖ插入", ARG, PLAYER)
+		;V插入
+		IF INSERT("V插入", ARG, PLAYER)
 			LOCAL = 3
-		;Ａ插入
-		ELSEIF INSERT("Ａ插入", ARG, PLAYER)
+		;A插入
+		ELSEIF INSERT("A插入", ARG, PLAYER)
 			LOCAL = 4
 		;尿道插入
 		ELSEIF INSERT("尿道插入", ARG, PLAYER)
 			LOCAL = 19
-		;调教者Ｖ插入
-		ELSEIF INSERT("Ｖ插入", PLAYER, ARG)
+		;调教者V插入
+		ELSEIF INSERT("V插入", PLAYER, ARG)
 			LOCAL = 10
-		;调教者Ａ插入
-		ELSEIF INSERT("Ａ插入", PLAYER, ARG)
+		;调教者A插入
+		ELSEIF INSERT("A插入", PLAYER, ARG)
 			LOCAL = 11
 		;自慰
 		ELSEIF TEQUIP:PLAYER:自慰
@@ -5712,7 +5712,7 @@ CASE "绝顶之原因"
 			;性爱
 			CASE 60 TO 69, 177
 				LOCAL = 3
-			;Ａ性爱
+			;A性爱
 			CASE 70 TO 79
 				LOCAL = 4
 			;胸系
@@ -5742,10 +5742,10 @@ CASE "绝顶之原因"
 			;逆舐阴
 			CASE 98
 				LOCAL = 9
-			;调教者Ｖ插入
+			;调教者V插入
 			CASE 120 TO 124
 				LOCAL = 10
-			;调教者Ａ插入
+			;调教者A插入
 			CASE 125 TO 129
 				LOCAL = 11
 			;逆龙奸
@@ -5813,7 +5813,7 @@ CASE "精液好き度"
 	LOCAL = (TCVAR:28 + 30) / 20
 CASE "漏尿"
 	;だいたい、值が5以上だと漏尿してしまう
-	;射精したor绝顶して无いor尿意が无いor性别男orＶ扩张扩张气囊
+	;射精したor绝顶して无いor尿意が无いor性别男orV扩张扩张气囊
 	SIF NOWEX:ARG:射精 || NOWEX:ARG:绝顶数合计 == 0 || BASE:ARG:尿意 < 1000 || TALENT:ARG:性别 == 1 || TEQUIP:ARG:扩张扩张气囊 == 1 || COND("尿道使用中", ARG)
 		RETURNF 0
 	SIF GETBIT(TEQUIP:ARG:肌肉松弛剂, 1) == 0 && ABL:ARG:尿道扩张 < 0 && TALENT:ARG:漏尿癖 == 0 && BASE:ARG:尿意 < 10000
@@ -5825,7 +5825,7 @@ CASE "漏尿"
 		LOCAL += 1
 	SIF BASE:ARG:气力 <= 0
 		LOCAL += 1
-	SIF MAX(EX:ARG:Ｃ绝顶, EX:ARG:Ｖ绝顶, EX:ARG:Ａ绝顶, EX:ARG:尿道绝顶) >= 20
+	SIF MAX(EX:ARG:C绝顶, EX:ARG:V绝顶, EX:ARG:A绝顶, EX:ARG:尿道绝顶) >= 20
 		LOCAL += 1
 	IF NOWEX:ARG:绝顶数合计 >= 5
 		LOCAL += 2
@@ -5858,7 +5858,7 @@ CASE "随机射精"
 		ELSEIF SHOOT("手") || SHOOT("胸")
 			LOCAL = 3
 		;插入系→お腹かお尻
-		ELSEIF SHOOT("膣内") || SHOOT("Ａ")
+		ELSEIF SHOOT("膣内") || SHOOT("A")
 			IF INSERT("后背位") || INSERT("背面座位")
 				LOCAL = 7
 			ELSE
@@ -5873,7 +5873,7 @@ CASE "随机射精"
 		IF SHOOT("口")
 			LOCAL = 1 + RAND:2 + 3*RAND:2
 		;手or插入系→发顔口胸股间
-		ELSEIF SHOOT("手") || SHOOT("膣内") || SHOOT("Ａ")
+		ELSEIF SHOOT("手") || SHOOT("膣内") || SHOOT("A")
 			LOCAL = 1 + RAND:5
 		;胸→发顔口股间
 		ELSEIF SHOOT("胸")
@@ -5929,16 +5929,16 @@ CASE "称賛"
 	CASE 1
 		LOCAL += (ABL:奉仕精神 + ABL:精液成瘾) * 5
 	CASE 2
-		LOCAL += ABL:Ｖ感觉 * 5
+		LOCAL += ABL:V感觉 * 5
 		;处女丧失时に屈服刻印Lv1未满
 		SIF PREVEX("处女丧失") && MARK:屈服刻印 <= 1
 			LOCAL -= 25
 	CASE 3
 		LOCAL += ABL:A感觉 * 5
 	CASE 4
-		LOCAL += ABL:Ｍ属性 * 10
-		;SM系实行时で、Ｍ属性3未满である
-		SIF ABL:Ｍ属性 < 3
+		LOCAL += ABL:M属性 * 10
+		;SM系实行时で、M属性3未满である
+		SIF ABL:M属性 < 3
 			LOCAL -= 45
 	CASE 5, 6
 		LOCAL += ABL:露阴癖 * 10
@@ -6123,7 +6123,7 @@ CASE "経験值獲得"
 			LOCAL += 1
 		SIF EXP_GAIN(2, ARG) + EXP_GAIN(3, ARG)
 			LOCAL += (EXP_GAIN(2, ARG) + EXP_GAIN(3, ARG) ) / 5 + 1
-		;性欲大满足（探索で之経験ＢＯＮＵＳもこれ）
+		;性欲大满足（探索で之経験BＯＮＵSもこれ）
 		IF BASE:性欲 >= MAXBASE:性欲*2
 			LOCAL += MAX(MAXBASE:性欲, 10)
 		;性欲满足
@@ -6183,7 +6183,7 @@ CASE "経験值獲得"
 		LOCAL = MULTIPLY(LOCAL, 100 + TALENT:MASTER:取得経験值率)
 
 	;EASYモード
-	SIF CONFIG("ＥＡＳＹ")
+	SIF CONFIG("ＥASＹ")
 		TIMES LOCAL, 2.00
 CASE "性别男特有之素質"
 	SELECTCASE ARG

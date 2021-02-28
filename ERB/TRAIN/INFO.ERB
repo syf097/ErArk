@@ -60,22 +60,22 @@ IF PENIS(PLAYER)
 		PRINTFORM %UNI("龙")%
 	PRINTFORM ]
 
-	;PRINTFORM Ｐ润%TEXTS("调教参数之ＬＶ", GET_PALAM_LV(PALAM:PLAYER:Ｐ润) )%
-	CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:PLAYER:Ｐ润, 0, 4
+	;PRINTFORM Ｐ润%TEXTS("调教参数之LV", GET_PALAM_LV(PALAM:PLAYER:Ｐ润) )%
+	CALL PRINT_BAR, "ＰALAM", PALAM:PLAYER:Ｐ润, 0, 4
 	;PRINTFORM %PALAM_NUM(PALAM:PLAYER:Ｐ润)%
 ENDIF
 IF INSERT("插入", PLAYER)
 	VARSET LOCALS
-	IF INSERT("Ｖ双枪插入", PLAYER)
-		LOCALS = Ｖ双枪插入
-	ELSEIF INSERT("Ａ双枪插入", PLAYER)
-		LOCALS = Ａ双枪插入
+	IF INSERT("V双枪插入", PLAYER)
+		LOCALS = V双枪插入
+	ELSEIF INSERT("A双枪插入", PLAYER)
+		LOCALS = A双枪插入
 	ELSEIF INSERT("二穴插入", PLAYER)
 		LOCALS = 二穴插入
 	ENDIF
 	IF STRLENS(LOCALS) == 0
-		IF INSERT("Ａ插入", PLAYER)
-			PRINTFORM [Ａ%CONDS("体位", PLAYER)%]
+		IF INSERT("A插入", PLAYER)
+			PRINTFORM [A%CONDS("体位", PLAYER)%]
 		ELSEIF INSERT("尿道插入", PLAYER)
 			PRINTFORM [尿道%CONDS("体位", PLAYER)%]
 		ELSE
@@ -173,14 +173,14 @@ IF TEQUIP:运命检閲
 	LOCALS = 
 	SIF COND("运命检閲：爱抚")
 		LOCALS += "爱抚＆"
-	SIF COND("运命检閲：Ｖ")
-		LOCALS += "Ｖ＆"
+	SIF COND("运命检閲：V")
+		LOCALS += "V＆"
 	SIF COND("运命检閲：胸")
 		LOCALS += "胸＆"
 	SIF COND("运命检閲：接吻")
 		LOCALS += "接吻＆"
-	SIF COND("运命检閲：Ａ")
-		LOCALS += "Ａ＆"
+	SIF COND("运命检閲：A")
+		LOCALS += "A＆"
 	SIF COND("运命检閲：咏唱")
 		LOCALS += "咏唱＆"
 	STRLENS LOCALS
@@ -321,22 +321,22 @@ ENDIF
 SIF PENIS(TARGET) || TALENT:泌乳体質
 	PRINTL 
 
-IF EX:处女丧失 || EX:Ｃ绝顶 || EX:尿道绝顶 || EX:Ｖ绝顶 || EX:Ａ绝顶 || EX:Ｂ绝顶 || EX:Ｍ绝顶 || EX:射精 || EX:喷乳 || EX:能量吸收
+IF EX:处女丧失 || EX:C绝顶 || EX:尿道绝顶 || EX:V绝顶 || EX:A绝顶 || EX:B绝顶 || EX:M绝顶 || EX:射精 || EX:喷乳 || EX:能量吸收
 	PRINT < 
 	SIF EX:处女丧失
 		CALL PRINT_COLORTEXT, "处女丧失 ", DEF_COLOR("粉红色心形")
 	SIF EX:尿道绝顶
 		PRINTFORM 尿道绝顶:{EX:尿道绝顶}回 
-	SIF EX:Ｃ绝顶
-		PRINTFORM C绝顶:{EX:Ｃ绝顶}回 
-	SIF EX:Ｖ绝顶
-		PRINTFORM V绝顶:{EX:Ｖ绝顶}回 
-	SIF EX:Ａ绝顶
-		PRINTFORM A绝顶:{EX:Ａ绝顶}回 
-	SIF EX:Ｂ绝顶
-		PRINTFORM B绝顶:{EX:Ｂ绝顶}回 
-	SIF EX:Ｍ绝顶
-		PRINTFORM M绝顶:{EX:Ｍ绝顶}回 
+	SIF EX:C绝顶
+		PRINTFORM C绝顶:{EX:C绝顶}回 
+	SIF EX:V绝顶
+		PRINTFORM V绝顶:{EX:V绝顶}回 
+	SIF EX:A绝顶
+		PRINTFORM A绝顶:{EX:A绝顶}回 
+	SIF EX:B绝顶
+		PRINTFORM B绝顶:{EX:B绝顶}回 
+	SIF EX:M绝顶
+		PRINTFORM M绝顶:{EX:M绝顶}回 
 	SIF EXP_GAIN(3)
 		PRINTFORM 射精:{EXP_GAIN(3)}回 
 	SIF EXP_GAIN(54)
@@ -508,8 +508,8 @@ IF PENIS(TARGET)
 	SIF TALENT:龙之血
 		PRINTFORM %UNI("龙")%
 	PRINTFORM ]
-	;PRINTFORM 茎润%TEXTS("调教参数之ＬＶ", GET_PALAM_LV(PALAM:Ｐ润) )%
-	;CALL PRINT_BAR, "ＰＡＬＡＭ", PALAM:Ｐ润, 0, 4
+	;PRINTFORM 茎润%TEXTS("调教参数之LV", GET_PALAM_LV(PALAM:Ｐ润) )%
+	;CALL PRINT_BAR, "ＰALAM", PALAM:Ｐ润, 0, 4
 ENDIF
 
 IF COND("发情期")
@@ -592,7 +592,7 @@ SIF TEQUIP:屋内露出PLAY
 	PRINT [馆内]
 IF TEQUIP:女王大人PLAY
 	IF TALENT:性别 == 1
-		PRINTFORM [ＳＭPLAY LV{TEQUIP:女王大人PLAY}]
+		PRINTFORM [SMPLAY LV{TEQUIP:女王大人PLAY}]
 	ELSE
 		PRINTFORM [女王大人PLAY LV{TEQUIP:女王大人PLAY}]
 	ENDIF
@@ -674,10 +674,10 @@ SIF STATE("脱力", TARGET)
 IF INSERT("插入")
 	PRINT [
 	VARSET LOCALS
-	IF INSERT("Ｖ双枪插入")
-		LOCALS = Ｖ双枪插入
-	ELSEIF INSERT("Ａ双枪插入")
-		LOCALS = Ａ双枪插入
+	IF INSERT("V双枪插入")
+		LOCALS = V双枪插入
+	ELSEIF INSERT("A双枪插入")
+		LOCALS = A双枪插入
 	ELSEIF INSERT("二穴插入")
 		LOCALS = 二穴插入
 	ENDIF
@@ -690,8 +690,8 @@ IF INSERT("插入")
 			ENDIF
 		ENDIF
 
-		IF INSERT("Ａ插入")
-			LOCALS = Ａ%CONDS("体位")%%LOCALS:1%
+		IF INSERT("A插入")
+			LOCALS = A%CONDS("体位")%%LOCALS:1%
 		ELSEIF INSERT("尿道插入")
 			LOCALS = 尿道%CONDS("体位")%%LOCALS:1%
 		ELSE
@@ -706,7 +706,7 @@ IF INSERT("插入")
 	RESETCOLOR
 	PRINT ]
 ELSEIF INSERT("插入中")
-	IF INSERT("Ａ插入中")
+	IF INSERT("A插入中")
 		PRINTFORM [肛门插入中(%CALLNAME:INSERT("插入中")%)]
 	ELSEIF INSERT("尿道插入中")
 		LOCALS = [尿道插入中(%CALLNAME:INSERT("插入中")%)]
@@ -745,11 +745,11 @@ SIF TEQUIP:利尿剂
 IF TEQUIP:肌肉松弛剂
 	LOCALS = %LOCALS%[肌肉松弛剂
 	SIF GETBIT(TEQUIP:肌肉松弛剂, 0)
-		LOCALS = %LOCALS%(Ａ)
+		LOCALS = %LOCALS%(A)
 	SIF GETBIT(TEQUIP:肌肉松弛剂, 1)
 		LOCALS = %LOCALS%(尿道)
 	SIF GETBIT(TEQUIP:肌肉松弛剂, 2)
-		LOCALS = %LOCALS%(Ｖ)
+		LOCALS = %LOCALS%(V)
 	SIF GETBIT(TEQUIP:肌肉松弛剂, 3)
 		LOCALS = %LOCALS%(子宮口)
 	LOCALS = %LOCALS%]
@@ -781,19 +781,19 @@ SIF TEQUIP:导尿管
 	LOCALS = %LOCALS%[导尿管]
 
 IF TEQUIP:肛用按摩棒 && TEQUIP:触手
-	LOCALS = %LOCALS%[Ａ触手插入]
+	LOCALS = %LOCALS%[A触手插入]
 ELSEIF TEQUIP:肛用按摩棒
 	IF COND("肛珠")
 		LOCALS = %LOCALS%[肛珠]
 	ELSE
 		SELECTCASE SIZE("肛用按摩棒", TARGET)
 		CASE 5
-			LOCALS = %LOCALS%[Ａ马尺寸按摩棒]
+			LOCALS = %LOCALS%[A马尺寸按摩棒]
 
 		CASE 4
-			LOCALS = %LOCALS%[Ａ腕型按摩棒]
+			LOCALS = %LOCALS%[A腕型按摩棒]
 		CASE 3
-			LOCALS = %LOCALS%[Ａ超粗按摩棒]
+			LOCALS = %LOCALS%[A超粗按摩棒]
 		CASEELSE
 			LOCALS = %LOCALS%[肛用按摩棒]
 		ENDSELECT
@@ -851,14 +851,14 @@ ELSEIF TEQUIP:灌肠
 	SIF COND("肛用按摩棒")
 		LOCALS = %LOCALS%＋肛用按摩棒
 	SIF TEQUIP:扩张扩张气囊 == 2
-		LOCALS = %LOCALS%＋Ａ扩张扩张气囊
+		LOCALS = %LOCALS%＋A扩张扩张气囊
 	LOCALS = %LOCALS%]
 ELSEIF TEQUIP:扩张扩张气囊 == 2
-	LOCALS = %LOCALS%[Ａ扩张扩张气囊]
+	LOCALS = %LOCALS%[A扩张扩张气囊]
 ENDIF
 
 SIF TEQUIP:扩张扩张气囊 == 1
-	LOCALS = %LOCALS%[Ｖ扩张扩张气囊]
+	LOCALS = %LOCALS%[V扩张扩张气囊]
 SIF TEQUIP:触手口辱
 	LOCALS = %LOCALS%[触手口辱]
 SIF TEQUIP:眼罩
@@ -914,7 +914,7 @@ ELSE
 
 	SELECTCASE RESULTS
 	CASE "0"
-		STAIN:MASTER:Ｍ = 0
+		STAIN:MASTER:M = 0
 	CASE "1"
 		STAIN:MASTER:手 = 0
 	CASE "2"
@@ -924,7 +924,7 @@ ELSE
 				CALL RESET_INSERT, MASTER
 		ENDIF
 	CASE "3"
-		STAIN:Ｍ = 0
+		STAIN:M = 0
 	CASE "4"
 		STAIN:手 = 0
 	CASE "5"
@@ -935,7 +935,7 @@ ELSE
 		ENDIF
 	CASE "6"
 		SIF ASSI
-			STAIN:ASSI:Ｍ = 0
+			STAIN:ASSI:M = 0
 	CASE "7"
 		SIF ASSI
 			STAIN:ASSI:手 = 0
@@ -986,18 +986,18 @@ ENDSELECT
 
 FOR LCOUNT, 0, 6
 	LOCALS = 
-	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "Ｖ")
-		LOCALS += "<Ｖ>"
-	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "Ｖ恥垢")
-		LOCALS += "<Ｖ恥垢>"
+	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "V")
+		LOCALS += "<V>"
+	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "V恥垢")
+		LOCALS += "<V恥垢>"
 	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "Ｐ")
 		LOCALS += "<Ｐ>"
 	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "Ｐ恥垢")
 		LOCALS += "<Ｐ恥垢>"
 	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "精液")
 		LOCALS += "<精>"
-	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "Ａ")
-		LOCALS += "<Ａ>"
+	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "A")
+		LOCALS += "<A>"
 	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "乳")
 		LOCALS += "<乳>"
 	SIF CHECK_STAIN(STAIN:ARG:LCOUNT, "尿")
@@ -1025,13 +1025,13 @@ FOR LCOUNT, 0, 6
 	CASE 3
 		SIF TALENT:ARG:性别 == 1
 			CONTINUE
-		PRINTFORM 　Ｖ：%TEXT_LJ(LOCALS, 32)%
+		PRINTFORM 　V：%TEXT_LJ(LOCALS, 32)%
 	CASE 4
-		PRINTFORM 　Ａ：%TEXT_LJ(LOCALS, 32)%
+		PRINTFORM 　A：%TEXT_LJ(LOCALS, 32)%
 	CASE 5
 		;SIF TALENT:ARG:性别 == 1
 		;	CONTINUE
-		PRINTFORM 　Ｂ：%TEXT_LJ(LOCALS, 32)%
+		PRINTFORM 　B：%TEXT_LJ(LOCALS, 32)%
 	ENDSELECT
 
 

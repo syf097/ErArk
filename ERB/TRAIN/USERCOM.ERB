@@ -60,7 +60,7 @@ IF FLAG:238 || CONFIG("调教配置模式")
 			ENDSELECT
 		ENDIF
 
-		IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+		IF CONFIG("ＨAＲＤ") && TEQUIP:逆推
 			SELECTCASE LCOUNT
 			CASE 178, 280, 281
 				PRINTFORMC %TRAIN_NAME_SELECT(LCOUNT)%[{NUM_TRAIN, 3}]
@@ -196,10 +196,10 @@ IF FLAG:238 || CONFIG("调教配置模式")
 					SIF CONFIG("道具系非表示") == 0
 						CONTINUE
 				CASE 60 TO 69
-					SIF CONFIG("Ｖ性爱系非表示") == 0
+					SIF CONFIG("V性爱系非表示") == 0
 						CONTINUE
 				CASE 70 TO 79
-					SIF CONFIG("Ａ性爱系非表示") == 0
+					SIF CONFIG("A性爱系非表示") == 0
 						CONTINUE
 				CASE 80 TO 89
 					SIF CONFIG("特殊性爱系非表示") == 0
@@ -211,7 +211,7 @@ IF FLAG:238 || CONFIG("调教配置模式")
 					SIF CONFIG("调教者に插入系非表示") == 0
 						CONTINUE
 				CASE 130 TO 159
-					SIF CONFIG("ＳＭ・调教系非表示") == 0
+					SIF CONFIG("SM・调教系非表示") == 0
 						CONTINUE
 				CASE 160 TO 169
 					SIF CONFIG("助手系非表示") == 0
@@ -255,7 +255,7 @@ CALL SETFLAG, "助手对象之恋慕外し終了"
 PRINTL 
 
 ;HARDで逆推ているなら、主导権が无い标志をセット
-IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+IF CONFIG("ＨAＲＤ") && TEQUIP:逆推
 	SETBIT FLAG:99, 1
 ELSE
 	CLEARBIT FLAG:99, 1
@@ -266,7 +266,7 @@ NEXT_LINE = 0
 VARSET COM_NAMES
 VARSET COM_NAMES_HIDDEN
 
-IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：Ｂ") == 0 && CONFIG("项目表示过滤：Ｃ") == 0)
+IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：B") == 0 && CONFIG("项目表示过滤：C") == 0)
 	SIF CONFIG("爱抚系非表示")
 		SETCOLOR DEF_COLOR("黄色")
 	PRINTC 爱抚系[300]
@@ -275,15 +275,15 @@ IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：Ｂ") == 0 && C
 		SETCOLOR DEF_COLOR("黄色")
 	PRINTC 道具系[301]
 	RESETCOLOR
-	SIF CONFIG("Ｖ性爱系非表示")
+	SIF CONFIG("V性爱系非表示")
 		SETCOLOR DEF_COLOR("黄色")
-	PRINTC Ｖ性爱系[302]
+	PRINTC V性爱系[302]
 	RESETCOLOR
 	PRINTL 
 
-	SIF CONFIG("Ａ性爱系非表示")
+	SIF CONFIG("A性爱系非表示")
 		SETCOLOR DEF_COLOR("黄色")
-	PRINTC Ａ性爱系[303]
+	PRINTC A性爱系[303]
 	RESETCOLOR
 	SIF CONFIG("特殊性爱系非表示")
 		SETCOLOR DEF_COLOR("黄色")
@@ -299,9 +299,9 @@ IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：Ｂ") == 0 && C
 		SETCOLOR DEF_COLOR("黄色")
 	PRINTC 调教者插入系[306]
 	RESETCOLOR
-	SIF CONFIG("ＳＭ・调教系非表示")
+	SIF CONFIG("SM・调教系非表示")
 		SETCOLOR DEF_COLOR("黄色")
-	PRINTC ＳＭ・调教系[307]
+	PRINTC SM・调教系[307]
 	RESETCOLOR
 	SIF CONFIG("助手系非表示")
 		SETCOLOR DEF_COLOR("黄色")
@@ -360,7 +360,7 @@ IF CONFIG("调教配置模式") == 0
 
 	PRINTC 显示状态能力[400]
 
-	IF CONFIG("项目表示过滤：Ｃ") == 0
+	IF CONFIG("项目表示过滤：C") == 0
 		IF TEQUIP:逆推
 			PRINTC 显示污渍[410]
 		ELSE
@@ -369,7 +369,7 @@ IF CONFIG("调教配置模式") == 0
 
 		SIF TALENT:恋慕 == 0 || PLAYER != MASTER
 			SETCOLOR DEF_COLOR("灰色")
-		SIF CONFIG("ＨＡＲＤ")
+		SIF CONFIG("ＨAＲＤ")
 				CFLAG:9 = 0
 		IF CFLAG:9
 			PRINTC 相亲相爱[420]
@@ -405,12 +405,12 @@ IF CONFIG("调教配置模式") == 0
 		PRINTC 调教配置模式[888]
 	ENDIF
 
-	IF CONFIG("项目表示过滤：Ｂ")
-		PRINTC 项目表示过滤：Ｂ[900]
-	ELSEIF CONFIG("项目表示过滤：Ｃ")
-		PRINTC 项目表示过滤：Ｃ[900]
+	IF CONFIG("项目表示过滤：B")
+		PRINTC 项目表示过滤：B[900]
+	ELSEIF CONFIG("项目表示过滤：C")
+		PRINTC 项目表示过滤：C[900]
 	ELSE
-		PRINTC 项目表示过滤：Ａ[900]
+		PRINTC 项目表示过滤：A[900]
 	ENDIF
 
 	SIF COND("调教終了可能") == 0
@@ -418,15 +418,15 @@ IF CONFIG("调教配置模式") == 0
 	PRINTC 调教終了[999]
 	RESETCOLOR
 ELSE
-	IF CONFIG("Ｖ调教过滤")
-		PRINTC Ｖ调教过滤：○[360]
+	IF CONFIG("V调教过滤")
+		PRINTC V调教过滤：○[360]
 	ELSE
-		PRINTC Ｖ调教过滤：×[360]
+		PRINTC V调教过滤：×[360]
 	ENDIF
-	IF CONFIG("Ａ调教过滤")
-		PRINTC Ａ调教过滤：○[361]
+	IF CONFIG("A调教过滤")
+		PRINTC A调教过滤：○[361]
 	ELSE
-		PRINTC Ａ调教过滤：×[361]
+		PRINTC A调教过滤：×[361]
 	ENDIF
 	IF CONFIG("实行值过滤")
 		PRINTC 实行值过滤：○[362]
@@ -452,15 +452,15 @@ ELSE
 	PRINTL 
 	SELECTCASE GETBIT(FLAG:98, 0) + GETBIT(FLAG:98, 4)*1p4 + GETBIT(FLAG:98, 5)*1p5
 	CASE 0
-		PRINTC 槽：黑白Ａ[370]
+		PRINTC 槽：黑白A[370]
 	CASE 1p5
-		PRINTC 槽：黑白Ｂ[370]
+		PRINTC 槽：黑白B[370]
 	CASE 1p4 + 1p5
-		PRINTC 槽：黑白Ｃ[370]
+		PRINTC 槽：黑白C[370]
 	CASE 1p0 + 1p5
-		PRINTC 槽：彩色Ａ[370]
+		PRINTC 槽：彩色A[370]
 	CASE 1p0 + 1p4 + 1p5
-		PRINTC 槽：彩色Ｂ[370]
+		PRINTC 槽：彩色B[370]
 	ENDSELECT
 
 	IF CONFIG("画面表示：参数４列")
@@ -519,11 +519,11 @@ SIF MAX(PREVCOM, PREVCOM:2) >= 0 && CONFIG("调教配置模式") == 0
 ;選んだ指令次第で轻い说明表示。原則１行
 SELECTCASE TFLAG:103
 CASE 360
-	SIF CONFIG("Ｖ调教过滤")
-		PRINTFORML  Ｖ调教过滤ＯＮ。处女之时、不可以对阴道进行调教
+	SIF CONFIG("V调教过滤")
+		PRINTFORML  V调教过滤ＯＮ。处女之时、不可以对阴道进行调教
 CASE 361
-	SIF CONFIG("Ａ调教过滤")
-		PRINTFORML  Ａ调教过滤ＯＮ。不可以对肛门进行调教
+	SIF CONFIG("A调教过滤")
+		PRINTFORML  A调教过滤ＯＮ。不可以对肛门进行调教
 CASE 362
 	SIF CONFIG("实行值过滤")
 		PRINTFORML  实行值过滤ＯＮ。实行值不足时不可使用
@@ -572,10 +572,10 @@ CASE 891
 CASE 900
 	;前回指令がない时に限り说明出す
 	IF MEMO_LINECOUNT == LINECOUNT
-		IF CONFIG("项目表示过滤：Ｂ")
+		IF CONFIG("项目表示过滤：B")
 			PRINTPLAIN  [300]～[320]
 			PRINTFORML 之指令群过滤隐藏掉
-		ELSEIF CONFIG("项目表示过滤：Ｃ")
+		ELSEIF CONFIG("项目表示过滤：C")
 			PRINTFORML  使用頻度低的项目全隐藏掉
 		ENDIF
 	ENDIF
@@ -626,7 +626,7 @@ PRINTFORML >
 LOCAL = RESULT
 
 ;HARDで逆推ているなら、主导権が无い标志をセット
-IF CONFIG("ＨＡＲＤ") && TEQUIP:逆推
+IF CONFIG("ＨAＲＤ") && TEQUIP:逆推
 	SETBIT FLAG:99, 1
 ELSE
 	CLEARBIT FLAG:99, 1
@@ -699,10 +699,10 @@ ELSEIF LOCAL == 888
 	INVERTBIT FLAG:210, 20
 ;项目表示过滤[900]
 ELSEIF LOCAL == 900
-	IF CONFIG("项目表示过滤：Ｂ")
+	IF CONFIG("项目表示过滤：B")
 		CLEARBIT FLAG:210, 30
 		SETBIT FLAG:210, 31
-	ELSEIF CONFIG("项目表示过滤：Ｃ")
+	ELSEIF CONFIG("项目表示过滤：C")
 		CLEARBIT FLAG:210, 31
 	ELSE
 		SETBIT FLAG:210, 30
@@ -730,7 +730,7 @@ ELSEIF CONFIG("调教配置模式") == 0
 		CALL STAIN_INFO
 	;反击するか選択[420]
 	ELSEIF LOCAL == 420 && TALENT:恋慕 && PLAYER == MASTER
-		IF CONFIG("ＨＡＲＤ")
+		IF CONFIG("ＨAＲＤ")
 			RETURN 0
 		ELSEIF CFLAG:9 == 1
 			PRINTFORMW 和%CALLNAME:TARGET%相亲相爱。

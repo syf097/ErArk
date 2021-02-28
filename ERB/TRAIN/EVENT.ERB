@@ -72,20 +72,20 @@ REDRAW 0
 
 PRINTFORML 
 PRINTFORML □ 等级限制器 □---------------------------------------------------------
-PRINTFORML 可以限制你的等级(正常为{FLAG:255}ＬＶ)。
+PRINTFORML 可以限制你的等级(正常为{FLAG:255}LV)。
 PRINTFORML 请从以下方式中选择（再点一次解除限制）
 PRINTFORML 此外会同时削弱精力以及血槽等
 PRINTFORM  [ 1]～[{FLAG:255, 2}] 
 IF FLAG:247 && FLAG:247 <= FLAG:255
-	PRINTFORML 正常为ＬＶ{FLAG:247}
+	PRINTFORML 正常为LV{FLAG:247}
 ELSE
-	PRINTFORML 在0～{FLAG:255}的之范围内输入的ＬＶ固定
+	PRINTFORML 在0～{FLAG:255}的之范围内输入的LV固定
 ENDIF
-PRINTFORML  [91] \@ CONFIG("等级限制器：－10ＬＶ") ? ○ # － \@ 对象之ＬＶ－10
-PRINTFORML  [92] \@ CONFIG("等级限制器：－５ＬＶ") ? ○ # － \@ 对象之ＬＶ－５
-PRINTFORML  [93] \@ CONFIG("等级限制器：和对手相同") ? ○ # － \@ 对象之ＬＶ
-PRINTFORML  [94] \@ CONFIG("等级限制器：＋５ＬＶ") ? ○ # － \@ 对象之ＬＶ＋５
-PRINTFORML  [95] \@ CONFIG("等级限制器：＋10ＬＶ") ? ○ # － \@ 对象之ＬＶ＋10
+PRINTFORML  [91] \@ CONFIG("等级限制器：－10LV") ? ○ # － \@ 对象之LV－10
+PRINTFORML  [92] \@ CONFIG("等级限制器：－５LV") ? ○ # － \@ 对象之LV－５
+PRINTFORML  [93] \@ CONFIG("等级限制器：和对手相同") ? ○ # － \@ 对象之LV
+PRINTFORML  [94] \@ CONFIG("等级限制器：＋５LV") ? ○ # － \@ 对象之LV＋５
+PRINTFORML  [95] \@ CONFIG("等级限制器：＋10LV") ? ○ # － \@ 对象之LV＋10
 IF CONFIG("等级限制器")
 	PRINTFORML  [99] 停止使用
 ELSE
@@ -324,8 +324,8 @@ REPEAT CHARANUM
 	PRINTFORML ～%CALLNAME:TARGET%～
 
 	;状況は最高
-	PALAM:Ｖ润 = PALAMLV:5
-	PALAM:Ａ润 = PALAMLV:5
+	PALAM:V润 = PALAMLV:5
+	PALAM:A润 = PALAMLV:5
 	PALAM:欲情 = PALAMLV:5
 
 	;正常位
@@ -336,7 +336,7 @@ REPEAT CHARANUM
 	SELECTCOM = 65
 	CALL SAMEN_CHECK_PLAYER
 	PRINTFORML %TRAINNAME:SELECTCOM%之技術 = {B}
-	;Ａ性爱
+	;A性爱
 	SELECTCOM = 71
 	CALL SAMEN_CHECK_PLAYER
 	PRINTFORML %TRAINNAME:SELECTCOM%之技術 = {B}
@@ -369,7 +369,7 @@ REPEAT CHARANUM
 	CALL SAMEN_CHECK_PLAYER
 	PRINTFORML %TRAINNAME:SELECTCOM%之技術 = {B}
 
-	PALAM:Ｖ润 = 0
+	PALAM:V润 = 0
 	PALAM:欲情 = 0
 
 	WAIT
