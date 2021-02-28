@@ -738,9 +738,9 @@ SIF ARG != MASTER
 
 ;相性や百合ッ气、男同属性
 IF TARGET
-	;IF TALENT:ARG:性别男 == 0 && TALENT:性别男 == 0
+	;IF TALENT:ARG:性别 != 1 && TALENT:性别 != 1
 	;	PRINTFORM 百合{ABL:ARG:百合属性} 
-	;ELSEIF TALENT:ARG:性别男 && TALENT:性别男
+	;ELSEIF TALENT:ARG:性别 == 1 && TALENT:性别 == 1
 	;	PRINTFORM 男同{ABL:ARG:男同属性} 
 	;ENDIF
 	LOCAL = NO:ARG
@@ -782,7 +782,7 @@ SIF TALENT:ARG:治疗
 	PRINT 治疗 
 SIF TALENT:ARG:扶她
 	PRINT 扶她 
-SIF TALENT:ARG:性别男
+SIF TALENT:ARG:性别 == 1
 	PRINT ♂ 
 SIF TALENT:ARG:禁断之知识
 	PRINT 禁断之知识 

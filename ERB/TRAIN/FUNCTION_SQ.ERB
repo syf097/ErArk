@@ -279,7 +279,7 @@ RETURNF LOCAL
 
 SELECTCASE ARG
 CASE IS > 0
-	LOCAL = FINDCHARA(BASE:识别番号, ARG)
+	LOCAL = FINDCHARA(NO, ARG)
 CASEELSE
 	LOCAL = ARG
 ENDSELECT
@@ -537,7 +537,7 @@ CASE "宝珠：淫核取得"
 	LOCAL = 100000
 	SIF TALENT:ARG:淫核 + TALENT:ARG:淫壷 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
-	SIF TALENT:ARG:Ｃ敏感
+	SIF TALENT:ARG:C敏感
 		LOCAL /= 2
 CASE "宝珠：尿道狂取得"
 	SIF ARG == 0 && TARGET
@@ -559,7 +559,7 @@ CASE "宝珠：尻穴狂取得"
 	LOCAL = 100000
 	SIF TALENT:ARG:淫核 + TALENT:ARG:淫壷 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
-	SIF TALENT:ARG:Ａ敏感
+	SIF TALENT:ARG:A敏感
 		LOCAL /= 2
 CASE "宝珠：淫乳取得"
 	SIF ARG == 0 && TARGET
@@ -657,7 +657,7 @@ CASE "爆乳之上限"
 	RETURNF 11 + CONFIG("巨乳补正：罩杯")
 CASE "妖精之上限"
 	RETURNF 75
-CASE "小只之上限"
+CASE "娇小之上限"
 	RETURNF 144
 CASE "普通之上限"
 	RETURNF 163
@@ -876,7 +876,7 @@ CASE "忍住"
 		RETURNF 1
 CASE "潮喷き可能"
 	;女性器があることと、ある程度之尿意が必須
-	SIF TALENT:ARG:性别男 || BASE:ARG:尿意 < 1000
+	SIF TALENT:ARG:性别 == 1 || BASE:ARG:尿意 < 1000
 		RETURNF 0
 	;尿道插入中は不可
 	SIF INSERT("尿道插入", ARG)
@@ -1239,7 +1239,7 @@ CASE "梦魇"
 	SIF TALENT:ARG:梦魇 || TALENT:ARG:上位梦魇
 		RETURNF 1
 CASE "男孩子？"
-	SIF TALENT:ARG:性别男 && TALENT:ARG:男孩子？ && TALENT:ARG:大只 == 0
+	SIF TALENT:ARG:性别 == 1 && TALENT:ARG:男孩子？ && TALENT:ARG:高大 == 0
 		RETURNF 1
 CASE "着床确认"
 	SIF MARK:ARG:淫紋 && BASE:ARG:胎儿
@@ -1250,7 +1250,7 @@ CASE "安全日"
 	SIF GETBIT(BASE:ARG:バイオ莉兹ム, 10)
 		RETURNF 1
 CASE "危险日"
-	SIF TALENT:ARG:性别男 || TALENT:ARG:孕娠 || TALENT:ARG:避孕之護符 || TALENT:ARG:避孕中 || TALENT:ARG:魔导人偶 || TALENT:ARG:史莱姆
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:孕娠 || TALENT:ARG:避孕之護符 || TALENT:ARG:避孕中 || TALENT:ARG:魔导人偶 || TALENT:ARG:史莱姆
 		RETURNF 0
 	SIF MARK:ARG:淫紋 && BASE:ARG:胎儿
 		RETURNF 0
@@ -1343,7 +1343,7 @@ CASE "孕娠可能"
 	SIF CONFIG("孕娠补丁") == 0
 		RETURNF 0
 	;性别男or孕娠中or避孕中or人形
-	SIF TALENT:ARG:性别男 || TALENT:ARG:孕娠 || BASE:ARG:胎儿 || TALENT:ARG:避孕之護符 || TALENT:ARG:避孕中 || TALENT:ARG:魔导人偶
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:孕娠 || BASE:ARG:胎儿 || TALENT:ARG:避孕之護符 || TALENT:ARG:避孕中 || TALENT:ARG:魔导人偶
 		RETURNF 0
 	;名がない娘
 	SIF NO:ARG == 97 && NAME:ARG == "娘"
@@ -1714,7 +1714,7 @@ CASE "主动夜袭可能"
 		RETURNF 0
 	SIF TALENT:ARG:Ｖ损伤 || TALENT:ARG:Ａ损伤
 		RETURNF 0
-	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:顺从+ABL:ARG:欲望+MAX(ABL:ARG:Ｖ感觉, ABL:ARG:Ａ感觉)+ABL:ARG:奉仕精神 > 10) && BASE:ARG:体力 >= 500
+	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:顺从+ABL:ARG:欲望+MAX(ABL:ARG:Ｖ感觉, ABL:ARG:A感觉)+ABL:ARG:奉仕精神 > 10) && BASE:ARG:体力 >= 500
 		RETURNF 1
 CASE "主动朝袭可能"
 	;相思相爱による主动夜袭限制有だと主动朝袭も禁止
@@ -1732,12 +1732,12 @@ CASE "梦魇化可能"
 	CASE TARGET
 		SIF CONFIG("对象之梦魇化：男")
 			RETURNF 1
-		SIF CONFIG("对象之梦魇化") && TALENT:ARG:性别男 == 0
+		SIF CONFIG("对象之梦魇化") && TALENT:ARG:性别 != 1
 			RETURNF 1
 	CASE ASSI, PLAYER, MASTER
 		SIF CONFIG("主人・助手之梦魇化：男")
 			RETURNF 1
-		SIF CONFIG("主人・助手之梦魇化") && TALENT:ARG:性别男 == 0
+		SIF CONFIG("主人・助手之梦魇化") && TALENT:ARG:性别 != 1
 			RETURNF 1
 	ENDSELECT
 
@@ -1782,7 +1782,7 @@ CASE "一晩开放可能"
 	;	RETURNF 0
 	SIF TALENT:ARG:好色 == 0 && ABL:ARG:顺从 < 4 && MARK:ARG:屈服刻印 < 3 && MARK:ARG:淫紋 == 0
 		RETURNF 0
-	;SIF (TALENT:ARG:处女 || TALENT:ARG:性别男) && (TALENT:ARG:Ａ处女 || ABL:ARG:Ａ感觉 < 3)
+	;SIF (TALENT:ARG:处女 || TALENT:ARG:性别 == 1) && (TALENT:ARG:Ａ处女 || ABL:ARG:A感觉 < 3)
 	;	RETURNF 0
 
 	;どちらか之穴を使えるor女性对象ができないとダメ
@@ -1810,7 +1810,7 @@ CASE "一晩开放实行予定"
 		RETURNF 0
 	ENDIF
 	;欲求不满も条件之一部
-	IF TALENT:ARG:淫乱 || (MARK:ARG:淫紋 && TALENT:ARG:性别男 == 0)
+	IF TALENT:ARG:淫乱 || (MARK:ARG:淫紋 && TALENT:ARG:性别 != 1)
 		SIF COND("孕娠中：临月", ARG) || COND("孕娠中：分娩直前", ARG) || COND("孕娠中：分娩", ARG)
 			RETURNF 0
 		SIF BASE:ARG:欲求不满 + TALENT:ARG:好色*5 + COND("调教空白期间", ARG) < 15
@@ -1875,7 +1875,7 @@ CASE "巨臀"
 	SIF CONFIG("３サイズ：表示") == 0
 		RETURNF 0
 	;妖精と性别男等は无
-	SIF TALENT:ARG:妖精 || TALENT:ARG:性别男 || BASE:ARG:身长 == 0
+	SIF TALENT:ARG:妖精 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 
 	;とりあえず臀部サイズがＳ以下だと巨臀之資格无
@@ -1925,7 +1925,7 @@ CASE "小臀"
 	SIF CONFIG("３サイズ：表示") == 0
 		RETURNF 0
 	;妖精と性别男等は无
-	SIF TALENT:ARG:妖精 || TALENT:ARG:性别男 || BASE:ARG:身长 == 0
+	SIF TALENT:ARG:妖精 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 
 	;とりあえず臀部サイズがＭ以上だと小臀之資格无
@@ -1994,7 +1994,7 @@ CASE "外观：腋毛"
 		RETURNF 7
 	ENDIF
 CASE "外观：Ｖ扩张"
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	IF GETBIT(CFLAG:ARG:368, 11)
 		RETURNF 1
@@ -2050,12 +2050,12 @@ CASE "外观：Ｖ准备"
 		RETURNF 1
 	ENDIF
 CASE "外观：Ｖ掃除"
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 28) == 0
 		RETURNF 1
 CASE "Ｖ不潔"
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(BASE:ARG:老废物, 1)
 		RETURNF 1
@@ -2095,7 +2095,7 @@ CASE "外观：性行为之限制"
 		RETURNF 6
 	ENDSELECT
 CASE "外观：Ｖ独占"
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 41)
 		RETURNF 1
@@ -2122,9 +2122,9 @@ CASE "ベテラン：性爱"
 	SIF COND("ベテラン：Ｖ性爱", ARG) || COND("ベテラン：Ａ性爱", ARG)
 		RETURNF 1
 CASE "ベテラン：Ｖ性爱"
-	SIF TALENT:ARG:性别男 || TALENT:ARG:处女 || TALENT:ARG:Ｖ损伤
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || TALENT:ARG:Ｖ损伤
 		RETURNF 0
-	SIF EXP:ARG:Ｖ経験 < 50 || EXP:ARG:Ｖ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:Ｖ感觉 < 2
+	SIF EXP:ARG:V经验 < 50 || EXP:ARG:Ｖ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:Ｖ感觉 < 2
 		RETURNF 0
 	;妖精は巨根を插入られるくらい扩张が進んでないとダメ
 	SIF TALENT:ARG:妖精 && ABL:ARG:Ｖ扩张 < 2
@@ -2134,7 +2134,7 @@ CASE "ベテラン：Ｖ性爱"
 	IF TALENT:ARG:淫壷
 		SIF TALENT:ARG:尻穴狂 == 0
 			RETURNF 4
-		SIF ABL:ARG:Ｖ感觉 > ABL:ARG:Ａ感觉
+		SIF ABL:ARG:Ｖ感觉 > ABL:ARG:A感觉
 			RETURNF 3
 		RETURNF 2
 	ENDIF
@@ -2142,7 +2142,7 @@ CASE "ベテラン：Ｖ性爱"
 CASE "ベテラン：Ａ性爱"
 	SIF TALENT:ARG:Ａ处女 || TALENT:ARG:Ａ损伤 || ABL:ARG:Ａ扩张 < 2
 		RETURNF 0
-	SIF EXP:ARG:Ａ経験 < 50 || EXP:ARG:Ａ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:Ａ感觉 < 2
+	SIF EXP:ARG:A经验 < 50 || EXP:ARG:Ａ性交経験 < 20 || EXP:ARG:腰技経験 < 20 || ABL:ARG:A感觉 < 2
 		RETURNF 0
 	SIF COND("一晩开放中", ARG) && COND("外观：Ａ独占", ARG)
 		RETURNF 0
@@ -2152,7 +2152,7 @@ CASE "ベテラン：Ａ性爱"
 	IF TALENT:ARG:尻穴狂
 		SIF TALENT:ARG:淫壷 == 0
 			RETURNF 4
-		SIF ABL:ARG:Ａ感觉 > ABL:ARG:Ｖ感觉
+		SIF ABL:ARG:A感觉 > ABL:ARG:Ｖ感觉
 			RETURNF 3
 		RETURNF 2
 	ENDIF
@@ -2175,10 +2175,10 @@ CASE "一晩开放：女对象"
 		;	RETURNF 0
 		SIF COND("外观：Ｐ独占", ARG)
 			RETURNF 0
-		SIF TALENT:ARG:性别男 && ABL:ARG:男同属性 < 3
+		SIF TALENT:ARG:性别 == 1 && ABL:ARG:男同属性 < 3
 			RETURNF 2
 		;まぁ…ホモ性爱はまだ早いという事にしておこう
-		SIF TALENT:ARG:性别男 && COND("男孩子？", ARG) == 0
+		SIF TALENT:ARG:性别 == 1 && COND("男孩子？", ARG) == 0
 			RETURNF 2
 	ELSE
 		SIF ABL:ARG:百合属性 < 3
@@ -2227,39 +2227,39 @@ CASE "伸皮药"
 		RETURNF 0
 	RETURNF 1
 CASE "丰胸药"
-	SIF TALENT:ARG:性别男 || TALENT:ARG:巨乳 >= 3
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:巨乳 >= 3
 		RETURNF 0
 	RETURNF 1
 CASE "贫乳药"
-	SIF TALENT:ARG:性别男 || TALENT:ARG:贫乳
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:贫乳
 		RETURNF 0
 	RETURNF 1
 CASE "巨人之药"
-	SIF TALENT:ARG:大只 || TALENT:ARG:妖精
+	SIF TALENT:ARG:高大 || TALENT:ARG:妖精
 		RETURNF 0
-	SIF TALENT:ARG:男孩子？ && TALENT:ARG:小只 == 0
+	SIF TALENT:ARG:男孩子？ && TALENT:ARG:娇小 == 0
 		RETURNF 0
 	RETURNF 1
 CASE "小人之药"
-	SIF TALENT:ARG:小只 || TALENT:ARG:妖精
+	SIF TALENT:ARG:娇小 || TALENT:ARG:妖精
 		RETURNF 0
 	RETURNF 1
 CASE "虹之药"
 	RETURNF 1
 CASE "桃尻药"
-	SIF TALENT:ARG:妖精 || TALENT:ARG:外表年龄 == 0 || TALENT:ARG:性别男 || BASE:ARG:身长 == 0
+	SIF TALENT:ARG:妖精 || TALENT:ARG:外表年龄 == 0 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 	SIF TALENT:ARG:巨臀 >= 3
 		RETURNF 0
 	RETURNF 1
 CASE "小臀药"
-	SIF TALENT:ARG:妖精 || TALENT:ARG:外表年龄 == 0 || TALENT:ARG:性别男 || BASE:ARG:身长 == 0
+	SIF TALENT:ARG:妖精 || TALENT:ARG:外表年龄 == 0 || TALENT:ARG:性别 == 1 || BASE:ARG:身长 == 0
 		RETURNF 0
 	SIF TALENT:ARG:小臀
 		RETURNF 0
 	RETURNF 1
 CASE "淫紋刻印可能"
-	SIF TALENT:ARG:性别男 || COND("孕娠事件中", ARG)
+	SIF TALENT:ARG:性别 == 1 || COND("孕娠事件中", ARG)
 		RETURNF 0
 	;とりあえず今之ところは４画まで
 	SIF MARK:ARG:淫紋 >= 4
@@ -2281,13 +2281,13 @@ CASE "淫乱取得可能"
 	SIF EXP:ARG:绝顶経験*10 + EXP:ARG:射精経験*10 + EXP:ARG:自慰経験 + EXP:ARG:精液経験 + EXP:ARG:异常経験*100 >= 1000 && ABL:ARG:自慰成瘾 + ABL:ARG:精液成瘾 >= 3
 		RETURNF 1
 CASE "淫核取得不可能"
-	RETURNF (JUEL:ARG:快Ｃ < NUM("宝珠：淫核取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｃ感觉 < 4)*4 + (EX:ARG:Ｃ绝顶 < 20)*32 + TALENT:ARG:淫核*64
+	RETURNF (JUEL:ARG:快Ｃ < NUM("宝珠：淫核取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:C感觉 < 4)*4 + (EX:ARG:Ｃ绝顶 < 20)*32 + TALENT:ARG:淫核*64
 CASE "尿道狂取得不可能"
 	RETURNF (JUEL:ARG:快Ｃ < NUM("宝珠：尿道狂取得", ARG) ) + (ABL:ARG:欲望 < 4)*4 + (EX:ARG:尿道绝顶 < 10)*32 + TALENT:ARG:尿道狂*64
 CASE "淫壷取得不可能"
 	RETURNF (JUEL:ARG:快Ｖ < NUM("宝珠：淫壷取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｖ感觉 < 4)*4 + (EX:ARG:Ｖ绝顶 < 20)*32 + TALENT:ARG:淫壷*64
 CASE "尻穴狂取得不可能"
-	RETURNF (JUEL:ARG:快Ａ < NUM("宝珠：尻穴狂取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ａ感觉 < 4)*4 + (EX:ARG:Ａ绝顶 < 20)*32 + TALENT:ARG:尻穴狂*64
+	RETURNF (JUEL:ARG:快Ａ < NUM("宝珠：尻穴狂取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:A感觉 < 4)*4 + (EX:ARG:Ａ绝顶 < 20)*32 + TALENT:ARG:尻穴狂*64
 CASE "淫乳取得不可能"
 	RETURNF (JUEL:ARG:快Ｂ < NUM("宝珠：淫乳取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:Ｂ感觉 < 4)*4 + (EX:ARG:Ｂ绝顶 < 20)*32 + TALENT:ARG:淫乳*64
 CASE "荡唇取得不可能"
@@ -2571,7 +2571,7 @@ CASE "打工可能"
 	SIF MARK:ARG:反发刻印 || TALENT:ARG:孕娠 || TALENT:ARG:四足歩行
 		RETURNF 0
 	;男之店员については男孩子？はOK。コンフィグで正太可能にしてるならそっちもOK
-	IF TALENT:ARG:性别男
+	IF TALENT:ARG:性别 == 1
 		SIF COND("男孩子？", ARG)
 			RETURNF 1
 		SIF CONFIG("正太女仆") && GETBIT(BASE:ARG:属性, 38)
@@ -2598,9 +2598,9 @@ CASE "出演可能な店员"
 		RETURNF 1
 CASE "咖啡屋：乱交"
 	;素質や経験的な否定条件
-	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 || TALENT:ARG:处女 + TALENT:ARG:性别男 + TALENT:ARG:妖精
+	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 || TALENT:ARG:处女 + (TALENT:ARG:性别 == 1) + TALENT:ARG:妖精
 		RETURNF 0
-	SIF TALENT:处女 && ABL:Ａ感觉 < 3
+	SIF TALENT:处女 && ABL:A感觉 < 3
 		RETURNF 0
 	SIF MIN(ABL:ARG:欲望, ABL:ARG:精液成瘾, BASE:ARG:欲求不满) < 5
 		RETURNF 0
@@ -2618,7 +2618,7 @@ CASE "咖啡屋：Ｖ性爱"
 	;素質や経験的な否定条件
 	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 && ABL:ARG:欲望 < 4
 		RETURNF 0
-	SIF TALENT:ARG:性别男 || TALENT:ARG:处女 || EXP:ARG:Ｖ性交経験 < 20
+	SIF TALENT:ARG:性别 == 1 || TALENT:ARG:处女 || EXP:ARG:Ｖ性交経験 < 20
 		RETURNF 0
 	SIF MIN(ABL:ARG:欲望, ABL:ARG:Ｖ感觉, ABL:ARG:精液成瘾) < 3
 		RETURNF 0
@@ -2634,11 +2634,11 @@ CASE "咖啡屋：Ａ性爱"
 		RETURNF 0
 	SIF EXP:ARG:Ａ性交経験 < 20
 		RETURNF 0
-	IF TALENT:ARG:性别男
+	IF TALENT:ARG:性别 == 1
 		SIF COND("男孩子？", ARG) == 0 || ABL:ARG:男同属性 < 3 || TALENT:ARG:尻穴狂 == 0
 			RETURNF 0
 	ENDIF
-	SIF MIN(ABL:ARG:欲望, ABL:ARG:Ａ感觉, ABL:ARG:精液成瘾) < 3
+	SIF MIN(ABL:ARG:欲望, ABL:ARG:A感觉, ABL:ARG:精液成瘾) < 3
 		RETURNF 0
 	SIF TALENT:ARG:好色 + TALENT:ARG:淫乱 == 0 && BASE:ARG:欲求不满 < 3
 		RETURNF 0
@@ -2654,7 +2654,7 @@ CASE "咖啡屋：插入"
 		RETURNF 0
 	SIF PENIS(ARG) == 0 && TALENT:ARG:具现 == 0
 		RETURNF 0
-	IF TALENT:ARG:性别男 == 0
+	IF TALENT:ARG:性别 != 1
 		SIF ABL:ARG:百合属性 < 3
 			RETURNF 0
 	ENDIF
@@ -3427,15 +3427,15 @@ CASE "肤色"
 		LOCALS = 普通
 	ENDSELECT
 CASE "体型"
-	;まずは妖精や小只かどうかで大きく分け、腰部、臀部、胸围で细かく分ける
+	;まずは妖精や娇小かどうかで大きく分け、腰部、臀部、胸围で细かく分ける
 	;腰部之太さについては100*腰部/身长之值で(细い, 普通, 大, 肥满) = (36以下, 37～39, 40～49, 50以上)
 	;臀部之大きさについては100*臀部/身长之值で(细い, 普通, 大きい) = (50以下, 51～53, 54以上)
 	;COND("巨臀")とCOND("小臀")で臀部判定も
-	IF TALENT:ARG:性别男 && COND("男孩子？", ARG) == 0
+	IF TALENT:ARG:性别 == 1 && COND("男孩子？", ARG) == 0
 		LOCALS = 性别男
 	ELSEIF TALENT:ARG:妖精
 		LOCALS = 妖精
-	ELSEIF TALENT:ARG:小只 || TALENT:ARG:外表年龄 == 0
+	ELSEIF TALENT:ARG:娇小 || TALENT:ARG:外表年龄 == 0
 		IF TALENT:ARG:巨乳
 			LOCALS = \@ TALENT:ARG:外表年龄 ? 娇小丰满 # 巨乳萝莉 \@
 		ELSEIF TALENT:ARG:贫乳
@@ -3645,7 +3645,7 @@ CASE "腰部"
 		ENDSELECT
 	ENDIF
 CASE "欧派"
-	IF TALENT:ARG:性别男
+	IF TALENT:ARG:性别 == 1
 		LOCALS = 性别男
 	ELSEIF TALENT:ARG:巨乳 >= 3
 		LOCALS = 超乳
@@ -3671,7 +3671,7 @@ CASE "胸部罩杯"
 		LOCALS = %LOCALS:(BASE:ARG:罩杯)%
 	ENDSELECT
 CASE "お尻"
-	IF TALENT:ARG:性别男
+	IF TALENT:ARG:性别 == 1
 		LOCALS = 
 	ELSEIF TALENT:ARG:巨臀 >= 3
 		LOCALS = 超尻
@@ -4515,8 +4515,6 @@ MASTER = 0
 SELECTCASE ARGS:1
 CASE "升顺"
 	SELECTCASE ARGS
-	CASE "入手顺序"
-		SORTCHARA BASE:识别番号
 	CASE "角色编号"
 		SORTCHARA
 	CASE "好感觉"
@@ -4534,8 +4532,6 @@ CASE "升顺"
 	ENDSELECT
 CASEELSE
 	SELECTCASE ARGS
-	CASE "入手顺序"
-		SORTCHARA BASE:识别番号, BACK
 	CASE "角色编号"
 		SORTCHARA BACK
 	CASE "好感觉"
@@ -4609,7 +4605,7 @@ CASE 3
 		CASE 0
 			LOCALS = 萝莉
 		CASE 1
-			IF TALENT:(ARG:2):小只 && (NO:(ARG:2) == 16 || NO:(ARG:2) == 22 || NO:(ARG:2) == 47)
+			IF TALENT:(ARG:2):娇小 && (NO:(ARG:2) == 16 || NO:(ARG:2) == 22 || NO:(ARG:2) == 47)
 				LOCALS = 大龄萝莉
 			ELSE
 				LOCALS = 少女
@@ -4846,7 +4842,7 @@ RETURNF LOCAL:1
 @PENISNAME(ARG)
 #FUNCTIONS
 ;持ち主はPLAYER
-IF TALENT:ARG:扶她 || TALENT:ARG:性别男
+IF TALENT:ARG:扶她 || TALENT:ARG:性别 == 1
 	RESULTS = 阴茎
 ELSE
 	RESULTS = 假阴茎
@@ -5168,7 +5164,7 @@ RETURN RESULT
 ;-------------------------------------------------
 ;角色之中から特定之素質を持った角色をピックアップする関数
 ;二人指定之时には、それぞれ之希望素質を指定する。
-;例：大只二人指定なら、PICKUP_TALENT, 99, 99 、巨乳と贫乳なら、PICKUP_TALENT, 109, 110
+;例：高大二人指定なら、PICKUP_TALENT, 99, 99 、巨乳と贫乳なら、PICKUP_TALENT, 109, 110
 ;-------------------------------------------------
 @PICKUP_TALENT, ARG, ARG:1
 VARSET RESULT
@@ -5197,235 +5193,3 @@ FOR LOCAL, 2, CHARANUM
 	ENDIF
 NEXT
 RETURN RESULT
-;-------------------------------------------------
-;性转换事件
-;-------------------------------------------------
-@CHANGE_SEX, ARG
-;男は女に、女or扶她は男に
-;バイオ莉兹ムリセット
-BASE:ARG:バイオ莉兹ム = 0
-;作られた扶她は性别女
-IF TALENT:ARG:扶她 == 2
-	TALENT:ARG:扶她 = 0
-	TALENT:ARG:性别女 = 1
-ENDIF
-
-IF CFLAG:ARG:4
-	TALENT:ARG:性别女 = 0
-	TALENT:ARG:扶她 = 0
-	TALENT:ARG:性别男 = 0
-
-	SIF GETBIT(CFLAG:ARG:4, 0)
-		TALENT:ARG:处女 = 1
-	SIF GETBIT(CFLAG:ARG:4, 1)
-		TALENT:ARG:处女 = 2
-
-	;男にも容易湿之变化をつける試み
-	;SIF GETBIT(CFLAG:ARG:4, 2)
-	;	TALENT:ARG:容易湿 = 1
-	;SIF GETBIT(CFLAG:ARG:4, 3)
-	;	TALENT:ARG:不易湿 = 1
-
-	SIF GETBIT(CFLAG:ARG:4, 4)
-		TALENT:ARG:Ｖ损伤 = 1
-	SIF GETBIT(CFLAG:ARG:4, 5)
-		TALENT:ARG:Ｖ损伤 = 2
-	SIF GETBIT(CFLAG:ARG:4, 6)
-		TALENT:ARG:Ｖ损伤 = 3
-	SIF GETBIT(CFLAG:ARG:4, 7)
-		TALENT:ARG:晚泄 = 1
-	SIF GETBIT(CFLAG:ARG:4, 8)
-		TALENT:ARG:晚泄 = 2
-	SIF GETBIT(CFLAG:ARG:4, 9)
-		TALENT:ARG:淫壷 = 1
-	SIF GETBIT(CFLAG:ARG:4, 10)
-		TALENT:ARG:男孩子？ = 1
-
-	IF GETBIT(CFLAG:ARG:4, 11) && TALENT:ARG:大只 == 0
-		CALL CALC, "大只化", ARG
-	ELSEIF GETBIT(CFLAG:ARG:4, 12) && TALENT:ARG:小只 == 0
-		CALL CALC, "小只化", ARG
-	ELSEIF TALENT:ARG:大只 || TALENT:ARG:小只
-		CALL CALC, "普通体型化", ARG
-	ENDIF
-
-	SIF GETBIT(CFLAG:ARG:4, 13)
-		TALENT:ARG:Ｖ钝感 = 1
-	SIF GETBIT(CFLAG:ARG:4, 14)
-		TALENT:ARG:Ｖ敏感 = 1
-	SIF GETBIT(CFLAG:ARG:4, 15)
-		TALENT:ARG:贫乳 = 1
-	SIF GETBIT(CFLAG:ARG:4, 16)
-		TALENT:ARG:巨乳 = 1
-	SIF GETBIT(CFLAG:ARG:4, 17)
-		TALENT:ARG:巨乳 = 2
-	SIF GETBIT(CFLAG:ARG:4, 18)
-		TALENT:ARG:性别女 = 1
-	SIF GETBIT(CFLAG:ARG:4, 19)
-		TALENT:ARG:扶她 = 1
-	SIF GETBIT(CFLAG:ARG:4, 20)
-		TALENT:ARG:扶她 = 2
-	SIF GETBIT(CFLAG:ARG:4, 21)
-		TALENT:ARG:性别男 = 1
-	SIF GETBIT(CFLAG:ARG:4, 22)
-		TALENT:ARG:泌乳体質 = 1
-	SIF GETBIT(CFLAG:ARG:4, 23)
-		TALENT:ARG:泌乳体質 = 2
-	SIF GETBIT(CFLAG:ARG:4, 24)
-		TALENT:ARG:早泄 = 1
-	SIF GETBIT(CFLAG:ARG:4, 25)
-		TALENT:ARG:早泄 = 2
-	SIF GETBIT(CFLAG:ARG:4, 26)
-		TALENT:ARG:童贞 = 1
-
-	IF TALENT:ARG:贫乳
-		CALL CALC, "贫乳化", ARG
-	ELSEIF TALENT:ARG:巨乳 == 1
-		CALL CALC, "巨乳化", ARG
-	ELSEIF TALENT:ARG:巨乳 >= 2
-		CALL CALC, "爆乳化", ARG
-	ELSEIF TALENT:ARG:性别男
-		CALL CALC, "男乳化", ARG
-	ELSE
-		CALL CALC, "普乳化", ARG
-	ENDIF
-	CFLAG:ARG:4 = 0
-ELSE
-	;CFLAG:ARG:4に性别反转前之情報を記录
-	SELECTCASE TALENT:ARG:处女
-	CASE 1
-		SETBIT CFLAG:ARG:4, 0
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 1
-	ENDSELECT
-
-	;男にも容易湿之变化をつける試み
-	;SIF TALENT:ARG:容易湿
-	;	SETBIT CFLAG:ARG:4, 2
-	;SIF TALENT:ARG:不易湿
-	;	SETBIT CFLAG:ARG:4, 3
-
-	SELECTCASE TALENT:ARG:Ｖ损伤
-	CASE 1
-		SETBIT CFLAG:ARG:4, 4
-	CASE 2
-		SETBIT CFLAG:ARG:4, 5
-	CASE IS >= 3
-		SETBIT CFLAG:ARG:4, 6
-	ENDSELECT
-
-	SELECTCASE TALENT:ARG:晚泄
-	CASE 1
-		SETBIT CFLAG:ARG:4, 7
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 8
-	ENDSELECT
-
-	SIF TALENT:ARG:淫壷
-		SETBIT CFLAG:ARG:4, 9
-	SIF TALENT:ARG:男孩子？
-		SETBIT CFLAG:ARG:4, 10
-	SIF TALENT:ARG:大只
-		SETBIT CFLAG:ARG:4, 11
-	SIF TALENT:ARG:小只
-		SETBIT CFLAG:ARG:4, 12
-	SIF TALENT:ARG:Ｖ钝感
-		SETBIT CFLAG:ARG:4, 13
-	SIF TALENT:ARG:Ｖ敏感
-		SETBIT CFLAG:ARG:4, 14
-	SIF TALENT:ARG:贫乳
-		SETBIT CFLAG:ARG:4, 15
-
-	SELECTCASE TALENT:ARG:巨乳
-	CASE 1
-		SETBIT CFLAG:ARG:4, 16
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 17
-	ENDSELECT
-
-	SIF TALENT:ARG:性别女
-		SETBIT CFLAG:ARG:4, 18
-
-	SELECTCASE TALENT:ARG:扶她
-	CASE 1
-		SETBIT CFLAG:ARG:4, 19
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 20
-	ENDSELECT
-
-	SIF TALENT:ARG:性别男
-		SETBIT CFLAG:ARG:4, 21
-
-	SELECTCASE TALENT:ARG:泌乳体質
-	CASE 1
-		SETBIT CFLAG:ARG:4, 22
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 23
-	ENDSELECT
-
-	SELECTCASE TALENT:ARG:早泄
-	CASE 1
-		SETBIT CFLAG:ARG:4, 24
-	CASE IS >= 2
-		SETBIT CFLAG:ARG:4, 25
-	ENDSELECT
-
-	SIF TALENT:ARG:童贞
-		SETBIT CFLAG:ARG:4, 26
-
-	IF TALENT:ARG:性别男
-		TALENT:ARG:性别男 = 0
-		TALENT:ARG:性别女 = 1
-		;以下は、女性化ＢＯＮＵＳ
-		IF ABL:ARG:欲望 >= 3
-			TALENT:ARG:Ｖ敏感 = RAND:2
-			TALENT:ARG:容易湿 = RAND:2
-		ENDIF
-
-		;胸围
-		IF RAND:4 == 0
-			CALL CALC, "贫乳化", ARG
-			SIF RAND:3 == 0
-				CALL CALC, "小只化", ARG
-		ELSEIF RAND:2
-			CALL CALC, "巨乳化", ARG
-		ELSE
-			CALL CALC, "普乳化", ARG
-		ENDIF
-		;处女はサービス！w
-		IF EXP:ARG:Ｖ経験 == 0
-			TALENT:ARG:处女 = 1
-		ELSE
-			TALENT:ARG:处女 = 2
-		ENDIF
-	ELSE
-		TALENT:ARG:性别女 = 0
-		TALENT:ARG:扶她 = 0
-		TALENT:ARG:性别男 = 1
-		CALL CALC, "男乳化", ARG
-	ENDIF
-ENDIF
-
-;性别特有之ありえない素質之消去
-IF TALENT:ARG:性别男
-	FOR LOCAL, 0, 300
-		SIF CALCF("性别女特有之素質", LOCAL)
-			TALENT:ARG:LOCAL = 0
-	NEXT
-ELSEIF TALENT:ARG:性别女
-	FOR LOCAL, 0, 300
-		SIF CALCF("性别男特有之素質", LOCAL)
-			TALENT:ARG:LOCAL = 0
-	NEXT
-ENDIF
-
-CALL CALC, "中意的体位", ARG
-CALL SETFLAG, "性转换标志", ARG
-CALL EXP50_CHECK, ARG
-
-IF CONFIG("阴茎详细設定") && ARG == MASTER && PENIS(ARG) && TALENT:ARG:阴茎 == 0
-	PRINTFORML 随着性别的转变%CALLNAME:MASTER%的胯下发生了变化…
-
-
-	CALL SETCONFIG, "阴茎详细設定：主人"
-ENDIF

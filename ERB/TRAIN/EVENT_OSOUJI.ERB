@@ -30,9 +30,9 @@ LOCAL = (ABL:奉仕精神 * 5) + ABL:技巧
 IF CHECK_STAIN(STAIN:PLAYER:Ｐ, "Ａ")
 	LOCAL -= 10
 	;A感觉
-	SIF ABL:Ａ感觉 >= 3
+	SIF ABL:A感觉 >= 3
 		LOCAL += 2
-	SIF ABL:Ａ感觉 >= 5
+	SIF ABL:A感觉 >= 5
 		LOCAL += 5
 	;尻穴狂
 	SIF TALENT:尻穴狂
@@ -66,11 +66,11 @@ SIF TALENT:嫌恶性别男
 SIF TALENT:恋慕
 	LOCAL += 10
 ;反发刻印
-IF MARK:反发刻印 == 1
+IF MARK:反抗刻印 == 1
 	LOCAL -= 5
-ELSEIF MARK:反发刻印 == 2
+ELSEIF MARK:反抗刻印 == 2
 	LOCAL -= 15
-ELSEIF MARK:反发刻印 == 3
+ELSEIF MARK:反抗刻印 == 3
 	LOCAL = 30
 ENDIF
 ;焦躁中已经没有先前挑逗的余力了

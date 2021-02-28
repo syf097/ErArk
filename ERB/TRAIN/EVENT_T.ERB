@@ -51,8 +51,6 @@ CASE "追加地之文：穴から穴へ"
 		SELECTCASE RAND:2
 		CASE 1
 			LOCALS = 膣穴
-			SIF ABL:ASSI:Ｖ扩张 >= 4 && ABL:ASSI:Ｖ名器度 < 10
-				LOCALS = ユルい%LOCALS%
 		CASEELSE
 			LOCALS = 膣
 		ENDSELECT
@@ -79,7 +77,7 @@ CASE "追加地之文：穴から穴へ"
 
 		CASEELSE
 			LOCALS = 肛门
-			SIF ABL:ASSI:Ａ扩张 >= 4 && ABL:ASSI:Ａ名器度 < 10
+			SIF ABL:ASSI:Ａ扩张 >= 4 
 				LOCALS = ユルい%LOCALS%
 		ENDSELECT
 		IF RAND:3 == 0
@@ -88,7 +86,7 @@ CASE "追加地之文：穴から穴へ"
 
 		ELSEIF RAND:3 == 0
 			LOCALS:1 = %LOCALS%开始拔出来
-		ELSEIF ABL:ASSI:Ａ感觉 >= 3 && RAND:3 == 0
+		ELSEIF ABL:ASSI:A感觉 >= 3 && RAND:3 == 0
 			LOCALS:1 = %LOCALS%极为愉悦
 		ELSEIF RAND:2
 			LOCALS:1 = %LOCALS%被侵犯
@@ -182,7 +180,7 @@ CASE "追加地之文：Ｖ插入后"
 	;插入られてなさそうな场合には名器っぽい文本は表示しない
 
 
-	SIF CHECK("Ｖ插入") == 0 && (EXP:Ｖ経験 >= 50 || EXP:Ｖ性交経験 >= 20 || ABL:Ｖ扩张 >= 2 || ABL:Ｖ感觉 >= 2)
+	SIF CHECK("Ｖ插入") == 0 && (EXP:V经验 >= 50 || EXP:Ｖ性交経験 >= 20 || ABL:Ｖ扩张 >= 2 || ABL:Ｖ感觉 >= 2)
 		RETURN 0
 	SIF TALENT:Ｖ损伤 || TALENT:Ａ损伤 || PENIS(PLAYER) == 0
 		RETURN 0
@@ -198,7 +196,7 @@ CASE "追加地之文：Ｖ插入后"
 		LOCALS = 膣穴
 	ELSEIF ABL:Ｖ扩张
 		LOCALS = 膣
-	ELSEIF EXP:Ｖ経験 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2
+	ELSEIF EXP:V经验 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2
 		LOCALS = 秘裂
 	ELSE
 		LOCALS = 淫裂
@@ -217,7 +215,7 @@ CASE "追加地之文：Ｖ插入后"
 				LOCALS:1 = 自己手臂\@ SIZE("阴茎", PLAYER) > SIZE("片手拳交", TARGET) ? 都不如它大的 # 一般大小的 \@
 		ELSE
 			IF SIZE("阴茎", PLAYER) >= 2 && ABL:Ｖ扩张 >= 2
-				IF TALENT:小只 || SIZE("阴茎", PLAYER) >= 3
+				IF TALENT:娇小 || SIZE("阴茎", PLAYER) >= 3
 					LOCALS:1 = 侵入到肚脐处的
 				ELSE
 
@@ -225,7 +223,7 @@ CASE "追加地之文：Ｖ插入后"
 				ENDIF
 			ENDIF
 		ENDIF
-	ELSEIF EXP:Ｖ経験 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2
+	ELSEIF EXP:V经验 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2
 		LOCALS:1 = %CALLNAME:PLAYER%的
 	ELSEIF ABL:Ｖ扩张 < SIZE("阴茎", PLAYER) && RAND:2
 		IF RAND:2
@@ -261,10 +259,10 @@ CASE "追加地之文：Ｖ插入后"
 	LOCALS:1 = %LOCALS:1%阴茎
 
 	PRINTFORM %CALLNAME:TARGET%的
-	;Ｖ経験でそもそも之経験度合いを分岐
-	IF TALENT:处女 == 1 || ABL:Ｖ扩张 + 1 <= SIZE("阴茎", PLAYER) || (EXP:Ｖ経験 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2 && ABL:Ｖ感觉 < 2)
+	;V经验でそもそも之経験度合いを分岐
+	IF TALENT:处女 == 1 || ABL:Ｖ扩张 + 1 <= SIZE("阴茎", PLAYER) || (EXP:V经验 < 50 && EXP:Ｖ性交経験 < 20 && ABL:Ｖ扩张 < 2 && ABL:Ｖ感觉 < 2)
 		IF TALENT:处女 == 1
-			IF RAND:2 && TALENT:PLAYER:性别男
+			IF RAND:2 && TALENT:PLAYER:性别 == 1
 				PRINTFORM 过去从未被入侵过的
 
 
@@ -345,11 +343,6 @@ CASE "追加地之文：Ｖ插入后"
 		RETURN 0
 	ELSE
 		LOCALS:1 = %LOCALS:1%
-		;Ｖに肌肉松弛剂
-		IF GETBIT(TEQUIP:肌肉松弛剂, 2) && ABL:Ｖ名器度 < 20
-			PRINTFORM 在药的作用下失去了紧致的
-
-
 		;全天插棒插入指示
 		ELSEIF TALENT:全天插棒 && RAND:3 == 0
 			PRINTFORM 平日里就插着按摩棒的
@@ -365,59 +358,10 @@ CASE "追加地之文：Ｖ插入后"
 
 			ENDIF
 		ELSEIF ABL:Ｖ扩张 >= 4 && RAND:3 == 0
-			IF ABL:Ｖ扩张 >= 5 && EXP:Ｖ龙奸経験 && RAND:2
-				IF CHECK("Ｖ龙奸")
-					PRINTFORM 在龙奸中感到愉悦的
-
-
-				ELSE
-					PRINTFORM 连龙的肉棒都体験过的
-
-
-				ENDIF
-			ELSEIF EXP:Ｖ拳交経験 && RAND:2
-				IF EXP:Ｖ拳交経験 >= 10 && ABL:Ｖ名器度 >= 20
-					PRINTFORM 被拳交调教过的
-
-
-				ELSEIF ABL:Ｖ扩张 >= 6 && TALENT:大只
-					PRINTFORM 将手臂\@ RAND:2 ? 吞入 # 纳入 \@到手肘为止的
-
-
-				ELSEIF EXP:Ｖ拳交経験 >= 5
-					PRINTFORM 惯于拳交的
-
-
-				ELSE
-					PRINTFORM 连拳交都体験过的
-
-
-				ENDIF
-			ELSE
-				PRINTFORM 反复进行过扩张的
-
-
-			ENDIF
-			IF ABL:Ｖ名器度 < 10
-				PRINTFORM 平凡的
-			ELSEIF ABL:Ｖ名器度 < 20
-				PRINTFORM 松弛的
-			ELSEIF EXP:Ｖ経験 >= 300 && RAND:2
-				PRINTFORM 久战的
-			ELSEIF ABL:Ｖ名器度 >= 70 && RAND:2
-				PRINTFORM 收缩自如的
-
-
-			ELSEIF EXP:Ｖ性交経験 >= 100 && RAND:2
-				PRINTFORM 経験丰富的
-
-
-			ELSE
 				PRINTFORM 柔软的
-			ENDIF
 		ELSEIF EXP:Ｖ性交経験 >= 50 && (RAND:2 || EX:Ｖ绝顶 == 0)
 			;欲情が低い时之分岐もかねる
-			IF EXP:Ｖ経験 >= 300 && (PALAM:欲情 < 3000 || RAND:3 == 0)
+			IF EXP:V经验 >= 300 && (PALAM:欲情 < 3000 || RAND:3 == 0)
 				PRINTFORM 习惯使用的
 
 
@@ -615,7 +559,7 @@ CASE "追加地之文：Ｖ插入后"
 
 
 		ELSEIF RAND:3 == 0
-			PRINTFORM 膛内\@ ABL:Ｖ名器度 >= 70 ? 绝妙地 # 恰到好处地 \@调整着力道
+			PRINTFORM 膛内绝妙地调整着力道
 		ELSEIF RAND:2
 			PRINTFORM 膛内柔软地
 
@@ -625,20 +569,19 @@ CASE "追加地之文：Ｖ插入后"
 
 
 		ENDIF
-		IF ABL:Ｖ名器度 >= 70 && RAND:3 == 0
+		IF RAND:3 == 0
 			PRINTW 摩挲着肉棒…
 
 
 		ELSEIF RAND:2
 			PRINTW 包裹着肉棒…
 
-
 		ELSE
 			PRINTW 欢迎着肉棒…
 
 
 		ENDIF
-	ELSEIF GETBIT(BASE:属性, 14) == 0 && GETBIT(BASE:属性, 1) && ABL:Ｖ名器度 >= 20 && RAND:2
+	ELSEIF GETBIT(BASE:属性, 14) == 0 && GETBIT(BASE:属性, 1) && RAND:2
 		IF ABL:Ｖ名器度 >= 50 && RAND:3 == 0
 			PRINTFORM 壁褶纠缠着的同时
 
@@ -648,7 +591,7 @@ CASE "追加地之文：Ｖ插入后"
 		ELSE
 			PRINTFORM 咕噜噜地
 		ENDIF
-		IF TALENT:恋慕 && ASSI && CHOSECOMS("Ｖ插入", ASSI) && ABL:Ｖ名器度 > ABL:ASSI:Ｖ名器度 && RAND:2
+		IF TALENT:恋慕 && ASSI && CHOSECOMS("Ｖ插入", ASSI)  && RAND:2
 			PRINTFORM 以比%CALLNAME:ASSI%更强的力道
 		ELSEIF ABL:Ｖ名器度 >= 70 && RAND:3 == 0
 			PRINTFORM 以用手紧握似的力道
@@ -678,9 +621,9 @@ CASE "追加地之文：Ｖ插入后"
 		SIF TALENT:恋慕 && ASSI && CHOSECOMS("Ｖ插入", ASSI) && RAND:2
 			PRINTFORM 不想对%CALLNAME:ASSI%认输似地
 
-		IF RAND:2 && ABL:Ｖ名器度 >= 50
+		IF RAND:2
 			IF RAND:3 == 0
-				PRINTFORM \@ ABL:Ｖ名器度 >= 70 ? 喈喈作响地 # \@像是咀嚼一样地
+				PRINTFORM 喈喈作响地
 			ELSEIF RAND:3 == 0
 				PRINTFORM 咂咂作响的
 
@@ -773,7 +716,7 @@ CASE "追加地之文：Ａ插入后"
 	;插入られてない场合には名器っぽい文本は表示しない
 
 
-	SIF CHECK("Ａ插入") == 0 && (EXP:Ａ経験 >= 50 || EXP:Ａ性交経験 >= 20 || ABL:Ａ扩张 >= 2 || ABL:Ａ感觉 >= 2)
+	SIF CHECK("Ａ插入") == 0 && (EXP:A经验 >= 50 || EXP:Ａ性交経験 >= 20 || ABL:Ａ扩张 >= 2 || ABL:A感觉 >= 2)
 		RETURN 0
 	SIF TALENT:Ａ损伤 || TALENT:Ａ损伤 || PENIS(PLAYER) == 0
 		RETURN 0
@@ -796,7 +739,7 @@ CASE "追加地之文：Ａ插入后"
 
 			ELSEIF SIZE("阴茎", PLAYER) >= 2 && ABL:Ａ扩张 >= 2
 
-				IF TALENT:小只 || SIZE("阴茎", PLAYER) >= 3
+				IF TALENT:娇小 || SIZE("阴茎", PLAYER) >= 3
 					LOCALS:1 = 能难以置信地一路深入的
 				ELSE
 
@@ -804,7 +747,7 @@ CASE "追加地之文：Ａ插入后"
 				ENDIF
 			ENDIF
 		ENDIF
-	ELSEIF EXP:Ａ経験 < 50 && EXP:Ａ性交経験 < 20 && ABL:Ａ扩张 < 2 && ABL:Ａ感觉 < 2
+	ELSEIF EXP:A经验 < 50 && EXP:Ａ性交経験 < 20 && ABL:Ａ扩张 < 2 && ABL:A感觉 < 2
 		LOCALS:1 = %CALLNAME:PLAYER%的
 	ELSEIF ABL:Ａ扩张 < SIZE("阴茎", PLAYER) && RAND:2
 		IF RAND:2
@@ -840,14 +783,14 @@ CASE "追加地之文：Ａ插入后"
 	LOCALS:1 = %LOCALS:1%阴茎
 
 	PRINTFORM %CALLNAME:TARGET%的
-	;Ａ経験でそもそも之経験度合いを分岐
-	IF TALENT:Ａ处女 || ABL:Ａ扩张 + 2 <= SIZE("阴茎", PLAYER) || (EXP:Ａ経験 < 50 && EXP:Ａ性交経験 < 20 && ABL:Ａ扩张 < 2 && ABL:Ａ感觉 < 2)
+	;A经验でそもそも之経験度合いを分岐
+	IF TALENT:Ａ处女 || ABL:Ａ扩张 + 2 <= SIZE("阴茎", PLAYER) || (EXP:A经验 < 50 && EXP:Ａ性交経験 < 20 && ABL:Ａ扩张 < 2 && ABL:A感觉 < 2)
 		IF TALENT:Ａ处女 && EXP:Ａ性交経験 == 0
 			PRINTFORM 初次纳入阴茎的
 
 
 		ELSEIF EXP:Ａ性交経験 && RAND:2
-			IF TALENT:性别男 == 0 && CHECK("Ｖ插入")
+			IF TALENT:性别 != 1 && CHECK("Ｖ插入")
 				PRINTFORM 与被调教过的膛内不同，还没习惯的
 
 
@@ -948,7 +891,7 @@ CASE "追加地之文：Ａ插入后"
 					PRINTFORM 被拳交调教过的
 
 
-				ELSEIF ABL:Ａ扩张 >= 6 && TALENT:大只
+				ELSEIF ABL:Ａ扩张 >= 6 && TALENT:高大
 					PRINTFORM 将手臂\@ RAND:2 ? 吞入 # 纳入 \@到手肘为止的
 
 
@@ -972,11 +915,11 @@ CASE "追加地之文：Ａ插入后"
 				PRINTFORM 不够紧致的
 
 
-			ELSEIF ABL:Ａ扩张 >= 5 && ABL:Ａ感觉 >= 5 && RAND:2
+			ELSEIF ABL:Ａ扩张 >= 5 && ABL:A感觉 >= 5 && RAND:2
 				PRINTFORM 一切为了更舒服的
 
 
-			ELSEIF EXP:Ａ経験 >= 300 && RAND:2
+			ELSEIF EXP:A经验 >= 300 && RAND:2
 				PRINTFORM 久战的
 			ELSEIF ABL:Ａ名器度 >= 70 && RAND:2
 				PRINTFORM 收缩自如的
@@ -991,7 +934,7 @@ CASE "追加地之文：Ａ插入后"
 			ENDIF
 		ELSEIF EXP:Ａ性交経験 >= 50 && (RAND:2 || EX:Ａ绝顶 == 0)
 			;欲情が低い时之分岐もかねる
-			IF EXP:Ａ経験 >= 300 && (PALAM:欲情 < 3000 || RAND:3 == 0)
+			IF EXP:A经验 >= 300 && (PALAM:欲情 < 3000 || RAND:3 == 0)
 				PRINTFORM 习惯使用的
 
 
@@ -1073,7 +1016,7 @@ CASE "追加地之文：Ａ插入后"
 
 
 			ENDIF
-		ELSEIF ABL:Ａ感觉 >= 2 && EXP:Ａ性交経験 >= 20 && FIRSTCOMS("Ａ插入")
+		ELSEIF ABL:A感觉 >= 2 && EXP:Ａ性交経験 >= 20 && FIRSTCOMS("Ａ插入")
 			IF RAND:2
 				PRINTFORM 享受着快感的
 
@@ -1196,32 +1139,27 @@ CASE "追加地之文：Ａ插入后"
 
 
 		ENDIF
-	ELSEIF GETBIT(BASE:属性, 14) == 0 && GETBIT(BASE:属性, 1) && ABL:Ａ名器度 >= 20 && RAND:2
-		IF ABL:Ａ名器度 >= 50 && RAND:3 == 0
+	ELSEIF GETBIT(BASE:属性, 14) == 0 && GETBIT(BASE:属性, 1) && RAND:2
+		IF RAND:3 == 0
 			PRINTFORM 壁褶纠缠着的同时
-
-
 		ELSEIF RAND:2
 			PRINTFORM 紧紧地
 		ELSE
 			PRINTFORM 咕噜噜地
 		ENDIF
-		IF TALENT:恋慕 && ASSI && CHOSECOMS("Ａ插入", ASSI) && ABL:Ａ名器度 > ABL:ASSI:Ａ名器度 && RAND:2
+		IF TALENT:恋慕 && ASSI && CHOSECOMS("Ａ插入", ASSI) && RAND:2
 			PRINTFORM 以比%CALLNAME:ASSI%更强的力道
-		ELSEIF ABL:Ａ名器度 >= 70 && RAND:3 == 0
+		ELSEIF RAND:3 == 0
 			PRINTFORM 以用手紧握似的力道
 
-
-		ELSEIF ABL:Ａ名器度 >= 50 && RAND:2
+		ELSEIF RAND:2
 			PRINTFORM 以不得了的力道
-
 
 		ELSE
 			PRINTFORM 紧紧地
 		ENDIF
 		IF RAND:3 == 0
 			PRINTW 握紧似地榨取着…
-
 
 		ELSEIF RAND:2
 			PRINTW 绞住榨取着…
@@ -1236,9 +1174,9 @@ CASE "追加地之文：Ａ插入后"
 		SIF TALENT:恋慕 && ASSI && CHOSECOMS("Ａ插入", ASSI) && RAND:2
 			PRINTFORM 不想对%CALLNAME:ASSI%认输似地
 
-		IF RAND:2 && ABL:Ａ名器度 >= 50
+		IF RAND:2 
 			IF RAND:3 == 0
-				PRINTFORM \@ ABL:Ａ名器度 >= 70 ? 喈喈作响地 # \@像是咀嚼一样地
+				PRINTFORM 喈喈作响地
 			ELSEIF RAND:3 == 0
 				PRINTFORM 咂咂作响的
 
@@ -1269,7 +1207,7 @@ CASE "追加地之文：Ａ插入后"
 				PRINTFORM 粘着肠液的粘膜
 
 
-			ELSEIF ABL:Ａ名器度 >= 50 && RAND:2
+			ELSEIF RAND:2
 				IF RAND:3 == 0
 					PRINTFORM 肉壁厚实的肛门
 
@@ -1288,11 +1226,11 @@ CASE "追加地之文：Ａ插入后"
 
 
 			ENDIF
-			IF ABL:Ａ名器度 >= 70 && RAND:3 == 0
+			IF RAND:3 == 0
 				PRINTFORM 一次又一次地勒紧着
 
 
-			ELSEIF ABL:Ａ名器度 >= 40 && RAND:2
+			ELSEIF RAND:2
 				PRINTFORM 一边收缩着
 
 
@@ -1302,10 +1240,10 @@ CASE "追加地之文：Ａ插入后"
 
 			ENDIF
 		ENDIF
-		IF RAND:3 == 0 && ABL:Ａ名器度 >= 40
-			IF ABL:Ａ感觉 >= 3 && RAND:3 == 0
+		IF RAND:3 == 0 
+			IF ABL:A感觉 >= 3 && RAND:3 == 0
 				PRINTFORM 贪婪地
-			ELSEIF ABL:Ａ名器度 >= 50 && RAND:2
+			ELSEIF  RAND:2
 				PRINTFORM 不留空隙地
 
 
@@ -1506,7 +1444,7 @@ CASE "追加地之文：骑乘位"
 	;淫乱or欲情4LV以上なら追加
 	SIF PALAM:欲情 < 10000 && TALENT:好色 + TALENT:淫乱 == 0
 		RETURN 0
-	SIF ABL:腰技 < 3 || MARK:反发刻印 >= 2 || EXP:腰技経験 < 20
+	SIF ABL:腰技 < 3 || MARK:反抗刻印 >= 2 || EXP:腰技経験 < 20
 		RETURN 0
 
 	SELECTCASE SELECTCOM
@@ -1514,7 +1452,7 @@ CASE "追加地之文：骑乘位"
 		SIF ABL:Ｖ感觉 < 3 || EXP:Ｖ性交経験 < 20
 			RETURN 0
 	CASE 70 TO 79
-		SIF ABL:Ａ感觉 < 3 || EXP:Ａ性交経験 < 20
+		SIF ABL:A感觉 < 3 || EXP:Ａ性交経験 < 20
 			RETURN 0
 	CASE 83
 		SIF TALENT:尿道性感 == 0 || EXP:尿道性交経験 < 20
@@ -1524,7 +1462,7 @@ CASE "追加地之文：骑乘位"
 			SIF ABL:Ｖ感觉 < 3 || EXP:Ｖ性交経験 < 20
 				RETURN 0
 		ELSEIF INSERT("Ａ插入")
-			SIF ABL:Ａ感觉 < 3 || EXP:Ａ性交経験 < 20
+			SIF ABL:A感觉 < 3 || EXP:Ａ性交経験 < 20
 				RETURN 0
 		ELSEIF INSERT("尿道插入")
 			SIF TALENT:尿道性感 == 0 || EXP:尿道性交経験 < 20
@@ -1547,7 +1485,7 @@ CASE "追加地之文：骑乘位"
 			ENDIF
 			CALL SETFLAG, "腋现せ标志", TARGET
 		ELSEIF RAND:2 && CHECK_CLO("Ｖ露出") + CHECK_CLO("Ａ露出") && COND("指之使用") && ABL:露阴癖 >= 3
-			IF TALENT:性别男 == 0 && CHECK_CLO("Ｖ露出") && RANDIF(1, CHECK_CLO("Ａ露出") )
+			IF TALENT:性别 != 1 && CHECK_CLO("Ｖ露出") && RANDIF(1, CHECK_CLO("Ａ露出") )
 				PRINTFORM 用手指掰开小穴、
 			ELSE
 				PRINTFORM 用两手掰开屁股，露出小穴、
@@ -1592,7 +1530,7 @@ CASE "追加地之文：骑乘位"
 		PRINTFORM 手で帽子が落ちないように押さえ同时、
 	ELSEIF ABL:百合属性 >= 3 && (SELECTCOM:1 == 1 || SELECTCOM:1 == 9) && RAND:3 == 0
 		PRINTFORM %CALLNAME:ASSI%と舌を絡め同时、
-	ELSEIF TALENT:力量 && TALENT:小只 == 0 && RANDIF(1, TALENT:巨乳, TALENT:小恶魔*3 + ABL:Ｓ属性 >= 3)
+	ELSEIF TALENT:力量 && TALENT:娇小 == 0 && RANDIF(1, TALENT:巨乳, TALENT:小恶魔*3 + ABL:Ｓ属性 >= 3)
 		IF RAND:2
 			PRINTFORM うっすらと肌肉之付いたお腹をうねらせ同时、
 
@@ -1667,7 +1605,7 @@ CASE "狂野摇摆"
 		PRINTFORM %CALLNAME:PLAYER%之顔を现つめ同时
 	ELSEIF TALENT:力量 && RAND:2
 		PRINTFORM 引き締まったお腹をうねらせ同时
-	ELSEIF TALENT:贫乳 == 0 && TALENT:性别男 == 0 && CHECK_CLO("乳首露出") && RAND:2
+	ELSEIF TALENT:贫乳 == 0 && TALENT:性别 != 1 && CHECK_CLO("乳首露出") && RAND:2
 		IF TALENT:巨乳 && RAND:3 == 0
 			PRINT プルンプルンと
 		ELSEIF TALENT:巨乳 && RAND:2
@@ -2212,7 +2150,7 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 					LOCALS = %LOCALS%バッチリ
 				LOCALS = %LOCALS%露出来
 			ELSEIF RAND:2
-				IF TALENT:小只 + TALENT:幼稚 == 0
+				IF TALENT:娇小 + TALENT:幼稚 == 0
 					IF TALENT:好色 && RAND:2
 						LOCALS = 色素沉淀的大阴唇完全看得见
 					ELSE
@@ -2236,7 +2174,7 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 			IF CHECK_PANTIES("荷叶边") && !RAND:4
 				LOCALS = 荷叶边が可爱い
 			;過激
-			ELSEIF TALENT:小只 + TALENT:幼稚 && CHECK_PANTIES("Ｈ") && !RAND:3
+			ELSEIF TALENT:娇小 + TALENT:幼稚 && CHECK_PANTIES("Ｈ") && !RAND:3
 				LOCALS = 大人びた
 			ELSEIF RAND:2
 				LOCALS = 阴影を際立たせる
@@ -2444,8 +2382,8 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 					ELSE
 						LOCALS = ジョリジョリした
 					ENDIF
-				;刚刚长出(小只or幼稚)
-				ELSEIF TALENT:小只 + TALENT:幼稚
+				;刚刚长出(娇小or幼稚)
+				ELSEIF TALENT:娇小 + TALENT:幼稚
 					IF RAND:2
 						LOCALS = 産毛之生えた
 					ELSE
@@ -2470,7 +2408,7 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 					ENDIF
 				ENDIF
 			CASE 6
-				IF TALENT:小只 + TALENT:幼稚
+				IF TALENT:娇小 + TALENT:幼稚
 					IF RAND:2
 						LOCALS = ちょっとだけ毛之生えた
 					ELSE
@@ -2480,7 +2418,7 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 					LOCALS = 柔らかな茂みを备えた
 				ENDIF
 			CASE 7
-				IF !RAND:3 && TALENT:小只 + TALENT:幼稚 == 0
+				IF !RAND:3 && TALENT:娇小 + TALENT:幼稚 == 0
 					IF RAND:2
 						LOCALS = Ａまで毛之生えた
 					ELSE
@@ -2493,7 +2431,7 @@ CASE "Ｖ：视覚", "Ｖ：感触"
 				ENDIF
 			ENDSELECT
 		ENDIF
-		SIF TALENT:小只 && TALENT:幼稚 && !RAND:3
+		SIF TALENT:娇小 && TALENT:幼稚 && !RAND:3
 			LOCALS = %LOCALS%幼い
 		IF PALAM:欲情 < PALAM_LV(6 - ABL:Ｖ扩张) && ABL:Ｖ扩张 <= 4
 			LOCALS = %LOCALS%ワレメ
@@ -2701,7 +2639,7 @@ CASE "阴蒂"
 	CASE 0
 		IF COND("阴毛") >= 6 && RAND:2
 			LOCALS = 阴毛に隐れている
-		ELSEIF TALENT:小只
+		ELSEIF TALENT:娇小
 			LOCALS = 娇小的
 
 
@@ -2709,7 +2647,7 @@ CASE "阴蒂"
 	ENDSELECT
 	IF TALENT:阴蒂穿环 && RAND:2
 		LOCALS = %TEXTS("阴蒂穿环")%で饰られた
-	ELSEIF TALENT:Ｃ敏感 && RAND:3 == 0
+	ELSEIF TALENT:C敏感 && RAND:3 == 0
 		LOCALS = 敏感な
 	ENDIF
 CASE "Ａ"
@@ -2722,10 +2660,10 @@ CASE "Ａ"
 	;直前にＡ绝顶
 	ELSEIF PREVEX("Ａ绝顶") && RAND:3 == 0
 		LOCALS = 快感にほぐれた
-	;今回调教ではまだＡ経験増加０
+	;今回调教ではまだA经验増加０
 	ELSEIF EXP_GAIN(1) == 0
-		IF ABL:Ａ扩张 >= 2 && (ABL:Ａ扩张 >= 5 || EXP:Ａ経験 >= 300) && RANDIF(2, TALENT:全天塞肛)
-			IF RAND:2 && TALENT:性别男 == 0 && TALENT:处女 == 0 && EXP:Ａ経験 >= MAX(EXP:Ｖ経験*2, 200) && EXP:Ａ性交経験 >= MAX(EXP:Ｖ性交経験*2, 100)
+		IF ABL:Ａ扩张 >= 2 && (ABL:Ａ扩张 >= 5 || EXP:A经验 >= 300) && RANDIF(2, TALENT:全天塞肛)
+			IF RAND:2 && TALENT:性别 != 1 && TALENT:处女 == 0 && EXP:A经验 >= MAX(EXP:V经验*2, 200) && EXP:Ａ性交経験 >= MAX(EXP:Ｖ性交経験*2, 100)
 				LOCALS = %TEXTR("膣", "前之穴")%よりも遥かに経験丰富な
 			ELSE
 				LOCALS = %TEXTR("一目で技巧込まれ具合之现て取れる", "一目で分かるほど技巧込まれた", "周边之色が变わるほどに技巧込まれた")%
@@ -2741,14 +2679,14 @@ CASE "Ａ"
 		ENDIF
 	;直前にＡ系调教なら、そ之描写优先
 	ELSE
-		;Ａ系调教やＡ敏感やＡ経験300or150以上にあわせて乱数分岐
+		;Ａ系调教やA敏感やA经验300or150以上にあわせて乱数分岐
 		SELECTCASE PREVCOM
 		CASE 33, 70 TO 79, 136 TO 138, 142, 143, 202
 			IF ABL:Ａ扩张 >= 4 && RAND:3
 				LOCALS = ポッカリと口を开けて\@ PREVEX("Ａ中出")  ? 精液をたらして # \@いる
 			ELSEIF ABL:Ａ扩张 >= 3 && RAND:3
 				LOCALS = 綻ん\@ PREVEX("Ａ中出")  ? で精液を滲ませている # だ \@
-			ELSEIF ABL:Ａ扩张 >= 2 || TALENT:Ａ敏感
+			ELSEIF ABL:Ａ扩张 >= 2 || TALENT:A敏感
 				LOCALS = ヒクヒクと妖しく蠢\@ PREVEX("Ａ中出")  ? いて精液を漏らしている # く \@
 			;Ａ中出直后
 			ELSEIF PREVEX("Ａ中出")
@@ -2789,7 +2727,7 @@ CASE "Ａ"
 		;绝顶边缘
 		ELSEIF EX:忍住了没丢 && RAND:3 == 0
 			LOCALS = 绝顶间近之快感でヒクついている
-		ELSEIF TALENT:Ａ敏感 && RAND:3 == 0
+		ELSEIF TALENT:A敏感 && RAND:3 == 0
 			IF RAND:2
 				LOCALS = ヒクヒクと生々しく痙攣する
 			ELSE
@@ -2810,13 +2748,13 @@ CASE "Ａ"
 				LOCALS = 阴毛で缘取られた
 			ENDIF
 		ELSEIF RAND:2
-			IF ABL:Ａ扩张 >= 4 && EXP:Ａ経験 >= 150
+			IF ABL:Ａ扩张 >= 4 && EXP:A经验 >= 150
 				IF RAND:2
 					LOCALS = 経験丰富な
 				ELSE
 					LOCALS = 技巧込まれた
 				ENDIF
-			ELSEIF ABL:Ａ扩张 >= 2 && EXP:Ａ経験 >= 50
+			ELSEIF ABL:Ａ扩张 >= 2 && EXP:A经验 >= 50
 				LOCALS = 柔らかい
 			ELSEIF TALENT:外表年龄 < 2
 				LOCALS = 可爱らしい
@@ -2971,11 +2909,11 @@ CASE "乳首：描写"
 			LOCALS = 充血
 		ENDIF
 	CASEELSE
-		IF TALENT:小只 && RAND:3 == 0
+		IF TALENT:娇小 && RAND:3 == 0
 			LOCALS = 娇小的
 
 
-		ELSEIF TALENT:大只 && RAND:3 == 0
+		ELSEIF TALENT:高大 && RAND:3 == 0
 			LOCALS = 稍大的
 
 
@@ -3125,7 +3063,7 @@ CASE "Ｖ插入前"
 		ENDSELECT
 	ENDIF
 	IF LOCAL == 0
-		IF TALENT:小只 && TALENT:幼稚
+		IF TALENT:娇小 && TALENT:幼稚
 			LOCALS = %LOCALS%幼いワレメ
 		ELSE
 			LOCALS = %LOCALS%秘裂
@@ -3149,14 +3087,12 @@ CASE "合体中"
 		LOCALS:3 = 膣穴
 		LOCAL:1 = ABL:Ｖ扩张
 		LOCAL:2 = PREVEX("Ｖ中出")
-		LOCAL:3 = ABL:Ｖ名器度
 	ELSEIF INSERT("Ａ插入")
 		LOCALS:1 = Ａ
 		LOCALS:2 = 肠
 		LOCALS:3 = 尻穴
 		LOCAL:1 = ABL:Ａ扩张
 		LOCAL:2 = PREVEX("Ａ中出")
-		LOCAL:3 = ABL:Ａ名器度
 	ELSEIF INSERT("尿道插入")
 		LOCALS:1 = 尿道
 		IF PENIS(TARGET)
@@ -3168,7 +3104,6 @@ CASE "合体中"
 		ENDIF
 		LOCAL:1 = ABL:尿道扩张
 		LOCAL:2 = PREVEX("尿道内射精")
-		LOCAL:3 = ABL:尿道名器度
 	ENDIF
 
 	;TARGETが主导している

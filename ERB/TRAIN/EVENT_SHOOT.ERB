@@ -51,7 +51,7 @@ CASE 10
 		LOCAL = ABL:PLAYER:技巧*100 + ABL_U(TARGET)*50
 ;搞基
 CASE 16
-	LOCAL = 300 + ABL:技巧*200 + ABL:Ｃ感觉*100
+	LOCAL = 300 + ABL:技巧*200 + ABL:C感觉*100
 ;Ｖ插入
 CASE 60 TO 69
 	LOCAL = ABL:技巧*100 + ABL_V(TARGET)*100
@@ -136,7 +136,7 @@ CASE 80
 			TIMES LOCAL, 0.30
 		ENDSELECT
 	ELSE
-		LOCAL = 500 + ABL:技巧*200 + ABL:Ｃ感觉*100
+		LOCAL = 500 + ABL:技巧*200 + ABL:C感觉*100
 		;阴毛之生え具合补正
 		SIF COND("阴毛", PLAYER) <= 5 && COND("阴毛") >= 5
 			TIMES LOCAL, 1.20
@@ -172,7 +172,7 @@ CASE 90 TO 119
 	CASE 92, 94, 104
 		LOCAL += ABL:Ｂ感觉*100
 	CASE 93, 100
-		LOCAL += ABL:Ｃ感觉*100
+		LOCAL += ABL:C感觉*100
 	CASE 95, 96
 		LOCAL += ABL:Ｓ属性*200
 	;飞机杯
@@ -266,9 +266,9 @@ CASEELSE
 			LOCAL = 10 + ABL:技巧*100
 		;顔面骑乘
 		CASE 1
-			LOCAL = 300 + ABL:技巧*300 + ABL:Ｃ感觉*100
+			LOCAL = 300 + ABL:技巧*300 + ABL:C感觉*100
 		CASE 9
-			LOCAL = 300 + ABL:技巧*300 + ABL:Ａ感觉*100
+			LOCAL = 300 + ABL:技巧*300 + ABL:A感觉*100
 		;逆龙奸
 		CASE 304, 305
 			LOCAL = 1000 + ABL:技巧*200
@@ -535,8 +535,8 @@ CASE 83
 		TIMES B, 3.00
 ;PLAYER之Ａを刺激
 CASE 96, 107, 109, 110, 125 TO 129, 305
-	;ABL:Ａ感觉をみる
-	SELECTCASE ABL:PLAYER:Ａ感觉
+	;ABL:A感觉をみる
+	SELECTCASE ABL:PLAYER:A感觉
 	CASE 0
 		TIMES B, 0.50
 	CASE 1
@@ -550,8 +550,8 @@ CASE 96, 107, 109, 110, 125 TO 129, 305
 	CASEELSE
 		TIMES B, 2.00
 	ENDSELECT
-	;PLAYヤー之EXP:Ａ経験をみる
-	SELECTCASE EXP:PLAYER:Ａ経験
+	;PLAYヤー之EXP:A经验をみる
+	SELECTCASE EXP:PLAYER:A经验
 	CASE IS < 5
 		TIMES B, 0.10
 	CASE IS < 20
@@ -564,13 +564,13 @@ CASE 96, 107, 109, 110, 125 TO 129, 305
 	;敏感具合
 	IF TALENT:PLAYER:尻穴狂
 		TIMES B, 2.00
-	ELSEIF TALENT:PLAYER:Ａ敏感
+	ELSEIF TALENT:PLAYER:A敏感
 		TIMES B, 1.50
 	ELSEIF TALENT:PLAYER:Ａ钝感
 		TIMES B, 0.50
 	ENDIF
 	;PLAYヤーが性别男
-	SIF TALENT:PLAYER:性别男
+	SIF TALENT:PLAYER:性别 == 1
 		TIMES B, 1.50
 	;Ａ扩张具合による补正
 	IF SELECTCOM == 107
@@ -588,9 +588,9 @@ CASE 96, 107, 109, 110, 125 TO 129, 305
 	ENDIF
 ;PLAYER之Ｃを刺激
 CASE 95, 98, 99
-	IF TALENT:PLAYER:性别男 == 0
-		;ABL:Ｃ感觉をみる
-		SELECTCASE ABL:PLAYER:Ｃ感觉
+	IF TALENT:PLAYER:性别 != 0
+		;ABL:C感觉をみる
+		SELECTCASE ABL:PLAYER:C感觉
 		CASE 0
 			TIMES B, 0.50
 		CASE 1
@@ -607,7 +607,7 @@ CASE 95, 98, 99
 		;敏感具合
 		IF TALENT:PLAYER:淫核
 			TIMES B, 2.00
-		ELSEIF TALENT:PLAYER:Ｃ敏感
+		ELSEIF TALENT:PLAYER:C敏感
 			TIMES B, 1.50
 		ELSEIF TALENT:PLAYER:Ｃ钝感
 			TIMES B, 0.50
@@ -630,8 +630,8 @@ CASE 106, 108, 110, 120 TO 124, 304
 	CASEELSE
 		TIMES B, 2.00
 	ENDSELECT
-	;PLAYヤー之EXP:Ｖ経験をみる
-	SELECTCASE EXP:PLAYER:Ｖ経験
+	;PLAYヤー之EXP:V经验をみる
+	SELECTCASE EXP:PLAYER:V经验
 	CASE IS < 5
 		TIMES B, 0.20
 	CASE IS < 20
@@ -1592,7 +1592,7 @@ IF SHOOT("冲击")
 					PRINTFORM 濡湿了的
 
 
-				ELSEIF TALENT:小只
+				ELSEIF TALENT:娇小
 					PRINTFORM 鼓起了
 				ELSE
 					PRINTFORM 轻轻地打开了
@@ -1609,7 +1609,7 @@ IF SHOOT("冲击")
 
 
 				CASE 4
-					IF TALENT:小只
+					IF TALENT:娇小
 						PRINTFORM 小孩子般的残留
 
 
@@ -1903,7 +1903,7 @@ ELSEIF SHOOT("口")
 	ELSE
 		PRINTFORM %CALLNAME:TARGET%
 		;插入から饮ませる
-		IF ABL:奉仕精神 >= 3 && SHOOT("膣内") + SHOOT("Ａ") && ABL:奉仕精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反发刻印) > 3
+		IF ABL:奉仕精神 >= 3 && SHOOT("膣内") + SHOOT("Ａ") && ABL:奉仕精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反抗刻印) > 3
 			IF RAND:3 == 0
 				PRINTFORM %TEXTR("污秽", "粘液的气味", "过分的气味", "性交后的气味")%
 
@@ -2268,7 +2268,7 @@ ELSEIF SHOOT("胸")
 			PRINTFORMW 带着出神的表情、精液在%TEXTS("欧派")%的全身%TEXTR("涂抹扩大", "流淌着")%…
 
 
-		ELSEIF TALENT:贫乳 == 0 && TALENT:性别男 == 0 && RAND:2
+		ELSEIF TALENT:贫乳 == 0 && TALENT:性别 != 1 && RAND:2
 			PRINTFORMW 用双手抱着胸部、让精液装在乳沟中……
 
 
@@ -2605,7 +2605,7 @@ ELSEIF SHOOT("中出")
 
 	CALL LUXURIOUS_HIT, "精液", TARGET
 
-	IF MARK:淫紋 && TALENT:性别男 == 0 && SHOOT("膣内") && EXP_GAIN(17) == 0
+	IF MARK:淫紋 && TALENT:性别 != 1 && SHOOT("膣内") && EXP_GAIN(17) == 0
 		SETCOLOR DEF_COLOR("粉红色心形")
 		PRINTFORMW %CALLNAME:TARGET%被刻上了淫紋妖媚的闪耀着…
 		RESETCOLOR
@@ -2619,7 +2619,7 @@ ELSEIF SHOOT("中出")
 	ELSEIF SELECTCOM == 3 && TCVAR:28 >= 40
 		PRINTFORM 正在专心的自慰
 	ENDIF
-	IF MARK:淫紋 && TALENT:性别男 == 0 && SHOOT("膣内") && EXP_GAIN(17) == 0
+	IF MARK:淫紋 && TALENT:性别 != 1 && SHOOT("膣内") && EXP_GAIN(17) == 0
 		PRINTFORMW 子宮里%TEXTR("被灌入", "被注入了")%精液带来令人难以忍受的%TEXTR("疼痛", "愉悦")%感觉、%CALLNAME:TARGET%无意识颤抖着腰部…
 
 	ELSE

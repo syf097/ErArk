@@ -358,11 +358,11 @@ LOCAL = TFLAG:30 + NOWEX:同时绝顶
 SIF NOWEX:绝顶数合计
 	LOCAL += 1
 ;绝顶的地方に对应する敏感系之素質があるなら、係数ＵＰ
-SIF NOWEX:Ｃ绝顶 > 0 && (TALENT:淫核 || TALENT:Ｃ敏感)
+SIF NOWEX:Ｃ绝顶 > 0 && (TALENT:淫核 || TALENT:C敏感)
 	LOCAL += 2
 SIF NOWEX:Ｖ绝顶 > 0 && (TALENT:淫壷 || TALENT:Ｖ敏感)
 	LOCAL += 2
-SIF NOWEX:Ａ绝顶 > 0 && (TALENT:尻穴狂 || TALENT:Ａ敏感)
+SIF NOWEX:Ａ绝顶 > 0 && (TALENT:尻穴狂 || TALENT:A敏感)
 	LOCAL += 2
 SIF NOWEX:Ｂ绝顶 > 0 && (TALENT:淫乳 || TALENT:Ｂ敏感)
 	LOCAL += 2
@@ -371,7 +371,7 @@ SIF NOWEX:Ｍ绝顶 > 0 && (TALENT:荡唇 || TALENT:Ｍ敏感)
 SIF NOWEX:尿道绝顶 > 0 && TALENT:尿道狂
 	LOCAL += 2
 ;射精+(性变态or性别男）
-SIF NOWEX:射精 > 0 && TALENT:性变态 + TALENT:性别男
+SIF NOWEX:射精 > 0 && TALENT:性变态 + TALENT:性别 == 1
 	LOCAL += 2
 ;喷乳+性变态
 SIF NOWEX:喷乳 > 0 && TALENT:性变态
@@ -1149,7 +1149,7 @@ SIF LINECOUNT > MEMO_LINECOUNT
 
 IF NOWEX:Ｃ绝顶
 	SOURCE:露出 += 300 * NOWEX:Ｃ绝顶
-	SIF TALENT:Ｃ敏感
+	SIF TALENT:C敏感
 		SOURCE:屈从 += 1000
 	;黒桃Ａで绝顶
 	SIF SELECTCOM == 80
@@ -1192,7 +1192,7 @@ ENDIF
 IF NOWEX:Ａ绝顶
 	SOURCE:露出 += 1000 * NOWEX:Ａ绝顶
 	SOURCE:屈从 += 2000
-	SIF TALENT:Ａ敏感
+	SIF TALENT:A敏感
 		SOURCE:屈从 += 1000
 	SOURCE:欲情追加 += 500
 	DOWNBASE:体力 += 20
@@ -1292,7 +1292,7 @@ CALL ORGASM_ADD_C
 ;快感总量を増やす
 PALAM:Extacy += CUP:快Ｃ + CUP:快Ｖ + CUP:快Ａ + CUP:快Ｂ + CUP:快Ｍ
 ;性别男でないなら、快乐に应じたＶ润が发生
-IF TALENT:性别男 == 0 && CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ > 0
+IF TALENT:性别 != 1 && CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ > 0
 	SELECTCASE CUP:快Ｃ+CUP:快Ｖ+CUP:快Ａ+CUP:快Ｂ+CUP:快Ｍ
 	CASE IS >= 10000
 		LOCAL = 500
@@ -1518,7 +1518,7 @@ IF TALENT:ARG:处女 == 1 && COND("处女丧失标志", ARG) && GETBITS(CFLAG:AR
 	;处女丧失
 	NOWEX:ARG:处女丧失 = 1
 	;恋慕状态で主人と之性爱で处女丧失した
-	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反发刻印 < 3
+	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反抗刻印 < 3
 		IF (SELECTCOM >= 60 && SELECTCOM <= 69) || SELECTCOM == 177
 			SETBIT NOWEX:处女丧失, 1
 			;Ｈ氛围大幅アップ
@@ -1563,7 +1563,7 @@ ELSEIF TALENT:ARG:处女 == 2 && COND("处女丧失标志", ARG)
 	;处女丧失
 	NOWEX:ARG:处女丧失 = 1
 	;恋慕状态で主人と之性爱で处女丧失した
-	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反发刻印 < 3
+	IF ARG == TARGET && TALENT:恋慕 && PLAYER == MASTER && MARK:反抗刻印 < 3
 		SIF (SELECTCOM >= 60 && SELECTCOM <= 69) || SELECTCOM == 177
 			SETBIT NOWEX:处女丧失, 1
 	ENDIF
@@ -1623,7 +1623,7 @@ IF TALENT:ARG:Ａ处女 && COND("Ａ处女丧失标志", ARG) + EXP_GAIN(13, ARG
 		SETBIT CFLAG:ARG:11, 30
 	ENDIF
 	;Ａ性爱を先に経験 そ之２
-	IF (TALENT:ARG:性别男 || TALENT:ARG:扶她 == 1) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
+	IF (TALENT:ARG:性别 == 1 || TALENT:ARG:扶她 == 1) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
 		LOCAL:50 += 1
 		SETBIT CFLAG:ARG:11, 31
 	ENDIF
@@ -1764,7 +1764,7 @@ IF COND("子宮刺激标志", ARG) && TALENT:ARG:子宮性感 && NOWEX:ARG:Ｖ�
 	SETBIT CFLAG:ARG:12, 17
 ENDIF
 ;膣よりもＡ之方が経験丰富
-IF INSERT("Ａ插入", ARG) && EXP:ARG:Ａ経験 >= MAX(EXP:ARG:Ｖ経験, 150) && EXP:ARG:Ａ性交経験 >= MAX(EXP:ARG:Ｖ性交経験, 50) && ABL:ARG:Ａ感觉 >= MAX(ABL:ARG:Ｖ感觉, 3) && GETBIT(CFLAG:ARG:12, 18) == 0
+IF INSERT("Ａ插入", ARG) && EXP:ARG:A经验 >= MAX(EXP:ARG:V经验, 150) && EXP:ARG:Ａ性交経験 >= MAX(EXP:ARG:Ｖ性交経験, 50) && ABL:ARG:A感觉 >= MAX(ABL:ARG:Ｖ感觉, 3) && GETBIT(CFLAG:ARG:12, 18) == 0
 	PRINTL ＜异常経験：肛交专用＞
 
 	LOCAL:50 += 1

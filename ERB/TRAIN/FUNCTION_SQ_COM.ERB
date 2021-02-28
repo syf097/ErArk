@@ -170,7 +170,7 @@ CASE "手指插入", "按摩棒", "Ｖ插入", "Ｖ拳交", "Ｖ龙奸"
 		SIF MIN(MAX(ABL:ARG:Ｖ感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ｖ扩张) < MAX(LOCAL, 1)
 			RETURNF 0
 		;経験がある程度必要
-		SIF EXP:ARG:Ｖ経験 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:Ｖ扩张), 1)
+		SIF EXP:ARG:V经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:Ｖ扩张), 1)
 			RETURNF 0
 		;苦痛が殆どないならＯＫ
 		SIF CUP:ARG:苦痛 < 100
@@ -201,10 +201,10 @@ CASE "Ａ手指插入", "肛用按摩棒", "Ａ插入", "Ａ拳交", "Ａ龙奸"
 		SIF CUP:ARG:反感 >= 500
 			RETURNF 0
 		;侵入してくるモノを气持ちよく插入られるかを判定
-		SIF MIN(MAX(ABL:ARG:Ａ感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ａ扩张) < MAX(LOCAL, 1)
+		SIF MIN(MAX(ABL:ARG:A感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ａ扩张) < MAX(LOCAL, 1)
 			RETURNF 0
 		;経験がある程度必要
-		SIF EXP:ARG:Ａ経験 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:Ａ扩张), 1)
+		SIF EXP:ARG:A经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:Ａ扩张), 1)
 			RETURNF 0
 		;苦痛が殆どないならＯＫ
 		SIF CUP:ARG:苦痛 < 100
@@ -252,9 +252,9 @@ CASE "两穴拳交"
 		RETURNF 0
 	SIF MIN(MAX(ABL:ARG:Ｖ感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ｖ扩张) < MAX(LOCAL, 1)
 		RETURNF 0
-	SIF MIN(MAX(ABL:ARG:Ａ感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ａ扩张) < MAX(LOCAL, 1)
+	SIF MIN(MAX(ABL:ARG:A感觉, ABL:ARG:Ｍ属性), ABL:ARG:Ａ扩张) < MAX(LOCAL, 1)
 		RETURNF 0
-	SIF MIN(EXP:ARG:Ｖ経験, EXP:ARG:Ａ経験) < EXP_LV(LOCAL)
+	SIF MIN(EXP:ARG:V经验, EXP:ARG:A经验) < EXP_LV(LOCAL)
 		RETURNF 0
 
 	SELECTCASE ARG
@@ -278,11 +278,11 @@ CASE "Ｖ双枪插入"
 		RETURNF 0
 	RETURNF 1
 CASE "Ａ双枪插入"
-	SIF ABL:Ａ扩张 <= SIZE("Ｗ阴茎") || ABL:Ａ感觉 < 3
+	SIF ABL:Ａ扩张 <= SIZE("Ｗ阴茎") || ABL:A感觉 < 3
 		RETURNF 0
 	RETURNF 1
 CASE "二穴插入"
-	SIF MIN(ABL:Ｖ扩张, ABL:Ａ扩张) < 2 || MIN(ABL:Ｖ感觉, ABL:Ａ感觉) < 3
+	SIF MIN(ABL:Ｖ扩张, ABL:Ａ扩张) < 2 || MIN(ABL:Ｖ感觉, ABL:A感觉) < 3
 		RETURNF 0
 	RETURNF 1
 CASE "玩弄尿道"
@@ -322,7 +322,7 @@ CASE "性别による拒绝反应"
 		ARG:1 = PLAYER
 	SIF TALENT:ARG:性别女 && TALENT:(ARG:1):性别女 && ABL:ARG:百合属性 == 0
 		RETURNF 1
-	SIF TALENT:ARG:性别男 && TALENT:(ARG:1):性别男 && ABL:ARG:男同属性 == 0
+	SIF TALENT:ARG:性别 == 1 && TALENT:(ARG:1):性别男 && ABL:ARG:男同属性 == 0
 		RETURNF 1
 ENDSELECT
 RETURNF LOCAL
@@ -771,7 +771,7 @@ RETURNF LOCAL
 ;-------------------------------------------------
 @PENIS(ARG)
 #FUNCTION
-SIF TALENT:ARG:扶她 || TALENT:ARG:性别男
+SIF TALENT:ARG:扶她 || TALENT:ARG:性别 == 1
 	RETURNF 1
 RETURNF 0
 
@@ -1198,14 +1198,14 @@ CASE 14
 		TEQUIP:(ARG:1):Ａ插入 = 0
 	SIF INSERT("插入", ARG:1) || (INSERT("后背位", ARG) == 0 && INSERT("骑乘位", ARG) == 0)
 		CALL RESET_INSERT, ARG, ARG:1
-;两乳夹头は大只でないと插入解除
+;两乳夹头は高大でないと插入解除
 CASE 104
 	;后ろからは駄目
 	IF INSERT("后背位", ARG) || INSERT("背面座位", ARG) || INSERT("后背位", ARG:1) || INSERT("背面座位", ARG:1)
 		CALL RESET_INSERT, ARG, ARG:1
 	;骑乘位は对象と同程度之背がないと駄目
 	ELSEIF INSERT("骑乘位") || INSERT("骑乘位", ARG:1)
-		SIF (TALENT:(ARG:1):大只 && TALENT:大只 == 0) || (TALENT:(ARG:1):大只 == 0 && TALENT:(ARG:1):小只 == 0 && TALENT:小只)
+		SIF (TALENT:(ARG:1):高大 && TALENT:高大 == 0) || (TALENT:(ARG:1):高大 == 0 && TALENT:(ARG:1):娇小 == 0 && TALENT:娇小)
 			CALL RESET_INSERT, ARG, ARG:1
 	ENDIF
 ;放尿は尿道插入され同时は无理
@@ -1367,7 +1367,7 @@ CASE "打扫舐阴"
 	CASE 1
 		SIF COND("打扫舐阴标志", PLAYER)
 			RETURNF 1
-		SIF TALENT:性别男
+		SIF TALENT:性别 == 1
 			RETURNF 0
 		;逆推状态等は今之ところなし
 		SIF TEQUIP:逆推 || TEQUIP:触手 || CHECK_CLO("Ｖ露出可") == 0
@@ -1382,7 +1382,7 @@ CASE "打扫舐阴"
 	CASE 98
 		SIF COND("打扫舐阴标志")
 			RETURNF 1
-		SIF TALENT:PLAYER:性别男
+		SIF TALENT:PLAYER:性别 == 1
 			RETURNF 0
 		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
 			RETURNF 0
@@ -1400,7 +1400,7 @@ CASE "恥垢打扫舐阴"
 	CASE 1
 		SIF COND("恥垢打扫舐阴标志", PLAYER)
 			RETURNF 1
-		SIF TALENT:性别男
+		SIF TALENT:性别 == 1
 			RETURNF 0
 		;逆推状态等は今之ところなし
 		SIF TEQUIP:逆推 || TEQUIP:触手 || CHECK_CLO("Ｖ露出可") == 0
@@ -1421,7 +1421,7 @@ CASE "恥垢打扫舐阴"
 	CASE 98
 		SIF COND("恥垢打扫舐阴标志")
 			RETURNF 1
-		SIF TALENT:PLAYER:性别男
+		SIF TALENT:PLAYER:性别 == 1
 			RETURNF 0
 		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
 			RETURNF 0
@@ -1448,7 +1448,7 @@ CASE "飞机杯自慰"
 	SIF TEQUIP:触手
 		RETURNF 0
 	;前回指令が飞机杯
-	SIF PREVCOM == 37 && ABL:Ｃ感觉 >= 3 && ABL:自慰成瘾
+	SIF PREVCOM == 37 && ABL:C感觉 >= 3 && ABL:自慰成瘾
 		RETURNF 1
 CASE "舔乳头可能"
 	SIF COND("口之使用", PLAYER) == 0
@@ -1470,7 +1470,7 @@ CASE "舔乳头可能"
 	ELSE
 		SIF CHECK_STAIN(STAIN:Ｂ, "Ａ", "破瓜之血")
 			RETURNF 0
-		SIF TALENT:PLAYER:性别男 && ABL:PLAYER:男同属性 == 0 && CHECK_STAIN(STAIN:Ｂ, "Ｐ")
+		SIF TALENT:PLAYER:性别 == 1 && ABL:PLAYER:男同属性 == 0 && CHECK_STAIN(STAIN:Ｂ, "Ｐ")
 			RETURNF 0
 		SIF ABL:PLAYER:精液成瘾 == 0 && CHECK_STAIN(STAIN:Ｂ, "精液")
 			RETURNF 0
@@ -1620,7 +1620,7 @@ CASE "狂野摇摆"
 	;基本值は欲望
 	LOCAL = ABL:ARG:欲望
 	IF INSERT("Ｖ插入", ARG) && SELECTCOM >= 60 && SELECTCOM <= 69
-		SIF EXP:ARG:Ｖ経験 + EXP:ARG:Ｖ性交経験*2 + EXP:ARG:腰技経験 <= 50
+		SIF EXP:ARG:V经验 + EXP:ARG:Ｖ性交経験*2 + EXP:ARG:腰技経験 <= 50
 			RETURNF 0
 		IF TALENT:ARG:淫壷
 			LOCAL += 5
@@ -1633,9 +1633,9 @@ CASE "狂野摇摆"
 				LOCAL -= 3
 		ENDIF
 	ELSEIF INSERT("Ａ插入", ARG) && SELECTCOM >= 70 && SELECTCOM <= 79
-		SIF EXP:ARG:Ａ経験 + EXP:ARG:Ａ性交経験*2 <= 50 || EXP:ARG:腰技経験 <= 20
+		SIF EXP:ARG:A经验 + EXP:ARG:Ａ性交経験*2 <= 50 || EXP:ARG:腰技経験 <= 20
 			RETURNF 0
-		SIF ABL:ARG:Ａ感觉 < 3
+		SIF ABL:ARG:A感觉 < 3
 			LOCAL -= 5
 		SELECTCASE PALAM:ARG:Ａ润 + PALAM:PLAYER:Ｐ润
 		CASE IS < 3000
@@ -1771,7 +1771,7 @@ CASE "不小心子宮插入"
 		RETURNF 0
 	RETURNF 1
 CASE "双头按摩棒PLAY"
-	SIF TALENT:PLAYER:性别男 || COND("双头按摩棒") == 0
+	SIF TALENT:PLAYER:性别 == 1 || COND("双头按摩棒") == 0
 		RETURNF 0
 	RETURNF 1
 CASE "打扫口交"
@@ -2300,7 +2300,7 @@ CASE 3
 		LOCALS = 肛用按摩棒%LOCALS%
 	ELSE
 		;IF GETBIT(CHECK_ONANIE(ARG), 0)
-		;	IF TALENT:性别男
+		;	IF TALENT:性别 == 1
 		;		LOCALS = Ｐ%LOCALS%
 		;	ELSE
 		;		LOCALS = Ｃ%LOCALS%
@@ -2953,10 +2953,10 @@ CASE "指之直径"
 		ARG = TARGET
 	;药指之一番大部分之值之平均值を使う
 	;身长を(50+13x)cmとすると指は(7+x)mmぐらいか
-	;妖精だと7～8mm、小只な女性で13mm、大只な女性でも16～17mmぐらい。性别男だとそれぞれ+2mm
+	;妖精だと7～8mm、娇小な女性で13mm、高大な女性でも16～17mmぐらい。性别男だとそれぞれ+2mm
 	LOCAL = MAX(BASE:ARG:身长 - 50, 0)/13 + 7
 
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		LOCAL += 2
 CASE "基本阴茎サイズ"
 	SIF ARG == 0
@@ -2992,15 +2992,9 @@ CASE "阴茎之直径"
 	ELSE
 		LOCAL = SIZE("基本阴茎サイズ", ARG)*7
 		;精强术
-		LOCAL += STATE("精强术", ARG)*3
-		IF STATE("大根术", ARG)
-			LOCAL += 7
-		ELSEIF STATE("小根术", ARG)
-			LOCAL -= 7
-		ENDIF
 	ENDIF
 
-	RETURNF 27 + LOCAL + BASE:ARG:识别番号%6
+	RETURNF 27 + LOCAL
 CASE "阴茎"
 	SIF ARG == 0
 		ARG = PLAYER
@@ -3098,9 +3092,6 @@ CASE "Ｗ拳交"
 CASE "片手拳交"
 	SIF ARG == 0
 		ARG = PLAYER
-	LOCAL = 3 + TALENT:ARG:性别男 - TALENT:ARG:妖精
-	SIF TALENT:ARG:小只 || TALENT:ARG:男孩子？
-		LOCAL -= 1
 CASE "双枪拳交"
 	SIF ARG == 0
 		ARG = PLAYER
@@ -3170,7 +3161,7 @@ CASE "拳交"
 		ARG = PLAYER
 	LOCAL = 3
 	;性别男
-	SIF TALENT:ARG:性别男
+	SIF TALENT:ARG:性别 == 1
 		LOCAL += 1
 	;皮肤硬化
 	SIF STATE("皮肤硬化", ARG)
@@ -3190,7 +3181,7 @@ RETURNF LOCAL
 @USE_V(ARG, ARG:1)
 #FUNCTION
 ;性别男or检閲orＶ露出不可
-SIF TALENT:ARG:性别男 || COND("运命检閲：Ｖ", ARG) || !CHECK_CLO("Ｖ露出可")
+SIF TALENT:ARG:性别 == 1 || COND("运命检閲：Ｖ", ARG) || !CHECK_CLO("Ｖ露出可")
 	RETURNF 0
 ;按摩棒插入中はダメ
 SIF TEQUIP:ARG:按摩棒 && ARG:1 != 11

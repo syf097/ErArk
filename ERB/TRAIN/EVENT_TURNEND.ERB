@@ -35,7 +35,7 @@ SIF COND("３Ｐ")
 EJECT_FLAG = 0
 IF CONFIG("射精后に抜かない") == 0 && SHOOT("中出") && COND("绝顶", PLAYER) && INSERT("插入")
 	EJECT_FLAG = NOWEX:同时绝顶 - TALENT:吸精体質*2
-	SIF TALENT:小只
+	SIF TALENT:娇小
 		EJECT_FLAG += 2
 	;イってない
 	SIF NOWEX:绝顶数合计 == 0
@@ -65,7 +65,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 
 	IF SHOOT("膣内")
 		LOCAL = NOWEX:Ｖ绝顶
-		LOCAL:1 = EXP:Ｖ経験
+		LOCAL:1 = EXP:V经验
 		LOCAL:2 = ABL:Ｖ扩张
 		LOCAL:3 = EXP_GAIN(17)
 
@@ -74,7 +74,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 		LOCALS:2 = Ｖ
 	ELSEIF SHOOT("Ａ")
 		LOCAL = NOWEX:Ａ绝顶
-		LOCAL:1 = EXP:Ａ経験
+		LOCAL:1 = EXP:A经验
 		LOCAL:2 = ABL:Ａ扩张
 		LOCAL:3 = EXP_GAIN(18)
 
@@ -164,9 +164,9 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 		PRINTFORM 荡漾淫靡地
 
 
-	ELSEIF TALENT:小只 && RAND:2 == 0
+	ELSEIF TALENT:娇小 && RAND:2 == 0
 		PRINTFORM 娇小
-	ELSEIF TALENT:小只 && LOCAL:2 <= 1
+	ELSEIF TALENT:娇小 && LOCAL:2 <= 1
 		PRINTFORM 小小的
 	ENDIF
 
@@ -241,7 +241,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 	;イきまくって无いなら、视線に气づく。そして、サービス。
 	IF SHOOT("Ａ") && COND("精液灌肠") && BASE:排泄欲 >= MAXBASE:排泄欲
 		;イっているなら、快感に浸ったり
-		IF NOWEX:绝顶数合计 && MARK:反发刻印 == 0 && ABL:Ｍ属性 >= 3
+		IF NOWEX:绝顶数合计 && MARK:反抗刻印 == 0 && ABL:Ｍ属性 >= 3
 			PRINTFORM %CALLNAME:TARGET%
 			SIF MAX(NOWEX:Ｃ绝顶, NOWEX:Ｖ绝顶, NOWEX:Ａ绝顶, NOWEX:Ｂ绝顶, NOWEX:Ｍ绝顶, NOWEX:尿道绝顶) >= 2
 				PRINTFORM 激烈的
@@ -371,7 +371,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				PRINTFORM 发情一般的
 			ELSEIF LOCAL:2 >= 2 && RAND:3 == 0
 				PRINTFORM 松软的
-			ELSEIF TALENT:小只 && RAND:2 == 0
+			ELSEIF TALENT:娇小 && RAND:2 == 0
 				PRINTFORM 幼小的
 			ELSEIF LOCAL:1 <= 50 && RAND:3 == 0
 				PRINTFORM 可爱的
@@ -419,7 +419,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				ENDIF
 				IF ( (SHOOT("膣内") && TALENT:淫壷) || (SHOOT("Ａ") && TALENT:尻穴狂)  || (SHOOT("尿道") && TALENT:尿道狂) ) && RAND:3 == 0
 					PRINTFORM 充斥着贪欲
-				ELSEIF ( (SHOOT("膣内") && ABL:Ｖ感觉 >= 3) || (SHOOT("Ａ") && ABL:Ａ感觉 >= 3)  || (SHOOT("尿道") && TALENT:尿道性感) ) && RAND:3 == 0
+				ELSEIF ( (SHOOT("膣内") && ABL:Ｖ感觉 >= 3) || (SHOOT("Ａ") && ABL:A感觉 >= 3)  || (SHOOT("尿道") && TALENT:尿道性感) ) && RAND:3 == 0
 					PRINTFORM 抽动做着
 				ELSE
 					PRINTFORM 沾满了精液
@@ -450,7 +450,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				LOCALS:9 = 中出后观察
 			ENDIF
 		ELSE
-			IF MARK:反发刻印
+			IF MARK:反抗刻印
 				PRINTW 慌慌张张地开始重整体态…
 				LOCALS:9 = 中出后怕羞
 			ELSE
@@ -495,7 +495,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 			ENDIF
 		ENDIF
 	;イっているなら、快感に浸ったり
-	ELSEIF NOWEX:绝顶数合计 && MARK:反发刻印 == 0
+	ELSEIF NOWEX:绝顶数合计 && MARK:反抗刻印 == 0
 		PRINTFORM %CALLNAME:TARGET%感受着身体上残留着的
 		SIF MAX(NOWEX:Ｃ绝顶, NOWEX:Ｖ绝顶, NOWEX:Ａ绝顶, NOWEX:Ｂ绝顶, NOWEX:Ｍ绝顶, NOWEX:尿道绝顶) >= 2
 			PRINTFORM 激烈的
@@ -730,7 +730,7 @@ IF SELECTCOM == 1
 				PRINTL 沉迷在快乐中的%CALLNAME:TARGET%恍惚中无力虚浮的扭动着腰部。
 			ENDIF
 		CASEELSE
-			IF TALENT:Ｃ敏感
+			IF TALENT:C敏感
 				PRINTFORM %CALLNAME:TARGET%因敏感的\@ PENIS(TARGET) ? 场所 # 阴蒂 \@被激烈的玩弄着而扭动着身子、
 				SIF TALENT:怕羞 && COND("指之使用")
 					PRINTFORM 因为太害羞了，%CALLNAME:TARGET%双手捂住了自己通红的脸，
@@ -764,14 +764,14 @@ IF SELECTCOM == 2
 	CASE IS < 1000
 		IF CUP:苦痛 >= 300
 			PRINTFORML %CALLNAME:TARGET%的肛门还没有习惯被玩弄，身体在痛楚之中蜷缩成一团。
-			IF ABL:Ａ感觉 < 3
+			IF ABL:A感觉 < 3
 				PRINTL 看起来还需要好好地开发的才行。
 			ELSE
 				PRINTL 身体好像还没准备好。
 			ENDIF
 		ELSE
 			PRINTFORM %CALLNAME:TARGET%的身体因为那奇妙的感觉摇晃起来。
-			IF ABL:Ａ感觉 < 3
+			IF ABL:A感觉 < 3
 				PRINTL 不过看起来开发的程度还不够。
 			ELSE
 				PRINTFORM 想品味到快乐，就需要再放松一下身体，%CALLNAME:PLAYER%这么劝道。
@@ -779,7 +779,7 @@ IF SELECTCOM == 2
 		ENDIF
 	CASE IS < 3000
 		PRINTFORML %CALLNAME:TARGET%说话的声音变得娇柔起来，身体开始随着手指的动作的轻轻跳动。
-		SIF TALENT:Ａ敏感
+		SIF TALENT:A敏感
 			PRINTFORM 明明对肛门的刺激还很弱、%CALLNAME:TARGET%已经变得不像样了—，眼睛呆呆的凝视着虚空，屁股随着手指的动作开始了明显的紧缩的律动，嘴里也不住的发出呻吟般的声音……
 		PRINTL 明显地已经开始感觉到了快乐…
 	CASE IS < 6000
@@ -787,11 +787,11 @@ IF SELECTCOM == 2
 			PRINTFORML %CALLNAME:TARGET%地肛门被%CALLNAME:PLAYER%的手指轻松的塞了进去、嘴里止不住快乐的呻吟…
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%は的肛门很明显感觉到了玩弄肛门的快乐。
-		SIF TALENT:Ａ敏感
+		SIF TALENT:A敏感
 			PRINTFORM 每一次手指的摆动都会引发%CALLNAME:TARGET%细微的尖叫，大口喘气的嘴边，口涎无意识的流下……
 		ENDIF
 	CASE IS < 10000
-		IF TALENT:Ａ敏感
+		IF TALENT:A敏感
 			PRINTFORM 敏感的肛门被肆意的责罚玩弄，%CALLNAME:TARGET%只能任由身体软成一摊，嘴里发出意味不明的声响。脚尖和十指随着进入身体的手指的动作，不时地蜷缩起来，
 		ELSE
 			PRINTFORM 肛门受到刺激使
@@ -817,9 +817,9 @@ IF SELECTCOM == 3
 		PRINTFORM 极度羞恥的脸上染上一层媚意地赤红、
 	SIF TALENT:怕羞 && ABL:露阴癖 <= 1
 		PRINTFORM 眼眶中浮现出屈辱的泪水
-	SIF TALENT:小只
+	SIF TALENT:娇小
 		PRINTFORM 娇小的身体
-	SIF TALENT:小只 == 0 && (TEQUIP:按摩棒 || TEQUIP:肛用按摩棒)
+	SIF TALENT:娇小 == 0 && (TEQUIP:按摩棒 || TEQUIP:肛用按摩棒)
 		PRINTFORM 的身体
 	IF TEQUIP:按摩棒 && TEQUIP:肛用按摩棒 && GETBIT(CHECK_ONANIE(SELECTCOM), 1) && GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 		PRINTFORM 内的2根按摩棒被自己的手握住并同时插入，下流模样被猥亵的目光全看到了、
@@ -937,9 +937,9 @@ ENDIF
 IF SELECTCOM == 6
 	SELECTCASE CUP:快Ｍ
 	CASE IS < 1000
-		IF MARK:反发刻印 == 3 && CUP:反感 >= 500
+		IF MARK:反抗刻印 == 3 && CUP:反感 >= 500
 			PRINTFORML %CALLNAME:TARGET%对于接吻这种行为，厌恶的表情都扭曲了。
-		ELSEIF MARK:反发刻印 == 3 && CUP:反感 >= 100
+		ELSEIF MARK:反抗刻印 == 3 && CUP:反感 >= 100
 			PRINTFORML %CALLNAME:TARGET%非常不情愿，讨厌而且拒绝再次接吻…。
 		ELSE
 			PRINTFORML %CALLNAME:PLAYER%口内用舌头来回舔弄、%CALLNAME:TARGET%\@ ABL:舌技 == 0 ? 笨拙的 # \@舌头互相缠绕在一起。
@@ -1059,14 +1059,14 @@ IF SELECTCOM == 31
 			PRINTFORML %CALLNAME:TARGET%下面的小穴已经感受到快乐了吗，振动按摩棒塞入体内时明显感觉到娇喘声提高了。
 		CASE IS < 6000
 			PRINTFORM %CALLNAME:TARGET%之
-			SIF TALENT:小只
+			SIF TALENT:娇小
 				PRINTFORM 小小的
 			PRINTL 腔穴被按摩棒深入振动，情欲荡漾的表情上写满了快乐。
 		CASE IS < 10000
 			PRINTFORM %CALLNAME:TARGET%在
 			SIF TALENT:怕羞
 				PRINTFORM 的脸因为极度羞耻而通红着……
-			SIF TALENT:小只
+			SIF TALENT:娇小
 				PRINTFORM 小小的身体被
 			IF SIZE("按摩棒", TARGET) >= 3
 				PRINTFORM 超粗之
@@ -1080,7 +1080,7 @@ IF SELECTCOM == 31
 				PRINTFORM 过分羞耻而通红的脸被自己的手捂着、
 			SIF TALENT:承认快感
 				PRINTFORM 为了追求更进一步的快乐而主动挺扭着腰、那张诚实的脸写满了快乐和渴望、
-			PRINTFORML \@ TALENT:小只 ? 小小的 # 她的 \@身体痛并快乐着的扭来扭去。
+			PRINTFORML \@ TALENT:娇小 ? 小小的 # 她的 \@身体痛并快乐着的扭来扭去。
 		ENDSELECT
 	ENDIF
 ENDIF
@@ -1149,7 +1149,7 @@ IF SELECTCOM == 33 && COND("肛珠") == 0
 			PRINTFORML %CALLNAME:TARGET%被肛用按摩棒带来的强烈快乐，使表情变得松缓。
 		CASEELSE
 			PRINTFORM %CALLNAME:TARGET%对肛门的激烈刺激感到十分强烈的快感
-			PRINTFORML 那个\@ TALENT:小只 ? 小小的身体 # 大汗淋漓的全身 \@爽得滚来滚去。
+			PRINTFORML 那个\@ TALENT:娇小 ? 小小的身体 # 大汗淋漓的全身 \@爽得滚来滚去。
 		ENDSELECT
 	ENDIF
 ENDIF
@@ -1193,7 +1193,7 @@ IF SELECTCOM == 35
 		PRINTFORML %CALLNAME:TARGET%被来自乳头夹夹住的乳首不断传来让意识都要模糊了的快感下脸上不禁露出了痴笑的神情
 	CASEELSE
 		PRINTFORM %CALLNAME:TARGET%
-		IF TALENT:小只
+		IF TALENT:娇小
 			PRINTL 乳头夹传来的快感，让小小的身体颤抖跳跃着。
 		ELSEIF TALENT:巨乳
 			PRINTL 巨大的胸部在乳头夹刺激下被晃荡出了淫乱的轨迹，自身也不由得完全沉浸在乳头夹带来的快感之中。
@@ -1219,7 +1219,7 @@ IF SELECTCOM == 36
 		PRINTFORML %CALLNAME:TARGET%为了获得更多的快感主动而用力的抓揉着自己的胸部，和搾乳机一起榨取着自己的乳汁，大量的乳汁喷射而出让%CALLNAME:TARGET%更多而更极致的快感，使得她更加疯狂的扭动着身姿和抓揉着胸部
 	ENDSELECT
 	PRINTFORM %CALLNAME:TARGET%
-	SIF TALENT:小只
+	SIF TALENT:娇小
 		PRINTL 明明还小着，却已经开始享受为人母才能得到的快乐。
 	SIF TALENT:巨乳
 		PRINTFORML 巨大的胸部带来的高产奶和高储奶量能让她一直持续的获得快乐，越来越高的快感刺激得少女的胸部产出更多的牛奶，连原本就是巨乳等级的胸部也好像跟着变得更大了
@@ -1230,7 +1230,7 @@ ENDIF
 IF (SELECTCOM == 60 || SELECTCOM == 62) && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ｖ
 	CASE IS < 1000
-		IF CUP:快Ｖ < CUP:苦痛 && MARK:反发刻印 == 3
+		IF CUP:快Ｖ < CUP:苦痛 && MARK:反抗刻印 == 3
 			PRINTFORML %CALLNAME:TARGET%痛苦地挣扎着。
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%的身体微微颤抖着，似乎还没有感觉到快感。
@@ -1252,7 +1252,7 @@ IF (SELECTCOM == 60 || SELECTCOM == 62) && INSERT("Ｖ插入") && COND("绝顶",
 		ELSE
 			PRINTFORM %CALLNAME:PLAYER%的腰激烈地动着
 		ENDIF
-		IF TALENT:小只
+		IF TALENT:娇小
 			PRINTL 那个小身体战战兢兢一边使之溅起一边持续发出对快乐激烈的喘气声音。
 		ELSE
 			PRINTL 发出艳丽而有些闷闷的喘息
@@ -1265,9 +1265,9 @@ ENDIF
 IF SELECTCOM == 61 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ｖ
 	CASE IS < 3000
-		IF CUP:快Ｖ < CUP:苦痛 && MARK:反发刻印 == 3
+		IF CUP:快Ｖ < CUP:苦痛 && MARK:反抗刻印 == 3
 			PRINTFORML %CALLNAME:TARGET%看起来困苦地皱眉脸，摇着头。
-		ELSEIF CUP:快Ｖ < 1000 && MARK:反发刻印 == 3
+		ELSEIF CUP:快Ｖ < 1000 && MARK:反抗刻印 == 3
 			PRINTFORML %CALLNAME:TARGET%像是死心了一样，被%CALLNAME:PLAYER%抱着腰在背后活动着。
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%被%CALLNAME:PLAYER%抱住腰，剧烈地侵犯着，发出一阵阵的喘息。
@@ -1296,7 +1296,7 @@ ENDIF
 IF SELECTCOM == 63 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ｃ + CUP:快Ｖ
 	CASE IS < 1000
-		IF CUP:快Ｃ + CUP:快Ｖ < CUP:苦痛 && MARK:反发刻印 == 3
+		IF CUP:快Ｃ + CUP:快Ｖ < CUP:苦痛 && MARK:反抗刻印 == 3
 			PRINTFORML %CALLNAME:TARGET%一副不愿意的样子摇起了头…。
 		ELSE
 			PRINTFORML 慢慢的从下面突刺上来、%CALLNAME:TARGET%因衝击皱了皱眉。
@@ -1360,7 +1360,7 @@ ENDIF
 IF SELECTCOM == 64 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ｃ + CUP:快Ｖ + CUP:快Ｂ
 	CASE IS < CUP:苦痛
-		IF MARK:反发刻印 == 3
+		IF MARK:反抗刻印 == 3
 			PRINTFORML %CALLNAME:TARGET%因为从后面向上突刺所带来的不快感而皱起了眉头。
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%被从下面缓慢的向上突刺着、一副不愿意的样子把头一个劲儿的摇着。
@@ -1383,7 +1383,7 @@ ENDIF
 IF SELECTCOM == 65 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ｖ
 	CASE IS < CUP:苦痛
-		IF MARK:反发刻印 == 3 || CUP:快Ｖ < 500
+		IF MARK:反抗刻印 == 3 || CUP:快Ｖ < 500
 			PRINTFORML %CALLNAME:TARGET%虽然一副痛苦的样子但仍服从命令的动起了腰。但是、离获得快乐还很远。
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%虽然一副痛苦的样子但那副表情已经表现出了快乐的兆头。
@@ -1399,7 +1399,7 @@ IF SELECTCOM == 65 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	CASE IS < 10000
 		PRINTFORM %CALLNAME:TARGET%
 		IF RAND:2
-			IF TALENT:小只
+			IF TALENT:娇小
 				PRINTFORM 用那小小的身体
 			ELSEIF TALENT:巨乳
 				PRINTFORM 那一对巨大的乳房上下弹跃着
@@ -1447,7 +1447,7 @@ IF SELECTCOM >= 70 && SELECTCOM <= 79 && SELECTCOM != 75 && INSERT("Ａ插入") 
 			PRINTFORML %CALLNAME:TARGET%柔软的肛门被慢慢地顶入，%CALLNAME:TARGET%颤抖的身体品味着异物塞入的触感，更加的抖动起来……
 		ENDIF
 	CASE IS < 6000
-		IF TALENT:性别男 == 0 && RAND:2
+		IF TALENT:性别 != 1 && RAND:2
 			PRINTFORML %CALLNAME:TARGET%的肛门承受着每一次冲撞带来的充实快感、秘所无法掩饰快乐的到来变得湿润了起来…
 		ELSE
 			PRINTFORM 越发强烈的充实快感、让%CALLNAME:TARGET%的止不住都仰起身来
@@ -1463,14 +1463,14 @@ IF SELECTCOM >= 70 && SELECTCOM <= 79 && SELECTCOM != 75 && INSERT("Ａ插入") 
 		SIF COND("偏爱的体位中") && CHOSECOM(SELECTCOM) == 0
 			PRINTFORM 在中意的体位下被
 		PRINTFORM 激烈的玩弄着肛门、%CALLNAME:TARGET%は
-		IF ABL:Ａ感觉 >= 5
+		IF ABL:A感觉 >= 5
 			PRINTFORM 在快乐中止不住颤抖着
-		ELSEIF TALENT:Ａ敏感
+		ELSEIF TALENT:A敏感
 			PRINTFORM 敏感的肛门那里被欺负被充实的快乐，过于强烈的快感让脑袋和身体都止不住的摇晃起来，已经学会吸吮肉棒的菊穴一层层的缠绕着肉棒，将肉棒一次又一次的吞入到最深处，被扩展到浑圆的洞口也随着每一次的进入而收缩，本不应该作为性器官的地方被做着这种事情，带来的是更甚于做爱的奇妙快乐……
 		ELSE
 			PRINTFORM 强烈的快感刺激下，丰腴而挺翘的臀部止不住的颤抖着。
 		ENDIF
-		SIF TALENT:性别男 == 0
+		SIF TALENT:性别 != 1
 			PRINTFORM 艳丽的
 		PRINTFORML 喘气声音提高，苦闷的发狂。
 	ENDSELECT
@@ -1481,7 +1481,7 @@ ENDIF
 IF SELECTCOM == 75 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	SELECTCASE CUP:快Ａ
 	CASE IS < 3000
-		IF CUP:快Ａ < CUP:苦痛 && (MARK:反发刻印 == 3 || CUP:快Ａ < 1000)
+		IF CUP:快Ａ < CUP:苦痛 && (MARK:反抗刻印 == 3 || CUP:快Ａ < 1000)
 			PRINTFORML %CALLNAME:TARGET%十分痛苦但任然服从命令坐了下来。但是，好象离得到快乐的境界还有些困难。
 		ELSEIF CUP:快Ａ < CUP:苦痛
 			PRINTFORML %CALLNAME:TARGET%虽然看起来很痛苦，但表情上也有着快乐的兆头。。
@@ -1497,7 +1497,7 @@ IF SELECTCOM == 75 && INSERT("Ｖ插入") && COND("绝顶", PLAYER) == 0
 	CASE IS < 10000
 		PRINTFORM %CALLNAME:TARGET%
 		IF RAND:2
-			IF TALENT:小只
+			IF TALENT:娇小
 				PRINTFORM 娇小的身体、
 			ELSEIF TALENT:巨乳
 				PRINTFORM 硕大挺翘的乳房上下弾动着

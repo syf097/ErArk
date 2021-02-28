@@ -66,20 +66,13 @@ ELSE
 		ENDIF
 
 		;不小心子宮插入标志。进攻子宮口を连续实行＆Ｖ插入中で无いと发生しない
-		IF CHECK_COM("不小心子宮插入") && (RAND:5 == 0 || MARK:淫紋 >= 4 || EX:Ｖ绝顶 >= 5)
+		IF CHECK_COM("不小心子宮插入") && (RAND:5 == 0 || EXP:V绝顶 >= 5)
 			CALL SETFLAG, "不小心子宮插入标志", TARGET
 			SELECTCOM = 68
 		ENDIF
 
 		SELECTCASE SELECTCOM
 		CASE 68
-		CASEELSE
-			;骑乘位连续＆腰技＆强硬などで狂野摇摆(连续ではしてこない)
-			CALL SETFLAG, "狂野摇摆", TARGET
-			;前之PLAYが性爱系かつ调教者之技巧3以上之场合、进攻Ｇ点または进攻子宮口へ派生
-			;Ｖ感觉が高く欲情しているほど子宮口へ行きやすい
-			SIF CHECK_COM("Ｖ双枪插入") == 0 && CHECK_COM("二穴插入") == 0
-				SELECTCOM = CHECK_COM("刺激插入部位", SELECTCOM)
 		ENDSELECT
 	;打屁股
 	CASE 130
@@ -118,7 +111,7 @@ ELSE
 	SIF ASSI && STATE("击沈", ASSI) == 0 && (PREVCOM:1 >= 0 || PREVCOM:2 >= 0)
 		CALL SET_SELECTCOM_ASSI, "３Ｐ"
 ;坏心眼い人は思ったとおりに动いてくれない、とかどうだろう
-;ELSEIF TEQUIP:逆推 == 0 && TALENT:坏心眼 && ABL:顺从 + ABL:奉仕精神 - MARK:反发刻印 <= 5
+;ELSEIF TEQUIP:逆推 == 0 && TALENT:坏心眼 && ABL:顺从 + ABL:奉仕精神 - MARK:反抗刻印 <= 5
 ;	IF SELECTCOM == 91 && NO:TARGET == 12
 ;		CALL COM_ABLE95
 ;		IF RESULT == 1
@@ -226,13 +219,6 @@ IF TEQUIP:称賛 == 1
 	PRINTL 
 	PRINTL 褒めて高めた机嫌が元に戻っていく…
 ENDIF
-SIF TEQUIP:演奏中
-	CALL EQUIP_COM302_END
-IF GETBIT(TEQUIP:MASTER:薫香, 3)
-	TEQUIP:MASTER:薫香 = 0
-	PRINTL 
-	PRINTL 薫香之香りが消えた！
-ENDIF
 IF STATE("脱力", TARGET) && RAND:4 == 0
 	PRINTL 
 	PRINTFORML %CALLNAME:TARGET%は脱力状态から立ち直った！
@@ -277,12 +263,8 @@ CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
 CALL EXP50_CHECK, ASSI
 
-;射精（触手）
-SIF TEQUIP:触手 == 0
-	BASE:MASTER:触手 = 0
-
 ;逆推と起きる事件
-IF TEQUIP:逆推 || TEQUIP:爱之圈套
+IF TEQUIP:逆推
 	;羞恥PLAYは解除（今后变わるかも？）
 	TEQUIP:羞恥PLAY = 0
 
@@ -296,26 +278,6 @@ IF TEQUIP:逆推 || TEQUIP:爱之圈套
 	ENDIF
 	TEQUIP:高潮管理 = 0
 
-
-	;触手は解除
-	IF TEQUIP:触手
-		PRINTL 
-		IF CONFIG("触手は主人")
-			PRINTFORMW %CALLNAME:PLAYER%は%CALLNAME:TARGET%に逆推た拍子に集中が解けて、もと之姿に戻ってしまった…
-		ELSE
-			PRINTFORMW 异形之触手は%CALLNAME:TARGET%之アイコンタクトを受けて、うねうね动き同时部屋之隅に下がった…
-		ENDIF
-		TEQUIP:触手 = 0
-		TEQUIP:按摩棒 = 0
-		TEQUIP:肛用按摩棒 = 0
-		TEQUIP:阴蒂夹 = 0
-		TEQUIP:乳头夹 = 0
-		TEQUIP:搾乳机 = 0
-		TEQUIP:飞机杯 = 0
-		TEQUIP:拘束 = 0
-		TEQUIP:灌肠 = 0
-		TEQUIP:触手口辱 = 0
-	ENDIF
 	;３ＰはＷ逆推に移行
 	SIF TEQUIP:逆推 && SELECTCOM:1 >= 90 && SELECTCOM:1 <= 97
 		CALL SETFLAG, "Ｗ逆推"
@@ -336,9 +298,9 @@ IF STATE("恍惚", PLAYER)
 		TEQUIP:逆推 = 1
 
 	;恍惚状态で梦魇之好きにさせるなら
-	IF BASE:气力 > 0 && FLAG:223
+	IF BASE:精力 > 0 && FLAG:223
 		NEXTCOM = 281
-	ELSEIF BASE:气力 <= 0
+	ELSEIF BASE:精力 <= 0
 		PRINTL 
 		PRINTFORM %CALLNAME:TARGET%は疲れてしまった之か、
 		IF TALENT:恋慕 && PLAYER == MASTER
@@ -368,7 +330,7 @@ SIF ASSI && STATE("击沈", ASSI)
 IF CFLAG:100 && TALENT:处女 == 0
 	;处女を失ったなら、お尻を触る之を许していた之もおしまい
 	CFLAG:100 = 0
-ELSEIF CFLAG:100 == 0 && TALENT:处女 == 1 && EXP:Ａ経験 > 0 && TALENT:看重贞操 && MARK:反发刻印 < 3
+ELSEIF CFLAG:100 == 0 && TALENT:处女 == 1 && EXP:A经验 > 0 && TALENT:看重贞操 && MARK:反抗刻印 < 3
 	CFLAG:100 = 1
 	PRINTW （贞操を守れるなら、少しは后ろを攻められてもよいと思っているようだ…）
 ENDIF

@@ -400,81 +400,6 @@ ABL:ARG:顺从 = MIN(ABL:ARG:顺从, 1)
 
 TALENT:ARG:恋慕 = 0
 
-;------------------------------------------------------------------------
-;ARG:1に梦魇にされたARGが、ARG:1に受ける影響をチェック
-;------------------------------------------------------------------------
-@CHANGE_SUCCUBUS, ARG, ARG:1
-SIF TALENT:ARG:梦魇 || TALENT:ARG:上位梦魇
-	RETURN 0
-
-TALENT:ARG:梦魇 = 1
-CALL SETFLAG, "梦魇化标志", ARG
-CALL EXP50_CHECK, ARG
-
-;「变化しない」场合は返回
-SIF CONFIG("梦魇化时之特征变化") == 0
-	RETURN 0
-
-;身体特征を变える（逆之特征を持つ场合は打ち消し）
-CALL SELECT_TALENT, ARG, ARG:1, "怕痛"
-CALL SELECT_TALENT, ARG, ARG:1, "回復快"
-CALL SELECT_TALENT, ARG, ARG:1, "日光浴"
-CALL SELECT_TALENT, ARG, ARG:1, "吸血鬼"
-CALL SELECT_TALENT, ARG, ARG:1, "容易湿"
-CALL SELECT_TALENT, ARG, ARG:1, "胸围"
-
-;梦魇でない人々は外现などにも变化が(魔法使や龙骑兵は生き方な之で变化しない)
-IF CSVTALENT(NO:ARG, 200, 0) + CSVTALENT(NO:ARG, 201, 0) == 0
-	CALL SELECT_TALENT, ARG, ARG:1, "身长"
-	CALL SELECT_TALENT, ARG, ARG:1, "猫舌"
-	CALL SELECT_TALENT, ARG, ARG:1, "妖狐"
-	CALL SELECT_TALENT, ARG, ARG:1, "兽耳"
-	CALL SELECT_TALENT, ARG, ARG:1, "尾巴"
-	CALL SELECT_TALENT, ARG, ARG:1, "龙之血"
-	CALL SELECT_TALENT, ARG, ARG:1, "犄角"
-	CALL SELECT_TALENT, ARG, ARG:1, "翼"
-	CALL SELECT_TALENT, ARG, ARG:1, "力量"
-	CALL SELECT_TALENT, ARG, ARG:1, "妖精"
-	CALL SELECT_TALENT, ARG, ARG:1, "拉米亚"
-	CALL SELECT_TALENT, ARG, ARG:1, "人鱼"
-	CALL SELECT_TALENT, ARG, ARG:1, "哈比"
-	CALL SELECT_TALENT, ARG, ARG:1, "旧日支配者的末裔"
-	CALL SELECT_TALENT, ARG, ARG:1, "史莱姆"
-	CALL SELECT_TALENT, ARG, ARG:1, "多手"
-
-	PRINTFORMW %CALLNAME:ARG%摆出了和%CALLNAME:(ARG:1)%一模一样的身姿。…
-	;眷族となる
-	TALENT:ARG:眷属 = BASE:(ARG:1):识别番号
-	BASE:ARG:眷属 = BASE:(ARG:1):种族
-	SETCOLOR DEF_COLOR("粉红色心形")
-	PRINTFORMW %CALLNAME:ARG%成为%CALLNAME:(ARG:1)%之[眷属]
-	RESETCOLOR
-ENDIF
-
-;性格を变えないならここまで
-SIF CONFIG("梦魇化时之特征变化：全部") == 0
-	RETURN 0
-
-;それぞれ、33%程で变化する
-CALL SELECT_TALENT, ARG, ARG:1, "气之强さ"
-CALL SELECT_TALENT, ARG, ARG:1, "坦率さ"
-CALL SELECT_TALENT, ARG, ARG:1, "プライド之高さ"
-CALL SELECT_TALENT, ARG, ARG:1, "好奇心"
-CALL SELECT_TALENT, ARG, ARG:1, "开朗さ"
-CALL SELECT_TALENT, ARG, ARG:1, "看重贞操"
-CALL SELECT_TALENT, ARG, ARG:1, "压抑"
-CALL SELECT_TALENT, ARG, ARG:1, "怕羞"
-CALL SELECT_TALENT, ARG, ARG:1, "惚れっぽさ"
-CALL SELECT_TALENT, ARG, ARG:1, "承认快感"
-CALL SELECT_TALENT, ARG, ARG:1, "通吃"
-CALL SELECT_TALENT, ARG, ARG:1, "自慰しやすさ"
-CALL SELECT_TALENT, ARG, ARG:1, "献身"
-CALL SELECT_TALENT, ARG, ARG:1, "容易成瘾"
-CALL SELECT_TALENT, ARG, ARG:1, "好色"
-CALL SELECT_TALENT, ARG, ARG:1, "性变态"
-CALL SELECT_TALENT, ARG, ARG:1, "小恶魔"
-
-
 @SELECT_TALENT, ARG, ARG:1, ARGS
 VARSET LOCAL
 ;素質:%ARGS%について、ARG之も之をARG:1之も之で优性的に变化させる
@@ -495,8 +420,6 @@ CASE "日光浴"
 ;绝对变化(外现)
 CASE "猫舌"
 	LOCAL = 54
-CASE "妖狐"
-	LOCAL = 90
 CASE "吸血鬼"
 	LOCAL = 114
 CASE "兽耳"
@@ -513,26 +436,14 @@ CASE "力量"
 	LOCAL = 162
 CASE "妖精"
 	LOCAL = 150
-CASE "拉米亚"
-	LOCAL = 152
-CASE "人魚", "人鱼"
-	LOCAL = 153
-CASE "哈比"
-	LOCAL = 155
-CASE "旧日支配者的末裔"
-	LOCAL = 156
-CASE "史莱姆"
-	LOCAL = 158
-CASE "多手"
-	LOCAL = 159
 ;こ之二つは性别男ではダメ
 CASE "容易湿"
-	IF TALENT:ARG:性别男 == 0
+	IF TALENT:ARG:性别 != 1
 		LOCAL = 42
 		LOCAL:1 = 43
 	ENDIF
 CASE "胸围"
-	IF TALENT:ARG:性别男 == 0
+	IF TALENT:ARG:性别 != 1
 		LOCAL = 109
 		LOCAL:1 = 110
 	ENDIF

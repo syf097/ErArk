@@ -139,7 +139,7 @@ CASE "主动夜袭Ａ骑乘位"
 		PRINTFORMW 「……」
 		PRINTFORMW 沉默着、用带着欲望眼神微笑着盯着%CALLNAME:MASTER%、
 	ENDIF
-	PRINTFORMW 就那样\@ TALENT:性别男 ? %CALLNAME:TARGET% # 少女 \@把%CALLNAME:MASTER%推倒了、用污秽的穴吸住%CALLNAME:MASTER%的肉棒开始激烈的侵犯起来
+	PRINTFORMW 就那样\@ TALENT:性别 == 1 ? %CALLNAME:TARGET% # 少女 \@把%CALLNAME:MASTER%推倒了、用污秽的穴吸住%CALLNAME:MASTER%的肉棒开始激烈的侵犯起来
 
 		CALL SELF_KOJO, CSTR:主动夜袭
 	;[傲慢][自大][坏心眼][强硬]持ちなら分岐
@@ -330,7 +330,7 @@ SIF COND("主动夜袭可能") == 0 || TIME == 0 || COND("手一杯", MASTER)
 	RETURN 0
 
 ;反发刻印が3あるとダメ
-SIF MARK:反发刻印 >= 3
+SIF MARK:反抗刻印 >= 3
 	RETURN 0
 
 ;实行可能指令之确认

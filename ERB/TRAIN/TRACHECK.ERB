@@ -253,7 +253,7 @@ ENDSELECT
 ;感觉ＬＶによる快感上升之上限措置
 IF CUP:快Ｃ
 	;PRINTFORM 本来之Ｃ快感 = {CUP:快Ｃ}　→　
-	CUP:快Ｃ = CALCF("快感上升之上限措置", CUP:快Ｃ, ABL:Ｃ感觉, PENIS(TARGET) + TALENT:淫核 + TALENT:Ｃ敏感 - TALENT:Ｃ钝感)
+	CUP:快Ｃ = CALCF("快感上升之上限措置", CUP:快Ｃ, ABL:C感觉, PENIS(TARGET) + TALENT:淫核 + TALENT:C敏感 - TALENT:Ｃ钝感)
 	;PRINTFORML 修正后之Ｃ快感 = {CUP:快Ｃ}
 ENDIF
 IF CUP:快Ｖ
@@ -263,7 +263,7 @@ IF CUP:快Ｖ
 ENDIF
 IF CUP:快Ａ
 	;PRINTFORM 本来之Ａ快感 = {CUP:快Ａ}　→　
-	CUP:快Ａ = CALCF("快感上升之上限措置", CUP:快Ａ, ABL:Ａ感觉, TALENT:尻穴狂 + TALENT:Ａ敏感 - TALENT:Ａ钝感)
+	CUP:快Ａ = CALCF("快感上升之上限措置", CUP:快Ａ, ABL:A感觉, TALENT:尻穴狂 + TALENT:A敏感 - TALENT:Ａ钝感)
 	;PRINTFORML 修正后之Ａ快感 = {CUP:快Ａ}
 ENDIF
 IF CUP:快Ｂ
@@ -291,7 +291,7 @@ ENDIF
 ;爱液处理(欲情)
 ;-------------------------------------------------
 ;欲情之值に应じてＶ润増加
-IF TALENT:性别男 == 0 && CUP:欲情 > 0 && PALAM:Ｖ润 < 30000
+IF TALENT:性别 != 1 && CUP:欲情 > 0 && PALAM:Ｖ润 < 30000
 	;MAX500
 	LOCAL = MIN(DOWN_PALAMLV(CUP:欲情, 2), 500)
 
@@ -331,12 +331,12 @@ IF ARGS != "試算"
 		TFLAG:33 += RAND:2
 	ENDSELECT
 	;弱点突き之Ｈ氛围を追加
-	IF MARK:反发刻印 < 3 && CUP:恐怖 + CUP:反感 + CUP:抑郁 < 500
-		IF CUP:快Ｃ && TALENT:淫核 + TALENT:Ｃ敏感
+	IF MARK:反抗刻印 < 3 && CUP:恐怖 + CUP:反感 + CUP:抑郁 < 500
+		IF CUP:快Ｃ && TALENT:淫核 + TALENT:C敏感
 			TFLAG:33 += 1
 		ELSEIF CUP:快Ｖ && TALENT:淫壷 + TALENT:Ｖ敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快Ａ && TALENT:尻穴狂 + TALENT:Ａ敏感
+		ELSEIF CUP:快Ａ && TALENT:尻穴狂 + TALENT:A敏感
 			TFLAG:33 += 1
 		ELSEIF CUP:快Ｂ && TALENT:淫乳 + TALENT:Ｂ敏感
 			TFLAG:33 += 1
@@ -421,7 +421,7 @@ LOCAL:4 = GET_PALAMLV(LOCAL:3) * 500
 ;成瘾之ソース：CUP:恭顺,5,6に影響
 SOURCE:成瘾充足 += LOCAL:4 * LOCAL:0 / 100
 ;ＶがあるならＶ润も上升
-IF TALENT:性别男 == 0
+IF TALENT:性别 != 1
 	IF TALENT:容易湿
 		CUP:Ｖ润 += UP_PALAMLV(LOCAL:4 * LOCAL:0 / 300)
 	ELSEIF TALENT:不易湿
@@ -947,7 +947,7 @@ CUP:恭顺 += A
 
 MEMO_MARK:0 = MARK:快乐刻印
 MEMO_MARK:1 = MARK:苦痛刻印
-MEMO_MARK:2 = MARK:反发刻印
+MEMO_MARK:2 = MARK:反抗刻印
 
 VARSET LOCALS
 
@@ -1002,35 +1002,35 @@ IF MARK:苦痛刻印 > MEMO_MARK:1
 ENDIF
 ;-------------------------------------------------
 ;反发刻印（逆推ている时や奉仕标志があるときには獲得しない）
-;MARK:反发刻印之取得履历は反发刻印之取得履历　NOWEX:处女丧失 & 2は恋慕状态之普通之性爱でMASTERに处女を捧げた标志
+;MARK:反抗刻印之取得履历は反发刻印之取得履历　NOWEX:处女丧失 & 2は恋慕状态之普通之性爱でMASTERに处女を捧げた标志
 ;他之刻印之取得状況によって、取得しにくくなる
 ;------------------------------------------------- 
 SELECTCASE CALCF("反发刻印獲得", TARGET)
 CASE 1
-	MARK:反发刻印 = 1
+	MARK:反抗刻印 = 1
 CASE 2
-	MARK:反发刻印 = 2
+	MARK:反抗刻印 = 2
 CASE 3
 	LOCALS = 反发刻印Lv3取得
-	MARK:反发刻印 = 3
+	MARK:反抗刻印 = 3
 ENDSELECT
 
-IF MARK:反发刻印 > MEMO_MARK:2
+IF MARK:反抗刻印 > MEMO_MARK:2
 	SETCOLOR DEF_COLOR("黄色")
 	PRINTFORML 
-	PRINTFORML 反发刻印LV{MARK:反发刻印}を取得
+	PRINTFORML 反发刻印LV{MARK:反抗刻印}を取得
 	RESETCOLOR
 	;缺乏情感之场合は反发刻印による顺从ダウンはなし
 	IF ABL:顺从 > 0 && ABL:顺从 <= 3 && TALENT:缺乏情感 == 0
-		ABL:顺从 = MAX(ABL:顺从 - MARK:反发刻印, 0)
+		ABL:顺从 = MAX(ABL:顺从 - MARK:反抗刻印, 0)
 		PRINTFORML そして顺从がLV{ABL:顺从}に下がった
 	ENDIF
 	;Ｈ氛围ダウン
-	TFLAG:33 -= 30 * MARK:反发刻印
-	MARK:反发刻印之取得履历 = MARK:反发刻印
+	TFLAG:33 -= 30 * MARK:反抗刻印
+	MARK:反抗刻印之取得履历 = MARK:反抗刻印
 ENDIF
 
-SIF MARK:快乐刻印 > MEMO_MARK:0 || MARK:苦痛刻印 > MEMO_MARK:1 || MARK:反发刻印 > MEMO_MARK:2
+SIF MARK:快乐刻印 > MEMO_MARK:0 || MARK:苦痛刻印 > MEMO_MARK:1 || MARK:反抗刻印 > MEMO_MARK:2
 	FORCEWAIT
 
 ;いずれか之刻印之3LVを得た时には喋る

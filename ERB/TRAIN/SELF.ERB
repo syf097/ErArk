@@ -117,7 +117,7 @@ CASE "调教后性爱"
 	ENDIF
 CASE "调教后Ａ性爱"
 	;A感觉、尻穴狂によるＢＯＮＵＳ
-	LOCAL += MAX(ABL:Ａ感觉/3, 0) + TALENT:尻穴狂
+	LOCAL += MAX(ABL:A感觉/3, 0) + TALENT:尻穴狂
 
 	IF LOCAL > 0
 		DRAWLINE
@@ -177,7 +177,7 @@ CASE "调教后Ａ性爱"
 CASE "调教后百合PLAY"
 
 	;C感觉、淫核によるＢＯＮＵＳ
-	LOCAL += MAX(ABL:Ｃ感觉/3, 0) + TALENT:淫核
+	LOCAL += MAX(ABL:C感觉/3, 0) + TALENT:淫核
 
 	IF LOCAL > 0
 		DRAWLINE
@@ -354,18 +354,18 @@ CASE "调教后自慰"
 
 		IF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
 			PRINTFORML %EXPNAME:0%＋{LOCAL+B}
-			EXP:Ｖ経験 += LOCAL+B
+			EXP:V经验 += LOCAL+B
 			SIF A
 				PRINTFORML %EXPNAME:53%＋{LOCAL * A}
-			EXP:Ｖ扩张経験 += LOCAL * A
+			EXP:V扩张经验 += LOCAL * A
 			PRINTFORML %PALAMNAME:1%之珠＋{(LOCAL+B) * 200}
 			JUEL:快Ｖ += (LOCAL+B) * 200
 		ELSEIF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 			PRINTFORML %EXPNAME:1%＋{LOCAL+B}
-			EXP:Ａ経験 += LOCAL+B
+			EXP:A经验 += LOCAL+B
 			SIF A
 				PRINTFORML %EXPNAME:57%＋{LOCAL * A}
-			EXP:Ａ扩张経験 += LOCAL * A
+			EXP:A扩张经验 += LOCAL * A
 			PRINTFORML %PALAMNAME:2%之珠＋{(LOCAL+B) * 200}
 			JUEL:快Ａ += (LOCAL+B) * 200
 		ELSE

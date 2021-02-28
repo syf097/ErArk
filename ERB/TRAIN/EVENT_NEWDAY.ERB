@@ -37,7 +37,7 @@ LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
 DRAWLINE
 SELECTCASE LOCALS
 CASE "朝逆正常位"
-	SIF TALENT:性别男
+	SIF TALENT:性别 == 1
 		LOCAL += 1
 	LOCAL = MAX(LOCAL + ABL:欲望/2, 1)
 
@@ -100,7 +100,7 @@ CASE "朝逆正常位"
 	CALL SIMULATE_TRAIN_SHOW
 	CALL CALC, "欲求不满解消", TARGET, LOCAL
 CASE "朝舐阴"
-	SIF TALENT:性别男
+	SIF TALENT:性别 == 1
 		LOCAL += 1
 	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:百合属性)/3, 1)
 	PRINTFORML 早晨、%CALLNAME:MASTER%睡醒后觉得有点暖和…
@@ -484,7 +484,7 @@ ENDIF
 
 STR:100 = 
 ;反发刻印が3あるとダメ
-SIF MARK:反发刻印 >= 3
+SIF MARK:反抗刻印 >= 3
 	RETURN 0
 
 VARSET LOCALS
@@ -498,7 +498,7 @@ CALL COM_ABLE95
 SIF RESULT && ABL:Ｓ属性 >= 3
 	LOCALS:2 = 朝足交
 CALL COM_ABLE98
-SIF RESULT && (ABL:百合属性 >= 3 || TALENT:性别男) && TALENT:MASTER:性别男 == 0
+SIF RESULT && (ABL:百合属性 >= 3 || TALENT:性别 == 1) && TALENT:MASTER:性别男 == 0
 	LOCALS:3 = 朝舐阴
 CALL COM_ABLE120
 SIF RESULT && PENIS(TARGET) && TALENT:童贞 == 0 && EXP:Ｖ插入経験 >= 20 && ABL:欲望 >= 3 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
@@ -508,13 +508,13 @@ CALL COM_ABLE91
 SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 2 && ABL:奉仕精神 >= 2 && ABL:精液成瘾 >= 1
 	LOCALS:5 = 朝口交
 CALL COM_ABLE65
-SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:Ｖ感觉 >= 3 && TALENT:处女 + TALENT:性别男 + TALENT:PLAYER:童贞 == 0
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:Ｖ感觉 >= 3 && TALENT:处女 + TALENT:性别 == 1 + TALENT:PLAYER:童贞 == 0
 	LOCALS:6 = 朝骑乘位
 CALL COM_ABLE92
-SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:奉仕精神 >= 4 && TALENT:性别男 == 0
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:奉仕精神 >= 4 && TALENT:性别 != 1
 	LOCALS:7 = 朝乳交
 CALL COM_ABLE61
-SIF RESULT && PENIS(MASTER) && ITEM:围裙 && TALENT:恋慕 && TALENT:处女 + TALENT:性别男 + TALENT:PLAYER:童贞 == 0
+SIF RESULT && PENIS(MASTER) && ITEM:围裙 && TALENT:恋慕 && TALENT:处女 + TALENT:性别 == 1 + TALENT:PLAYER:童贞 == 0
 	LOCALS:8 = 朝之新婚PLAY
 
 LOCAL = 1
@@ -621,7 +621,7 @@ CASE "朝ＳＭ"
 		ENDIF
 		IF RAND:3 == 0
 			CALL COM_ABLE75
-			SIF RESULT && TALENT:Ａ处女 == 0 && EXP:PLAYER:Ａ插入経験 && ABL:Ａ感觉 >= MAX(3, ABL:Ｖ感觉) && ABL:顺从+ABL:欲望+ABL:Ａ感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
+			SIF RESULT && TALENT:Ａ处女 == 0 && EXP:PLAYER:Ａ插入経験 && ABL:A感觉 >= MAX(3, ABL:Ｖ感觉) && ABL:顺从+ABL:欲望+ABL:A感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
 				CALL SIMULATE_TRAIN_COM, 75, MAX(LOCAL:LCOUNT/(5 + RAND:5), 1 + RAND:3)
 		ENDIF
 		SIF RAND:2
