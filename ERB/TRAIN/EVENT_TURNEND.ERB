@@ -92,7 +92,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 		LOCALS:1 = 排泄口
 		LOCALS:2 = 小便之穴
 	ENDIF
-	IF INSERT("骑乘位") && (TEQUIP:逆推 || ABL:奉仕精神 >= 3)
+	IF INSERT("骑乘位") && (TEQUIP:逆推 || ABL:侍奉精神 >= 3)
 		PRINTFORM %CALLNAME:TARGET%が
 		IF LOCAL && RAND:3 == 0
 			PRINTFORM 在快感中颤抖着腰
@@ -329,7 +329,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 		PRINTFORM %CALLNAME:TARGET%在%CALLNAME:PLAYER%的视线下、
 
 		IF (TALENT:怕羞 && PALAM:欲情*(TALENT:恋慕 + 1) < 30000) || (TALENT:不知耻 == 0 && PALAM:欲情*(TALENT:恋慕 + 1) < 10000)
-			IF CFLAG:2 * ABL:奉仕精神 >= 4500 && RAND:3 == 0
+			IF CFLAG:2 * ABL:侍奉精神 >= 4500 && RAND:3 == 0
 				PRINTFORM 讨好般露出羞耻而卑微地淫靡笑容、
 				IF RAND:3 == 0 && LOCAL:3 >= 3
 					PRINTFORM 满满地被中出了的
@@ -342,7 +342,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 					PRINTFORM 幼童般
 				PRINTFORMW %LOCALS:2%的清晰的模样被%NAMES("指")%打开后暴露出来了…
 				LOCALS:9 = 中出后观察
-			ELSEIF CFLAG:2 * ABL:奉仕精神 >= 2000 && COND("脚之使用") && RAND:2 == 0
+			ELSEIF CFLAG:2 * ABL:侍奉精神 >= 2000 && COND("脚之使用") && RAND:2 == 0
 				PRINTFORM 羞恥地用%NAMES("手")%把脸遮住了……
 				IF RAND:2
 					PRINTFORMW 被脚玩弄而打开的阴部，呈现出了羞人部分…
@@ -417,7 +417,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				ELSE
 					PRINTFORM ，用%NAMES("指")%打开
 				ENDIF
-				IF ( (SHOOT("膣内") && TALENT:淫壷) || (SHOOT("A") && TALENT:尻穴狂)  || (SHOOT("尿道") && TALENT:尿道狂) ) && RAND:3 == 0
+				IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂)  || (SHOOT("尿道") && TALENT:尿道狂) ) && RAND:3 == 0
 					PRINTFORM 充斥着贪欲
 				ELSEIF ( (SHOOT("膣内") && ABL:V感觉 >= 3) || (SHOOT("A") && ABL:A感觉 >= 3)  || (SHOOT("尿道") && TALENT:尿道性感) ) && RAND:3 == 0
 					PRINTFORM 抽动做着
@@ -428,7 +428,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 					PRINTFORM 尿道
 				ELSEIF LOCAL:2 >= 3 && RAND:3 == 0
 					PRINTFORM 肉之洞窟
-					IF ( (SHOOT("膣内") && TALENT:淫壷) || (SHOOT("A") && TALENT:尻穴狂) ) && RAND:3 == 0
+					IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂) ) && RAND:3 == 0
 						IF SHOOT("膣内")
 							PRINTFORM 直到深处的子宫口
 						ELSE
@@ -661,7 +661,7 @@ IF SELECTCOM == 0
 		PRINTFORM 现在手指只是随便动动就能让%CALLNAME:TARGET%到达敏感界限的身体,像离水的鱼儿一样蜷缩伸展、挣扎扭动，也不知道那拼了命地挣扎是为了挣脱出这欲望的深渊，还是在积蓄刺激，好让自己一头扎进那至高的快乐之中……
 		IF TALENT:怕羞
 			PRINTL 一向容易害羞的%CALLNAME:TARGET%拼命的闭着眼，只是那紧夹着流淌出液体的双腿和嘴里止不住的吐息明明白白的展示着一切……
-		ELSEIF TALENT:承认快感 || TALENT:解放
+		ELSEIF TALENT:接受快感 || TALENT:解放
 			PRINTL 现在的%CALLNAME:TARGET%完全一副快乐到极点的荡漾表情，夹杂着媚意和恳求的神色扭动着身体，如果不是因为在极限快乐边缘而无力行动，怕是会自己扑过来吧……
 		ELSEIF (TALENT:否认快感 || TALENT:压抑) && COND("指之使用")
 			PRINTL 拼命的摇头拼命的否认，只是手紧紧的拉住旁边的东西，诚实的身体背叛了理智，抽搐的大腿止不住的流淌着，向%CALLNAME:PLAYER%展示着投降宣告。
@@ -677,8 +677,6 @@ IF SELECTCOM == 1
 	;S属性3以上か抖S持ち之梦魇に逆推て生顔面骑乘をされると、汚れを舐め取る破目に
 	IF TEQUIP:逆推 && CHECK_CLO("V露出") && ABL:S属性 >= 3 && CHECK_STAIN(STAIN:V, "精液", "A", "尿") && RAND:10 == 0
 		PRINTFORM %CALLNAME:TARGET%的阴处
-		SIF TALENT:哈比 == 0
-			PRINTFORM 被用%NAMES("指")%张开、
 		PRINTFORM 用舌头漂亮地
 		IF ABL:S属性 >= 5 && RAND:5 > 0
 			PRINTW 催促着玩弄的样子。
@@ -704,7 +702,7 @@ IF SELECTCOM == 1
 			PRINTFORM 被舔弄着\@ PENIS(TARGET) ? 阴茎之根元 # 敏感的小豆豆 \@%CALLNAME:TARGET%
 			SIF TALENT:怕羞
 				PRINTFORM 歪到一边的小脸被羞意染得通红，一只手拿掌背轻轻捂住自己的嘴、
-			IF TALENT:承认快感 || TALENT:解放
+			IF TALENT:接受快感 || TALENT:解放
 				PRINTL 一边吐着热情的叹息，一边品味着身体的快乐。
 			ELSEIF TALENT:否认快感 || TALENT:压抑
 				PRINTL 像要否定快乐一样摇着头忍耐，一边催促。
@@ -715,7 +713,7 @@ IF SELECTCOM == 1
 			PRINTFORM %CALLNAME:TARGET%的\@ PENIS(TARGET) ? 阴道周边 # 小豆豆 \@被%CALLNAME:PLAYER%用舌头擦拭着，
 			SIF TALENT:怕羞
 				PRINTFORM 羞耻将脸颊染成羞红，从下面那传来无法抑制的快乐吐息。
-			IF TALENT:承认快感 || TALENT:解放
+			IF TALENT:接受快感 || TALENT:解放
 				PRINTL 主动摇摆起身体愉快的享受快乐阵阵袭来地苦闷。
 			ELSEIF TALENT:否认快感 || TALENT:压抑
 				PRINTL 像是要否定快乐般摇头、但含住了自己手指的美唇间不时透露出一阵快乐的叹息。
@@ -734,7 +732,7 @@ IF SELECTCOM == 1
 				PRINTFORM %CALLNAME:TARGET%因敏感的\@ PENIS(TARGET) ? 场所 # 阴蒂 \@被激烈的玩弄着而扭动着身子、
 				SIF TALENT:怕羞 && COND("指之使用")
 					PRINTFORM 因为太害羞了，%CALLNAME:TARGET%双手捂住了自己通红的脸，
-				IF TALENT:承认快感 || TALENT:解放
+				IF TALENT:接受快感 || TALENT:解放
 					PRINTFORM 如同开关被打开地%CALLNAME:TARGET%激烈发出的娇吟。
 				ELSEIF TALENT:否认快感 || TALENT:压抑
 					PRINTL 咬住食指的唇缝中，压抑着的呻吟的止不住地提高了。
@@ -745,7 +743,7 @@ IF SELECTCOM == 1
 				PRINTFORM %CALLNAME:TARGET%\@ PENIS(TARGET) ? 场所 # 阴蒂 \@被不断刺激着、
 				SIF TALENT:怕羞 && COND("指之使用")
 					PRINTFORM 因为太害羞了，%CALLNAME:TARGET%双手捂住了自己通红的脸
-				IF TALENT:承认快感 || TALENT:解放
+				IF TALENT:接受快感 || TALENT:解放
 					PRINTFORM 如同开关被打开地%CALLNAME:TARGET%激烈发出的娇吟。
 				ELSEIF TALENT:否认快感 || TALENT:压抑
 					PRINTL 咬住食指的唇缝中，压抑着的呻吟的止不住地提高了
@@ -797,7 +795,7 @@ IF SELECTCOM == 2
 			PRINTFORM 肛门受到刺激使
 		ENDIF
 		PRINTFORM %CALLNAME:TARGET%的声音变得激昂高亢，
-		IF TALENT:承认快感 || TALENT:解放
+		IF TALENT:接受快感 || TALENT:解放
 			PRINTL 用止不住的媚意述说着快乐。
 		ELSEIF TALENT:否认快感 || TALENT:压抑
 			PRINTL 企图用声音压制掩盖住快乐的呻吟。
@@ -880,7 +878,7 @@ IF SELECTCOM == 4
 			PRINTFORMW %CALLNAME:TARGET%之阴茎用舌头打扫，一起咽下…
 			CALL RESET_STAIN_EX, "Ｐ", TARGET
 			STAIN:PLAYER:M = 0
-		ELSEIF ABL:PLAYER:技巧 + ABL:PLAYER:奉仕精神 + ABL:PLAYER:M属性 >= 8 && STAIN:Ｐ != 2 && RAND:3
+		ELSEIF ABL:PLAYER:技巧 + ABL:PLAYER:侍奉精神 + ABL:PLAYER:M属性 >= 8 && STAIN:Ｐ != 2 && RAND:3
 			PRINTFORM %CALLNAME:PLAYER%は、
 			IF CHECK_STAIN(STAIN:Ｐ, "A")
 				PRINTFORM 被肠液弄脏了的
@@ -1012,7 +1010,7 @@ IF SELECTCOM == 30
 	CASE IS < 1000
 		PRINTFORML 在%CALLNAME:TARGET%之\@ PENIS(TARGET) ? 阴茎 # 阴蒂 \@压上跳蛋，使之很小地发出了哀鸣声，身体也不禁抽动了一下。
 	CASE IS < 3000
-		IF TALENT:承认快感
+		IF TALENT:接受快感
 			PRINTFORML %CALLNAME:TARGET%为跳蛋的刺激心情舒畅，并享受着那个快乐。
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%之\@ PENIS(TARGET) ? 阴茎 # 阴蒂 \@被压上跳蛋后，一边发出快乐的声音一边扭动着打算从刺激中逃跑的身体。
@@ -1078,7 +1076,7 @@ IF SELECTCOM == 31
 			PRINTFORM %CALLNAME:TARGET%紧致的腔穴被按摩棒激烈地抽出插入做，垂涎地爱液止不住的流淌着，
 			SIF TALENT:怕羞
 				PRINTFORM 过分羞耻而通红的脸被自己的手捂着、
-			SIF TALENT:承认快感
+			SIF TALENT:接受快感
 				PRINTFORM 为了追求更进一步的快乐而主动挺扭着腰、那张诚实的脸写满了快乐和渴望、
 			PRINTFORML \@ TALENT:娇小 ? 小小的 # 她的 \@身体痛并快乐着的扭来扭去。
 		ENDSELECT
@@ -1553,8 +1551,8 @@ ENDIF
 ;舐阴强制or69
 ;--------------------------------------------------------
 IF SELECTCOM == 98 || (SELECTCOM == 99 && PENIS(PLAYER) == 0)
-	;Vを打扫…奉仕精神、技巧、百合属性之合计值が8以上で实行值を30以上上回っているなら汚れをなめ取る
-	IF ABL:技巧 + ABL:奉仕精神 + ABL:百合属性 >= 8 && TCVAR:28 >= 30 && STAIN:PLAYER:V != SET_STAIN(0, "V")
+	;Vを打扫…侍奉精神、技巧、百合属性之合计值が8以上で实行值を30以上上回っているなら汚れをなめ取る
+	IF ABL:技巧 + ABL:侍奉精神 >= 5 && TCVAR:28 >= 30 && STAIN:PLAYER:V != SET_STAIN(0, "V")
 		CALL OSOUJI_V
 	ENDIF
 ENDIF

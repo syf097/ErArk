@@ -102,12 +102,12 @@ CASE "朝逆正常位"
 CASE "朝舐阴"
 	SIF TALENT:性别 == 1
 		LOCAL += 1
-	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:百合属性)/3, 1)
+	LOCAL = MAX(LOCAL + ABL:侍奉精神/3, 1)
 	PRINTFORML 早晨、%CALLNAME:MASTER%睡醒后觉得有点暖和…
 	PRINTFORM 难道、感觉到什么似的气势汹汹的一下掀开了被子、看到里面是
 
 
-	IF ABL:百合属性 >= 3 && ABL:欲望 >= 5 && RAND:3 == 0
+	IF ABL:欲望 >= 5 && RAND:3 == 0
 		PRINTFORM 看起来面红耳赤
 
 	ELSEIF RAND:3 == 0
@@ -122,7 +122,7 @@ CASE "朝舐阴"
 	ENDIF
 	PRINTFORMW 舔着自己小穴的%CALLNAME:TARGET%、
 	PRINTFORM %CALLNAME:TARGET%面带笑容的伸出舌头、
-	IF ABL:奉仕精神 >= 3 && RAND:2
+	IF ABL:侍奉精神 >= 3 && RAND:2
 		PRINTFORML 把阴唇打扫干净作为早安的问候…
 
 		CALL SELF_KOJO, LOCALS
@@ -133,7 +133,7 @@ CASE "朝舐阴"
 		CALL SELF_KOJO, LOCALS
 	ENDIF
 	CALL SIMULATE_TRAIN, 98, LOCAL
-	IF ABL:百合属性 >= 3 && COND("外观：没穿胖次", MASTER) == 0 && RAND:2
+	IF  COND("外观：没穿胖次", MASTER) == 0 && RAND:2
 		PRINTFORML 在%CALLNAME:TARGET%离开房间之后%CALLNAME:MASTER%走到镜子前面、看到的是毫无防备的下半身
 
 		PRINTFORML …显然、%CALLNAME:TARGET%带走了胖次……
@@ -222,7 +222,7 @@ CASE "朝之母乳搾り"
 		JUEL:快B += LOCAL*50
 	ENDIF
 CASE "朝之新婚PLAY"
-	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:露阴癖)/3, 1)
+	LOCAL = MAX(LOCAL + (ABL:侍奉精神 + ABL:露阴癖)/3, 1)
 	PRINTFORML 早上起来后、从厨房飘来一阵香味、
 
 	PRINTFORML 在那里%CALLNAME:TARGET%裸体只穿着围裙做着早餐…
@@ -237,7 +237,7 @@ CASE "朝之新婚PLAY"
 		PRINTFORML %CALLNAME:TARGET%对%CALLNAME:MASTER%的行为有些抱怨、明明很高兴的样子…
 	CALL CALC, "欲求不满解消", TARGET, LOCAL
 CASE "朝乳交"
-	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:精液成瘾)/3, 1)
+	LOCAL = MAX(LOCAL + (ABL:侍奉精神 + ABL:精液成瘾)/3, 1)
 		PRINTFORML 早上、睁开眼睛的同时感觉到小腹有不协调感、
 
 	;贫乳之场合
@@ -297,10 +297,10 @@ CASE "朝骑乘位"
 	ENDIF
 	CALL CALC, "欲求不满解消", TARGET, LOCAL
 CASE "朝接吻"
-	LOCAL = LIMIT(LOCAL/2 + (ABL:顺从 + ABL:奉仕精神)/5, 1, 1 + TALENT:相思相爱 + TALENT:荡唇)
+	LOCAL = LIMIT(LOCAL/2 + (ABL:顺从 + ABL:侍奉精神)/5, 1, 1 + TALENT:相思相爱 + TALENT:荡唇)
 
 	;奉仕レベルが高いと、先に起きている确率が高い
-	IF ABL:奉仕精神 >= 3 && RANDFIX(2)
+	IF ABL:侍奉精神 >= 3 && RANDFIX(2)
 		PRINTFORML 早上、在%CALLNAME:TARGET%\@ LOCAL >= 3 ? 香甜 # \@的吻中醒了过来
 
 	ELSE
@@ -339,7 +339,7 @@ CASE "朝接吻"
 
 	CALL SIMULATE_TRAIN, 6, LOCAL
 
-	IF ABL:奉仕精神 >= 3 && RANDFIX(2)
+	IF ABL:侍奉精神 >= 3 && RANDFIX(2)
 		PRINTFORM %CALLNAME:TARGET%
 		IF RAND:4 && TALENT:怕羞 && TALENT:坦率 + TALENT:相思相爱 == 0
 			PRINTFORM 红着脸
@@ -351,12 +351,12 @@ CASE "朝接吻"
 	ENDIF
 	CALL CALC, "欲求不满解消", TARGET, 1
 CASE "朝口交"
-	LOCAL = MAX(LOCAL + (ABL:奉仕精神 + ABL:精液成瘾)/3, 1)
+	LOCAL = MAX(LOCAL + (ABL:侍奉精神 + ABL:精液成瘾)/3, 1)
 
 	PRINTFORML 早上、醒来就觉得下腹部有种奇妙的舒服…
 
 	CALL COM_ABLE99
-	IF RESULT && COND("脚之使用") && ABL:欲望 >= 3 && ABL:奉仕精神 >= 3 && CLO_ORI(TARGET,"外套") == 0 && RAND:2
+	IF RESULT && COND("脚之使用") && ABL:欲望 >= 3 && ABL:侍奉精神 >= 3 && CLO_ORI(TARGET,"外套") == 0 && RAND:2
 		PRINTFORM 睁开眼睛…打开双腿的姿势跨在身上的%CALLNAME:TARGET%
 
 		IF (TALENT:淫乱 && ABL:露阴癖 >= 5 && RAND:2) || CLO_ORI(TARGET,"西装","内衣") == 0 || COND("外观：没穿胖次")
@@ -412,9 +412,9 @@ CASE "朝口交"
 	CALL SIMULATE_TRAIN, SELECTCOM, LOCAL
 
 	;打扫口交
-	IF ABL:奉仕精神 + TALENT:献身 - (COND("包茎", MASTER) > 0) >= 3
+	IF ABL:侍奉精神 + TALENT:献身 - (COND("包茎", MASTER) > 0) >= 3
 		;MASＴＥＲが包茎
-		IF COND("包茎", MASTER) && ABL:奉仕精神 + TALENT:献身 >= 4 && RAND:3
+		IF COND("包茎", MASTER) && ABL:侍奉精神 + TALENT:献身 >= 4 && RAND:3
 			PRINTFORM %CALLNAME:TARGET%把舌头伸进了%CALLNAME:MASTER%的
 			IF COND("真性包茎", MASTER)
 				PRINTFORML 龟头和包皮之间、用舌头把里面包皮垢清理干净后了进行早安的问候…
@@ -430,7 +430,7 @@ CASE "朝口交"
 		ENDIF
 		PRINTFORML 打扫口交経験＋１
 		EXP:打扫口交経験 += 1
-	ELSEIF (TALENT:好色 || ABL:奉仕精神 >= 5) && COND("脚之使用") && CLO_ORI(TARGET,"内衣") && COND("外观：没穿胖次") == 0 && RAND:3 == 0
+	ELSEIF (TALENT:好色 || ABL:侍奉精神 >= 5) && COND("脚之使用") && CLO_ORI(TARGET,"内衣") && COND("外观：没穿胖次") == 0 && RAND:3 == 0
 		PRINTFORM 用还留着%CALLNAME:TARGET%体温的胖次擦干净%CALLNAME:MASTER%的肉棒
 		IF RAND:2
 			PRINTFORML 同时进行早安的问候…
@@ -445,7 +445,7 @@ CASE "朝口交"
 	ELSEIF EXP:精液経験 > MEMO_EXP:20 && RAND:3
 		IF ABL:S属性 >= 3 && RAND:2
 			PRINTFORML %CALLNAME:TARGET%把嘴里的精液咽下、伸出舌头舔着嘴唇进行早安的问候…
-		ELSEIF ABL:奉仕精神 >= 3 && RAND:2
+		ELSEIF ABL:侍奉精神 >= 3 && RAND:2
 			PRINTFORML %CALLNAME:TARGET%=\@ ABL:精液成瘾 >= 3 ? 觉得美味的样子 # 一滴不落的 \@把精液喝了下去、然后用嘴清理的同时进行早安的问候…
 
 		ELSE
@@ -483,7 +483,7 @@ ENDIF
 #DIM LCOUNT
 
 STR:100 = 
-;反发刻印が3あるとダメ
+;反抗刻印が3あるとダメ
 SIF MARK:反抗刻印 >= 3
 	RETURN 0
 
@@ -492,26 +492,26 @@ VARSET LOCALS
 CALL COM_ABLE6
 SIF RESULT && TALENT:恋慕 && ABL:顺从 >= 3 && CHECK_COM("接吻")
 	LOCALS:0 = 朝接吻
-SIF TALENT:恋慕 && TALENT:泌乳体質 && ABL:顺从 >= 3 && ABL:奉仕精神 >= 3 && EXP:喷乳経験 >= 20
+SIF TALENT:恋慕 && TALENT:泌乳体質 && ABL:顺从 >= 3 && ABL:侍奉精神 >= 3 && EXP:喷乳経験 >= 20
 	LOCALS:1 = 朝之母乳搾り
 CALL COM_ABLE95
 SIF RESULT && ABL:S属性 >= 3
 	LOCALS:2 = 朝足交
 CALL COM_ABLE98
-SIF RESULT && (ABL:百合属性 >= 3 || TALENT:性别 == 1) && TALENT:MASTER:性别男 == 0
+SIF RESULT && TALENT:性别 == 1 && TALENT:MASTER:性别 != 1
 	LOCALS:3 = 朝舐阴
 CALL COM_ABLE120
 SIF RESULT && PENIS(TARGET) && TALENT:童贞 == 0 && EXP:V插入経験 >= 20 && ABL:欲望 >= 3 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
 	LOCALS:4 = 朝逆正常位
 
 CALL COM_ABLE91
-SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 2 && ABL:奉仕精神 >= 2 && ABL:精液成瘾 >= 1
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 2 && ABL:侍奉精神 >= 2 && ABL:精液成瘾 >= 1
 	LOCALS:5 = 朝口交
 CALL COM_ABLE65
 SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:V感觉 >= 3 && TALENT:处女 + TALENT:性别 == 1 + TALENT:PLAYER:童贞 == 0
 	LOCALS:6 = 朝骑乘位
 CALL COM_ABLE92
-SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:奉仕精神 >= 4 && TALENT:性别 != 1
+SIF RESULT && PENIS(MASTER) && ABL:欲望 >= 4 && ABL:侍奉精神 >= 4 && TALENT:性别 != 1
 	LOCALS:7 = 朝乳交
 CALL COM_ABLE61
 SIF RESULT && PENIS(MASTER) && ITEM:围裙 && TALENT:恋慕 && TALENT:处女 + TALENT:性别 == 1 + TALENT:PLAYER:童贞 == 0
@@ -616,12 +616,12 @@ CASE "朝SM"
 			CALL SIMULATE_TRAIN_COM, 9, MAX(LOCAL:LCOUNT/(2 + RAND:4), 1)
 		IF RAND:2
 			CALL COM_ABLE65
-			SIF RESULT && TALENT:处女 + TALENT:MASTER:童贞 == 0 && ABL:顺从+ABL:欲望+ABL:V感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
+			SIF RESULT && TALENT:处女 + TALENT:MASTER:童贞 == 0 && ABL:顺从+ABL:欲望+ABL:V感觉+ABL:侍奉精神 > 14 && PENIS(MASTER)
 				CALL SIMULATE_TRAIN_COM, 65, MAX(LOCAL:LCOUNT/(5 + RAND:5), 1 + RAND:3)
 		ENDIF
 		IF RAND:3 == 0
 			CALL COM_ABLE75
-			SIF RESULT && TALENT:A处女 == 0 && EXP:PLAYER:A插入経験 && ABL:A感觉 >= MAX(3, ABL:V感觉) && ABL:顺从+ABL:欲望+ABL:A感觉+ABL:奉仕精神 > 14 && PENIS(MASTER)
+			SIF RESULT && TALENT:A处女 == 0 && EXP:PLAYER:A插入経験 && ABL:A感觉 >= MAX(3, ABL:V感觉) && ABL:顺从+ABL:欲望+ABL:A感觉+ABL:侍奉精神 > 14 && PENIS(MASTER)
 				CALL SIMULATE_TRAIN_COM, 75, MAX(LOCAL:LCOUNT/(5 + RAND:5), 1 + RAND:3)
 		ENDIF
 		SIF RAND:2
@@ -784,8 +784,8 @@ RETURN 1
 #DIM LCOUNT
 
 STR:100 = 
-;欲求不满度が低いor欲望が3LV未满、好感觉が500未满、反发刻印あり
-SIF COND("欲求不满", ARG) == 0 || ABL:ARG:欲望 < 3 || CFLAG:ARG:2 < 500 || MARK:ARG:反发刻印 > 0
+;欲求不满度が低いor欲望が3LV未满、好感觉が500未满、反抗刻印あり
+SIF COND("欲求不满", ARG) == 0 || ABL:ARG:欲望 < 3 || CFLAG:ARG:2 < 500 || MARK:ARG:反抗刻印 > 0
 	RETURN 0
 
 VARSET LOCALS

@@ -105,8 +105,8 @@ IF TEQUIP:逆推 == 0
 
 	;助手之助言
 	IF ASSI && ABL:ASSI:助手 + TALENT:ASSI:聪慧 >= 3
-		IF CALCF("反发刻印獲得", TARGET)
-			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@还太早\@ CALCF("反发刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
+		IF CALCF("反抗刻印獲得", TARGET)
+			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@还太早\@ CALCF("反抗刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
 		ELSEIF CALCF("苦痛刻印獲得", TARGET)
 			LOCALS:1 = 「这个PLAY或许会\@ CALCF("苦痛刻印獲得", TARGET) >= 2 ? 伴随着相当的苦痛 # 有些痛 \@」
 			SELECTCASE SELECTCOM
@@ -892,7 +892,7 @@ ELSEIF NOWEX:绝顶数合计
 		ENDIF
 		IF LOCAL == 0 && RAND:3 == 0
 			PRINTFORM 干净、
-		ELSEIF STAIN:PLAYER:手 && ABL:奉仕精神 >= 3
+		ELSEIF STAIN:PLAYER:手 && ABL:侍奉精神 >= 3
 			PRINTFORM 干净、
 		ELSE
 			PRINTFORM %LOCALS%干净、
@@ -960,7 +960,7 @@ ELSEIF NOWEX:绝顶数合计
 		;对象之口⇔调教者之指之汚れが移动
 		CALL EQ_STAIN, TARGET, PLAYER, 0, 1
 		;打扫ルート
-		IF STAIN:PLAYER:手 && ABL:奉仕精神 >= 3
+		IF STAIN:PLAYER:手 && ABL:侍奉精神 >= 3
 			IF CHECK_STAIN(STAIN:PLAYER:手, "精液")
 				PRINTL 附着的精液被漂亮地舔取了…
 
@@ -992,7 +992,7 @@ ELSEIF NOWEX:绝顶数合计
 				IF EX:绝顶数合计 >= MAXBASE:性欲 && RAND:2
 					PRINT 反复绝顶的表情
 
-					SIF TALENT:承认快感
+					SIF TALENT:接受快感
 						PRINT 淫秽的表情
 
 				ELSE
@@ -1541,7 +1541,7 @@ CASE "指令"
 		;快感で之汎用判定
 		SIF TALENT:C敏感 || TALENT:淫核
 			LOCAL = MAX(GET_PALAMLV(CUP:快C), LOCAL)
-		SIF TALENT:V敏感 || TALENT:淫壷
+		SIF TALENT:V敏感 || TALENT:淫穴
 			LOCAL = MAX(GET_PALAMLV(CUP:快V), LOCAL)
 		SIF TALENT:A敏感 || TALENT:尻穴狂
 			LOCAL = MAX(GET_PALAMLV(CUP:快A), LOCAL)
@@ -1565,7 +1565,7 @@ CASE "指令"
 
 		SIF TALENT:C敏感 || TALENT:淫核
 			TIMES CUP:快C, 2.00
-		SIF TALENT:V敏感 || TALENT:淫壷
+		SIF TALENT:V敏感 || TALENT:淫穴
 			TIMES CUP:快V, 2.00
 		SIF TALENT:A敏感 || TALENT:尻穴狂
 			TIMES CUP:快A, 2.00
@@ -1785,14 +1785,12 @@ SIF GETBIT(TEQUIP:逆调教, 1)
 	GOTO EX_END
 
 ;精力が无くなり、かつ斯道克が有るなら精力补充
-IF BASE:PLAYER:精力 <= 0 && BASE:PLAYER:斯道克
-	BASE:PLAYER:斯道克 -= 1
+IF BASE:PLAYER:精力 <= 0
 	BASE:PLAYER:精力 = MAXBASE:PLAYER:精力
 	PRINTFORML %CALLNAME:PLAYER%的精力回復了！（回复完了！）
 	PRINTFORML 
 	SETCOLOR DEF_COLOR("黄色")
 	PRINTFORML %CALLNAME:PLAYER%的精力残余 …… {BASE:PLAYER:精力}！
-	PRINTFORMW 斯道克残余 …… {BASE:PLAYER:斯道克}！
 	RESETCOLOR
 	PRINTFORML 
 ENDIF
@@ -1803,7 +1801,7 @@ SIF BASE:PLAYER:精力 > 0
 
 $EX_END
 ;斯道克が0（かつ精力が0以下）
-IF BASE:PLAYER:精力 <= 0 && BASE:PLAYER:斯道克 == 0 && RAND:3
+IF BASE:PLAYER:精力 <= 0 && RAND:3
 	;快乐刻印・淫乱を取得
 	DRAWLINE
 	PRINTFORML 
@@ -1822,7 +1820,7 @@ ENDIF
 PRINTFORML 
 ;调教メニュー一览
 VARSET LOCALS
-LOCAL = ABL:技巧 * 1000 + MAX(ABL:LV - ABL:PLAYER:LV, 0) * 1000 + ABL:LV * 500 + (MARK:PLAYER:快乐刻印 + TALENT:PLAYER:淫乱) * 1500
+LOCAL = ABL:技巧 * 1000 + (MARK:PLAYER:快乐刻印 + TALENT:PLAYER:淫乱) * 1500
 
 TRYCALLFORM SET_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}
 LOCALS = %STR:100%
@@ -1886,11 +1884,9 @@ ELSE
 	CALL BOUHATSU
 	;追击判定
 	;残精力20以下だと一定确率で追击、それ以上だとより低确率で追击。それとは别に斯道克でも判定
-	IF (BASE:PLAYER:精力 <= 20 && RAND:2) || (BASE:PLAYER:精力 > 20 && RAND:4 == 0) || (BASE:PLAYER:斯道克 && RAND:5 == 0)
-		IF BASE:PLAYER:斯道克 <= 0 && BASE:PLAYER:精力 <= 0
+	IF (BASE:PLAYER:精力 <= 20 && RAND:2) || (BASE:PLAYER:精力 > 20 && RAND:4 == 0) || (RAND:5 == 0)
+		IF BASE:PLAYER:精力 <= 0
 			PRINTFORMW %CALLNAME:PLAYER%已经到达极限了、%CALLNAME:TARGET%也没有把手放缓！
-		ELSEIF BASE:PLAYER:精力 <= 0
-			PRINTFORMW %CALLNAME:PLAYER%把精力毫无残存的全部向%CALLNAME:TARGET%献上了！
 		ELSE
 			PRINTFORMW %CALLNAME:PLAYER%的精力残余 …… {BASE:PLAYER:精力}！
 		ENDIF
@@ -1910,17 +1906,7 @@ ELSE
 			TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS:1
 		ENDIF
 
-		IF BASE:PLAYER:精力 <= 0 && BASE:PLAYER:斯道克 == 0 
-			IF PENIS(PLAYER) && RAND:4 == 0
-				PRINTFORMW %CALLNAME:PLAYER%直到空空如也都一直被%CALLNAME:TARGET%吸吮了个干净！
-			ELSEIF RAND:3 == 0
-				PRINTFORMW %CALLNAME:PLAYER%精力一扫而尽的被%CALLNAME:TARGET%榨了个干净！
-			ELSEIF RAND:2 == 0
-				PRINTFORMW %CALLNAME:PLAYER%的精力全部被%CALLNAME:TARGET%美味地享用掉了！
-			ELSE
-				PRINTFORMW %CALLNAME:PLAYER%嘎啦嘎啦的像被绳缚住一样！
-			ENDIF
-		ELSEIF BASE:PLAYER:精力 <= 0
+		IF BASE:PLAYER:精力 <= 0
 			PRINTFORMW %CALLNAME:PLAYER%把精力毫无残存的全部向%CALLNAME:TARGET%献上了！
 		ELSE
 			PRINTFORMW %CALLNAME:PLAYER%的精力残余 …… {BASE:PLAYER:精力}！

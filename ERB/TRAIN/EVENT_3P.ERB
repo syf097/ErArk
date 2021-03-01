@@ -281,8 +281,8 @@ CASEELSE
 	CASE 91
 		PRINTFORM 小嘴对着阴茎
 
-		;奉仕精神3以上か欲情4以上
-		IF (ABL:奉仕精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+		;侍奉精神3以上か欲情4以上
+		IF (ABL:侍奉精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
 			PRINTFORMW 激烈的吮吸…
 
 		ELSEIF (RAND:2 == 0 && ABL:技巧 >= 2) || TFLAG:16
@@ -308,10 +308,10 @@ CASEELSE
 	CASE 96
 		PRINTFORM 屁股淫穴被
 
-		IF ABL:奉仕精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
+		IF ABL:侍奉精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
 			PRINTFORMW 尖尖的舌头在里面舔弄…
 
-		ELSEIF ABL:奉仕精神 >= 3
+		ELSEIF ABL:侍奉精神 >= 3
 			PRINTFORMW 灵活的舌头清洁着…
 
 			STAIN:PLAYER:A = SET_STAIN(0, "A")
@@ -324,10 +324,10 @@ CASEELSE
 		ENDIF
 	CASE 98
 		PRINTFORM 淫穴被
-		IF ABL:奉仕精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
+		IF ABL:侍奉精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
 			PRINTFORMW 尖尖的舌头舔弄着里面的皱褶…
 
-		ELSEIF ABL:奉仕精神 >= 3
+		ELSEIF ABL:侍奉精神 >= 3
 			PRINTFORMW 强行用舌头舔舐着每个角落…
 
 			STAIN:PLAYER:A = SET_STAIN(0, "A")
@@ -757,13 +757,8 @@ ELSEIF SELECTCOM:1 != SELECTCOM && SELECTCOM:1 != PREVCOM:1
 	SELECTCASE SELECTCOM:1
 	CASE 1
 		PRINTFORMW %CALLNAME:PLAYER%的脸用淫穴跨坐在上面并不停的压迫…
-
-		SIF INSERT("骑乘位") && ABL:ASSI:百合属性 + ABL:百合属性 >= 3 && RAND:3 == 0
-			PRINTFORMW 在面前挥动的着腰的%CALLNAME:TARGET%吻上去…
 	CASE 9
 		PRINTFORMW %CALLNAME:PLAYER%的脸用肛穴谋求着舌头的舔弄…
-		SIF INSERT("骑乘位") && ABL:ASSI:百合属性 + ABL:百合属性 >= 3 && RAND:3 == 0
-			PRINTFORMW 在面前挥动的着腰的%CALLNAME:TARGET%吻上去…
 	CASE 4
 		PRINTFORMW %CALLNAME:PLAYER%的口开始被阴茎侵犯…
 	CASE 6
@@ -810,9 +805,9 @@ ELSEIF SELECTCOM:1 != SELECTCOM && SELECTCOM:1 != PREVCOM:1
 	CASE 90
 		IF TALENT:ASSI:恋慕 && RAND:4 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎被手温柔的爱抚着…
-		ELSEIF ABL:ASSI:技巧 >= 3 && ABL:ASSI:奉仕精神 >= 3 && RAND:3 == 0
+		ELSEIF ABL:ASSI:技巧 >= 3 && ABL:ASSI:侍奉精神 >= 3 && RAND:3 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的龟头被手掌包容着揉捏…
-		ELSEIF ABL:ASSI:奉仕精神 >= 3 && RAND:2 == 0
+		ELSEIF ABL:ASSI:侍奉精神 >= 3 && RAND:2 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎被慢慢的撸动…
 		ELSEIF ABL:ASSI:技巧 >= 3 && RAND:2 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎被绝妙的力道忽轻忽重的刺激着…
@@ -823,10 +818,10 @@ ELSEIF SELECTCOM:1 != SELECTCOM && SELECTCOM:1 != PREVCOM:1
 	CASE 91
 		IF TALENT:ASSI:恋慕 && RAND:4 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎用小嘴温柔的吸啜舔弄…
-		ELSEIF ABL:ASSI:技巧 >= 4 && ABL:ASSI:奉仕精神 >= 3 && RAND:3 == 0
+		ELSEIF ABL:ASSI:技巧 >= 4 && ABL:ASSI:侍奉精神 >= 3 && RAND:3 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎大幅度的吮吸，到达喉咙的最深处…
 
-		ELSEIF ABL:ASSI:奉仕精神 >= 3 && RAND:2 == 0
+		ELSEIF ABL:ASSI:侍奉精神 >= 3 && RAND:2 == 0
 			PRINTFORMW %CALLNAME:PLAYER%的阴茎像人间极品一样在口中品味…
 
 		ELSEIF ABL:ASSI:技巧 >= 3 && RAND:2 == 0

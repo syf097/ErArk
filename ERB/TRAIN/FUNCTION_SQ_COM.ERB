@@ -317,13 +317,6 @@ CASE "口内放尿", "膣内放尿", "子宮内放尿", "温泉灌肠", "乳内�
 CASE "阴毛管理", "腋毛管理"
 	SIF MAX(ABL:ARG:露阴癖, ABL:ARG:M属性) >= 3
 		RETURNF 1
-CASE "性别による拒绝反应"
-	SIF ARG:1 == 0 && PLAYER > 0
-		ARG:1 = PLAYER
-	SIF TALENT:ARG:性别女 && TALENT:(ARG:1):性别女 && ABL:ARG:百合属性 == 0
-		RETURNF 1
-	SIF TALENT:ARG:性别 == 1 && TALENT:(ARG:1):性别男 && ABL:ARG:男同属性 == 0
-		RETURNF 1
 ENDSELECT
 RETURNF LOCAL
 
@@ -1384,7 +1377,7 @@ CASE "打扫舐阴"
 			RETURNF 1
 		SIF TALENT:PLAYER:性别 == 1
 			RETURNF 0
-		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
+		SIF MIN(ABL:技巧, ABL:侍奉精神) < 3
 			RETURNF 0
 		;尿之打扫or性爱之打扫
 		SIF PREVEX("V中出", PLAYER) && PREVPLAY("插入", PLAYER) && CHECK_STAIN(STAIN:PLAYER:V, "精液")
@@ -1415,7 +1408,7 @@ CASE "恥垢打扫舐阴"
 			SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
 				RETURNF 1
 		ELSE
-			SIF ABL:PLAYER:奉仕精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
+			SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
 				RETURNF 1
 		ENDIF
 	CASE 98
@@ -1423,7 +1416,7 @@ CASE "恥垢打扫舐阴"
 			RETURNF 1
 		SIF TALENT:PLAYER:性别 == 1
 			RETURNF 0
-		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
+		SIF MIN(ABL:技巧, ABL:侍奉精神) < 3
 			RETURNF 0
 		;前回打扫口交实行之时に续けてやっちゃう感じで
 		SIF PREVPLAY("打扫舐阴") == 0 || CHECK_STAIN(STAIN:PLAYER:V, "V恥垢") == 0
@@ -1431,7 +1424,7 @@ CASE "恥垢打扫舐阴"
 		;打扫舐阴よりは难易度高い
 		SIF PLAYER == MASTER && TALENT:恋慕
 			RETURNF 1
-		SIF ABL:奉仕精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
+		SIF ABL:侍奉精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
 			RETURNF 1
 	ENDSELECT
 CASE "插入自慰"
@@ -1470,7 +1463,7 @@ CASE "舔乳头可能"
 	ELSE
 		SIF CHECK_STAIN(STAIN:B, "A", "破瓜之血")
 			RETURNF 0
-		SIF TALENT:PLAYER:性别 == 1 && ABL:PLAYER:男同属性 == 0 && CHECK_STAIN(STAIN:B, "Ｐ")
+		SIF TALENT:PLAYER:性别 == 1 && CHECK_STAIN(STAIN:B, "Ｐ")
 			RETURNF 0
 		SIF ABL:PLAYER:精液成瘾 == 0 && CHECK_STAIN(STAIN:B, "精液")
 			RETURNF 0
@@ -1600,7 +1593,7 @@ CASE "插入前暴发"
 	SELECTCASE SELECTCOM
 	CASE 60 TO 64
 		;慣れてなかったり技巧が低い必要がある
-		SIF TALENT:PLAYER:童贞 || TALENT:PLAYER:早泄 || ABL:PLAYER:技巧 - MAX(ABL:LV - ABL:PLAYER:LV, 0)/2 < 2
+		SIF TALENT:PLAYER:童贞 || TALENT:PLAYER:早泄 || ABL:PLAYER:技巧 < 2
 			RETURNF 1
 	ENDSELECT
 CASE "进攻Ｇ点"
@@ -1622,7 +1615,7 @@ CASE "狂野摇摆"
 	IF INSERT("V插入", ARG) && SELECTCOM >= 60 && SELECTCOM <= 69
 		SIF EXP:ARG:V经验 + EXP:ARG:V性交経験*2 + EXP:ARG:腰技経験 <= 50
 			RETURNF 0
-		IF TALENT:ARG:淫壷
+		IF TALENT:ARG:淫穴
 			LOCAL += 5
 		ELSE
 			;怕羞
@@ -1800,7 +1793,7 @@ CASE "打扫口交"
 			RETURNF 1
 		SIF PENIS(PLAYER) == 0
 			RETURNF 0
-		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
+		SIF MIN(ABL:技巧, ABL:侍奉精神) < 3
 			RETURNF 0
 		;尿之打扫or性爱之打扫
 		SIF PREVPLAY("插入中", PLAYER) && CHECK_STAIN(STAIN:PLAYER:Ｐ, "V", "A")
@@ -1833,7 +1826,7 @@ CASE "恥垢打扫口交"
 			SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
 				RETURNF 1
 		ELSE
-			SIF ABL:PLAYER:奉仕精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
+			SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
 				RETURNF 1
 		ENDIF
 	CASE 91
@@ -1841,7 +1834,7 @@ CASE "恥垢打扫口交"
 			RETURNF 1
 		SIF PENIS(PLAYER) == 0 || COND("真性包茎", PLAYER)
 			RETURNF 0
-		SIF MIN(ABL:技巧, ABL:奉仕精神) < 3
+		SIF MIN(ABL:技巧, ABL:侍奉精神) < 3
 			RETURNF 0
 		;前回打扫口交实行之时に续けてやっちゃう感じで
 		SIF PREVPLAY("打扫口交") == 0 || CHECK_STAIN(STAIN:PLAYER:Ｐ, "Ｐ恥垢") == 0
@@ -1849,7 +1842,7 @@ CASE "恥垢打扫口交"
 		;打扫口交よりは难易度高い
 		SIF PLAYER == MASTER && TALENT:恋慕
 			RETURNF 1
-		SIF ABL:奉仕精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
+		SIF ABL:侍奉精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
 			RETURNF 1
 	ENDSELECT
 CASE "手搓口交"
@@ -1869,7 +1862,7 @@ CASE "乳夹口交"
 CASE "刺激肛门手交"
 	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
 		RETURNF 0
-	SIF ABL:奉仕精神 + TALENT:献身 < 3 && ABL:S属性 < 3
+	SIF ABL:侍奉精神 + TALENT:献身 < 3 && ABL:S属性 < 3
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -2230,9 +2223,6 @@ CASE 90
 	IF LOCALS != TRAINNAME:ARG
 	ELSEIF EQUIP:手套 && !CHECK_GLOVE("指露出") && PENIS(PLAYER)
 		LOCALS = 摩擦手套
-
-	ELSEIF TALENT:哈比
-		LOCALS = 摩擦羽
 	ENDIF
 CASE 97
 	IF LOCALS != TRAINNAME:ARG
@@ -3005,7 +2995,6 @@ CASE "阴茎"
 	SIF TALENT:ARG:性别女
 		RETURNF 1
 	LOCAL = SIZE("基本阴茎サイズ", ARG)
-	IF TALENT:ARG:一般人
 		SELECTCASE RAND:100
 		CASE IS >= 95
 			LOCAL = 3
@@ -3016,12 +3005,6 @@ CASE "阴茎"
 		CASE 0
 			LOCAL = 0
 		ENDSELECT
-	ENDIF
-	;精强术
-	SIF LOCAL <= 2 && STATE("精强术", ARG) >= 3
-		LOCAL += 1
-	SIF STATE("大根术", ARG)
-		LOCAL += 1
 CASE "Ｗ阴茎"
 	IF ASSI
 		RETURNF 1 + SIZE("阴茎", MASTER) + SIZE("阴茎", ASSI)
@@ -3798,7 +3781,7 @@ CASE "淫乱"
 CASE "相思相爱"
 	SIF GETBIT(CFLAG:(ARG:1):(770 + ARG/64), ARG%64)
 		RETURNF 1
-CASE "反发刻印LV３", "反发刻印LV3", "反发刻印LV3", "反发刻印LV３", "反发刻印Lv3", "反发刻印Lv３"
+CASE "反抗刻印LV３", "反抗刻印LV3", "反抗刻印LV3", "反抗刻印LV３", "反抗刻印Lv3", "反抗刻印Lv３"
 	SIF GETBIT(CFLAG:(ARG:1):(780 + ARG/64), ARG%64)
 		RETURNF 1
 ENDSELECT
@@ -3893,7 +3876,7 @@ IF ARG:1 >= 0
 		SETBIT CFLAG:ARG:(760 + LOCAL/64), LOCAL%64
 	SIF TALENT:ARG:相思相爱
 		SETBIT CFLAG:ARG:(770 + LOCAL/64), LOCAL%64
-	SIF MARK:ARG:反发刻印 == 3
+	SIF MARK:ARG:反抗刻印 == 3
 		SETBIT CFLAG:ARG:(780 + LOCAL/64), LOCAL%64
 ENDIF
 ;ARGが助手ならば、今回之指令も記录する
@@ -4251,7 +4234,7 @@ CASE "快乐刻印Lv3取得"
 	RETURNF 167
 CASE "屈服刻印Lv3取得"
 	RETURNF 168
-CASE "反发刻印Lv3取得"
+CASE "反抗刻印Lv3取得"
 	RETURNF 169
 
 CASE "绝顶：口"

@@ -3,7 +3,7 @@
 ;--------------------------------------------------------
 @OSOUJI_V
 PRINTFORM %CALLNAME:TARGET%将%CALLNAME:PLAYER%的小穴打开、
-IF ABL:百合属性 >= 3 && RAND:2 == 0
+IF RAND:2 == 0
 	PRINTFORMW 用小嘴和舌头把里面舔得干干净净…
 
 ELSE
@@ -24,7 +24,7 @@ PRINTL
 ;--------------------------------------------------------
 @OSOUJI_F
 CALL CHECK_BASEPLAYER2
-LOCAL = (ABL:奉仕精神 * 5) + ABL:技巧
+LOCAL = (ABL:侍奉精神 * 5) + ABL:技巧
 
 ;A汚れ
 IF CHECK_STAIN(STAIN:PLAYER:Ｐ, "A")
@@ -59,13 +59,10 @@ SIF TALENT:献身
 ;淫乱
 SIF TALENT:淫乱
 	LOCAL += 5
-;嫌恶性别男
-SIF TALENT:嫌恶性别男
-	LOCAL -= 10
 ;恋慕
 SIF TALENT:恋慕
 	LOCAL += 10
-;反发刻印
+;反抗刻印
 IF MARK:反抗刻印 == 1
 	LOCAL -= 5
 ELSEIF MARK:反抗刻印 == 2
@@ -142,11 +139,11 @@ ELSE
 ENDIF
 
 ;射精槽
-LOCAL = (ABL:技巧 + (ABL:奉仕精神 + 1)/2 + ABL:舌技) * 2000 * (RAND:5 + (ABL:奉仕精神 + 1)/2 + 1)
+LOCAL = (ABL:技巧 + (ABL:侍奉精神 + 1)/2 + ABL:舌技) * 2000 * (RAND:5 + (ABL:侍奉精神 + 1)/2 + 1)
 SIF ABL:PLAYER:技巧
 	LOCAL /= ABL:PLAYER:技巧
 ;LV之差による补正
-LOCAL = MULTIPLY(LOCAL, LIMIT(5*(ABL:LV - ABL:PLAYER:LV), -30, 100) + 100)
+LOCAL = 100
 
 SIF COND("弱点：口技", PLAYER)
 	TIMES LOCAL, 2.00
@@ -358,8 +355,8 @@ BASE:PLAYER:精力 -= LOCAL:1
 PRINTFORMW 精力-{LOCAL:1}
 
 ;射精槽对应
-BASE:PLAYER:绝顶 = MAXBASE:PLAYER:绝顶 * (1 + BASE:斯道克) * BASE:精力 * (100 + STATE("精强术", PLAYER) * 20)
-BASE:PLAYER:绝顶 /= (2 + BASE:斯道克) * MAXBASE:精力 * LOCAL:1 * 100
+BASE:PLAYER:绝顶 = MAXBASE:PLAYER:绝顶 * BASE:精力 * 100
+BASE:PLAYER:绝顶 /= 2 * MAXBASE:精力 * LOCAL:1 * 100
 
 BASE:PLAYER:绝顶 = LIMIT(BASE:PLAYER:绝顶, 0, MAXBASE:PLAYER:绝顶 - 1)
 

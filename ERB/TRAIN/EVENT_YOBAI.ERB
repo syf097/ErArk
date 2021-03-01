@@ -78,8 +78,8 @@ CASE "主动夜袭骑乘位"
 		;[纯情][献身][小恶魔][妄信]持ちなら分岐
 		ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
 			PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰腰渴望滋润子宫…
-		;[开朗][好色][承认快感]持ち之场合分岐
-		ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:承认快感
+		;[开朗][好色][接受快感]持ち之场合分岐
+		ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:接受快感
 			PRINTFORMW %CALLNAME:TARGET%眯起眼睛微笑着、不断用肛门撞击着腰腰渴望滋润子宫…
 		ELSE
 			PRINTFORMW 扭曲的贪图饥饿的野兽嘴里流出的口水、治愈子宫的渴望…
@@ -152,8 +152,8 @@ CASE "主动夜袭A骑乘位"
 	;[纯情][献身][小恶魔][妄信]持ちなら分岐
 	ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
 		PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰贪图着肛门的肉欲…
-	;[开朗][好色][承认快感]持ち之场合分岐
-	ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:承认快感
+	;[开朗][好色][接受快感]持ち之场合分岐
+	ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:接受快感
 		PRINTFORMW %CALLNAME:TARGET%眯起眼睛微笑着、不断用肛门撞击着腰贪图着肛门的肉欲…
 	ELSE
 		PRINTFORMW 被调教后的肛门不堪的吸食那样吞吐着、想要一直这样贪图着肉欲…
@@ -275,7 +275,7 @@ CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 				IF ABL:(TARGET:1):S属性 >= 5
 						PRINTFORM 身体被贯穿的冲击让%CALLNAME:MASTER%醒了过来、%CALLNAME:(TARGET:1)%
 					;狼女系
-					IF BASE:(TARGET:1):斯道克
+					IF BASE:(TARGET:1):精力
 						PRINTFORM 每次活动都会剧烈颤抖、
 					ELSE
 						IF RAND:2 == 0
@@ -329,7 +329,7 @@ ENDSELECT
 SIF COND("主动夜袭可能") == 0 || TIME == 0 || COND("手一杯", MASTER)
 	RETURN 0
 
-;反发刻印が3あるとダメ
+;反抗刻印が3あるとダメ
 SIF MARK:反抗刻印 >= 3
 	RETURN 0
 

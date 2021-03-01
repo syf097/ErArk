@@ -642,7 +642,7 @@ CASE 106, 108, 110, 120 TO 124, 304
 		TIMES B, 0.80
 	ENDSELECT
 	;敏感具合
-	IF TALENT:PLAYER:淫壷
+	IF TALENT:PLAYER:淫穴
 		TIMES B, 2.00
 	ELSEIF TALENT:PLAYER:V敏感
 		TIMES B, 1.50
@@ -1116,9 +1116,9 @@ ELSEIF EX:PLAYER:忍住了没丢 == 0 && BASE:PLAYER:绝顶 >= MAXBASE:PLAYER:�
 	PRINTFORMW %CALLNAME:PLAYER%快要射了……
 ENDIF
 
-;奉仕精神LV２以上、技巧LV２以上で实行值を30以上上回っているなら汚れをなめ取る
-IF ABL:奉仕精神 > MAX(1, RAND:5) && ABL:技巧 >= 2 && SHOOT("口") && TCVAR:28 >= 30 && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
-	SIF COND("绝顶", PLAYER) && TFLAG:8 == 0 && ABL:奉仕精神 > RAND:5
+;侍奉精神LV２以上、技巧LV２以上で实行值を30以上上回っているなら汚れをなめ取る
+IF ABL:侍奉精神 > MAX(1, RAND:5) && ABL:技巧 >= 2 && SHOOT("口") && TCVAR:28 >= 30 && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
+	SIF COND("绝顶", PLAYER) && TFLAG:8 == 0 && ABL:侍奉精神 > RAND:5
 		TFLAG:8 = 1
 ENDIF
 
@@ -1424,7 +1424,7 @@ IF SHOOT("冲击")
 			PRINTFORM 自分之
 		ELSE
 			IF SELECTCOM == 140
-				IF (TALENT:PLAYER:抖S || ABL:奉仕精神 >= 3) && RAND:3 == 0
+				IF (TALENT:PLAYER:抖S || ABL:侍奉精神 >= 3) && RAND:3 == 0
 					PRINTFORM 激烈的口奸里白花花的口水滴落下来
 
 
@@ -1894,7 +1894,7 @@ ELSEIF SHOOT("口")
 				ENDIF
 			ENDIF
 		CASEELSE
-			IF ABL:精液成瘾 + ABL:ASSI:精液成瘾 >= 6 && ABL:百合属性 + ABL:ASSI:百合属性 >= 6 && RAND:3 == 0
+			IF ABL:精液成瘾 + ABL:ASSI:精液成瘾 >= 6 && RAND:3 == 0
 				PRINTFORMW %CALLNAME:TARGET%和%CALLNAME:ASSI%将精液嘴对嘴互相交换着…
 			ELSE
 				PRINTFORMW %CALLNAME:TARGET%和%CALLNAME:ASSI%将精液用口接住…
@@ -1903,7 +1903,7 @@ ELSEIF SHOOT("口")
 	ELSE
 		PRINTFORM %CALLNAME:TARGET%
 		;插入から饮ませる
-		IF ABL:奉仕精神 >= 3 && SHOOT("膣内") + SHOOT("A") && ABL:奉仕精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反抗刻印) > 3
+		IF ABL:侍奉精神 >= 3 && SHOOT("膣内") + SHOOT("A") && ABL:侍奉精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反抗刻印) > 3
 			IF RAND:3 == 0
 				PRINTFORM %TEXTR("污秽", "粘液的气味", "过分的气味", "性交后的气味")%
 
@@ -1934,7 +1934,7 @@ ELSEIF SHOOT("口")
 			IF (TALENT:性变态 || ABL:M属性) && RAND:2
 				PRINTFORM %TEXTR("兴奋", "欲情")%
 			ELSE
-				IF RAND:2 && MAX(ABL:顺从, ABL:欲望, ABL:奉仕精神) >= 5
+				IF RAND:2 && MAX(ABL:顺从, ABL:欲望, ABL:侍奉精神) >= 5
 					PRINTFORM 完全不在意
 
 
@@ -1983,7 +1983,7 @@ ELSEIF SHOOT("口")
 
 
 		ENDIF
-		IF ABL:精液成瘾 >= 3 && (ABL:精液成瘾 >= 5 || MARK:屈服刻印 == 3 || ABL:奉仕精神 >= 3) && RAND:2 == 0
+		IF ABL:精液成瘾 >= 3 && (ABL:精液成瘾 >= 5 || MARK:屈服刻印 == 3 || ABL:侍奉精神 >= 3) && RAND:2 == 0
 			IF COND("绝顶", PLAYER) >= 3 && RAND:2
 				PRINTFORM 可怕的精液量
 
@@ -2017,7 +2017,7 @@ ELSEIF SHOOT("口")
 
 				ENDIF
 			ENDIF
-		ELSEIF ABL:精液成瘾 && (ABL:精液成瘾 >= 3 || ABL:奉仕精神 >= 3)
+		ELSEIF ABL:精液成瘾 && (ABL:精液成瘾 >= 3 || ABL:侍奉精神 >= 3)
 			SELECTCASE COND("绝顶", PLAYER)
 			CASE IS >= 3
 				IF ABL:精液成瘾 >= 3
@@ -2049,8 +2049,8 @@ ELSEIF SHOOT("口")
 
 
 			ENDSELECT
-		ELSEIF ABL:精液成瘾 || ABL:奉仕精神 >= 3
-			PRINTFORMW \@ ABL:奉仕精神 >= 3 ? 发揮了天生的服务精神 # \@，用口接住了精液…
+		ELSEIF ABL:精液成瘾 || ABL:侍奉精神 >= 3
+			PRINTFORMW \@ ABL:侍奉精神 >= 3 ? 发揮了天生的服务精神 # \@，用口接住了精液…
 
 
 			SELECTCASE COND("绝顶", PLAYER)
@@ -2643,7 +2643,7 @@ ELSEIF SHOOT("中出")
 		ELSE
 			PRINTFORM 肠道内
 		ENDIF
-		IF TALENT:淫壷 + TALENT:尻穴狂 && RAND:2 == 0
+		IF TALENT:淫穴 + TALENT:尻穴狂 && RAND:2 == 0
 			PRINTFORM 贪婪地蠕动着、
 
 
@@ -2653,7 +2653,7 @@ ELSEIF SHOOT("中出")
 		ELSE
 			PRINTFORM 微微蠕动着、
 		ENDIF
-		IF TALENT:淫壷 + TALENT:尻穴狂 && RAND:4 == 0
+		IF TALENT:淫穴 + TALENT:尻穴狂 && RAND:4 == 0
 			IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
 			ELSEIF SHOOT("膣内")
 				PRINTFORM 阴道口里

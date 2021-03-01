@@ -41,8 +41,8 @@ LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
 
 SELECTCASE LOCALS
 CASE "调教后性爱"
-	;V感觉、淫壷によるBＯＮＵS
-	LOCAL += MAX(ABL:V感觉/3, 0) + TALENT:淫壷
+	;V感觉、淫穴によるBＯＮＵS
+	LOCAL += MAX(ABL:V感觉/3, 0) + TALENT:淫穴
 
 	IF LOCAL > 0
 		DRAWLINE
@@ -50,7 +50,7 @@ CASE "调教后性爱"
 		CALL SIMULATE_TRAIN_FIRST
 
 		IF PLAYER == MASTER
-			IF BASE:PLAYER:斯道克
+			IF BASE:PLAYER:精力
 				PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%都还欲火旺盛亢奋不已、
 				PRINTFORML 满身大汗在床上继续性交…
 
@@ -125,7 +125,7 @@ CASE "调教后A性爱"
 		CALL SIMULATE_TRAIN_FIRST
 
 		IF PLAYER == MASTER
-			IF BASE:PLAYER:斯道克
+			IF BASE:PLAYER:精力
 				PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%都还欲火旺盛亢奋不已、
 				PRINTFORML 满身大汗在床上继续用肛门性交…
 
@@ -145,7 +145,7 @@ CASE "调教后A性爱"
 			ENDIF
 			CALL SELF_KOJO, LOCALS
 
-			IF ABL:顺从 + ABL:欲望 + ABL:百合属性 >= 13 && COND("欲求不满")
+			IF ABL:顺从 + ABL:欲望 >= 8 && COND("欲求不满")
 				PRINTL 
 				PRINTFORMW %CALLNAME:TARGET%依依不舍的拉了下%CALLNAME:PLAYER%的袖子
 
@@ -185,7 +185,7 @@ CASE "调教后百合PLAY"
 		CALL SIMULATE_TRAIN_FIRST
 
 		IF PLAYER == MASTER
-			IF BASE:PLAYER:斯道克
+			IF BASE:PLAYER:精力
 				PRINTFORML %CALLNAME:PLAYER%和%CALLNAME:TARGET%都还欲火旺盛亢奋不已、
 				PRINTFORML 屡次互相安慰彼此的发热的身体直到高潮了…
 
@@ -202,7 +202,7 @@ CASE "调教后百合PLAY"
 
 			CALL SIMULATE_TRAIN_COM, 80, LOCAL
 			CALL SELF_KOJO, LOCALS
-			IF ABL:顺从 + ABL:欲望 + ABL:百合属性 >= 13 && COND("欲求不满")
+			IF ABL:顺从 + ABL:欲望 >= 8 && COND("欲求不满")
 				PRINTL 
 				PRINTFORMW %CALLNAME:TARGET%依依不舍的拉了下%CALLNAME:PLAYER%的袖子
 
@@ -432,9 +432,6 @@ IF ARG == PLAYER
 	SIF RESULT && PENIS(PLAYER) && EXP:PLAYER:A插入経験 && COND("ベテラン：A性爱")
 		LOCALS:1 = 调教后A性爱
 	;百合PLAY
-	CALL COM_ABLE80
-	SIF RESULT && ABL:百合属性 >= 3
-		LOCALS:2 = 调教后百合PLAY
 ELSEIF ARG == TARGET
 	;自慰
 	SIF ABL:自慰成瘾 >= 3 && PLAYER == MASTER

@@ -48,7 +48,7 @@ CALL MARK_GOT_CHECK
 ;指令实行时之口上
 ;-------------------------------------------------
 ;刻印取得口上を喋ったなら、指令口上は飛ばす
-IF GROUPMATCH(2, CHOSE_EV("苦痛刻印Lv3取得"), CHOSE_EV("快乐刻印Lv3取得"), CHOSE_EV("反发刻印Lv3取得") )
+IF GROUPMATCH(2, CHOSE_EV("苦痛刻印Lv3取得"), CHOSE_EV("快乐刻印Lv3取得"), CHOSE_EV("反抗刻印Lv3取得") )
 ELSE
 	CALL KOJO_MESSAGE_COM
 ENDIF
@@ -360,7 +360,7 @@ SIF NOWEX:绝顶数合计
 ;绝顶的地方に对应する敏感系之素質があるなら、係数ＵＰ
 SIF NOWEX:C绝顶 > 0 && (TALENT:淫核 || TALENT:C敏感)
 	LOCAL += 2
-SIF NOWEX:V绝顶 > 0 && (TALENT:淫壷 || TALENT:V敏感)
+SIF NOWEX:V绝顶 > 0 && (TALENT:淫穴 || TALENT:V敏感)
 	LOCAL += 2
 SIF NOWEX:A绝顶 > 0 && (TALENT:尻穴狂 || TALENT:A敏感)
 	LOCAL += 2
@@ -438,8 +438,8 @@ SIF MOOD_HEART() >= 3
 ;媚药
 IF TEQUIP:媚药
 	LOCAL -= TEQUIP:媚药/50
-	;承认快感、好色、淫乱、性变态、抖M之どれでもない
-	SIF TALENT:承认快感 + TALENT:好色 + TALENT:淫乱 + TALENT:性变态 + TALENT:抖M == 0
+	;接受快感、好色、淫乱、性变态、抖M之どれでもない
+	SIF TALENT:接受快感 + TALENT:好色 + TALENT:淫乱 + TALENT:性变态 + TALENT:抖M == 0
 		LOCAL -= 2
 	;否认快感(否认快感持ちは、累计で-7之修正)
 	SIF TALENT:否认快感
@@ -476,9 +476,6 @@ SIF TALENT:抵抗 && LOCAL > 0
 	LOCAL -= 1
 ;否认快感
 SIF TALENT:否认快感 && LOCAL > 0
-	LOCAL -= 1
-;嫌恶性别男
-SIF TALENT:嫌恶性别男 && TALENT:MASTER:性别男 && LOCAL > 0
 	LOCAL -= 1
 
 ;好感觉之キャップ
@@ -975,7 +972,7 @@ NEXT
 NOWEX:绝顶数合计 = NOWEX:C绝顶 + NOWEX:V绝顶 + NOWEX:A绝顶 + NOWEX:B绝顶 + NOWEX:M绝顶 + NOWEX:尿道绝顶
 NOWEX:绝顶边缘数合计 = NOWEX:C绝顶边缘 + NOWEX:V绝顶边缘 + NOWEX:A绝顶边缘 + NOWEX:B绝顶边缘 + NOWEX:M绝顶边缘 + NOWEX:尿道绝顶边缘
 ;MAXは12万
-MAXBASE:快感许容值女 = MIN(ABL:欲望*5000+ABL:LV*2000+TALENT:上位梦魇*5000+(JUEL:欲情+JUEL:快C+JUEL:快V+JUEL:快A+JUEL:快B+JUEL:快M)/200, 120000)
+MAXBASE:快感许容值女 = MIN(ABL:欲望*5000+TALENT:上位梦魇*5000+(JUEL:欲情+JUEL:快C+JUEL:快V+JUEL:快A+JUEL:快B+JUEL:快M)/200, 120000)
 ;连续绝顶には弱い
 SIF PALAM:连续绝顶COMBO数
 	MAXBASE:快感许容值女 = DIVIDE(MAXBASE:快感许容值女, 100 + PALAM:连续绝顶COMBO数*10)
@@ -1547,7 +1544,6 @@ IF TALENT:ARG:处女 == 1 && COND("处女丧失标志", ARG) && GETBITS(CFLAG:AR
 		SETCOLOR DEF_COLOR("黄色")
 		IF ARG == MASTER
 			EXP:LCOUNT:経験值 += 1000
-			SETBIT TALENT:LCOUNT:初体験对象, 1
 			PRINTFORML %CALLNAME:LCOUNT%成为%CALLNAME:MASTER%的%TALENTNAME:94%
 			PRINTFORML 経験值＋1000
 		ELSE
@@ -1575,43 +1571,6 @@ ELSEIF TALENT:ARG:处女 == 2 && COND("处女丧失标志", ARG)
 	PRINTL ＞
 ENDIF
 
-;童贞丧失
-IF TALENT:ARG:童贞 && COND("童贞丧失标志", ARG)
-	PRINT ＜童贞丧失
-	SELECTCASE ARG
-	CASE MASTER
-		PRINTFORM (%CALLNAME:MASTER%)
-	CASE ASSI
-		PRINTFORM (助手)
-	ENDSELECT
-	PRINTL ＞
-	TALENT:ARG:童贞 = 0
-	FOR LCOUNT, 1, CHARANUM
-		SIF COND("童贞猎取标志", LCOUNT) == 0
-			CONTINUE
-		EXP:LCOUNT:童贞猎取経験 += 1
-		SETCOLOR DEF_COLOR("黄色")
-		IF ARG == MASTER
-			EXP:LCOUNT:経験值 += 1000
-			SETBIT TALENT:LCOUNT:初体験对象, 0
-
-			PRINTFORML %CALLNAME:LCOUNT%成为%CALLNAME:MASTER%的%TALENTNAME:94%
-			PRINTFORML 経験值＋1000
-		ELSE
-			EXP:LCOUNT:経験值 += 50
-			PRINTFORML 経験值＋50
-		ENDIF
-		RESETCOLOR
-	NEXT
-ENDIF
-
-;童贞献给肛交
-IF TALENT:ARG:童贞 && EXP_GAIN(16, ARG) && GETBIT(CFLAG:ARG:11, 20) == 0
-	PRINTL ＜异常経験：童贞献给肛交経験＞
-
-	LOCAL:50 += 1
-	SETBIT CFLAG:ARG:11, 20
-ENDIF
 ;A性爱
 IF TALENT:ARG:A处女 && COND("A处女丧失标志", ARG) + EXP_GAIN(13, ARG) && GETBIT(CFLAG:ARG:11, 32) == 0
 	TALENT:ARG:A处女 = 0
@@ -1797,10 +1756,10 @@ IF PALAM:ARG:苦痛 + CUP:ARG:苦痛 >= 50000 && GETBIT(CFLAG:ARG:12, 22) == 0
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 22
 ENDIF
-;不期望的怀孕…恋慕で无いときに、反发刻印Lv3or反抗心or触手で孕娠之时
+;不期望的怀孕…恋慕で无いときに、反抗刻印Lv3or反抗心or触手で孕娠之时
 IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
 	IF COND("精液之优勢", ARG) == -3 && MARK:ARG:龙奸刻印 == 2
-	ELSEIF MARK:ARG:反发刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
+	ELSEIF MARK:ARG:反抗刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
 		PRINTL ＜异常経験：不期望的怀孕＞
 
 		LOCAL:50 += 1

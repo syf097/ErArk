@@ -111,7 +111,7 @@ ELSE
 	SIF ASSI && STATE("击沈", ASSI) == 0 && (PREVCOM:1 >= 0 || PREVCOM:2 >= 0)
 		CALL SET_SELECTCOM_ASSI, "３Ｐ"
 ;坏心眼い人は思ったとおりに动いてくれない、とかどうだろう
-;ELSEIF TEQUIP:逆推 == 0 && TALENT:坏心眼 && ABL:顺从 + ABL:奉仕精神 - MARK:反抗刻印 <= 5
+;ELSEIF TEQUIP:逆推 == 0 && TALENT:坏心眼 && ABL:顺从 + ABL:侍奉精神 - MARK:反抗刻印 <= 5
 ;	IF SELECTCOM == 91 && NO:TARGET == 12
 ;		CALL COM_ABLE95
 ;		IF RESULT == 1

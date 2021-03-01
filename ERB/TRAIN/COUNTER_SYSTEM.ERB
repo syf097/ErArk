@@ -16,7 +16,7 @@
 
 ;MASTER以外之精力限界值セット
 FOR LCOUNT, 1, CHARANUM
-	MAXBASE:LCOUNT:精力 = MAXBASE:LCOUNT:体力/300 + TALENT:LCOUNT:淫乱*3 + TALENT:LCOUNT:上位梦魇*5 + ABL:LCOUNT:欲望*2 + ABL:LCOUNT:技巧 + ABL:LCOUNT:LV
+	MAXBASE:LCOUNT:精力 = MAXBASE:LCOUNT:体力/300 + TALENT:LCOUNT:淫乱*3 + TALENT:LCOUNT:上位梦魇*5 + ABL:LCOUNT:欲望*2 + ABL:LCOUNT:技巧
 NEXT
 ;MASTER之精力限界值リセット
 MAXBASE:MASTER:精力 = 10 + ABL:MASTER:技巧*4
@@ -29,7 +29,6 @@ MAXBASE:MASTER:精力 = MULTIPLY(MAXBASE:MASTER:精力, 100 + TALENT:MASTER:精�
 ;等级限制器使用时にはなんと！常に全快！！…まぁ禁断之知识之産物だしな
 ;IF CONFIG("等级限制器")
 ;	BASE:MASTER:精力 = MAXBASE:MASTER:精力
-;	BASE:MASTER:斯道克 = MAXBASE:MASTER:斯道克
 ;ENDIF
 
 ;精力之回復处理
@@ -75,11 +74,11 @@ FLAG:10 = 1
 ;奉仕系之种别では、对应する得意技能之意味が强
 VARSET I
 
-SELECTCASE ABL:奉仕精神 - ABL:欲望 - TEQUIP:媚药/100
+SELECTCASE ABL:侍奉精神 - ABL:欲望 - TEQUIP:媚药/100
 CASE IS > 0
-	LOCAL:1 = (ABL:奉仕精神 - ABL:欲望 - TEQUIP:媚药/100)*2
+	LOCAL:1 = (ABL:侍奉精神 - ABL:欲望 - TEQUIP:媚药/100)*2
 CASE IS < 0
-	LOCAL:2 = (TEQUIP:媚药/100 + ABL:欲望 - ABL:奉仕精神)*2
+	LOCAL:2 = (TEQUIP:媚药/100 + ABL:欲望 - ABL:侍奉精神)*2
 ENDSELECT
 
 ;ABL:手,手
@@ -120,7 +119,7 @@ ENDIF
 ;ABL:足,足
 IF COND("调教側")
 ELSE
-	IF MAX(ABL:S属性 + TALENT:抖S, ABL:奉仕精神) + ABL:PLAYER:M属性 >= 2
+	IF MAX(ABL:S属性 + TALENT:抖S, ABL:侍奉精神) + ABL:PLAYER:M属性 >= 2
 		CALL COUNTER_ABL, 3, 95
 	ELSE
 		ABL:足 = 0
@@ -150,7 +149,7 @@ IF ABL:顔面骑乘
 	ABL:顔面骑乘 += TALENT:好色 + TALENT:淫乱 + LOCAL:2 + ABL:腰技
 	SELECTCASE I:4
 	CASE 1
-		ABL:顔面骑乘 += TALENT:淫壷
+		ABL:顔面骑乘 += TALENT:淫穴
 		SIF COND("弱点：♀", PLAYER)
 			ABL:顔面骑乘 += 5
 	CASE 9
@@ -176,30 +175,30 @@ IF COND("调教側")
 ELSE
 	;基本はV骑乘位だが、Aと尿道でも出来るかで分岐
 	IF CHECK("A插入") && CHECK("尿道插入")
-		;淫壷と尻穴狂之有无で确率にすごい偏りが出る
-		IF TALENT:淫壷 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 == 0 && RAND:10
+		;淫穴と尻穴狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫穴 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 == 0 && RAND:10
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68
-		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 && TALENT:尿道狂 == 0 && RAND:10
+		ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 && TALENT:尿道狂 == 0 && RAND:10
 			CALL COUNTER_ABL, 5, 75
-		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 && RAND:10
+		ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 && RAND:10
 			CALL COUNTER_ABL, 5, 83
 		ELSE
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 75, 83
 		ENDIF
 	ELSEIF CHECK("尿道插入")
-		;淫壷と尿道狂之有无で确率にすごい偏りが出る
-		IF TALENT:淫壷 && TALENT:尿道狂 == 0 && RAND:10
+		;淫穴と尿道狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫穴 && TALENT:尿道狂 == 0 && RAND:10
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68
-		ELSEIF TALENT:淫壷 == 0 && TALENT:尿道狂 && RAND:10
+		ELSEIF TALENT:淫穴 == 0 && TALENT:尿道狂 && RAND:10
 			CALL COUNTER_ABL, 5, 83
 		ELSE
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 83
 		ENDIF
 	ELSEIF CHECK("A插入")
-		;淫壷と尻穴狂之有无で确率にすごい偏りが出る
-		IF TALENT:淫壷 && TALENT:尻穴狂 == 0 && RAND:10
+		;淫穴と尻穴狂之有无で确率にすごい偏りが出る
+		IF TALENT:淫穴 && TALENT:尻穴狂 == 0 && RAND:10
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68
-		ELSEIF TALENT:淫壷 == 0 && TALENT:尻穴狂 && RAND:10
+		ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 && RAND:10
 			CALL COUNTER_ABL, 5, 75
 		ELSE
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 75
@@ -231,7 +230,7 @@ IF ABL:骑乘位
 	CASE 65 TO 69
 		SIF TARGET == ASSI
 			I:5 = 65
-		ABL:骑乘位 += ABL:V感觉 + TALENT:淫壷
+		ABL:骑乘位 += ABL:V感觉 + TALENT:淫穴
 		SIF INSERT("V插入")
 			ABL:骑乘位 += 5
 		SIF COND("弱点：♀", PLAYER)
@@ -267,7 +266,7 @@ IF COND("调教側")
 ELSE
 	CALL COUNTER_ABL, 7, 96
 ENDIF
-IF ABL:肛虐 && MAX(ABL:S属性 + TALENT:抖S, ABL:奉仕精神) + ABL:PLAYER:M属性 >= 6
+IF ABL:肛虐 && MAX(ABL:S属性 + TALENT:抖S, ABL:侍奉精神) + ABL:PLAYER:M属性 >= 6
 	ABL:肛虐 += ABL:S属性/2 + TALENT:抖S + ABL:PLAYER:M属性/2 + LOCAL:1
 	;A调教知识
 	SIF GETBIT(TALENT:调教知识, 3)
@@ -282,19 +281,6 @@ IF COND("调教側")
 	CALL COUNTER_ABL, 8, 60, 61, 64, 65, 71, 75, 140
 ELSE
 	CALL COUNTER_ABL, 8, 4, 120, 126
-ENDIF
-IF ABL:强暴
-	ABL:强暴 += LOCAL:2 + ABL:腰技
-	IF TALENT:性别 == 1 && TALENT:PLAYER:性别 == 1
-		ABL:强暴 += ABL:男同属性
-	ELSEIF TALENT:性别 == 0 && TALENT:PLAYER:性别 == 0
-		ABL:强暴 += ABL:百合属性 + TALENT:通吃
-	ENDIF
-	SIF PENIS(TARGET)
-		ABL:强暴 += ABL:欲望/2
-	;性别男
-	SIF TALENT:性别 == 1
-		ABL:强暴 += 5
 ENDIF
 
 ;ABL:素股,素股
@@ -448,7 +434,7 @@ RETURN 0
 
 @CHECK_OSHITAOSHI, ARG
 ;ARG ms之时间之猶予で逆推之選択肢表示＆TEQUIP:逆推等之处理を行う
-LOCAL = MULTIPLY(ARG, 100 - LIMIT(ABL:LV - ABL:PLAYER:LV, -10, 5)*5)
+LOCAL = MULTIPLY(ARG, 100)
 PRINTFORML  [0] 抵抗！
 PRINTFORML  [1] 顺从
 
@@ -518,8 +504,8 @@ SIF STATE("醉酒", TARGET) || STATE("烂醉", TARGET)
 LOCAL -= 10
 ;欲望
 LOCAL += ABL:欲望*2
-;奉仕精神
-LOCAL += ABL:奉仕精神*2
+;侍奉精神
+LOCAL += ABL:侍奉精神*2
 ;M属性
 LOCAL -= ABL:M属性*4
 ;S属性
@@ -725,25 +711,22 @@ ENDSELECT
 @COUNTER_POWER
 ;必殺确率を算出
 SIF FLAG:217
-	PRINTFORML 必殺确率：{LIMIT(ABL:技巧*2-ABL:PLAYER:技巧+TALENT:上位梦魇*2, 0, 100)}％
-IF LIMIT(ABL:技巧*2-ABL:PLAYER:技巧+TALENT:上位梦魇*2, 0, 100) > RAND:100
+	PRINTFORML 必殺确率：{LIMIT(ABL:技巧*2-ABL:PLAYER:技巧, 0, 100)}％
+IF LIMIT(ABL:技巧*2-ABL:PLAYER:技巧, 0, 100) > RAND:100
 	LOCAL = 20000
 ELSE
 	;反击强度を算出してCに代入
 	;技巧等から反击之强さを決定しています。
 	LOCAL = LIMIT(RAND:10000 + LIMIT(ABL:技巧 - ABL:PLAYER:技巧, -10, 10)*(300 + RAND:201), 100, 10000)
-	LOCAL = MULTIPLY(LOCAL, 100+ABL:LV*10+ABL:奉仕精神*5+TALENT:上位梦魇*20-ABL:PLAYER:LV*10)
+	LOCAL = MULTIPLY(LOCAL, 100 +ABL:侍奉精神*5)
 ENDIF
 
 ;女同士之场合TARGET之通吃・百合属性・百合成瘾で増减
 SIF TALENT:PLAYER:性别 != 0 && TALENT:性别 != 1
-	LOCAL = MULTIPLY(LOCAL, 75+TALENT:通吃*25+ABL:百合属性*3)
+	LOCAL = MULTIPLY(LOCAL, 75)
 
 ;装饰品效果（精神力）
 LOCAL = DIVIDE(LOCAL, 100 + TALENT:PLAYER:精神力强化*2)
-;防强术
-SIF STATE("防强术", PLAYER)
-	TIMES LOCAL, 0.80
 ;醉酒
 IF STATE("烂醉")
 	TIMES LOCAL, 0.40
@@ -805,7 +788,7 @@ RETURN LOCAL
 
 @COUNTER_FASCINATION
 ;恍惚、逆推判定
-SIF TEQUIP:爱之圈套 || TEQUIP:拘束 || TEQUIP:触手 || TEQUIP:尿道ブジー || COND("３Ｐ")
+SIF TEQUIP:拘束 || TEQUIP:触手 || TEQUIP:尿道ブジー || COND("３Ｐ")
 	RETURN 0
 SIF STATE("击沈", PLAYER) || STATE("恍惚", PLAYER)
 	RETURN 0
@@ -823,7 +806,7 @@ SIF TFLAG:90
 	TFLAG:92 = CALCF("弱点突かれ", SELECTCOM)
 ;二人で逆推
 IF TEQUIP:Ｗ逆推
-	TFLAG:91 += TALENT:ASSI:魅惑+TALENT:ASSI:迷之魅力+TALENT:ASSI:魅力+ABL:ASSI:技巧+ABL:ASSI:奉仕精神+TALENT:ASSI:上位梦魇 + 2
+	TFLAG:91 += TALENT:ASSI:魅惑+TALENT:ASSI:迷之魅力+TALENT:ASSI:魅力+ABL:ASSI:技巧+ABL:ASSI:侍奉精神+TALENT:ASSI:上位梦魇 + 2
 	SIF TFLAG:90
 		TFLAG:92 += CALCF("弱点突かれ", SELECTCOM:1)
 ENDIF
@@ -872,15 +855,10 @@ ENDIF
 SIF TEQUIP:逆推
 	RETURN 0
 ;やってこない状态
-SIF TEQUIP:眼罩 || TEQUIP:灌肠 || TEQUIP:触手 || TEQUIP:尿道ブジー || STATE("脱力", TARGET) || STATE("恍惚", PLAYER) || CFLAG:9
+SIF TEQUIP:眼罩 || TEQUIP:灌肠 || STATE("脱力", TARGET) || STATE("恍惚", PLAYER) || CFLAG:9
 	RETURN 0
 ;大怪我
 SIF TALENT:V损伤 || TALENT:A损伤
-	RETURN 0
-;性癖之問題
-SIF TALENT:PLAYER:性别 == 1 && TALENT:性别 == 1 && ABL:男同属性 == 0
-	RETURN 0
-SIF TALENT:PLAYER:性别 == 0 && TALENT:性别 == 0 && ABL:百合属性 == 0
 	RETURN 0
 ;体位によっては无理
 SELECTCASE CONDS("体位")
@@ -1015,29 +993,11 @@ ENDIF
 ;主人
 IF BASE:MASTER:精力 <= 0
 	PRINTFORMW %CALLNAME:MASTER%体力已达极限……
-	;斯道克が残っていれば復活
-	IF BASE:MASTER:斯道克 >= 1
-		IF TEQUIP:触手
-			PRINTFORMW %CALLNAME:MASTER%打起精神，重新开始操纵触手……！
-		ELSEIF STATE("恍惚", PLAYER)
-			PRINTFORMW %CALLNAME:MASTER%即使深陷恍惚，仍然振奋起精神……！
-		ELSE
-			PRINTFORMW %CALLNAME:MASTER%打起精神，满血复活了……！
-		ENDIF
-		;精力を限界まで回復
-		BASE:MASTER:精力 = MAXBASE:MASTER:精力
-		;斯道克を减少
-		BASE:MASTER:斯道克 -= 1
-		TFLAG:90 = 12
-		CALL COUNTER_KOJO, "斯道克使用"
-	;そうでなければ调教を强制終了
-	ELSE
 		PRINTFORMW ★★★%CALLNAME:MASTER%体力到达极限・调教结束★★★
 		CALL ADD_STATE, MASTER, "击沈"
 		TFLAG:90 = 13
 		CALL COUNTER_KOJO, "强制終了"
 		BEGIN AFTERTRAIN
-	ENDIF
 ENDIF
 RETURN 0
 
@@ -1061,8 +1021,6 @@ SIF BASE:PLAYER:精力*2 >= MAXBASE:PLAYER:精力
 	LOCAL += 10
 SIF COND("绝顶", PLAYER) == 0
 	LOCAL += 5
-SIF ABL:PLAYER:LV > ABL:LV
-	LOCAL += LIMIT(ABL:PLAYER:LV - ABL:LV, 5, 20)
 ;防强术
 SIF STATE("防强术", PLAYER)
 	LOCAL += 10
@@ -1104,18 +1062,6 @@ ENDIF
 VARSET LOCAL
 
 SELECTCASE ARGS
-CASE "风之爱抚"
-	SIF STATE("高敏术", PLAYER)
-		RETURN 0
-	PRINTFORML ＜%CALLNAME:TARGET%的风之爱抚！＞
-	PRINTFORML %CALLNAME:TARGET%卷起了和风！
-	PRINTFORMW 风儿温柔地爱抚着%CALLNAME:PLAYER%的全身！
-	IF 12 + LIMIT(ABL:LV - ABL:PLAYER:LV, -5, 5) >= RAND:20
-		PRINTFORMW %CALLNAME:PLAYER%变得敏感了！
-		CALL ADD_STATE, PLAYER, "高敏术"
-	ELSE
-		PRINTFORMW 但是对%CALLNAME:PLAYER%没有效果！
-	ENDIF
 CASE "ブラッドサック"
 	SELECTCASE ARG
 	;不发

@@ -258,7 +258,7 @@ IF CUP:快C
 ENDIF
 IF CUP:快V
 	;PRINTFORM 本来之V快感 = {CUP:快V}　→　
-	CUP:快V = CALCF("快感上升之上限措置", CUP:快V, ABL:V感觉, TALENT:淫壷 + TALENT:V敏感 - TALENT:V钝感)
+	CUP:快V = CALCF("快感上升之上限措置", CUP:快V, ABL:V感觉, TALENT:淫穴 + TALENT:V敏感 - TALENT:V钝感)
 	;PRINTFORML 修正后之V快感 = {CUP:快V}
 ENDIF
 IF CUP:快A
@@ -334,7 +334,7 @@ IF ARGS != "試算"
 	IF MARK:反抗刻印 < 3 && CUP:恐怖 + CUP:反感 + CUP:抑郁 < 500
 		IF CUP:快C && TALENT:淫核 + TALENT:C敏感
 			TFLAG:33 += 1
-		ELSEIF CUP:快V && TALENT:淫壷 + TALENT:V敏感
+		ELSEIF CUP:快V && TALENT:淫穴 + TALENT:V敏感
 			TFLAG:33 += 1
 		ELSEIF CUP:快A && TALENT:尻穴狂 + TALENT:A敏感
 			TFLAG:33 += 1
@@ -416,7 +416,7 @@ CUP:欲情 += LOCAL:2 * LOCAL:0 / 100
 CUP:屈服 += LOCAL:2 * (LOCAL:0 + 40) / 400
 CUP:抑郁 += LOCAL:2 * LOCAL:1 / 100
 
-LOCAL:3 = SOURCE:快C*TALENT:淫核 + SOURCE:快V*TALENT:淫壷 + SOURCE:快A*TALENT:尻穴狂 + SOURCE:快B*TALENT:淫乳 + SOURCE:快M*TALENT:荡唇
+LOCAL:3 = SOURCE:快C*TALENT:淫核 + SOURCE:快V*TALENT:淫穴 + SOURCE:快A*TALENT:尻穴狂 + SOURCE:快B*TALENT:淫乳 + SOURCE:快M*TALENT:荡唇
 LOCAL:4 = GET_PALAMLV(LOCAL:3) * 500
 ;成瘾之ソース：CUP:恭顺,5,6に影響
 SOURCE:成瘾充足 += LOCAL:4 * LOCAL:0 / 100
@@ -490,8 +490,8 @@ ELSE
 	B = 0
 ENDIF
 
-;ABL:奉仕精神をみる
-SELECTCASE ABL:奉仕精神
+;ABL:侍奉精神をみる
+SELECTCASE ABL:侍奉精神
 CASE 0
 	TIMES A, 0.60
 	TIMES B, 1.80
@@ -535,8 +535,8 @@ CASE 4
 CASE 5
 	TIMES A, 1.20
 ENDSELECT
-;ABL:奉仕精神をみる
-SELECTCASE ABL:奉仕精神
+;ABL:侍奉精神をみる
+SELECTCASE ABL:侍奉精神
 CASE 0
 	TIMES A, 0.40
 CASE 1
@@ -1001,26 +1001,26 @@ IF MARK:苦痛刻印 > MEMO_MARK:1
 	ENDIF
 ENDIF
 ;-------------------------------------------------
-;反发刻印（逆推ている时や奉仕标志があるときには獲得しない）
-;MARK:反抗刻印之取得履历は反发刻印之取得履历　NOWEX:处女丧失 & 2は恋慕状态之普通之性爱でMASTERに处女を捧げた标志
+;反抗刻印（逆推ている时や奉仕标志があるときには獲得しない）
+;MARK:反抗刻印之取得履历は反抗刻印之取得履历　NOWEX:处女丧失 & 2は恋慕状态之普通之性爱でMASTERに处女を捧げた标志
 ;他之刻印之取得状況によって、取得しにくくなる
 ;------------------------------------------------- 
-SELECTCASE CALCF("反发刻印獲得", TARGET)
+SELECTCASE CALCF("反抗刻印獲得", TARGET)
 CASE 1
 	MARK:反抗刻印 = 1
 CASE 2
 	MARK:反抗刻印 = 2
 CASE 3
-	LOCALS = 反发刻印Lv3取得
+	LOCALS = 反抗刻印Lv3取得
 	MARK:反抗刻印 = 3
 ENDSELECT
 
 IF MARK:反抗刻印 > MEMO_MARK:2
 	SETCOLOR DEF_COLOR("黄色")
 	PRINTFORML 
-	PRINTFORML 反发刻印LV{MARK:反抗刻印}を取得
+	PRINTFORML 反抗刻印LV{MARK:反抗刻印}を取得
 	RESETCOLOR
-	;缺乏情感之场合は反发刻印による顺从ダウンはなし
+	;缺乏情感之场合は反抗刻印による顺从ダウンはなし
 	IF ABL:顺从 > 0 && ABL:顺从 <= 3 && TALENT:缺乏情感 == 0
 		ABL:顺从 = MAX(ABL:顺从 - MARK:反抗刻印, 0)
 		PRINTFORML そして顺从がLV{ABL:顺从}に下がった
@@ -1131,10 +1131,10 @@ IF GETBIT(TCVAR:29, 0) || GETBIT(TCVAR:29, 1)
 	;献身的
 	SIF TALENT:献身
 		LOCAL:1 += 1
-	;奉仕精神
-	SIF ABL:奉仕精神 == 5
+	;侍奉精神
+	SIF ABL:侍奉精神 == 5
 		LOCAL:1 += 1
-	SIF ABL:奉仕精神 >= 3
+	SIF ABL:侍奉精神 >= 3
 		LOCAL:1 += 1
 
 	;饮尿PLAY

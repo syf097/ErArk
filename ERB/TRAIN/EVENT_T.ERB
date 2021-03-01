@@ -365,7 +365,7 @@ CASE "追加地之文：V插入后"
 				PRINTFORM 习惯使用的
 
 
-			ELSEIF TALENT:淫壷 && FIRSTCOMS("V插入")
+			ELSEIF TALENT:淫穴 && FIRSTCOMS("V插入")
 				IF ABL:V扩张 >= 3 && RAND:3 == 0
 					IF RAND:2
 						PRINTFORM 像是要融化掉一样柔软的
@@ -480,7 +480,7 @@ CASE "追加地之文：V插入后"
 				PRINTFORM 勉强地
 			ENDIF
 		ELSE
-			IF TALENT:淫壷 && RAND:2
+			IF TALENT:淫穴 && RAND:2
 				PRINTFORM 吸入\@ RAND:2 ? 收进去 # 挤入 \@一样
 			ELSEIF RAND:2
 
@@ -534,7 +534,7 @@ CASE "追加地之文：V插入后"
 	ENDIF
 	;抱擁系（优しい性格）、ギュッ系（强硬or未熟）、絡みつき＆蠕动系（プロ）で分岐
 	IF GETBIT(BASE:属性, 14) && RAND:3
-		IF ABL:奉仕精神 >= 3 && ABL:V名器度 >= 70 && RAND:3 == 0
+		IF ABL:侍奉精神 >= 3 && ABL:V名器度 >= 70 && RAND:3 == 0
 			PRINTFORM 子宮口
 			IF NO:TARGET == 35 && RAND:2
 				PRINTFORM 和龟头接吻着，
@@ -554,7 +554,7 @@ CASE "追加地之文：V插入后"
 			PRINTFORM 膛内像是要和%CALLNAME:ASSI%对抗一样热情地
 
 
-		ELSEIF TALENT:淫壷 && RAND:3 == 0
+		ELSEIF TALENT:淫穴 && RAND:3 == 0
 			PRINTFORM 膛内炽热又淫靡的媚肉
 
 
@@ -643,7 +643,7 @@ CASE "追加地之文：V插入后"
 
 			ENDIF
 		ELSE
-			IF TALENT:淫壷 && RAND:3 == 0
+			IF TALENT:淫穴 && RAND:3 == 0
 				IF RAND:2
 					PRINTFORM 黏黏糊糊的
 
@@ -1093,7 +1093,7 @@ CASE "追加地之文：A插入后"
 	ENDIF
 	;抱擁系（优しい性格）、ギュッ系（强硬or未熟）、絡みつき＆蠕动系（プロ）で分岐
 	IF GETBIT(BASE:属性, 14) && RAND:3
-		IF ABL:奉仕精神 >= 3 && ABL:A名器度 >= 70 && RAND:3 == 0
+		IF ABL:侍奉精神 >= 3 && ABL:A名器度 >= 70 && RAND:3 == 0
 			PRINTFORM 直肠深处
 			IF RAND:2
 				PRINTFORM 蠢动着吸吮着肉棒
@@ -1528,9 +1528,9 @@ CASE "追加地之文：骑乘位"
 		ENDIF
 	ELSEIF CHECK_OTHER("帽子") && COND("指之使用") && RAND:3 == 0
 		PRINTFORM 手で帽子が落ちないように押さえ同时、
-	ELSEIF ABL:百合属性 >= 3 && (SELECTCOM:1 == 1 || SELECTCOM:1 == 9) && RAND:3 == 0
+	ELSEIF (SELECTCOM:1 == 1 || SELECTCOM:1 == 9) && RAND:3 == 0
 		PRINTFORM %CALLNAME:ASSI%と舌を絡め同时、
-	ELSEIF TALENT:力量 && TALENT:娇小 == 0 && RANDIF(1, TALENT:巨乳, TALENT:小恶魔*3 + ABL:S属性 >= 3)
+	ELSEIF TALENT:娇小 == 0 && RANDIF(1, TALENT:巨乳, TALENT:小恶魔*3 + ABL:S属性 >= 3)
 		IF RAND:2
 			PRINTFORM うっすらと肌肉之付いたお腹をうねらせ同时、
 
@@ -1603,7 +1603,7 @@ CASE "狂野摇摆"
 	ENDIF
 	IF TALENT:恋慕 && RAND:3 == 0
 		PRINTFORM %CALLNAME:PLAYER%之顔を现つめ同时
-	ELSEIF TALENT:力量 && RAND:2
+	ELSEIF RAND:2
 		PRINTFORM 引き締まったお腹をうねらせ同时
 	ELSEIF TALENT:贫乳 == 0 && TALENT:性别 != 1 && CHECK_CLO("乳首露出") && RAND:2
 		IF TALENT:巨乳 && RAND:3 == 0
@@ -1836,72 +1836,6 @@ CASE "饮用母乳"
 	ENDSELECT
 	SIF COND("饮用母乳标志", PLAYER)
 		CALL SETFLAG, "饮用母乳", PLAYER
-CASE "探索能力"
-	PRINTFORM 战{PALAM_EXPLORER("探索者攻击力", ARG), 2} 
-	SELECTCASE ARG
-	CASE MASTER
-		PRINTFORM 精{BASE:MASTER:精力, 2}/{MAXBASE:MASTER:精力, 2}
-		SIF MAXBASE:MASTER:斯道克
-			PRINTFORM ×({BASE:MASTER:斯道克}/{MAXBASE:MASTER:斯道克})
-		PRINT  
-	CASEELSE
-		PRINTFORM 精{BASE:ARG:精力, 2} 
-	ENDSELECT
-	SIF COND("探索：遭遇回避", ARG)
-		CALL PRINT_COLORTEXT, "遭遇回避 ", DEF_COLOR("黄色")
-	SIF COND("探索：遭遇増加", ARG)
-		CALL PRINT_COLORTEXT, "遭遇増加 ", DEF_COLOR("青")
-	SIF COND("探索：陷阱解除", ARG)
-		CALL PRINT_COLORTEXT, "陷阱解除 ", DEF_COLOR("黄色")
-	SIF COND("探索：陷阱诱发", ARG)
-		CALL PRINT_COLORTEXT, "陷阱诱发 ", DEF_COLOR("青")
-	SIF COND("探索：财宝发现", ARG)
-		CALL PRINT_COLORTEXT, "财宝发现 ", DEF_COLOR("黄色")
-	SIF COND("探索：财宝现逃し", ARG)
-		CALL PRINT_COLORTEXT, "财宝现逃し ", DEF_COLOR("青")
-	SIF COND("探索：阶段发现", ARG)
-		CALL PRINT_COLORTEXT, "阶段发现 ", DEF_COLOR("黄色")
-	SIF COND("探索：回復", ARG)
-		CALL PRINT_COLORTEXT, "回復 ", DEF_COLOR("黄色")
-	IF ARG != MASTER && ARG != PLAYER && PALAM_EXPLORER("助手攻击力", ARG) + PALAM_EXPLORER("秘法补助", ARG)
-		SETCOLOR DEF_COLOR("黄色")
-		PRINTPLAINFORM 战斗补助+{PALAM_EXPLORER("助手攻击力", ARG) + PALAM_EXPLORER("秘法补助", ARG)} 
-	ENDIF
-	SIF COND("探索：状态异常无效", ARG)
-		CALL PRINT_COLORTEXT, "状态异常无效 ", DEF_COLOR("黄色")
-	RESETCOLOR
-	PRINTFORML 
-CASE "探索能力ペア"
-	PRINTFORM 战{PALAM_EXPLORER("探索者攻击力", MASTER)}
-	IF PALAM_EXPLORER("助手攻击力", ASSI) + PALAM_EXPLORER("秘法补助", ASSI)
-		SETCOLOR DEF_COLOR("黄色")
-		PRINTFORM +{PALAM_EXPLORER("助手攻击力", ASSI) + PALAM_EXPLORER("秘法补助", ASSI)} 
-		RESETCOLOR
-	ENDIF
-	PRINTFORM 精{BASE:MASTER:精力, 2}/{MAXBASE:MASTER:精力, 2}
-	SIF MAXBASE:MASTER:斯道克
-		PRINTFORM ×({BASE:MASTER:斯道克}/{MAXBASE:MASTER:斯道克})
-	PRINT  
-	SIF COND("探索：遭遇回避", MASTER) || COND("探索：遭遇回避", ASSI)
-		CALL PRINT_COLORTEXT, "遭遇回避 ", DEF_COLOR("黄色")
-	SIF COND("探索：遭遇増加", MASTER) || COND("探索：遭遇増加", ASSI)
-		CALL PRINT_COLORTEXT, "遭遇増加 ", DEF_COLOR("青")
-	SIF COND("探索：陷阱解除", MASTER) || COND("探索：陷阱解除", ASSI)
-		CALL PRINT_COLORTEXT, "陷阱解除 ", DEF_COLOR("黄色")
-	SIF COND("探索：陷阱诱发", MASTER) || COND("探索：陷阱诱发", ASSI)
-		CALL PRINT_COLORTEXT, "陷阱诱发 ", DEF_COLOR("青")
-	SIF COND("探索：财宝发现", MASTER) || COND("探索：财宝发现", ASSI)
-		CALL PRINT_COLORTEXT, "财宝发现 ", DEF_COLOR("黄色")
-	SIF COND("探索：财宝现逃し", MASTER) || COND("探索：财宝现逃し", ASSI)
-		CALL PRINT_COLORTEXT, "财宝现逃し ", DEF_COLOR("青")
-	SIF COND("探索：阶段发现", MASTER) || COND("探索：阶段发现", ASSI)
-		CALL PRINT_COLORTEXT, "阶段发现 ", DEF_COLOR("黄色")
-	SIF COND("探索：回復", MASTER) || COND("探索：回復", ASSI)
-		CALL PRINT_COLORTEXT, "回復 ", DEF_COLOR("黄色")
-	SIF COND("探索：状态异常无效", MASTER) || COND("探索：状态异常无效", ASSI)
-		CALL PRINT_COLORTEXT, "状态异常无效 ", DEF_COLOR("黄色")
-	RESETCOLOR
-	PRINTFORML 
 ENDSELECT
 
 ;-------------------------------------------------
@@ -2568,12 +2502,6 @@ CASE "お尻：感触"
 		IF COND("巨臀")
 			LOCALS = %TEXTR("光滑的", "充满肉感的", "重量感十足的", "沉甸甸的", "丰满的")%%TEXTR("尻", "臀部", "小屁屁")%
 
-
-		ELSEIF TALENT:力量
-			SIF COND("小臀") == 0
-				LOCALS = 绷紧了的屁股
-
-
 		ELSEIF COND("小臀")
 			LOCALS = %TEXTR("没什么肉的", "娇小的")%尻
 
@@ -2591,12 +2519,6 @@ CASE "お尻：视覚"
 
 	IF COND("巨臀")
 		LOCALS = %TEXTR("光滑的", "充满肉感的", "重量感十足的", "沉甸甸的", "丰满的")%尻
-
-
-	ELSEIF TALENT:力量
-		SIF COND("小臀") == 0
-			LOCALS = 绷紧了的尻
-
 
 	ELSEIF COND("小臀")
 		LOCALS = 娇小的尻
@@ -2930,7 +2852,7 @@ CASE "太股：描写"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	SWAP ARG, TARGET
-	IF TALENT:力量 && RAND:3 == 0
+	IF RAND:3 == 0
 		LOCALS = 引き締まった
 	ELSEIF TALENT:外表年龄 >= 2 && TALENT:力量 == 0 && RAND:3 == 0
 		LOCALS = むっちりとした
@@ -3360,7 +3282,7 @@ CASE "Ｗ逆推中"
 		LOCALS = %CALLNAME:ASSI%之Vでゴシゴシされて
 	CASE 94
 		LOCALS = %CALLNAME:ASSI%之泡まみれ之身体で
-		IF TALENT:ASSI:贫乳 || TALENT:ASSI:性别男
+		IF TALENT:ASSI:贫乳 || TALENT:ASSI:性别 == 1
 			LOCALS = %LOCALS%ゴシゴシされて
 		ELSE
 			LOCALS = %LOCALS%揉みくちゃにされて
@@ -3725,52 +3647,19 @@ VARSET LOCALS
 
 SELECTCASE ARGS
 CASE "食事"
-	SELECTCASE ARG
-	CASE 1p0
-		LOCALS =西普利三明治
-	CASE 1p1
-		LOCALS = 莫斯登羊排
-	CASE 1p10
-		LOCALS = 树果沙拉
-	CASE 1p11
-		LOCALS = 熏鲑鱼
-	CASE 1p20
-		LOCALS = 蜂蜜饼干
-	CASE 1p21
-		LOCALS = 烤苹果
-	CASE 1p30
-		LOCALS = 蜂蜜酒
-	CASE 1p31
-		LOCALS = 法度尔酸酒
-	CASE 1p32
-		LOCALS = 木天蓼酒
-	CASE 1p50
-		LOCALS = 月之糖果
-	ENDSELECT
+	LOCALS = 食物
 CASE "指"
 	SIF ARG == 0
 		ARG = TARGET
-	IF TALENT:ARG:哈比
-		LOCALS = 羽
-	ELSE
 		LOCALS = 指
-	ENDIF
 CASE "手"
 	SIF ARG == 0
 		ARG = TARGET
-	IF TALENT:ARG:哈比
-		LOCALS = 羽
-	ELSE
 		LOCALS = 手
-	ENDIF
 CASE "两腕"
 	SIF ARG == 0
 		ARG = TARGET
-	IF TALENT:ARG:多手
-		LOCALS = 手
-	ELSE
 		LOCALS = 双手
-	ENDIF
 CASE "阴茎"
 	SIF ARG == 0
 		ARG = TARGET

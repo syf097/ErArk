@@ -110,7 +110,7 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
 		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
-		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+		ELSEIF (ABL:ASSI:侍奉精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
 			CALL SETFLAG, "打扫口交", ASSI, MASTER
@@ -122,7 +122,7 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
 		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
-		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+		ELSEIF (ABL:ASSI:侍奉精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
 			CALL SETFLAG, "打扫口交", ASSI, MASTER
@@ -138,7 +138,7 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
 		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
-		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
+		ELSEIF (ABL:ASSI:侍奉精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人に打扫口交", ASSI
 			CALL SETFLAG, "打扫口交", ASSI, MASTER
@@ -147,8 +147,8 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		ENDIF
 	CASE 4
 		PRINTFORM %CALLNAME:ASSI%把%CALLNAME:MASTER%的阴茎拿出来
-		;奉仕精神と献身で判定
-		IF ABL:ASSI:奉仕精神 + TALENT:ASSI:献身 >= 4 && COND("口之使用", ASSI)
+		;侍奉精神と献身で判定
+		IF ABL:ASSI:侍奉精神 + TALENT:ASSI:献身 >= 4 && COND("口之使用", ASSI)
 			PRINTFORMW 拉下包皮
 			PRINTFORMW 用舌头舔干净了……
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人にＰ恥垢打扫口交", ASSI
@@ -162,7 +162,7 @@ ELSEIF LOCAL:1
 	SELECTCASE LOCAL:1
 	CASE 1
 		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯后黏黏糊糊的阴部拨开、
-		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+		IF ABL:侍奉精神 >= 4  && COND("口之使用", ASSI) && RAND:2 == 0
 			PRINTFORMW 用舌头仔细地舔净…
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
 			CALL SETFLAG, "打扫舐阴", ASSI, TARGET
@@ -172,7 +172,7 @@ ELSEIF LOCAL:1
 		STAIN:V = SET_STAIN(0, "V")
 	CASE 2
 		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯后还张开着的肛门扒开、
-		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && GETBIT(CFLAG:ASSI:12, 8) && COND("口之使用", ASSI) && RAND:2 == 0
+		IF ABL:侍奉精神 >= 4 && GETBIT(CFLAG:ASSI:12, 8) && COND("口之使用", ASSI) && RAND:2 == 0
 			PRINTFORMW 将舌头伸入，细心地舔舐起来…
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐A", ASSI
 			CALL SETFLAG, "打扫舐A", ASSI, TARGET
@@ -183,7 +183,7 @@ ELSEIF LOCAL:1
 	CASE 3
 		IF PENIS(TARGET)
 			PRINTFORM %CALLNAME:ASSI%は%CALLNAME:TARGET%之口を开けたままになっている阴茎を
-			IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+			IF ABL:侍奉精神 >= 4 && COND("口之使用", ASSI) && RAND:2 == 0
 				PRINTFORMW 通过吮吸、细心的用舌头把污秽舔干净…
 				TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫口交", ASSI
 				CALL SETFLAG, "打扫口交", ASSI, TARGET
@@ -193,7 +193,7 @@ ELSEIF LOCAL:1
 			STAIN:Ｐ = SET_STAIN(0, "Ｐ")
 		ELSE
 			PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯过的阴道打开、把尿道露出了
-			IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+			IF ABL:侍奉精神 >= 4 && COND("口之使用", ASSI) && RAND:2 == 0
 				PRINTFORMW 、然后用舌头仔细舔净…
 				TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
 				CALL SETFLAG, "打扫舐阴", ASSI, TARGET
@@ -204,7 +204,7 @@ ELSEIF LOCAL:1
 		ENDIF
 	CASE 4
 		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%打开就会漏尿的阴道打开、
-		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && COND("口之使用", ASSI) && RAND:2 == 0
+		IF ABL:侍奉精神 >= 4 && COND("口之使用", ASSI) && RAND:2 == 0
 			PRINTFORMW 用舌头仔细舔净后，啾地吮吸起尿道来…
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐阴", ASSI
 			CALL SETFLAG, "打扫舐阴", ASSI, TARGET
@@ -620,14 +620,14 @@ SIF NO:ARG == 34
 SIF NO:ARG == 35
 	LOCALS:36 = [36] \@ GETBIT(CFLAG:ARG:35, 36) ? ○ # － \@ 开局使用熔融之吻
 
-IF ABL:ARG:奉仕精神 >= 3
+IF ABL:ARG:侍奉精神 >= 3
 	LOCALS:40 = [40] \@ GETBIT(CFLAG:ARG:35, 40) ? ○ # － \@ 保持主人身体清洁
 	LOCALS:41 = [41] \@ GETBIT(CFLAG:ARG:35, 41) ? ○ # － \@ 保持对手身体清洁
 ENDIF
 
 LOCALS:45 = [45] \@ GETBIT(CFLAG:ARG:35, 45) ? ○ # － \@ 开局脱光调教对象
 
-;SIF ABL:ARG:奉仕精神 >= 3
+;SIF ABL:ARG:侍奉精神 >= 3
 ;	LOCALS:50 = [50] \@ GETBIT(CFLAG:ARG:35, 50) ? ○ # － \@ 给御用商人杀必死
 
 FOR LOCAL, 0, 100
@@ -738,11 +738,6 @@ SIF ARG != MASTER
 
 ;相性や百合ッ气、男同属性
 IF TARGET
-	;IF TALENT:ARG:性别 != 1 && TALENT:性别 != 1
-	;	PRINTFORM 百合{ABL:ARG:百合属性} 
-	;ELSEIF TALENT:ARG:性别 == 1 && TALENT:性别 == 1
-	;	PRINTFORM 男同{ABL:ARG:男同属性} 
-	;ENDIF
 	LOCAL = NO:ARG
 	IF ARG != TARGET
 		IF RELATION:LOCAL >= 200

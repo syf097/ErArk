@@ -281,7 +281,6 @@ SIF CONFIG("ＨAＲＤ") == 0
 
 ;上升前之技巧とLVを記录
 MEMO_TEC = ABL:技巧
-MEMO_LV = ABL:LV
 
 ;技巧之自动レベルアップ！
 FOR LCOUNT, 0, 10
@@ -294,36 +293,6 @@ FOR LCOUNT, 0, 10
 	ENDIF
 NEXT
 
-;LV之自动レベルアップ！
-FOR LCOUNT, 0, NUM("最大レベル", 90)
-	CALL ISABLUP, "LV"
-	IF RESULT && ABL:LV < NUM("最大レベル", 90)
-		EXP:経験值 -= A
-		ABL:LV += 1
-	ELSE
-		BREAK
-	ENDIF
-NEXT
-
-IF ABL:技巧 > MEMO_TEC || ABL:LV > MEMO_LV
-	DRAWLINE
-	PRINTFORMW 能力的自动提高了…
-
-	SIF ABL:技巧 > MEMO_TEC
-		PRINTFORMW %CALLNAME:TARGET%之技巧{ABL:技巧 - MEMO_TEC}LV上升{ABL:技巧}LV！
-	IF ABL:LV > MEMO_LV
-		PRINTFORMW %CALLNAME:TARGET%之LV{ABL:LV - MEMO_LV}LV上升{ABL:LV}LV！
-		;LVが10以上になると上位梦魇化之可能性あり。LV14だと确实に上位梦魇になる
-		IF ABL:LV >= 10 && ABL:LV + ABL:技巧/2 >= 10 + RAND:5 && TALENT:梦魇 && TALENT:上位梦魇 == 0
-			PRINTFORMW %CALLNAME:TARGET%成为上位梦魇！
-			TALENT:梦魇 = 0
-			TALENT:上位梦魇 = 1
-		ENDIF
-		SIF ABL:LV/5 > MAX(MEMO_LV/5, 1)
-			CALL GET_TALENT, ABL:LV/5 - MEMO_LV/5
-	ENDIF
-	PRINTL 
-ENDIF
 
 @DENIAL_CHECK
 #DIM LCOUNT
