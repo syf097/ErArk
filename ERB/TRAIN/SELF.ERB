@@ -41,8 +41,8 @@ LOCAL = BASE:精力/20 + LIMIT(RAND:(BASE:精力/10 + 1), 1, BASE:精力/15)
 
 SELECTCASE LOCALS
 CASE "调教后性爱"
-	;V感觉、淫壷によるＢＯＮＵＳ
-	LOCAL += MAX(ABL:Ｖ感觉/3, 0) + TALENT:淫壷
+	;V感觉、淫壷によるBＯＮＵS
+	LOCAL += MAX(ABL:V感觉/3, 0) + TALENT:淫壷
 
 	IF LOCAL > 0
 		DRAWLINE
@@ -71,7 +71,7 @@ CASE "调教后性爱"
 			CALL SELF_KOJO, LOCALS
 
 			PRINTL 
-			IF ABL:顺从 + ABL:欲望 + ABL:Ｖ感觉 >= 13 && COND("欲求不满")
+			IF ABL:顺从 + ABL:欲望 + ABL:V感觉 >= 13 && COND("欲求不满")
 				PRINTFORML %CALLNAME:TARGET%一边用舌头舔着%CALLNAME:PLAYER%的那里进行清洁、
 				PRINTFORMW 一边依依不舍的从下面看着%CALLNAME:PLAYER%…
 				PRINTFORMW 但是%CALLNAME:PLAYER%假装没看到那个视线、离开了房间…
@@ -79,7 +79,7 @@ CASE "调教后性爱"
 
 				CALL SIMULATE_TRAIN_COM, 91, 1
 			ELSEIF TALENT:偏爱 + TALENT:相思相爱 && RAND:2
-				IF TALENT:PLAYER:无视脏污 && ABL:Ｓ属性 >= 3 && RAND:5 == 0
+				IF TALENT:PLAYER:无视脏污 && ABL:S属性 >= 3 && RAND:5 == 0
 					PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子用舌头舔干净%CALLNAME:TARGET%的漂亮小穴后、离开了房间…
 
 					CALL SIMULATE_TRAIN_COM, 1, LOCAL
@@ -115,8 +115,8 @@ CASE "调教后性爱"
 
 		CALL CALC, "欲求不满解消", TARGET, LOCAL
 	ENDIF
-CASE "调教后Ａ性爱"
-	;A感觉、尻穴狂によるＢＯＮＵＳ
+CASE "调教后A性爱"
+	;A感觉、尻穴狂によるBＯＮＵS
 	LOCAL += MAX(ABL:A感觉/3, 0) + TALENT:尻穴狂
 
 	IF LOCAL > 0
@@ -176,7 +176,7 @@ CASE "调教后Ａ性爱"
 	ENDIF
 CASE "调教后百合PLAY"
 
-	;C感觉、淫核によるＢＯＮＵＳ
+	;C感觉、淫核によるBＯＮＵS
 	LOCAL += MAX(ABL:C感觉/3, 0) + TALENT:淫核
 
 	IF LOCAL > 0
@@ -269,7 +269,7 @@ CASE "调教后自慰"
 			ELSE
 				PRINT 秘所
 			ENDIF
-			IF EXP:Ｖ拳交経験 >= 5 && TALENT:处女 == 0 && ABL:Ｖ扩张 >= 4 && RAND:3 == 0
+			IF EXP:V拳交経験 >= 5 && TALENT:处女 == 0 && ABL:V扩张 >= 4 && RAND:3 == 0
 				IF RAND:2
 					PRINT 用自己的拳头摩擦
 
@@ -298,7 +298,7 @@ CASE "调教后自慰"
 				PRINT 屁股小穴
 
 			ENDIF
-			IF EXP:Ａ拳交経験 >= 5 && ABL:Ａ扩张 >= 4 && RAND:3 == 0
+			IF EXP:A拳交経験 >= 5 && ABL:A扩张 >= 4 && RAND:3 == 0
 				IF RAND:2
 					PRINT 用自己的拳头摩擦
 
@@ -359,7 +359,7 @@ CASE "调教后自慰"
 				PRINTFORML %EXPNAME:53%＋{LOCAL * A}
 			EXP:V扩张经验 += LOCAL * A
 			PRINTFORML %PALAMNAME:1%之珠＋{(LOCAL+B) * 200}
-			JUEL:快Ｖ += (LOCAL+B) * 200
+			JUEL:快V += (LOCAL+B) * 200
 		ELSEIF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 			PRINTFORML %EXPNAME:1%＋{LOCAL+B}
 			EXP:A经验 += LOCAL+B
@@ -367,10 +367,10 @@ CASE "调教后自慰"
 				PRINTFORML %EXPNAME:57%＋{LOCAL * A}
 			EXP:A扩张经验 += LOCAL * A
 			PRINTFORML %PALAMNAME:2%之珠＋{(LOCAL+B) * 200}
-			JUEL:快Ａ += (LOCAL+B) * 200
+			JUEL:快A += (LOCAL+B) * 200
 		ELSE
 			PRINTFORML %PALAMNAME:0%之珠＋{LOCAL * 500}
-			JUEL:快Ｃ += LOCAL * 500
+			JUEL:快C += LOCAL * 500
 		ENDIF
 
 		PRINTFORML %PALAMNAME:4%之珠＋{LOCAL * 100}
@@ -423,14 +423,14 @@ ENDIF
 VARSET LOCALS
 
 IF ARG == PLAYER
-	;Ｖ性爱
+	;V性爱
 	CALL COM_ABLE65
-	SIF RESULT && PENIS(PLAYER) && ABL:Ｖ感觉 >= 3 && TALENT:处女 + TALENT:PLAYER:童贞 == 0
+	SIF RESULT && PENIS(PLAYER) && ABL:V感觉 >= 3 && TALENT:处女 + TALENT:PLAYER:童贞 == 0
 		LOCALS:0 = 调教后性爱
-	;Ａ性爱
+	;A性爱
 	CALL COM_ABLE75
-	SIF RESULT && PENIS(PLAYER) && EXP:PLAYER:Ａ插入経験 && COND("ベテラン：Ａ性爱")
-		LOCALS:1 = 调教后Ａ性爱
+	SIF RESULT && PENIS(PLAYER) && EXP:PLAYER:A插入経験 && COND("ベテラン：A性爱")
+		LOCALS:1 = 调教后A性爱
 	;百合PLAY
 	CALL COM_ABLE80
 	SIF RESULT && ABL:百合属性 >= 3

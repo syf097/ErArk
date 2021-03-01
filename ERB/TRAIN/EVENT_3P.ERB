@@ -42,9 +42,9 @@ IF SELECTCOM:2 == PREVCOM:2 && SELECTCOM == PREVCOM
 		CASE 83
 			PRINTFORM 尿道
 		CASEELSE
-			IF INSERT("Ｖ插入", TARGET, PLAYER:1)
+			IF INSERT("V插入", TARGET, PLAYER:1)
 				PRINTFORM 阴道
-			ELSEIF INSERT("Ａ插入", TARGET, PLAYER:1)
+			ELSEIF INSERT("A插入", TARGET, PLAYER:1)
 				PRINTFORM 肛穴
 			ELSEIF INSERT("尿道插入", TARGET, PLAYER:1)
 				PRINTFORM 尿道
@@ -154,7 +154,7 @@ CASE 60 TO 79, 82, 83, 140
 
 	SELECTCASE SELECTCOM
 	CASE 60 TO 69
-		PRINTFORM 的%TEXTS("Ｖ插入前")%
+		PRINTFORM 的%TEXTS("V插入前")%
 		SELECTCASE PREVCOM
 		CASE 70 TO 79
 			PRINTFORMW 的肛穴被%NAMES("阴茎", PLAYER)%扑哧扑哧的不停抽插…
@@ -164,7 +164,7 @@ CASE 60 TO 79, 82, 83, 140
 			PRINTFORMW 被侵犯…
 		ENDSELECT
 	CASE 70 TO 79
-		PRINTFORM 的%TEXTS("Ａ")%肛穴
+		PRINTFORM 的%TEXTS("A")%肛穴
 		SELECTCASE PREVCOM
 		CASE 60 TO 69
 			PRINTFORMW 沾满爱液的%NAMES("阴茎", PLAYER)%侵犯着…
@@ -222,10 +222,10 @@ CASEELSE
 			PRINTFORM 的鸡鸡被尿道吞没至根部、
 
 		CASEELSE
-			IF INSERT("Ｖ插入", TARGET, PLAYER:1)
+			IF INSERT("V插入", TARGET, PLAYER:1)
 				PRINTFORM 的鸡鸡随着腰部缓缓下沉被紧致的阴道吞没、
 
-			ELSEIF INSERT("Ａ插入", TARGET, PLAYER:1)
+			ELSEIF INSERT("A插入", TARGET, PLAYER:1)
 				PRINTFORM 的鸡鸡被直肠吞没至根部、
 
 			ELSEIF INSERT("尿道插入", TARGET, PLAYER:1)
@@ -308,14 +308,14 @@ CASEELSE
 	CASE 96
 		PRINTFORM 屁股淫穴被
 
-		IF ABL:奉仕精神 >= 3 && ABL:Ｓ属性 >= 3 && RAND:2 == 0
+		IF ABL:奉仕精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
 			PRINTFORMW 尖尖的舌头在里面舔弄…
 
 		ELSEIF ABL:奉仕精神 >= 3
 			PRINTFORMW 灵活的舌头清洁着…
 
-			STAIN:PLAYER:Ａ = SET_STAIN(0, "Ａ")
-		ELSEIF ABL:Ｓ属性 >= 3 || TEQUIP:逆推
+			STAIN:PLAYER:A = SET_STAIN(0, "A")
+		ELSEIF ABL:S属性 >= 3 || TEQUIP:逆推
 			PRINTFORMW 舌头随意玩弄着…
 
 		ELSE
@@ -324,13 +324,13 @@ CASEELSE
 		ENDIF
 	CASE 98
 		PRINTFORM 淫穴被
-		IF ABL:奉仕精神 >= 3 && ABL:Ｓ属性 >= 3 && RAND:2 == 0
+		IF ABL:奉仕精神 >= 3 && ABL:S属性 >= 3 && RAND:2 == 0
 			PRINTFORMW 尖尖的舌头舔弄着里面的皱褶…
 
 		ELSEIF ABL:奉仕精神 >= 3
 			PRINTFORMW 强行用舌头舔舐着每个角落…
 
-			STAIN:PLAYER:Ａ = SET_STAIN(0, "Ａ")
+			STAIN:PLAYER:A = SET_STAIN(0, "A")
 		ELSE
 			PRINTFORMW 舔舐着…
 		ENDIF
@@ -440,7 +440,7 @@ CASE 82, 90 TO 104, 140
 	SIF CHECK_COM("３Ｐ奉仕")
 		SELECTCOM:2 = PREVCOM:2
 CASE 60 TO 69
-	IF CHECK_COM("Ｖ双枪插入")
+	IF CHECK_COM("V双枪插入")
 		SELECTCOM:2 = 64
 	ELSEIF CHECK_COM("二穴插入")
 		SELECTCOM:2 = 74
@@ -448,7 +448,7 @@ CASE 60 TO 69
 		SELECTCOM:2 = PREVCOM:2
 	ENDIF
 CASE 70 TO 79
-	IF CHECK_COM("Ａ双枪插入")
+	IF CHECK_COM("A双枪插入")
 		SELECTCOM:2 = 75
 	ELSEIF CHECK_COM("二穴插入")
 		SELECTCOM:2 = 65
@@ -483,9 +483,9 @@ FOR LCOUNT, 1, 6
 			SETBIT LOCAL, 4
 		CASE "Ｔ阴茎"
 			SETBIT LOCAL, 2
-		CASE "ＴＶ"
+		CASE "ＴV"
 			SETBIT LOCAL, 3
-		CASE "ＴＡ"
+		CASE "ＴA"
 			SETBIT LOCAL, 4
 		CASE "Ｔ胸"
 			SETBIT LOCAL, 5
@@ -511,9 +511,9 @@ FOR LCOUNT, 1, 6
 			SETBIT LOCAL, 24
 		CASE "Ｐ阴茎"
 			SETBIT LOCAL, 22
-		CASE "ＰＶ"
+		CASE "ＰV"
 			SETBIT LOCAL, 23
-		CASE "ＰＡ"
+		CASE "ＰA"
 			SETBIT LOCAL, 24
 		CASE "Ｐ胸"
 			SETBIT LOCAL, 25
@@ -614,7 +614,7 @@ VARSET LOCAL
 SELECTCASE ARG:1
 ;顔面骑乘などPLAYER之口を刺激る
 CASE 1
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴＶ")
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴV")
 CASE 4
 	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ阴茎")
 CASE 5
@@ -622,8 +622,8 @@ CASE 5
 CASE 6
 	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ顔")
 CASE 9
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴＡ")
-;骑乘位などPLAYER之阴茎をＶやＡで刺激る
+	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴA")
+;骑乘位などPLAYER之阴茎をVやAで刺激る
 CASE 60, 62, 63
 	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
 CASE 61
@@ -631,10 +631,10 @@ CASE 61
 CASE 64
 	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
 CASE 65
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ")
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV")
 CASE 66 TO 69
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ")
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV")
 	ELSE
 		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
 	ENDIF
@@ -645,10 +645,10 @@ CASE 71
 CASE 74
 	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
 CASE 75
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV", "Ｔ后面")
 CASE 76 TO 79
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴＶ", "Ｔ后面")
+		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV", "Ｔ后面")
 	ELSE
 		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
 	ENDIF
@@ -676,25 +676,25 @@ CASE 95
 		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
 	ENDIF
 CASE 96
-	LOCAL = BIT_FORBIDCOM("ＰＡ", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("ＰA", "Ｔ顔")
 CASE 97
 	LOCAL = BIT_FORBIDCOM("摩擦胖次以外", "Ｔ指")
 CASE 98
-	LOCAL = BIT_FORBIDCOM("ＰＶ", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("ＰV", "Ｔ顔")
 CASE 104
 	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ胸", "Ｔ前面")
 ;逆肛交
 CASE 125 TO 129
 	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ后面", "Ｔ阴茎", "Ｔ前面")
-;逆强暴などPLAYER之Ｖを刺激る
+;逆强暴などPLAYER之Vを刺激る
 CASE 120 TO 124
 	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ阴茎", "Ｔ前面")
 CASE 140
 	LOCAL = BIT_FORBIDCOM("Ｐ阴茎", "Ｐ前面", "Ｔ顔")
 CASE 141
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴＶ")
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴV")
 CASE 142
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴＡ")
+	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴA")
 CASE 143
 	LOCAL = BIT_FORBIDCOM("Ｐ指", "Ｐ前面", "Ｔ下半身")
 ENDSELECT

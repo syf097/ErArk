@@ -26,8 +26,8 @@ PRINTL
 CALL CHECK_BASEPLAYER2
 LOCAL = (ABL:奉仕精神 * 5) + ABL:技巧
 
-;Ａ汚れ
-IF CHECK_STAIN(STAIN:PLAYER:Ｐ, "Ａ")
+;A汚れ
+IF CHECK_STAIN(STAIN:PLAYER:Ｐ, "A")
 	LOCAL -= 10
 	;A感觉
 	SIF ABL:A感觉 >= 3
@@ -74,7 +74,7 @@ ELSEIF MARK:反抗刻印 == 3
 	LOCAL = 30
 ENDIF
 ;焦躁中已经没有先前挑逗的余力了
-SIF (NOWEX:Ｍ绝顶边缘 && CUP:快Ｃ) || (NOWEX:Ｃ绝顶边缘 + NOWEX:尿道绝顶边缘 && CUP:快Ｃ) || (NOWEX:Ｖ绝顶边缘 && CUP:快Ｖ) || (NOWEX:Ａ绝顶边缘 && CUP:快Ａ) || (NOWEX:Ｂ绝顶边缘 && CUP:快Ｂ)
+SIF (NOWEX:M绝顶边缘 && CUP:快C) || (NOWEX:C绝顶边缘 + NOWEX:尿道绝顶边缘 && CUP:快C) || (NOWEX:V绝顶边缘 && CUP:快V) || (NOWEX:A绝顶边缘 && CUP:快A) || (NOWEX:B绝顶边缘 && CUP:快B)
 	LOCAL -= 20
 ;爱之圈套、眼罩、绳・拘束、球形口枷ではしません
 SIF TEQUIP:爱之圈套 || TEQUIP:眼罩 || TEQUIP:拘束 || TEQUIP:口枷 || LOCAL < 0
@@ -94,9 +94,9 @@ IF RAND:3 == 0 || SHOOT("中出") == 0
 	PRINTFORMW %CALLNAME:TARGET%对着刚刚射精了的%CALLNAME:PLAYER%之阴茎恭敬的舔舐起来、非常谨慎的清理着每一个角落……
 
 ELSEIF RAND:2 == 0
-	IF INSERT("Ｖ插入")
+	IF INSERT("V插入")
 		PRINT 从肉缝
-	ELSEIF INSERT("Ａ插入")
+	ELSEIF INSERT("A插入")
 		PRINT 从肛门
 	ELSEIF INSERT("尿道插入")
 		IF PENIS(TARGET)
@@ -107,9 +107,9 @@ ELSEIF RAND:2 == 0
 	ENDIF
 	PRINTFORMW 拔出来的阴茎被%CALLNAME:TARGET%非常怜爱的舔舐起来……
 ELSE
-	IF INSERT("Ｖ插入")
+	IF INSERT("V插入")
 		PRINT 刚从肉缝
-	ELSEIF INSERT("Ａ插入")
+	ELSEIF INSERT("A插入")
 		PRINT 刚从肛门
 	ELSEIF INSERT("尿道插入")
 		IF PENIS(TARGET)
@@ -146,7 +146,7 @@ LOCAL = (ABL:技巧 + (ABL:奉仕精神 + 1)/2 + ABL:舌技) * 2000 * (RAND:5 + 
 SIF ABL:PLAYER:技巧
 	LOCAL /= ABL:PLAYER:技巧
 ;LV之差による补正
-LOCAL = MULTIPLY(LOCAL, LIMIT(5*(ABL:ＬＶ - ABL:PLAYER:ＬＶ), -30, 100) + 100)
+LOCAL = MULTIPLY(LOCAL, LIMIT(5*(ABL:LV - ABL:PLAYER:LV), -30, 100) + 100)
 
 SIF COND("弱点：口技", PLAYER)
 	TIMES LOCAL, 2.00
@@ -254,7 +254,7 @@ SIF BASE:PLAYER:精力 < 0
 ;绝顶许可
 TCVAR:PLAYER:2 = 1
 
-;射精ＬＶ之计算
+;射精LV之计算
 LOCAL = CALCF("绝顶", PLAYER)
 
 ;射精してないなら終了
@@ -300,7 +300,7 @@ IF PENIS(PLAYER)
 	CALL ADD_STAIN, PLAYER, "Ｐ", "精液"
 	;精液を出したところに精液汚れを追加
 	IF COND("插入前暴发标志", PLAYER)
-		CALL ADD_STAIN, TARGET, "Ｖ", "精液"
+		CALL ADD_STAIN, TARGET, "V", "精液"
 	;口に汚れを追加
 	ELSEIF SELECTCOM == 91 || SELECTCOM == 99 || SELECTCOM == 140 || ARGS == "打扫口交"
 		;梦魇之口⇔调教者之Ｐ之汚れが移动
@@ -308,14 +308,14 @@ IF PENIS(PLAYER)
 		CALL SETFLAG, "饮精経験", LOCAL
 	;胸に汚れを追加
 	ELSEIF SELECTCOM == 81 || SELECTCOM == 92
-		CALL ADD_STAIN, TARGET, "Ｂ", "精液"
-	;Ｖに汚れを追加
-	ELSEIF (SELECTCOM >= 60 && SELECTCOM <= 69) || INSERT("Ｖ插入")
+		CALL ADD_STAIN, TARGET, "B", "精液"
+	;Vに汚れを追加
+	ELSEIF (SELECTCOM >= 60 && SELECTCOM <= 69) || INSERT("V插入")
 		CALL SETFLAG, "膣内精液経験", LOCAL
-	;Ａに汚れを追加
-	ELSEIF (SELECTCOM >= 70 && SELECTCOM <= 79) || INSERT("Ａ插入")
+	;Aに汚れを追加
+	ELSEIF (SELECTCOM >= 70 && SELECTCOM <= 79) || INSERT("A插入")
 		CALL SETFLAG, "肛内精液経験", LOCAL
-	;ＶかＰに汚れを追加
+	;VかＰに汚れを追加
 	ELSEIF SELECTCOM == 83 || INSERT("尿道插入")
 		CALL SETFLAG, "膀胱精液経験", LOCAL
 	;手に汚れを追加

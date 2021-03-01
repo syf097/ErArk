@@ -72,9 +72,9 @@ VARSET LOCAL
 ;主人を打扫
 IF GETBIT(CFLAG:ASSI:35, 40)
 	IF PLAYER == MASTER && COND("绝顶", PLAYER) && INSERT("插入") == 0 && PENIS(MASTER)
-		SIF SHOOT("膣内") && CHECK_STAIN(STAIN:MASTER:Ｐ, "Ｖ")
+		SIF SHOOT("膣内") && CHECK_STAIN(STAIN:MASTER:Ｐ, "V")
 			LOCAL = 1
-		SIF SHOOT("Ａ") && CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ")
+		SIF SHOOT("A") && CHECK_STAIN(STAIN:MASTER:Ｐ, "A")
 			LOCAL = 2
 		SIF SHOOT("尿道") && CHECK_STAIN(STAIN:MASTER:Ｐ, "尿")
 			LOCAL = 3
@@ -85,21 +85,21 @@ ENDIF
 ;对象を打扫
 IF GETBIT(CFLAG:ASSI:35, 41)
 	IF COND("绝顶", PLAYER) && INSERT("插入") == 0
-		SIF SHOOT("膣内") && STAIN:Ｖ != SET_STAIN(0, "Ｖ")
+		SIF SHOOT("膣内") && STAIN:V != SET_STAIN(0, "V")
 			LOCAL:1 = 1
-		SIF SHOOT("Ａ") && STAIN:Ａ != SET_STAIN(0, "Ａ")
+		SIF SHOOT("A") && STAIN:A != SET_STAIN(0, "A")
 			LOCAL:1 = 2
 		IF SHOOT("尿道")
 			IF PENIS(TARGET)
 				SIF STAIN:Ｐ != SET_STAIN(0, "Ｐ")
 					LOCAL:1 = 3
 			ELSE
-				SIF STAIN:Ｖ != SET_STAIN(0, "Ｖ")
+				SIF STAIN:V != SET_STAIN(0, "V")
 					LOCAL:1 = 3
 			ENDIF
 		ENDIF
 	ENDIF
-	SIF TALENT:性别女 && CHECK_CLO("Ｖ露出") && INSERT("背面座位") && CHECK_STAIN(STAIN:Ｖ, "尿") && NOWEX:绝顶漏尿
+	SIF TALENT:性别女 && CHECK_CLO("V露出") && INSERT("背面座位") && CHECK_STAIN(STAIN:V, "尿") && NOWEX:绝顶漏尿
 		LOCAL:1 = 4
 ENDIF
 
@@ -107,8 +107,8 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 	SELECTCASE LOCAL
 	CASE 1
 		PRINTFORM %CALLNAME:ASSI%将刚刚从腔内拔出的%CALLNAME:MASTER%的阴茎
-		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
-		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
 		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
@@ -119,8 +119,8 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		ENDIF
 	CASE 2
 		PRINTFORM %CALLNAME:ASSI%将刚刚从肛门拔出的%CALLNAME:MASTER%的阴茎
-		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
-		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
 		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
@@ -135,8 +135,8 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 		ELSE
 			PRINTFORM %CALLNAME:ASSI%将刚刚从尿道拔出的%CALLNAME:MASTER%的阴茎
 		ENDIF
-		;汚れ之状态で判定(Ａ汚れ之打扫口交経験があるか？)
-		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "Ａ") && GETBIT(CFLAG:ASSI:12, 9) == 0
+		;汚れ之状态で判定(A汚れ之打扫口交経験があるか？)
+		IF CHECK_STAIN(STAIN:MASTER:Ｐ, "A") && GETBIT(CFLAG:ASSI:12, 9) == 0
 			PRINTFORMW 用蒸毛巾精心擦拭…
 		ELSEIF (ABL:ASSI:奉仕精神 >= 3 || ABL:ASSI:精液成瘾 >= 3) && COND("口之使用", ASSI)
 			PRINTFORMW 用嘴接住，细致地舔……
@@ -169,17 +169,17 @@ ELSEIF LOCAL:1
 		ELSE
 			PRINTFORMW 用湿润的毛巾仔细地清理干净…
 		ENDIF
-		STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+		STAIN:V = SET_STAIN(0, "V")
 	CASE 2
 		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%被侵犯后还张开着的肛门扒开、
 		IF (ABL:奉仕精神 >= 4 || ABL:百合属性 >= 3) && GETBIT(CFLAG:ASSI:12, 8) && COND("口之使用", ASSI) && RAND:2 == 0
 			PRINTFORMW 将舌头伸入，细心地舔舐起来…
-			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐Ａ", ASSI
-			CALL SETFLAG, "打扫舐Ａ", ASSI, TARGET
+			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：调教对象に打扫舐A", ASSI
+			CALL SETFLAG, "打扫舐A", ASSI, TARGET
 		ELSE
 			PRINTFORMW 用湿润的毛巾仔细地清理干净…
 		ENDIF
-		STAIN:Ａ = SET_STAIN(0, "Ａ")
+		STAIN:A = SET_STAIN(0, "A")
 	CASE 3
 		IF PENIS(TARGET)
 			PRINTFORM %CALLNAME:ASSI%は%CALLNAME:TARGET%之口を开けたままになっている阴茎を
@@ -200,7 +200,7 @@ ELSEIF LOCAL:1
 			ELSE
 				PRINTFORMW 用湿润的毛巾仔细地清理干净…
 			ENDIF
-			STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+			STAIN:V = SET_STAIN(0, "V")
 		ENDIF
 	CASE 4
 		PRINTFORM %CALLNAME:ASSI%将%CALLNAME:TARGET%打开就会漏尿的阴道打开、
@@ -211,7 +211,7 @@ ELSEIF LOCAL:1
 		ELSE
 			PRINTFORMW 用湿润的毛巾仔细地清理干净…
 		ENDIF
-		STAIN:Ｖ = SET_STAIN(0, "Ｖ")
+		STAIN:V = SET_STAIN(0, "V")
 	ENDSELECT
 ENDIF
 IF LOCAL + LOCAL:1
@@ -260,7 +260,7 @@ ENDIF
 IF GETBIT(CFLAG:ASSI:35, 0) && STATE("小根术", MASTER) == 0 && STATE("大根术", MASTER) == 0 && TALENT:妖精 && USE_MAGIC(230, "指令", ASSI)
 	;细かい条件
 	IF TALENT:处女
-	ELSEIF ABL:Ｖ扩张 >= SIZE("阴茎", PLAYER)
+	ELSEIF ABL:V扩张 >= SIZE("阴茎", PLAYER)
 	ELSE
 		CALL TRAIN_MESSAGE_ARCANA, 230, ASSI, PLAYER
 		TFLAG:6 = 1
@@ -318,7 +318,7 @@ ENDIF
 ;大根术
 IF GETBIT(CFLAG:ASSI:35, 12) && STATE("大根术", MASTER) == 0 && STATE("小根术", MASTER) == 0 && USE_MAGIC(242, "指令", ASSI)
 	;细かい条件
-	IF ABL:Ｖ扩张 >= MAX(SIZE("阴茎", PLAYER), 2)
+	IF ABL:V扩张 >= MAX(SIZE("阴茎", PLAYER), 2)
 		CALL TRAIN_MESSAGE_ARCANA, 242, ASSI, PLAYER
 		TFLAG:6 = 1
 		IF ARGS != "调教开始"
@@ -414,7 +414,7 @@ IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 45)
 ENDIF
 
 ;润滑液
-IF GETBIT(CFLAG:ASSI:35, 20) && TEQUIP:润滑液 == 0 && ITEM:润滑液 && MIN(PALAM:Ｖ润, PALAM:Ａ润) < 10000
+IF GETBIT(CFLAG:ASSI:35, 20) && TEQUIP:润滑液 == 0 && ITEM:润滑液 && MIN(PALAM:V润, PALAM:A润) < 10000
 	PRINTFORML ＜\@ ARGS != "调教开始" ? オート # \@润滑液＞
 	CALL SETFLAG, "调教外润滑追加", 10000
 
@@ -770,8 +770,8 @@ SIF TALENT:ARG:召唤之天災
 	PRINT 召唤之天災 
 SIF TALENT:ARG:通吃
 	PRINT 通吃 
-SIF TALENT:ARG:抖Ｓ
-	PRINT 抖Ｓ 
+SIF TALENT:ARG:抖S
+	PRINT 抖S 
 SIF TALENT:ARG:妖狐
 	PRINT 妖狐 
 SIF TALENT:ARG:魅惑

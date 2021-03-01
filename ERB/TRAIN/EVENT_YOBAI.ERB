@@ -107,7 +107,7 @@ CASE "主动夜袭骑乘位"
 		ENDIF
 	ENDIF
 	CVARSET TEQUIP, 30, 0
-CASE "主动夜袭Ａ骑乘位"
+CASE "主动夜袭A骑乘位"
 	CVARSET TEQUIP, 30, 1
 
 	;基本回数は精力依存
@@ -248,7 +248,7 @@ ENDIF
 
 ;取り合い之ような寝取り之ような
 SELECTCASE CSTR:主动夜袭
-CASE "主动夜袭Ａ骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
+CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 	TARGET:1 = FIND_COND("主动夜袭可能", "淫乱", "相思相爱")
 	SIF TARGET:1 == 0 || TALENT:相思相爱 == 0 || COND("大被同眠")  || CFLAG:MASTER:96 == 0
 		RETURN 0
@@ -272,7 +272,7 @@ CASE "主动夜袭Ａ骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 			IF PENIS(TARGET:1)
 				PRINTFORMW %CALLNAME:(TARGET:1)%确认%CALLNAME:TARGET%在旁边睡得很熟后、悄悄脱掉%CALLNAME:MASTER%的内衣并分开双腿…
 				PRINTFORMW 然后用唾液润滑了下滚烫的肉棒、一口气贯穿了%CALLNAME:MASTER%…！
-				IF ABL:(TARGET:1):Ｓ属性 >= 5
+				IF ABL:(TARGET:1):S属性 >= 5
 						PRINTFORM 身体被贯穿的冲击让%CALLNAME:MASTER%醒了过来、%CALLNAME:(TARGET:1)%
 					;狼女系
 					IF BASE:(TARGET:1):斯道克
@@ -355,9 +355,9 @@ FOR LCOUNT, 0, 10
 			CONTINUE
 		LOCALS = 主动夜袭骑乘位
 	CASE 1
-		SIF PENIS(PLAYER) == 0 || EXP:PLAYER:Ａ插入経験 == 0 || CANTRAIN("逆推肛交骑乘位") == 0
+		SIF PENIS(PLAYER) == 0 || EXP:PLAYER:A插入経験 == 0 || CANTRAIN("逆推肛交骑乘位") == 0
 			CONTINUE
-		LOCALS = 主动夜袭Ａ骑乘位
+		LOCALS = 主动夜袭A骑乘位
 
 	;欲求不满or大被同眠发生时には、ここより上之過激なPLAYを优先する
 	CASE 2
