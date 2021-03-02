@@ -108,7 +108,7 @@ CASE "调教后性爱"
 			CALL SELF_KOJO, LOCALS
 		ENDIF
 
-		;経験や珠など之獲得量计算
+		;经验や珠など之獲得量计算
 		CALL SIMULATE_TRAIN_CALC
 		;結果发表
 		CALL SIMULATE_TRAIN_SHOW
@@ -167,7 +167,7 @@ CASE "调教后A性爱"
 			CALL SELF_KOJO, LOCALS
 		ENDIF
 
-		;経験や珠など之獲得量计算
+		;经验や珠など之獲得量计算
 		CALL SIMULATE_TRAIN_CALC
 		;結果发表
 		CALL SIMULATE_TRAIN_SHOW
@@ -240,7 +240,7 @@ CASE "调教后百合PLAY"
 			SWAP PLAYER, TARGET
 		ENDIF
 
-		;経験や珠など之獲得量计算
+		;经验や珠など之獲得量计算
 		CALL SIMULATE_TRAIN_CALC
 		;結果发表
 		CALL SIMULATE_TRAIN_SHOW
@@ -269,7 +269,7 @@ CASE "调教后自慰"
 			ELSE
 				PRINT 秘所
 			ENDIF
-			IF EXP:V拳交経験 >= 5 && TALENT:处女 == 0 && ABL:V扩张 >= 4 && RAND:3 == 0
+			IF EXP:V拳交经验 >= 5 && TALENT:处女 == 0 && ABL:V扩张 >= 4 && RAND:3 == 0
 				IF RAND:2
 					PRINT 用自己的拳头摩擦
 
@@ -298,7 +298,7 @@ CASE "调教后自慰"
 				PRINT 屁股小穴
 
 			ENDIF
-			IF EXP:A拳交経験 >= 5 && ABL:A扩张 >= 4 && RAND:3 == 0
+			IF EXP:A拳交经验 >= 5 && ABL:A扩张 >= 4 && RAND:3 == 0
 				IF RAND:2
 					PRINT 用自己的拳头摩擦
 
@@ -343,13 +343,13 @@ CASE "调教后自慰"
 		CALL SELF_KOJO, LOCALS
 
 		PRINTFORML %EXPNAME:10%＋{LOCAL}
-		EXP:自慰経験 += LOCAL
+		EXP:自慰经验 += LOCAL
 
 		PRINTFORML %EXPNAME:2%＋{LOCAL}
-		EXP:绝顶経験 += LOCAL
+		EXP:绝顶经验 += LOCAL
 		IF TALENT:性别女 == 0
 			PRINTFORML %EXPNAME:3%＋{LOCAL}
-			EXP:射精経験 += LOCAL
+			EXP:射精经验 += LOCAL
 		ENDIF
 
 		IF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
@@ -429,7 +429,7 @@ IF ARG == PLAYER
 		LOCALS:0 = 调教后性爱
 	;A性爱
 	CALL COM_ABLE75
-	SIF RESULT && PENIS(PLAYER) && EXP:PLAYER:A插入経験 && COND("ベテラン：A性爱")
+	SIF RESULT && PENIS(PLAYER) && EXP:PLAYER:A插入经验 && COND("ベテラン：A性爱")
 		LOCALS:1 = 调教后A性爱
 	;百合PLAY
 ELSEIF ARG == TARGET

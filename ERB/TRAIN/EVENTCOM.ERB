@@ -137,7 +137,7 @@ CASE 6, 65 TO 68, 230 TO 279, 282, 301, 311
 ;同じ调教者で连续選択时之み接吻継续
 CASE 0, 2, 5, 7, 8, 10, 15, 16, 60, 62 TO 68, 70, 72 TO 75, 83, 90, 93, 94, 97, 105, 120 TO 129, 130, 176 TO 177, 280, 281, 300, 301, 311
 	;调教者が变わるとダメ
-	SIF COND("前Ｔ调教者") != PLAYER
+	SIF COND("前T调教者") != PLAYER
 		TEQUIP:接吻 = 0
 
 	;前之回合之指令次第でダメ
@@ -190,7 +190,7 @@ CALL CALC, "给我变成玩具啦"
 CALL SAVE_PALAM_BEFORECOM
 
 ;-------------------------------------------------
-;嗜虐or奉仕快乐経験发生标志
+;嗜虐or奉仕快乐经验发生标志
 ;-------------------------------------------------
 CALL SETFLAG, "奉仕嗜虐判定", SELECTCOM
 
@@ -257,7 +257,7 @@ ENDIF
 CALL SETFLAG, "助手对象之恋慕外し終了"
 
 ;-------------------------------------------------
-;异常経験獲得_5
+;异常经验獲得_5
 ;-------------------------------------------------
 CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
@@ -349,13 +349,13 @@ CALL SETFLAG, "回合終了", TARGET
 CALL SETFLAG, "回合終了", MASTER
 IF ASSI
 	CALL SETFLAG, "回合終了", ASSI
-	;助手経験
+	;助手经验
 	IF TEQUIP:逆推 == 0 && PLAYER != ASSI && RAND:2
-		EXP:ASSI:助手経験 += 1
+		EXP:ASSI:助手经验 += 1
 		SIF TALENT:ASSI:聪慧 && RAND:2
-			EXP:ASSI:助手経験 += 1
+			EXP:ASSI:助手经验 += 1
 		SIF TALENT:ASSI:愚笨 && RAND:2
-			EXP:ASSI:助手経験 -= 1
+			EXP:ASSI:助手经验 -= 1
 	ENDIF
 
 	;相性之变动(とりあえずは上升之み)。绝顶していなくても上升します。

@@ -212,13 +212,13 @@ IF ABL:骑乘位
 	IF I:5 >= 70 && I:5 <= 79 && TALENT:尻穴狂 == 0 && ABL:A感觉 < 5
 		CALL COM_ABLE65
 		IF RESULT
-			SIF COND("发情期") || EXP:A性交経験 < MIN(50, EXP:V性交経験)
+			SIF COND("发情期") || EXP:A性交经验 < MIN(50, EXP:V性交经验)
 				I:5 = 65
 		ENDIF
 	ELSEIF I:5 == 83 && TALENT:尿道狂 == 0
 		CALL COM_ABLE65
 		IF RESULT
-			SIF COND("发情期") || EXP:尿道性交経験 < MIN(50, EXP:V性交経験)
+			SIF COND("发情期") || EXP:尿道性交经验 < MIN(50, EXP:V性交经验)
 				I:5 = 65
 		ENDIF
 	ENDIF
@@ -1027,7 +1027,7 @@ SIF STATE("防强术", PLAYER)
 ;装饰品效果（技巧）
 SIF TALENT:PLAYER:技巧强化 > 0
 	LOCAL = MULTIPLY(LOCAL, 100 + TALENT:PLAYER:技巧强化)
-;１Ｔごとに復帰率が５％ＵP
+;１Tごとに復帰率が５％ＵP
 SELECTCASE TFLAG:99
 CASE 0
 	LOCAL = 0
@@ -1119,7 +1119,7 @@ CASE "熔融之吻"
 	;调教者之口⇔梅罗娜之口之汚れが移动
 	CALL EQ_STAIN, PLAYER, TARGET, 0, 0
 
-	;接吻経験之増加
+	;接吻经验之増加
 	EXP:70 += 1
 	EXP:PLAYER:70 += 1
 

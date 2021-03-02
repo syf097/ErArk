@@ -159,8 +159,8 @@ ELSEIF CHECK_PANTIES("超细", ARG)
 	LOCALS = 超细胖次
 ELSEIF CHECK_PANTIES("Ｇ字裤", ARG)
 	LOCALS = Ｇ字裤
-ELSEIF CHECK_PANTIES("Ｔ字短裤", ARG)
-	LOCALS = Ｔ字短裤
+ELSEIF CHECK_PANTIES("T字短裤", ARG)
+	LOCALS = T字短裤
 ELSEIF CHECK_PANTIES("紐", ARG)
 	IF CHECK_PANTIES("高叉", ARG)
 		LOCALS = 高叉系绳胖次
@@ -240,7 +240,7 @@ CASE 6
 CASE 7
 	; IF TALENT:(ARG:1):四足歩行 == 0
 	; 	LOCALS = 人狼之皮质胖次
-	; 	LOCAL = SETFLAG_PANTIES("Ｔ字短裤", "皮质", "黒")
+	; 	LOCAL = SETFLAG_PANTIES("T字短裤", "皮质", "黒")
 	; ENDIF
 CASE 8, 9, 32, 45, 52, 56, 59, 96
 	LOCALS = 胖次
@@ -252,7 +252,7 @@ CASE 11
 	ENDIF
 CASE 18
 	LOCALS = 网眼胖次
-	LOCAL = SETFLAG_PANTIES("Ｔ字短裤", "蕾丝", "丝绸", "黒")
+	LOCAL = SETFLAG_PANTIES("T字短裤", "蕾丝", "丝绸", "黒")
 CASE 20, 21
 	IF PENIS(ARG:1)
 		LOCALS = 胖次
@@ -271,8 +271,8 @@ CASE 25
 	LOCALS = 丁字裤
 	LOCAL = SETFLAG_PANTIES("紐", "丁字裤", "透け", "丝绸", "赤")
 CASE 26
-	LOCALS = Ｔ字短裤
-	LOCAL = SETFLAG_PANTIES("Ｔ字短裤", "薄緑")
+	LOCALS = T字短裤
+	LOCAL = SETFLAG_PANTIES("T字短裤", "薄緑")
 CASE 31
 	LOCALS = 胖次
 	LOCAL = SETFLAG_PANTIES("低腰", "橙")
@@ -349,14 +349,14 @@ CASE 107
 	LOCAL = SETFLAG_PANTIES("高叉", "有点H")
 CASE 108
 	LOCALS = 皮质胖次
-	LOCAL = SETFLAG_PANTIES("Ｔ字短裤", "皮质", "拉链")
+	LOCAL = SETFLAG_PANTIES("T字短裤", "皮质", "拉链")
 CASE 109
 	LOCALS = 低叉
 	LOCAL = SETFLAG_PANTIES("低叉", "娴淑之色")
 CASE 110
 	IF ITEM:比基尼
 		LOCALS = 比基尼
-		LOCAL = SETFLAG_PANTIES("泳装", "Ｔ字短裤", "紐")
+		LOCAL = SETFLAG_PANTIES("泳装", "T字短裤", "紐")
 	ENDIF
 CASE 111
 	IF ITEM:比基尼
@@ -481,7 +481,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 15
 		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可")
 	;高叉+Ｖ后入
-	CASE "Ｔ字短裤"
+	CASE "T字短裤"
 		SETBIT LOCAL, 1
 		SETBIT LOCAL, 3
 	;高叉+丁字裤+低腰

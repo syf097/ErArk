@@ -11,7 +11,7 @@ SIF RESULT == 0
 CALL SIMULATE_TRAIN_FIRST
 ;指令之擬似实行
 CALL SIMULATE_TRAIN_COM, ARG, ARG:1
-;経験や珠など之獲得量计算
+;经验や珠など之獲得量计算
 CALL SIMULATE_TRAIN_CALC
 ;結果发表
 CALL SIMULATE_TRAIN_SHOW
@@ -83,12 +83,12 @@ PALAM:ARG:A润 -= 3000
 PALAM:ARG:恭顺 -= 3000
 PALAM:ARG:欲情 -= 3000
 
-;PLAYERがMASTERでないときには一部之経験之増加量を减らす
+;PLAYERがMASTERでないときには一部之经验之増加量を减らす
 IF ARG == TARGET && PLAYER != MASTER
 	FOR LCOUNT, 0, 100
 		SELECTCASE EXPNAME:LCOUNT
 		;増加分を８割减
-		CASE "奉仕快乐経験", "嗜虐快乐経験"
+		CASE "奉仕快乐经验", "嗜虐快乐经验"
 			EXP:ARG:LCOUNT = TCVAR:ARG:(LCOUNT + 300) + (EXP:ARG:LCOUNT - TCVAR:ARG:(LCOUNT + 300) )/5
 		ENDSELECT
 	NEXT
@@ -145,7 +145,7 @@ NEXT
 FOR LCOUNT, 20, 25
 	JUEL:ARG:LCOUNT = TCVAR:ARG:(LCOUNT + 400)
 NEXT
-;梦魇は精液経験でリフレッシュ
+;梦魇は精液经验でリフレッシュ
 IF TALENT:ARG:梦魇 + TALENT:ARG:上位梦魇
 	CALL CALC, "体力回復", TCVAR:ARG:320*30, ARG
 	CALL CALC, "气力回復", TCVAR:ARG:320*30, ARG
@@ -153,9 +153,9 @@ IF TALENT:ARG:梦魇 + TALENT:ARG:上位梦魇
 ENDIF
 
 ;------------------------------------------------------------------------
-;ARGにはTARGET側之表示経験、ARG:1にはPLAYER側之表示経験之番号を入れる
+;ARGにはTARGET側之表示经验、ARG:1にはPLAYER側之表示经验之番号を入れる
 ;ただし、一晩开放など、PLAYER < 0 もある之で注意
-;経験名で指定したいところだが、TCVARが番号で記录している之で速度重视で番号で指定する
+;经验名で指定したいところだが、TCVARが番号で記录している之で速度重视で番号で指定する
 ;------------------------------------------------------------------------
 @PRINT_SIMULATE_TRAIN, ARG, ARG:1
 #DIM LCOUNT
@@ -189,7 +189,7 @@ FOR LCOUNT, 0, 4
 		CONTINUE
 
 	IF EXP_ADD:LCOUNT > 0
-		;PLAYER之时には経験之表示が异なる
+		;PLAYER之时には经验之表示が异なる
 		IF LCOUNT == 3
 			LOCALS = %TEXT_RJ(EXPNAME:(ARG:1), 13)%＋{EXP_ADD:LCOUNT, 3}
 		ELSE
@@ -208,7 +208,7 @@ PRINTL
 ;PLAYERとTARGETを同时に处理する
 #DIM ACTOR, 4
 #DIM JUEL_ADD, 4
-;経験值を得ているかを記录
+;经验值を得ているかを記录
 #DIM IS_EXP_ADD, 4
 
 PRINTL 
@@ -218,7 +218,7 @@ ACTOR:1 = TARGET:1
 ACTOR:2 = TARGET:2
 ACTOR:3 = PLAYER
 
-;経験に变动があった角色を表示する之でチェック
+;经验に变动があった角色を表示する之でチェック
 VARSET IS_EXP_ADD
 
 FOR LCOUNT2, 0, 4
@@ -234,7 +234,7 @@ FOR LCOUNT2, 0, 4
 	NEXT
 NEXT
 
-;誰も経験变动ないなら終わり
+;誰も经验变动ないなら終わり
 SIF IS_EXP_ADD:0 + IS_EXP_ADD:1 + IS_EXP_ADD:2 + IS_EXP_ADD:3 == 0
 	RETURN 0
 
@@ -255,17 +255,17 @@ FOR LCOUNT, 0, 4
 NEXT
 PRINTL 
 
-;绝顶経験
+;绝顶经验
 CALL PRINT_SIMULATE_TRAIN, 2, 2
-;童贞猎取経験
+;童贞猎取经验
 CALL PRINT_SIMULATE_TRAIN, 14, 14
-;精液経験＆射精経験
+;精液经验＆射精经验
 CALL PRINT_SIMULATE_TRAIN, 20, 3
 CALL PRINT_SIMULATE_TRAIN, 3, 20
 CALL PRINT_SIMULATE_TRAIN, 17, 17
 CALL PRINT_SIMULATE_TRAIN, 18, 18
 CALL PRINT_SIMULATE_TRAIN, 19, 19
-;喷乳経験
+;喷乳经验
 CALL PRINT_SIMULATE_TRAIN, 54, 54
 ;VA经验＆VA扩张经验
 CALL PRINT_SIMULATE_TRAIN, 0, 0
@@ -274,26 +274,26 @@ CALL PRINT_SIMULATE_TRAIN, 66, -1
 CALL PRINT_SIMULATE_TRAIN, 1, 1
 CALL PRINT_SIMULATE_TRAIN, 57, 57
 CALL PRINT_SIMULATE_TRAIN, 67, -1
-;接吻経験
+;接吻经验
 CALL PRINT_SIMULATE_TRAIN, 70, 70
-;性交経験＆插入経験
+;性交经验＆插入经验
 CALL PRINT_SIMULATE_TRAIN, 12, 15
 CALL PRINT_SIMULATE_TRAIN, 15, 12
 CALL PRINT_SIMULATE_TRAIN, 13, 16
 CALL PRINT_SIMULATE_TRAIN, 16, 13
-;自慰経験
+;自慰经验
 CALL PRINT_SIMULATE_TRAIN, 10, 10
-;百合、男同経験
+;百合、男同经验
 CALL PRINT_SIMULATE_TRAIN, 40, 40
 CALL PRINT_SIMULATE_TRAIN, 41, 41
-;被虐快乐経験＆嗜虐快乐経験
+;被虐快乐经验＆嗜虐快乐经验
 CALL PRINT_SIMULATE_TRAIN, 30, 32
 CALL PRINT_SIMULATE_TRAIN, 32, 30
-;奉仕快乐～舐阴経験
+;奉仕快乐～舐阴经验
 FOR LCOUNT, 21, 29
 	CALL PRINT_SIMULATE_TRAIN, LCOUNT, LCOUNT
 NEXT
-;喉性交経験
+;喉性交经验
 CALL PRINT_SIMULATE_TRAIN, 76, 76
 
 ;对象が一般人なら珠取得表示は无
@@ -302,7 +302,7 @@ IF PLAYER < 0
 	RETURN 0
 ENDIF
 
-;各种珠ＧEＴ
+;各种珠ＧET
 FOR LCOUNT2, 0, 16
 	SELECTCASE LCOUNT2
 	CASE 3, 11, 12, 13

@@ -150,7 +150,7 @@ SIF EXP:调教回数 == 0
 	RETURN 0
 
 MEMO_LINECOUNT = LINECOUNT
-;漏尿経験３０以上で漏尿癖がつく
+;漏尿经验３０以上で漏尿癖がつく
 CALL EVENT_MORASI
 
 ;事件は一つまで
@@ -211,7 +211,7 @@ ELSE
 ENDIF
 
 @EVENT_MORASI
-SIF TIME == 0 || TALENT:漏尿癖 || EXP:漏尿経験 < 30 + CFLAG:34
+SIF TIME == 0 || TALENT:漏尿癖 || EXP:漏尿经验 < 30 + CFLAG:34
 	RETURN 0
 ;おねしょ
 PRINTFORMW （这……这是怎么回事？）
@@ -268,7 +268,7 @@ ENDIF
 ;调教終了后それぞれ2/5之确率で体力・气力之最大值が上升
 ;ただし増加する值はそれぞれ＋30が限度に。
 
-;绝顶＆射精回数と高潮回数、精液経験で体力气力増加
+;绝顶＆射精回数と高潮回数、精液经验で体力气力増加
 LOCAL = EXP_GAIN(2) + EXP_GAIN(3) + EXP_GAIN(6)*2 + EXP_GAIN(20)/3
 LOCAL:100 = RAND:5
 SIF LOCAL:100 >= 3 || LOCAL <= RAND:20
@@ -383,7 +383,7 @@ FLAG:8 = 1
 ;------------------------------------------------------------------------
 @MEMORY_LOST, ARG
 FOR LOCAL, 0, 999
-	;名前(娘)、名前之长さ、梦魇之ランク、异常経験、経験值寄与、孕娠、家系や种族などは忘れない
+	;名前(娘)、名前之长さ、梦魇之ランク、异常经验、经验值寄与、孕娠、家系や种族などは忘れない
 	SIF (LOCAL >= 4 && LOCAL <= 16) || LOCAL == 33 || LOCAL == 209 || LOCAL == 468 || LOCAL == 469
 		CONTINUE
 

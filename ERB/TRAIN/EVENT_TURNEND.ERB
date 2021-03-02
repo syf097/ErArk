@@ -84,7 +84,7 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 
 	ELSEIF SHOOT("尿道")
 		LOCAL = NOWEX:尿道绝顶
-		LOCAL:1 = EXP:尿道経験
+		LOCAL:1 = EXP:尿道经验
 		LOCAL:2 = ABL:尿道扩张
 		LOCAL:3 = EXP_GAIN(80)
 
@@ -568,11 +568,11 @@ ELSEIF TFLAG:8 && PENIS(PLAYER) && STAIN:PLAYER:P != SET_STAIN(0, "P")
 	;助手之ためにPLAYER之P汚れを記录
 	LOCAL = STAIN:PLAYER:P
 
-	;経験や汚れなど之处理は全部ここで行う
+	;经验や汚れなど之处理は全部ここで行う
 	CALL SETFLAG, "打扫口交", TARGET, MASTER
 
-	PRINTFORML 口交経験＋１
-	PRINTFORML 打扫口交経験＋１
+	PRINTFORML 口交经验＋１
+	PRINTFORML 打扫口交经验＋１
 	PRINTL 
 
 	IF ASSI && SELECTCOM:1 == SELECTCOM
@@ -581,8 +581,8 @@ ELSEIF TFLAG:8 && PENIS(PLAYER) && STAIN:PLAYER:P != SET_STAIN(0, "P")
 
 		CALL SETFLAG, "打扫口交", ASSI, MASTER
 
-		PRINTFORML 口交経験＋１ (%TEXTS("助手之名称")%)
-		PRINTFORML 打扫口交経験＋１ (%TEXTS("助手之名称")%)
+		PRINTFORML 口交经验＋１ (%TEXTS("助手之名称")%)
+		PRINTFORML 打扫口交经验＋１ (%TEXTS("助手之名称")%)
 		PRINTL 
 	ENDIF
 	RETURN 0
@@ -1576,8 +1576,8 @@ IF SELECTCOM == 151 && TEQUIP:尿道ブジー
 		;自分から放尿した之で、最后まで出し切ります
 		BASE:尿意 = 0
 		;放尿
-		EXP:放尿経験 += 1
-		PRINTL 放尿経験＋１
+		EXP:放尿经验 += 1
+		PRINTL 放尿经验＋１
 		NOWEX:放尿 += 1
 		EX:放尿 += 1
 	ELSE
@@ -1721,7 +1721,7 @@ IF SELECTCOM == 304 || SELECTCOM == 305
 
 	IF SELECTCOM == 305
 		IF CHECK("A龙奸") == 0
-			;扩张経験が少しはある
+			;扩张经验が少しはある
 			IF LOCAL >= 3
 				IF COND("指之使用") && RAND:3 == 0
 					PRINTFORML %CALLNAME:TARGET%は沉默地触摸着被龙的肉棒扩张到极致的肛门，似乎想确认自己容纳进龙的肉棒这件事的真实…在龙满意的喷射出可以覆盖住一个人的巨量精液后，%CALLNAME:TARGET%依然心情复杂地抚摸着扩张成了能轻松吞下人类手臂的肛门……
@@ -1786,7 +1786,7 @@ IF SELECTCOM == 304 || SELECTCOM == 305
 		ENDIF
 	ELSE
 		IF CHECK("V龙奸") == 0
-			;扩张経験が少しはある
+			;扩张经验が少しはある
 			IF LOCAL >= 3
 				IF COND("指之使用") && RAND:3 == 0
 					PRINTFORML %CALLNAME:TARGET%沉默地触摸着被龙的肉棒扩张到极致的腔穴…似乎想确认自己容纳进龙的肉棒这件事的真实…在龙满意的喷射出可以覆盖住一个人的巨量精液后，%CALLNAME:TARGET%依然心情复杂地抚摸着扩张成了能轻松吞下人类手臂的腔穴……

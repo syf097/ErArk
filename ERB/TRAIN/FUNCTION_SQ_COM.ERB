@@ -115,15 +115,15 @@ CASE "手指插入", "按摩棒"
 	LOCAL = MAX(SIZE("按摩棒", ARG), 1)
 CASE "V插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
-	;V性交経験がある程度必要
-	SIF EXP:ARG:V性交経験 < MAX(EXP_LV(2*(LOCAL - TALENT:ARG:好色) - ABL:ARG:V扩张), 1)
+	;V性交经验がある程度必要
+	SIF EXP:ARG:V性交经验 < MAX(EXP_LV(2*(LOCAL - TALENT:ARG:好色) - ABL:ARG:V扩张), 1)
 		RETURNF 0
 CASE "A手指插入", "肛用按摩棒"
 	LOCAL = MAX(SIZE("肛用按摩棒", ARG), 1)
 CASE "A插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
-	;A性交経験がある程度必要
-	SIF EXP:ARG:A性交経験 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:A扩张), 1)
+	;A性交经验がある程度必要
+	SIF EXP:ARG:A性交经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:A扩张), 1)
 		RETURNF 0
 CASE "拳交"
 	SELECTCASE SELECTCOM
@@ -169,7 +169,7 @@ CASE "手指插入", "按摩棒", "V插入", "V拳交", "V龙奸"
 		;侵入してくるモノを气持ちよく插入られるかを判定
 		SIF MIN(MAX(ABL:ARG:V感觉, ABL:ARG:M属性), ABL:ARG:V扩张) < MAX(LOCAL, 1)
 			RETURNF 0
-		;経験がある程度必要
+		;经验がある程度必要
 		SIF EXP:ARG:V经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:V扩张), 1)
 			RETURNF 0
 		;苦痛が殆どないならＯＫ
@@ -203,7 +203,7 @@ CASE "A手指插入", "肛用按摩棒", "A插入", "A拳交", "A龙奸"
 		;侵入してくるモノを气持ちよく插入られるかを判定
 		SIF MIN(MAX(ABL:ARG:A感觉, ABL:ARG:M属性), ABL:ARG:A扩张) < MAX(LOCAL, 1)
 			RETURNF 0
-		;経験がある程度必要
+		;经验がある程度必要
 		SIF EXP:ARG:A经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:A扩张), 1)
 			RETURNF 0
 		;苦痛が殆どないならＯＫ
@@ -225,8 +225,8 @@ CASE "A手指插入", "肛用按摩棒", "A插入", "A拳交", "A龙奸"
 	RETURNF 1
 CASE "尿道插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
-	;尿道性交経験がある程度必要
-	SIF EXP:ARG:尿道性交経験 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:尿道扩张), 1)
+	;尿道性交经验がある程度必要
+	SIF EXP:ARG:尿道性交经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:尿道扩张), 1)
 		RETURNF 0
 	;快乐が强くて苦痛などが少ないならＯＫ
 	SIF CUP:ARG:快C >= 3000 && MAX(CUP:ARG:苦痛, CUP:ARG:恐怖/10, CUP:ARG:反感) < 300
@@ -302,7 +302,7 @@ CASE "喉奸"
 	;喉まで插入られるかを判定。
 	SIF ABL:ARG:喉扩张 <= SIZE("阴茎", ARG:1)
 		RETURNF 0
-	SIF TALENT:ARG:嘔吐反射耐性 == 0 && EXP:ARG:口交経験 < MIN(EXP_LV(SIZE("阴茎", ARG:1) + 2), 100)
+	SIF TALENT:ARG:嘔吐反射耐性 == 0 && EXP:ARG:口交经验 < MIN(EXP_LV(SIZE("阴茎", ARG:1) + 2), 100)
 		RETURNF 0
 	LOCAL = ABL:ARG:喉扩张 - SIZE("阴茎", ARG:1) + TALENT:ARG:嘔吐反射耐性 + 1
 CASE "口内放尿", "膣内放尿", "子宮内放尿", "温泉灌肠", "乳内放尿", "膀胱内放尿"
@@ -1325,12 +1325,12 @@ VARSET LOCAL
 
 SELECTCASE ARGS
 CASE "连续实行"
-	SIF PREVCOM == SELECTCOM && COND("前Ｔ调教者") == PLAYER
+	SIF PREVCOM == SELECTCOM && COND("前T调教者") == PLAYER
 		RETURNF 1
 CASE "润滑液按摩"
 	SIF ITEM:地垫 == 0 && NOITEM == 0
 		RETURNF 0
-	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:逆推 || TEQUIP:触手
+	SIF COND("前T调教者") != PLAYER || TEQUIP:逆推 || TEQUIP:触手
 		RETURNF 0
 	;基本的に１润滑液で一回之み
 	SIF COND("润滑液按摩实行済")
@@ -1585,7 +1585,7 @@ CASE "插入前暴发"
 	ELSE
 		RETURNF 0
 	ENDIF
-	;今回、既にV性爱を経験済みだと平气（こ之条件は消す…かも）
+	;今回、既にV性爱を经验済みだと平气（こ之条件は消す…かも）
 	SIF EXP_GAIN(15, PLAYER)
 		RETURNF 0
 
@@ -1599,7 +1599,7 @@ CASE "插入前暴发"
 CASE "进攻Ｇ点"
 	SIF ARG == 0
 		ARG = SELECTCOM
-	SIF ARG != 8 || ABL:PLAYER:技巧 + ABL:PLAYER:指技 < 3 || COND("前Ｔ调教者") != PLAYER || PREVCOM != 8 || TEQUIP:按摩棒 || TEQUIP:触手
+	SIF ARG != 8 || ABL:PLAYER:技巧 + ABL:PLAYER:指技 < 3 || COND("前T调教者") != PLAYER || PREVCOM != 8 || TEQUIP:按摩棒 || TEQUIP:触手
 		RETURNF 0
 	RETURNF 1
 CASE "狂野摇摆"
@@ -1608,12 +1608,12 @@ CASE "狂野摇摆"
 	;连续ではあまりしてこない
 	SIF INSERT("狂野摇摆", ARG) && RAND:4
 		RETURNF 0
-	SIF TEQUIP:ARG:Ｗ逆推 || SELECTCOM:1 >= 0 || COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0
+	SIF TEQUIP:ARG:Ｗ逆推 || SELECTCOM:1 >= 0 || COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0
 		RETURNF 0
 	;基本值は欲望
 	LOCAL = ABL:ARG:欲望
 	IF INSERT("V插入", ARG) && SELECTCOM >= 60 && SELECTCOM <= 69
-		SIF EXP:ARG:V经验 + EXP:ARG:V性交経験*2 + EXP:ARG:腰技経験 <= 50
+		SIF EXP:ARG:V经验 + EXP:ARG:V性交经验*2 + EXP:ARG:腰技经验 <= 50
 			RETURNF 0
 		IF TALENT:ARG:淫穴
 			LOCAL += 5
@@ -1626,7 +1626,7 @@ CASE "狂野摇摆"
 				LOCAL -= 3
 		ENDIF
 	ELSEIF INSERT("A插入", ARG) && SELECTCOM >= 70 && SELECTCOM <= 79
-		SIF EXP:ARG:A经验 + EXP:ARG:A性交経験*2 <= 50 || EXP:ARG:腰技経験 <= 20
+		SIF EXP:ARG:A经验 + EXP:ARG:A性交经验*2 <= 50 || EXP:ARG:腰技经验 <= 20
 			RETURNF 0
 		SIF ABL:ARG:A感觉 < 3
 			LOCAL -= 5
@@ -1647,7 +1647,7 @@ CASE "狂野摇摆"
 				LOCAL -= 3
 		ENDIF
 	ELSEIF INSERT("尿道插入", ARG) && SELECTCOM == 83
-		SIF EXP:ARG:尿道経験 + EXP:ARG:尿道性交経験*2 <= 50 || EXP:ARG:腰技経験 <= 20 || PENIS(ARG)
+		SIF EXP:ARG:尿道经验 + EXP:ARG:尿道性交经验*2 <= 50 || EXP:ARG:腰技经验 <= 20 || PENIS(ARG)
 			RETURNF 0
 		SIF TALENT:ARG:尿道性感 == 0
 			LOCAL -= 5
@@ -1679,7 +1679,7 @@ CASE "狂野摇摆"
 	SIF TALENT:ARG:淫乱
 		LOCAL += 2
 	;腰技
-	SIF ABL:ARG:腰技 || EXP:ARG:腰技経験 >= 100
+	SIF ABL:ARG:腰技 || EXP:ARG:腰技经验 >= 100
 		LOCAL += 1
 
 	SIF COND("发情期", ARG)
@@ -1689,7 +1689,7 @@ CASE "狂野摇摆"
 CASE "刺激插入部位"
 
 
-	SIF INSERT("狂野摇摆") || COND("前Ｔ调教者") != PLAYER || INSERT("V插入") == 0
+	SIF INSERT("狂野摇摆") || COND("前T调教者") != PLAYER || INSERT("V插入") == 0
 		RETURNF ARG
 
 	SELECTCASE PREVCOM
@@ -1707,7 +1707,7 @@ CASE "刺激插入部位"
 	SIF COND("３P") || PREVCOM:2 >= 0
 		RETURNF ARG
 	IF TEQUIP:逆推
-		SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交経験 < 20 || EXP:腰技経験 < 20
+		SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 || EXP:腰技经验 < 20
 			RETURNF ARG
 	ELSE
 		SIF ABL:PLAYER:技巧 + ABL:PLAYER:腰技 <= 2
@@ -1760,7 +1760,7 @@ CASE "不小心子宮插入"
 	;子宮口が緩んでいない
 	SIF COND("子宮口松弛度") == 0
 		RETURNF 0
-	SIF COND("前Ｔ调教者") != PLAYER || INSERT("V插入") == 0 || EXP_GAIN(68)
+	SIF COND("前T调教者") != PLAYER || INSERT("V插入") == 0 || EXP_GAIN(68)
 		RETURNF 0
 	RETURNF 1
 CASE "双头按摩棒PLAY"
@@ -1846,21 +1846,21 @@ CASE "恥垢打扫口交"
 			RETURNF 1
 	ENDSELECT
 CASE "手搓口交"
-	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推
+	SIF COND("前T调教者") != PLAYER || TEQUIP:Ｗ逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
 	SIF (ARG == 90 && PREVCOM == 91) || (ARG == 90 && PREVCOM == 140) || (ARG == 91 && PREVCOM == 90)
 		RETURNF ARG
 CASE "乳夹口交"
-	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推
+	SIF COND("前T调教者") != PLAYER || TEQUIP:Ｗ逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
 	SIF (ARG == 91 && PREVCOM == 81) || (ARG == 91 && PREVCOM == 92) || (ARG == 92 && PREVCOM == 91)
 		RETURNF ARG
 CASE "刺激肛门手交"
-	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
+	SIF COND("前T调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
 		RETURNF 0
 	SIF ABL:侍奉精神 + TALENT:献身 < 3 && ABL:S属性 < 3
 		RETURNF 0
@@ -1871,7 +1871,7 @@ CASE "刺激肛门手交"
 	SIF ARG == 96 && (PREVCOM == 97 || PREVCOM == 90)
 		RETURNF ARG
 CASE "两乳夹头手交"
-	SIF !TALENT:巨乳 || COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
+	SIF !TALENT:巨乳 || COND("前T调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1928,7 +1928,7 @@ CASE "熔融之吻"
 	SIF RAND:(BASE:ARG:精力 + 1) >= LOCAL
 		RETURNF 1
 CASE "口内放尿"
-	SIF COND("前Ｔ调教者") != PLAYER || TEQUIP:逆推 || COND("口之使用") == 0
+	SIF COND("前T调教者") != PLAYER || TEQUIP:逆推 || COND("口之使用") == 0
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1942,7 +1942,7 @@ CASE "口内放尿"
 			RETURNF 1
 	ENDIF
 CASE "子宮内放尿"
-	SIF COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推 || PREVCOM != 68
+	SIF COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推 || PREVCOM != 68
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1952,7 +1952,7 @@ CASE "子宮内放尿"
 	SIF ARG == 138 && INSERT("V插入") && INSERT("插入对象") == PLAYER && PREVEX("V中出")
 		RETURNF 1
 CASE "膣内放尿"
-	SIF COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
+	SIF COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1962,7 +1962,7 @@ CASE "膣内放尿"
 	SIF ARG == 138 && INSERT("V插入") && INSERT("插入对象") == PLAYER && PREVEX("V中出")
 		RETURNF 1
 CASE "温泉灌肠"
-	SIF COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
+	SIF COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1972,7 +1972,7 @@ CASE "温泉灌肠"
 	SIF ARG == 138 && INSERT("A插入") && INSERT("插入对象") == PLAYER && PREVEX("A中出")
 		RETURNF 1
 CASE "乳内放尿"
-	SIF COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
+	SIF COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1980,7 +1980,7 @@ CASE "乳内放尿"
 	SIF ARG == 138 && PREVCOM == 82 && PREVEX("乳内射精")
 		RETURNF 1
 CASE "膀胱内放尿"
-	SIF COND("前Ｔ调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
+	SIF COND("前T调教者") != PLAYER || PENIS(PLAYER) == 0 || TEQUIP:逆推
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -2206,7 +2206,7 @@ CASE 60 TO 69
 CASE 70 TO 79
 	IF ARG == 75 && INSERT("狂野摇摆")
 		LOCALS = A狂野摇摆
-	ELSEIF ARG == PREVCOM && PENIS(PLAYER) && COND("前Ｔ调教者") == PLAYER && STATE("皮肤硬化", PLAYER) && INSERT("A插入")
+	ELSEIF ARG == PREVCOM && PENIS(PLAYER) && COND("前T调教者") == PLAYER && STATE("皮肤硬化", PLAYER) && INSERT("A插入")
 		LOCALS = A活塞运动
 	ENDIF
 	IF ARG == 71
@@ -3613,7 +3613,7 @@ RETURNF LOCAL
 
 
 ;-------------------------------------------------
-;今回之调教でARG:1が得たARG経験
+;今回之调教でARG:1が得たARG经验
 ;@EVENTTURNEND内で初期化される
 ;-------------------------------------------------
 @EXP_GAIN(ARG, ARG:1)
@@ -3633,10 +3633,10 @@ NEXT
 TCVAR:(ARG:1):(ARG + 200) = EXP:(ARG:1):ARG
 
 ;-------------------------------------------------
-;角色ARG:1が得たARGS経験之值ARGを、加算しつつ表示させるため之関数。ARGはTARGETならば省略可能
-;例）CALL PRINT_EXP_ADD, "羞恥快乐経験", 10, PLAYERだと、
-;EXP:PLAYER:羞恥快乐経験 += 10
-;PRINTFORML 羞恥快乐経験＋{10}（%CALLNAME:PLAYER%）
+;角色ARG:1が得たARGS经验之值ARGを、加算しつつ表示させるため之関数。ARGはTARGETならば省略可能
+;例）CALL PRINT_EXP_ADD, "羞恥快乐经验", 10, PLAYERだと、
+;EXP:PLAYER:羞恥快乐经验 += 10
+;PRINTFORML 羞恥快乐经验＋{10}（%CALLNAME:PLAYER%）
 ;に等しい。
 ;-------------------------------------------------
 @PRINTL_EXP_ADD, ARGS, ARG, ARG:1
@@ -3661,7 +3661,7 @@ EXP:(ARG:1):ARGS += ARG
 PRINTFORMW %ARGS%＋{ARG}\@ ARG:1 != TARGET ? （%CALLNAME:(ARG:1)%） # \@
 
 ;-------------------------------------------------
-;FIRSTEXPは今まで之调教でARG経験を得たことがあるかどうか之判定等に用いる
+;FIRSTEXPは今まで之调教でARG经验を得たことがあるかどうか之判定等に用いる
 ;-------------------------------------------------
 @FIRSTEXP(ARG, ARG:1)
 #FUNCTION
@@ -3672,7 +3672,7 @@ RETURNF LOCAL
 
 ;-------------------------------------------------
 ;FIRSTEXP之标志をセットする
-;タイミングは@EVENTTURNEND_FLAGで调教終了后之一回之み现る（调教以外で得た経験は无视する）
+;タイミングは@EVENTTURNEND_FLAGで调教終了后之一回之み现る（调教以外で得た经验は无视する）
 ;-------------------------------------------------
 @SET_FIRSTEXP, ARG
 SIF EXP:ARG:调教回数 == 0
@@ -3843,7 +3843,7 @@ SIF GETBIT(TCVAR:(ARG:1):(30 + ARG/64), ARG%64)
 RETURNF 0
 
 ;-------------------------------------------------
-;FIRST_EVは今までに経験した事件之記录
+;FIRST_EVは今までに经验した事件之記录
 ;-------------------------------------------------
 @FIRST_EV(ARGS, ARG)
 #FUNCTION
@@ -3989,7 +3989,7 @@ ENDSELECT
 RETURNF 0
 
 ;-------------------------------------------------
-;CHOSE_EVは今回経験した事件之記录
+;CHOSE_EVは今回经验した事件之記录
 ;特に、こ之回合に得たも之については2を返す
 ;-------------------------------------------------
 @CHOSE_EV(ARGS, ARG)
@@ -4166,7 +4166,7 @@ CASE "录像売却"
 CASE "录像売却失败"
 	RETURNF 123
 
-;以下は调教中など之事件経験など
+;以下は调教中など之事件经验など
 CASE "处女丧失"
 	RETURNF 130
 CASE "A处女丧失"
@@ -4318,7 +4318,7 @@ CASE "咖啡屋"
 ENDSELECT
 RETURNF 0
 ;-------------------------------------------------
-;@CEVENTは角色クターごと之各种事件之記录を参照する関数。経験済みなら１を、未経験なら０を返す
+;@CEVENTは角色クターごと之各种事件之記录を参照する関数。经验済みなら１を、未经验なら０を返す
 ;セットする时には@SET_CEVENTを用い、消去する際には@DEL_CEVENTを使う
 ;記录にはCSTR:10を技巧、CSTR:10 = 事件１/事件２/ と"/"を用いて区切る
 ;特殊な事件群を作る際には、头に"事件名："とする之を推奨
@@ -4332,7 +4332,7 @@ SIF ARG == 0 && TARGET
 
 ARGS = %ARGS%/
 
-;既に事件経験済みかを调べる
+;既に事件经验済みかを调べる
 RETURNF STRCOUNT(CSTR:ARG:10, ARGS)
 
 
@@ -4344,11 +4344,11 @@ SIF ARG == 0 && TARGET
 
 ARGS = %ARGS%/
 
-;経験済みなら追加せずに終了
+;经验済みなら追加せずに終了
 SIF STRCOUNT(CSTR:ARG:10, ARGS)
 	RETURN 1
 
-;経験していないなら追加
+;经验していないなら追加
 CSTR:ARG:10 = %CSTR:ARG:10%%ARGS%
 
 
@@ -4368,16 +4368,16 @@ CSTR:ARG:10 =
 FOR LCOUNT, 0, 100
 	SIF LOCALS:LCOUNT == ""
 		BREAK
-	;経験済みだった
+	;经验済みだった
 	SIF ARGS == LOCALS:LCOUNT
 		CONTINUE
 
-	;経験していないなら戻す
+	;经验していないなら戻す
 	CSTR:ARG:10 = %CSTR:ARG:10%%LOCALS:LCOUNT%/
 NEXT
 
 ;-------------------------------------------------
-;@CEVENTS(ARGS, ARG)は角色ARGが経験した事件 ARGS = 事件名：内容 之"内容"部分を文字列で返す関数
+;@CEVENTS(ARGS, ARG)は角色ARGが经验した事件 ARGS = 事件名：内容 之"内容"部分を文字列で返す関数
 ;当然之こと同时复数記录されてる事件群に使うには適していない
 ;-------------------------------------------------
 @CEVENTS(ARGS, ARG)

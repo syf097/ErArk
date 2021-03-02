@@ -6,7 +6,7 @@
 CALL CALC, "调教之标志取得"
 
 ;-------------------------------------------------
-;嗜虐or奉仕快乐経験发生标志
+;嗜虐or奉仕快乐经验发生标志
 ;-------------------------------------------------
 CALL SETFLAG, "奉仕嗜虐判定", SELECTCOM
 
@@ -54,7 +54,7 @@ ELSE
 ENDIF
 
 ;-------------------------------------------------
-;各种経験之变动
+;各种经验之变动
 ;-------------------------------------------------
 CALL GET_EXP_COM
 
@@ -82,7 +82,7 @@ CALL CHECK_INSERT
 ;顔面骑乘标志など之ON
 CALL CHECK_EX_EQUIP
 ;-------------------------------------------------
-;异常経験獲得_1
+;异常经验獲得_1
 ;-------------------------------------------------
 CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
@@ -101,17 +101,17 @@ SIF STATE("恍惚", PLAYER) == 0 && STATE("恍惚", TARGET) == 0
 ;-------------------------------------------------
 CALL EVENT_ASSI_AUTO, "调教中"
 ;-------------------------------------------------
-;按摩棒など付けっぱなし道具之チェック(文本と経験)
+;按摩棒など付けっぱなし道具之チェック(文本と经验)
 ;-------------------------------------------------
 CALL EQUIP_2
 ;-------------------------------------------------
-;おもな経験之増加が一段落下ところで技能LVチェック
+;おもな经验之増加が一段落下ところで技能LVチェック
 ;-------------------------------------------------
 CALL GET_EXABL2, TARGET
 CALL GET_EXABL2, MASTER
 CALL GET_EXABL2, ASSI
 ;-------------------------------------------------
-;异常経験獲得_2
+;异常经验獲得_2
 ;-------------------------------------------------
 CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
@@ -130,7 +130,7 @@ SIF NEXTCOM == 999
 CALL ORGASM_ADD_A, "数值表示"
 CALL ORGASM_ADD_B
 ;-------------------------------------------------
-;异常経験獲得_3
+;异常经验獲得_3
 ;-------------------------------------------------
 CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
@@ -220,11 +220,11 @@ CALL KOJO_MESSAGE_SAMEN_AND_EXTACY_3P
 SIF NEXTCOM == 999
 	RETURN 0
 ;-------------------------------------------------
-;被虐快乐経験、奉仕快乐経験等之チェック
+;被虐快乐经验、奉仕快乐经验等之チェック
 ;-------------------------------------------------
 CALL EXP_GOT_CHECK
 ;-------------------------------------------------
-;主人による调教之経験值
+;主人による调教之经验值
 ;-------------------------------------------------
 CALL MASTER_FLAG_CHECK
 ;-------------------------------------------------
@@ -237,7 +237,7 @@ SIF NEXTCOM == 999
 	RETURN 0
 
 ;-------------------------------------------------
-;异常経験獲得_4
+;异常经验獲得_4
 ;-------------------------------------------------
 CALL EXP50_CHECK
 CALL EXP50_CHECK, MASTER
@@ -328,7 +328,7 @@ ENDIF
 
 ;追加处理及びサブ事件
 ;-------------------------------------------------
-;主人による调教之経験值
+;主人による调教之经验值
 ;-------------------------------------------------
 @MASTER_FLAG_CHECK
 ;こ之回合に上升したＨ氛围を算出
@@ -523,9 +523,9 @@ CALL EVENT_DRAGON_NTR, "言叶で之寝取り返し"
 
 
 ;-------------------------------------------------
-;経験取得と表示之管理
-;ARGに２以上之数字が代入されている场合には獲得経験をARG倍する
-;ただし、扩张経験など一部之も之は経験を積むたびに上升が钝る之で、２回までは単纯にARG倍させたりはしない
+;经验取得と表示之管理
+;ARGに２以上之数字が代入されている场合には獲得经验をARG倍する
+;ただし、扩张经验など一部之も之は经验を積むたびに上升が钝る之で、２回までは単纯にARG倍させたりはしない
 ;-------------------------------------------------
 @GET_EXP_COM, ARG
 #DIM LCOUNT
@@ -544,41 +544,41 @@ ENDIF
 ;六九式だけは特殊
 IF SELECTCOM == 99 && TEQUIP:六九式
 	SELECTCOM = TEQUIP:六九式
-	CALL CALC, "経験取得", SELECTCOM
+	CALL CALC, "经验取得", SELECTCOM
 	IF ARG >= 2
 		FOR LCOUNT, 0, ARG-1
 			SELECTCASE LCOUNT
 			CASE 0
-				CALL CALC, "経験取得", SELECTCOM
+				CALL CALC, "经验取得", SELECTCOM
 			CASEELSE
-				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				CALL CALC, "经验取得", SELECTCOM, ARG - 2
 				BREAK
 			ENDSELECT
 		NEXT
 	ENDIF
 	SELECTCOM = TEQUIP:PLAYER:六九式
-	CALL CALC, "経験取得", SELECTCOM
+	CALL CALC, "经验取得", SELECTCOM
 	IF ARG >= 2
 		FOR LCOUNT, 0, ARG-1
 			SELECTCASE LCOUNT
 			CASE 0
-				CALL CALC, "経験取得", SELECTCOM
+				CALL CALC, "经验取得", SELECTCOM
 			CASEELSE
-				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				CALL CALC, "经验取得", SELECTCOM, ARG - 2
 				BREAK
 			ENDSELECT
 		NEXT
 	ENDIF
 	SELECTCOM = 99
 ELSE
-	CALL CALC, "経験取得", SELECTCOM
+	CALL CALC, "经验取得", SELECTCOM
 	IF ARG >= 2
 		FOR LCOUNT, 0, ARG-1
 			SELECTCASE LCOUNT
 			CASE 0
-				CALL CALC, "経験取得", SELECTCOM
+				CALL CALC, "经验取得", SELECTCOM
 			CASEELSE
-				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				CALL CALC, "经验取得", SELECTCOM, ARG - 2
 				BREAK
 			ENDSELECT
 		NEXT
@@ -588,14 +588,14 @@ ENDIF
 IF COND("３P")
 	SWAP SELECTCOM, SELECTCOM:2
 	SWAP PLAYER, PLAYER:1
-	CALL CALC, "経験取得", SELECTCOM
+	CALL CALC, "经验取得", SELECTCOM
 	IF ARG >= 2
 		FOR LCOUNT, 0, ARG-1
 			SELECTCASE LCOUNT
 			CASE 0
-				CALL CALC, "経験取得", SELECTCOM
+				CALL CALC, "经验取得", SELECTCOM
 			CASEELSE
-				CALL CALC, "経験取得", SELECTCOM, ARG - 2
+				CALL CALC, "经验取得", SELECTCOM, ARG - 2
 				BREAK
 			ENDSELECT
 		NEXT
@@ -607,15 +607,15 @@ ENDIF
 SIF FLAG:8 == 0
 	RETURN 0
 
-;LOCAL:LCOUNTにはTARGET之該当経験之増加量を代入し、LOCAL:(LCOUNT + 100)にはPLAYER之該当経験之増加量を代入
+;LOCAL:LCOUNTにはTARGET之該当经验之増加量を代入し、LOCAL:(LCOUNT + 100)にはPLAYER之該当经验之増加量を代入
 FOR LCOUNT, 0, 100
 	LOCAL:LCOUNT = EXP:LCOUNT - TCVAR:(LCOUNT + 700)
 
 	LOCAL:(LCOUNT + 100) = EXP:PLAYER:LCOUNT - TCVAR:PLAYER:(LCOUNT + 700)
 NEXT
-;"経験取得"内では増加していないが、实際には増えている
+;"经验取得"内では増加していないが、实際には増えている
 
-;表示するべき経験があるならPRINTL ないならここで終わり
+;表示するべき经验があるならPRINTL ないならここで終わり
 FOR LCOUNT, 0, 100
 	SELECTCASE LOCAL:LCOUNT + LOCAL:(LCOUNT + 100)
 	CASE IS > 0
@@ -1266,8 +1266,8 @@ FOR LCOUNT, 0, 5
 		TFLAG:30 += 30
 NEXT
 
-;绝顶経験を増やす
-EXP:绝顶経験 += NOWEX:绝顶数合计
+;绝顶经验を増やす
+EXP:绝顶经验 += NOWEX:绝顶数合计
 ;绝顶之内訳を記录
 ;CALL SETFLAG, "绝顶之記录"
 ;精力消費
@@ -1422,9 +1422,9 @@ CALL TARGET_EJAC_CHECK
 CALL TARGET_MILK_CHECK
 
 ;-------------------------------------------------
-;异常経験取得
-;CFLAG:11之0～19bitは处女丧失関连、20～29bitは童贞丧失関连、30～39bitはA处女丧失関连、40～49bitは处女にかかわる异常経験
-;CFLAG:12は其他色々な异常経験ごった煮
+;异常经验取得
+;CFLAG:11之0～19bitは处女丧失関连、20～29bitは童贞丧失関连、30～39bitはA处女丧失関连、40～49bitは处女にかかわる异常经验
+;CFLAG:12は其他色々な异常经验ごった煮
 ;-------------------------------------------------
 @EXP50_CHECK, ARG
 #DIM LCOUNT
@@ -1438,7 +1438,7 @@ SIF ARG == 0 && TARGET
 ;色は黄色
 SETCOLOR DEF_COLOR("黄色")
 
-;LOCAL:50 之值ぶん、异常経験を得る
+;LOCAL:50 之值ぶん、异常经验を得る
 VARSET LOCAL
 
 MEMO_LINECOUNT = LINECOUNT
@@ -1540,15 +1540,15 @@ IF TALENT:ARG:处女 == 1 && COND("处女丧失标志", ARG) && GETBITS(CFLAG:AR
 		SIF COND("处女篡夺标志", LCOUNT) == 0
 			CONTINUE
 
-		EXP:LCOUNT:处女篡夺経験 += 1
+		EXP:LCOUNT:处女篡夺经验 += 1
 		SETCOLOR DEF_COLOR("黄色")
 		IF ARG == MASTER
-			EXP:LCOUNT:経験值 += 1000
+			EXP:LCOUNT:经验值 += 1000
 			PRINTFORML %CALLNAME:LCOUNT%成为%CALLNAME:MASTER%的%TALENTNAME:94%
-			PRINTFORML 経験值＋1000
+			PRINTFORML 经验值＋1000
 		ELSE
-			EXP:LCOUNT:経験值 += 50
-			PRINTFORML 経験值＋50
+			EXP:LCOUNT:经验值 += 50
+			PRINTFORML 经验值＋50
 		ENDIF
 		RESETCOLOR
 	NEXT
@@ -1576,17 +1576,17 @@ IF TALENT:ARG:A处女 && COND("A处女丧失标志", ARG) + EXP_GAIN(13, ARG) &&
 	TALENT:ARG:A处女 = 0
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:11, 32
-	;A性爱を先に経験
-	IF TALENT:ARG:处女 == 1 && EXP:ARG:V性交経験 == 0 && GETBIT(CFLAG:ARG:11, 30) == 0
+	;A性爱を先に经验
+	IF TALENT:ARG:处女 == 1 && EXP:ARG:V性交经验 == 0 && GETBIT(CFLAG:ARG:11, 30) == 0
 		LOCAL:50 += 1
 		SETBIT CFLAG:ARG:11, 30
 	ENDIF
-	;A性爱を先に経験 そ之２
+	;A性爱を先に经验 そ之２
 	IF (TALENT:ARG:性别 == 1 || TALENT:ARG:扶她 == 1) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
 		LOCAL:50 += 1
 		SETBIT CFLAG:ARG:11, 31
 	ENDIF
-	PRINTFORM ＜异常経験：A处女比
+	PRINTFORM ＜异常经验：A处女比
 
 	IF GETBIT(CFLAG:ARG:11, 30) || GETBIT(CFLAG:ARG:11, 31)
 		SIF GETBIT(CFLAG:ARG:11, 30)
@@ -1609,32 +1609,32 @@ ENDIF
 
 ;公开自慰
 IF TEQUIP:ARG:摄像机 && COND("自慰标志", ARG) && GETBIT(CFLAG:ARG:12, 0) == 0
-	PRINTL ＜异常経験：公开自慰＞
+	PRINTL ＜异常经验：公开自慰＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 0
 ENDIF
 
 ;野外で裸露
 IF TEQUIP:ARG:野外PLAY && CHECK_CLO("裸露", ARG) && GETBIT(CFLAG:ARG:12, 1) == 0 && CLO_ORI(ARG, "服", "西装", "外套", "内衣")
-	PRINTL ＜异常経験：野外全裸＞
+	PRINTL ＜异常经验：野外全裸＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 1
 ENDIF
 ;公开剃毛
 IF TEQUIP:ARG:摄像机 && COND("剃毛标志", ARG) && GETBIT(CFLAG:ARG:12, 2) == 0
-	PRINTL ＜异常経験：公开剃毛＞
+	PRINTL ＜异常经验：公开剃毛＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 2
 ENDIF
 ;公开放尿
 IF TEQUIP:ARG:摄像机 && NOWEX:ARG:放尿 + NOWEX:ARG:绝顶漏尿 && GETBIT(CFLAG:ARG:12, 3) == 0
-	PRINTL ＜异常経験：公开放尿＞
+	PRINTL ＜异常经验：公开放尿＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 3
 ENDIF
 ;性器穿环
 IF COND("穿环ＯＮ标志", ARG) && COND("阴蒂穿环标志", ARG) + COND("阴唇穿环标志", ARG) + COND("乳头穿环标志", ARG) && GETBIT(CFLAG:ARG:12, 4) == 0
-	PRINTL ＜异常経験：性器穿环＞
+	PRINTL ＜异常经验：性器穿环＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 4
 ENDIF
@@ -1657,74 +1657,74 @@ IF NOWEX:ARG:排泄
 		SETBIT CFLAG:ARG:12, 7
 	ENDIF
 	SIF LOCAL
-		PRINTFORML ＜异常経験：\@TEQUIP:ARG:野外PLAY ? 野外 # \@排泄\@TEQUIP:ARG:摄像机 ? 記录 # \@＞
+		PRINTFORML ＜异常经验：\@TEQUIP:ARG:野外PLAY ? 野外 # \@排泄\@TEQUIP:ARG:摄像机 ? 記录 # \@＞
 	LOCAL:50 += LOCAL
 ENDIF
 ;舐肛奉侍
 IF COND("A奉仕标志", ARG) && GETBIT(CFLAG:ARG:12, 8) == 0
-	PRINTL ＜异常経験：舐肛奉侍＞
+	PRINTL ＜异常经验：舐肛奉侍＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 8
 ENDIF
 ;A之汚れを打扫
 IF COND("A打扫口交标志", ARG) && GETBIT(CFLAG:ARG:12, 9) == 0
-	PRINTL ＜异常経験：打扫口交（A）＞
+	PRINTL ＜异常经验：打扫口交（A）＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 9
 ENDIF
 
 ;初次之２穴刺激
 IF INSERT("二穴插入", ARG) && GETBIT(CFLAG:ARG:12, 10) == 0
-	PRINTL ＜异常経験：二穴插入＞
+	PRINTL ＜异常经验：二穴插入＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 10
 ENDIF
 ;V扩张
 IF EXP_GAIN(53, ARG) && ABL:ARG:V扩张 - (TALENT:ARG:生产经历 > 0) + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 11) == 0
-	PRINTL ＜异常経験：V扩张＞
+	PRINTL ＜异常经验：V扩张＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 11
 ENDIF
 ;A扩张
 IF EXP_GAIN(57, ARG) && ABL:ARG:A扩张 + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 12) == 0
-	PRINTL ＜异常経験：A扩张＞
+	PRINTL ＜异常经验：A扩张＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 12
 ENDIF
 ;拳交
 IF EXP_GAIN(66, ARG) + EXP_GAIN(67, ARG) && GETBIT(CFLAG:ARG:12, 13) == 0
-	PRINTL ＜异常経験：拳交＞
+	PRINTL ＜异常经验：拳交＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 13
 ENDIF
 ;龙奸
 IF EXP_GAIN(61, ARG) && GETBIT(CFLAG:ARG:12, 14) == 0
-	PRINTL ＜异常経験：龙奸＞
+	PRINTL ＜异常经验：龙奸＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 14
 ENDIF
 ;多重绝顶
 IF CHECK_ECST(ARG) == 5 && GETBIT(CFLAG:ARG:12, 16) == 0
-	PRINTL ＜异常経験：五重绝顶＞
+	PRINTL ＜异常经验：五重绝顶＞
 	LOCAL:50 += 1
 	SIF GETBIT(CFLAG:ARG:12, 15) == 0
 		LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 15
 	SETBIT CFLAG:ARG:12, 16
 ELSEIF CHECK_ECST(ARG) == 4 && GETBIT(CFLAG:ARG:12, 15) == 0
-	PRINTL ＜异常経験：四重绝顶＞
+	PRINTL ＜异常经验：四重绝顶＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 15
 ENDIF
 ;子宮绝顶(多重绝顶之时にも起きてしまうが、良い事とする)
 IF COND("子宮刺激标志", ARG) && TALENT:ARG:子宮性感 && NOWEX:ARG:V绝顶 >= 3 && GETBIT(CFLAG:ARG:12, 17) == 0
-	PRINTL ＜异常経験：子宮绝顶＞
+	PRINTL ＜异常经验：子宮绝顶＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 17
 ENDIF
-;膣よりもA之方が経験丰富
-IF INSERT("A插入", ARG) && EXP:ARG:A经验 >= MAX(EXP:ARG:V经验, 150) && EXP:ARG:A性交経験 >= MAX(EXP:ARG:V性交経験, 50) && ABL:ARG:A感觉 >= MAX(ABL:ARG:V感觉, 3) && GETBIT(CFLAG:ARG:12, 18) == 0
-	PRINTL ＜异常経験：肛交专用＞
+;膣よりもA之方が经验丰富
+IF INSERT("A插入", ARG) && EXP:ARG:A经验 >= MAX(EXP:ARG:V经验, 150) && EXP:ARG:A性交经验 >= MAX(EXP:ARG:V性交经验, 50) && ABL:ARG:A感觉 >= MAX(ABL:ARG:V感觉, 3) && GETBIT(CFLAG:ARG:12, 18) == 0
+	PRINTL ＜异常经验：肛交专用＞
 
 	LOCAL:50 += 1
 	SIF TALENT:ARG:处女 == 1
@@ -1733,26 +1733,26 @@ IF INSERT("A插入", ARG) && EXP:ARG:A经验 >= MAX(EXP:ARG:V经验, 150) && EXP
 ENDIF
 ;妖精に小根术なしで插入
 IF TALENT:ARG:妖精 && INSERT("插入", ARG) && SIZE("阴茎", INSERT("插入对象", ARG) ) && GETBIT(CFLAG:ARG:12, 19) == 0
-	PRINTL ＜异常経験：妖精无小根术插入＞
+	PRINTL ＜异常经验：妖精无小根术插入＞
 
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 19
 ENDIF
 ;抖S之本領发揮
 ;IF CUP:ARG:苦痛 >= 4500 && GETBIT(CFLAG:ARG:12, 20) == 0
-;	PRINTL ＜异常経験：【SM】＞
+;	PRINTL ＜异常经验：【SM】＞
 ;	LOCAL:50 += 1
 ;	SETBIT CFLAG:ARG:12, 20
 ;ENDIF
 ;针术
 IF COND("针术标志", ARG) && GETBIT(CFLAG:ARG:12, 21) == 0
-	PRINTL ＜异常経験：【针术】＞
+	PRINTL ＜异常经验：【针术】＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 21
 ENDIF
 ;难以忍受的苦痛
 IF PALAM:ARG:苦痛 + CUP:ARG:苦痛 >= 50000 && GETBIT(CFLAG:ARG:12, 22) == 0
-	PRINTL ＜异常経験：难以忍受的苦痛＞
+	PRINTL ＜异常经验：难以忍受的苦痛＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 22
 ENDIF
@@ -1760,7 +1760,7 @@ ENDIF
 IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
 	IF COND("精液之优勢", ARG) == -3 && MARK:ARG:龙奸刻印 == 2
 	ELSEIF MARK:ARG:反抗刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
-		PRINTL ＜异常経験：不期望的怀孕＞
+		PRINTL ＜异常经验：不期望的怀孕＞
 
 		LOCAL:50 += 1
 		SETBIT CFLAG:ARG:12, 23
@@ -1768,68 +1768,68 @@ IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
 ENDIF
 ;触手
 IF EXP_GAIN(55, ARG) && TALENT:ARG:旧日支配者的末裔 == 0 && GETBIT(CFLAG:ARG:12, 24) == 0
-	PRINTL ＜异常経験：触手経験＞
+	PRINTL ＜异常经验：触手经验＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 24
 ENDIF
 ;扶她(处理はSHOPでも行う)
 IF TALENT:ARG:扶她 == 2 && TALENT:ARG:具现 == 0 && GETBIT(CFLAG:ARG:12, 25) == 0
-	PRINTL ＜异常経験：扶她化＞
+	PRINTL ＜异常经验：扶她化＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 25
 ENDIF
 ;初次之喷乳で、孕娠由来之喷乳体質で无い
 IF EXP_GAIN(54, ARG) && TALENT:ARG:泌乳体質 != 1 && TALENT:ARG:孕娠 == 0 && GETBIT(CFLAG:ARG:12, 26) == 0
-	PRINTL ＜异常経験：喷乳経験＞
+	PRINTL ＜异常经验：喷乳经验＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 26
 ENDIF
 ;梦魇化
 IF COND("梦魇化标志", ARG) && GETBIT(CFLAG:ARG:12, 27) == 0
-	PRINTL ＜异常経験：梦魇化＞
+	PRINTL ＜异常经验：梦魇化＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 27
 ENDIF
 ;性转换
 IF COND("性转换标志", ARG) && GETBIT(CFLAG:ARG:12, 28) == 0
-	PRINTL ＜异常経験：性转换＞
+	PRINTL ＜异常经验：性转换＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 28
 ENDIF
 ;化蝶之梦
 IF COND("化蝶之梦标志", ARG) && GETBIT(CFLAG:ARG:12, 29) == 0
-	PRINTL ＜异常経験：化蝶之梦＞
+	PRINTL ＜异常经验：化蝶之梦＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 29
 ENDIF
 ;子宮
 IF COND("子宮插入标志", ARG) && EXP_GAIN(68, ARG) && GETBIT(CFLAG:ARG:12, 30) == 0
-	PRINTL ＜异常経験：子宮插入＞
+	PRINTL ＜异常经验：子宮插入＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 30
 ENDIF
 ;乳头奸
 IF EXP_GAIN(45, ARG) && GETBIT(CFLAG:ARG:12, 31) == 0
-	PRINTL ＜异常経験：乳头奸＞
+	PRINTL ＜异常经验：乳头奸＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 31
 ENDIF
 ;尿道扩张
 IF EXP_GAIN(77, ARG) && GETBIT(CFLAG:ARG:12, 32) == 0
-	PRINTL ＜异常経験：尿道扩张＞
+	PRINTL ＜异常经验：尿道扩张＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 32
 ENDIF
 ;尿道处女丧失
 IF EXP_GAIN(78, ARG) && GETBIT(CFLAG:ARG:12, 33) == 0
-	PRINTL ＜异常経験：尿道处女丧失＞
+	PRINTL ＜异常经验：尿道处女丧失＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 33
 ENDIF
 
 IF LOCAL:50
-	PRINTFORML 异常経験＋{LOCAL:50}\@ ARG != TARGET ? （%CALLNAME:ARG%） # \@
-	EXP:ARG:异常経験 += LOCAL:50
+	PRINTFORML 异常经验＋{LOCAL:50}\@ ARG != TARGET ? （%CALLNAME:ARG%） # \@
+	EXP:ARG:异常经验 += LOCAL:50
 ENDIF
 
 SIF LINECOUNT > MEMO_LINECOUNT

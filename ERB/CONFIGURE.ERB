@@ -233,7 +233,7 @@ CASE "调教配置模式：全指令表示"
 		RETURNF 0
 	RETURNF GETBIT(FLAG:210, 45)
 
-CASE "调教过滤経験标志"
+CASE "调教过滤经验标志"
 	RETURNF GETBIT(FLAG:210, 60)
 
 CASE "孕娠补丁"
@@ -354,7 +354,7 @@ CASE "等级限制器：＋５LV"
 CASE "等级限制器：＋10LV"
 	RETURNF GETBIT(FLAG:247, 15)
 
-CASE "経験表示詰め"
+CASE "经验表示詰め"
 	RETURNF FLAG:250
 CASE "恋慕と淫乱之任意獲得"
 	RETURNF FLAG:251
@@ -436,9 +436,9 @@ CASE "项目：属性"
 	RETURNF GETBIT(FLAG:3, 8)
 CASE "项目：宝珠"
 	RETURNF GETBIT(FLAG:3, 9)
-CASE "项目：経験"
+CASE "项目：经验"
 	RETURNF GETBIT(FLAG:3, 10)
-CASE "项目：异常経験"
+CASE "项目：异常经验"
 	RETURNF GETBIT(FLAG:3, 11)
 CASE "项目：能力"
 	RETURNF GETBIT(FLAG:3, 12)
@@ -581,7 +581,7 @@ CASE "系统＆事件全般"
 	PRINTFORM \@ CONFIG("相思相爱：人数限制无") ? 随意 # 只限一人 \@
 	PRINTFORML ＆\@ CONFIG("相思相爱：主动夜袭限制") ? 限制夜袭 # 不限制夜袭 \@
 	RESETCOLOR
-	PRINTFORML  [ 3] \@ CONFIG("経験表示詰め") ? ○ # －\@ 在显示能力时，不显示未获得的経験
+	PRINTFORML  [ 3] \@ CONFIG("经验表示詰め") ? ○ # －\@ 在显示能力时，不显示未获得的经验
 	PRINTFORM  [ 4] \@ CONFIG("VA详细表示") ? ○ # －\@ 详细显示V和A能力：
 	SETCOLOR DEF_COLOR("暗黄色")
 	IF CONFIG("VA详细表示")
@@ -669,7 +669,7 @@ CASE "系统＆事件全般"
 	CASE 2
 		CALL SETCONFIG, "相思相爱"
 	CASE 3
-		CALL SETCONFIG, "経験表示詰め"
+		CALL SETCONFIG, "经验表示詰め"
 	CASE 4
 		CALL SETCONFIG, "VA详细表示"
 	CASE 5
@@ -1546,12 +1546,12 @@ CASE "探索ボス"
 	ELSE
 		PRINTFORMW 不会出现二重身
 	ENDIF
-CASE "経験表示詰め"
+CASE "经验表示詰め"
 	INVERTBIT FLAG:250, 0
 	IF CONFIG(ARGS)
-		PRINTFORMW 隐藏未获得経験
+		PRINTFORMW 隐藏未获得经验
 	ELSE
-		PRINTFORMW 提示可能取得的経験
+		PRINTFORMW 提示可能取得的经验
 	ENDIF
 CASE "恋慕と淫乱之任意獲得"
 	INVERTBIT FLAG:251, 0
@@ -1618,9 +1618,9 @@ CASE "VA详细表示"
 CASE "咖啡屋"
 	INVERTBIT FLAG:258, 0
 	IF CONFIG(ARGS)
-		PRINTW 不发生EVEｎｔ
+		PRINTW 不发生EVEｎT
 	ELSE
-		PRINTW EVEｎｔ随时间发生
+		PRINTW EVEｎT随时间发生
 	ENDIF
 CASE "寝取られ"
 	INVERTBIT FLAG:262, 0

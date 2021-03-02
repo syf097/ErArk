@@ -473,13 +473,13 @@ CASE 60 TO 69, 177
 	SIF INSERT("狂野摇摆")
 		TIMES B, 1.50
 	;PLAYERが童贞
-	SIF EXP:PLAYER:V插入経験 + EXP:PLAYER:A插入経験 == 0
+	SIF EXP:PLAYER:V插入经验 + EXP:PLAYER:A插入经验 == 0
 		TIMES B, 3.00
-	;EXP:V性交経験をみる。経験が多くなると少し上がる
+	;EXP:V性交经验をみる。经验が多くなると少し上がる
 	IF TALENT:处女 == 1
 		TIMES B, 1.50
 	ELSE
-		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:V性交経験)*5)
+		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:V性交经验)*5)
 	ENDIF
 	;阴茎之大きさと之差でBＯＮＵS
 	SELECTCASE ABL:V扩张 - SIZE("阴茎", PLAYER)
@@ -502,13 +502,13 @@ CASE 70 TO 79
 	SIF INSERT("狂野摇摆")
 		TIMES B, 1.50
 	;PLAYERが童贞
-	SIF EXP:PLAYER:V插入経験 + EXP:PLAYER:A插入経験 == 0
+	SIF EXP:PLAYER:V插入经验 + EXP:PLAYER:A插入经验 == 0
 		TIMES B, 3.00
-	;EXP:A性交経験をみる。経験が多くなると少し上がる
+	;EXP:A性交经验をみる。经验が多くなると少し上がる
 	IF TALENT:A处女
 		TIMES B, 1.50
 	ELSE
-		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:A性交経験)*5)
+		B = MULTIPLY(B, 100 + GET_EXP_LV(EXP:A性交经验)*5)
 	ENDIF
 	;阴茎之大きさと之差でBＯＮＵS
 	SELECTCASE ABL:A扩张 - SIZE("阴茎", PLAYER)
@@ -531,7 +531,7 @@ CASE 83
 	SIF INSERT("狂野摇摆")
 		TIMES B, 1.50
 	;PLAYERが童贞
-	SIF EXP:PLAYER:V插入経験 + EXP:PLAYER:尿道插入経験 == 0
+	SIF EXP:PLAYER:V插入经验 + EXP:PLAYER:尿道插入经验 == 0
 		TIMES B, 3.00
 ;PLAYER之Aを刺激
 CASE 96, 107, 109, 110, 125 TO 129, 305
@@ -1429,12 +1429,12 @@ IF SHOOT("冲击")
 
 
 				ELSEIF ABL:喉扩张 <= SIZE("阴茎", PLAYER) && RAND:2
-					IF RAND:2 || EXP:口交経験 >= 150
+					IF RAND:2 || EXP:口交经验 >= 150
 						PRINTFORM 被毫不留情对待的喉咙
 
 
 					ELSE
-						PRINTFORM 経験不足的喉咙
+						PRINTFORM 经验不足的喉咙
 
 
 					ENDIF
@@ -3101,7 +3101,7 @@ IF NOWEX:射精 && COND("射精禁止中")
 	ENDIF
 	NOWEX:射精 = 0
 ELSEIF NOWEX:射精
-	SELECTCASE EXP:射精経験
+	SELECTCASE EXP:射精经验
 	CASE IS < EXPLV:1
 		SOURCE:屈从 += 650 * NOWEX:射精
 	CASE IS < EXPLV:2
@@ -3116,7 +3116,7 @@ ELSEIF NOWEX:射精
 		SOURCE:屈从 += 200 * NOWEX:射精
 	ENDSELECT
 
-	EXP:射精経験 += NOWEX:射精
+	EXP:射精经验 += NOWEX:射精
 	BASE:绝顶 = (PALAM:快C + CUP:快C - CDOWN:0) * MAXBASE:绝顶 / 10000
 	;精力减少(C绝顶でも减っているはずな之でここでは纯粋に射精で减るだけを扱う)
 	LOCAL = MAX(NOWEX:射精 - TALENT:梦魇 - TALENT:上位梦魇, 1)
@@ -3126,36 +3126,36 @@ ELSEIF NOWEX:射精
 	;射精した场所に精液汚れを付加
 	IF INSERT("V插入中")
 		PARTNER = INSERT("V插入中")
-		EXP:PARTNER:精液経験 += NOWEX:射精 * 2
-		CALL SETFLAG, "膣内精液経験", NOWEX:射精, PARTNER, TARGET
+		EXP:PARTNER:精液经验 += NOWEX:射精 * 2
+		CALL SETFLAG, "膣内精液经验", NOWEX:射精, PARTNER, TARGET
 	ELSEIF INSERT("A插入中")
 		PARTNER = INSERT("A插入中")
-		EXP:PARTNER:精液経験 += NOWEX:射精 * 2
-		CALL SETFLAG, "肛内精液経験", NOWEX:射精, PARTNER, TARGET
+		EXP:PARTNER:精液经验 += NOWEX:射精 * 2
+		CALL SETFLAG, "肛内精液经验", NOWEX:射精, PARTNER, TARGET
 	ELSE
 		SELECTCASE SELECTCOM
 		;口
 		CASE 4, 11
-			EXP:PLAYER:精液経験 += NOWEX:射精 * 3
-			CALL SETFLAG, "饮精経験", NOWEX:射精, PLAYER, TARGET
+			EXP:PLAYER:精液经验 += NOWEX:射精 * 3
+			CALL SETFLAG, "饮精经验", NOWEX:射精, PLAYER, TARGET
 			SIF SELECTCOM == 11
 				CALL ADD_STAIN, PLAYER, "B", "精液"
 		;手
 		CASE 10
-			EXP:PLAYER:精液経験 += NOWEX:射精
+			EXP:PLAYER:精液经验 += NOWEX:射精
 			CALL ADD_STAIN, PLAYER, "手", "精液"
 		;V
 		CASE 120 TO 124
-			EXP:PLAYER:精液経験 += NOWEX:射精 * 2
-			CALL SETFLAG, "膣内精液経験", NOWEX:射精, PLAYER, TARGET
+			EXP:PLAYER:精液经验 += NOWEX:射精 * 2
+			CALL SETFLAG, "膣内精液经验", NOWEX:射精, PLAYER, TARGET
 		;A
 		CASE 125 TO 129
-			EXP:PLAYER:精液経験 += NOWEX:射精 * 2
-			CALL SETFLAG, "肛内精液経験", NOWEX:射精, PLAYER, TARGET
+			EXP:PLAYER:精液经验 += NOWEX:射精 * 2
+			CALL SETFLAG, "肛内精液经验", NOWEX:射精, PLAYER, TARGET
 		;助手之V
 		CASE 161
-			EXP:ASSI:精液経験 += NOWEX:射精 * 2
-			CALL SETFLAG, "膣内精液経験", NOWEX:射精, ASSI, TARGET
+			EXP:ASSI:精液经验 += NOWEX:射精 * 2
+			CALL SETFLAG, "膣内精液经验", NOWEX:射精, ASSI, TARGET
 		ENDSELECT
 	ENDIF
 
@@ -3178,7 +3178,7 @@ ELSEIF NOWEX:ARG:射精
 		STR:5 = %STR:5%(%LOCALS%)
 	ENDIF
 	PRINTFORML %CALLNAME:ARG%%LOCALS%
-	PRINTFORML 射精経験＋{NOWEX:ARG:射精} \@ ARG == ASSI ? (助手) # \@
+	PRINTFORML 射精经验＋{NOWEX:ARG:射精} \@ ARG == ASSI ? (助手) # \@
 	LOCAL = MAX(NOWEX:ARG:射精 - TALENT:ARG:梦魇 - TALENT:ARG:上位梦魇, 1)
 	PRINTFORML 精力-{LOCAL}
 ENDIF
@@ -3214,7 +3214,7 @@ EX:喷乳 += NOWEX:喷乳
 IF NOWEX:喷乳
 	SOURCE:屈从 += 250 * NOWEX:喷乳 * LOCAL:13
 
-	EXP:喷乳経験 += 1
+	EXP:喷乳经验 += 1
 
 	;Bに母乳汚れ
 	CALL ADD_STAIN, TARGET, "B", "乳"
@@ -3243,5 +3243,5 @@ IF NOWEX:ARG:喷乳
 	ELSE
 		PRINTFORML %CALLNAME:ARG%的乳头渗出母乳
 	ENDIF
-	PRINTFORML 喷乳経験＋{NOWEX:ARG:喷乳} \@ ARG == ASSI ? (助手) # \@
+	PRINTFORML 喷乳经验＋{NOWEX:ARG:喷乳} \@ ARG == ASSI ? (助手) # \@
 ENDIF

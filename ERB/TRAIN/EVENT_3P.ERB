@@ -474,28 +474,28 @@ FOR LCOUNT, 1, 6
 	IF COND("调教側", ASSI)
 		SELECTCASE ARGS
 		;TARGETに对する指令管理
-		CASE "Ｔ顔"
+		CASE "T顔"
 			SETBIT LOCAL, 0
-		CASE "Ｔ下半身"
+		CASE "T下半身"
 			SETBIT LOCAL, 1
 			SETBIT LOCAL, 2
 			SETBIT LOCAL, 3
 			SETBIT LOCAL, 4
-		CASE "Ｔ阴茎"
+		CASE "T阴茎"
 			SETBIT LOCAL, 2
-		CASE "ＴV"
+		CASE "TV"
 			SETBIT LOCAL, 3
-		CASE "ＴA"
+		CASE "TA"
 			SETBIT LOCAL, 4
-		CASE "Ｔ胸"
+		CASE "T胸"
 			SETBIT LOCAL, 5
-		CASE "Ｔ指"
+		CASE "T指"
 			SETBIT LOCAL, 6
-		CASE "Ｔ前面"
+		CASE "T前面"
 			SETBIT LOCAL, 7
 			SETBIT LOCAL, 5
 			SETBIT LOCAL, 2
-		CASE "Ｔ后面"
+		CASE "T后面"
 			SETBIT LOCAL, 8
 			SETBIT LOCAL, 4
 		ENDSELECT
@@ -614,89 +614,89 @@ VARSET LOCAL
 SELECTCASE ARG:1
 ;顔面骑乘などPLAYER之口を刺激る
 CASE 1
-	LOCAL = BIT_FORBIDCOM("P顔", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P顔", "TV")
 CASE 4
-	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ阴茎")
+	LOCAL = BIT_FORBIDCOM("P顔", "T阴茎")
 CASE 5
-	LOCAL = BIT_FORBIDCOM("P指", "Ｔ胸")
+	LOCAL = BIT_FORBIDCOM("P指", "T胸")
 CASE 6
-	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("P顔", "T顔")
 CASE 9
-	LOCAL = BIT_FORBIDCOM("P顔", "ＴA")
+	LOCAL = BIT_FORBIDCOM("P顔", "TA")
 ;骑乘位などPLAYER之阴茎をVやAで刺激る
 CASE 60, 62, 63
-	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "T下半身", "T前面")
 CASE 61
-	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P前面", "T下半身", "T后面")
 CASE 64
-	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "T后面")
 CASE 65
-	LOCAL = BIT_FORBIDCOM("P下半身", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P下半身", "TV")
 CASE 66 TO 69
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("P下半身", "ＴV")
+		LOCAL = BIT_FORBIDCOM("P下半身", "TV")
 	ELSE
-		LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("P下半身", "T下半身")
 	ENDIF
 CASE 70, 72, 73
-	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "T下半身", "T前面")
 CASE 71
-	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P前面", "T下半身", "T后面")
 CASE 74
-	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "T后面")
 CASE 75
-	LOCAL = BIT_FORBIDCOM("P下半身", "ＴV", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "TV", "T后面")
 CASE 76 TO 79
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("P下半身", "ＴV", "Ｔ后面")
+		LOCAL = BIT_FORBIDCOM("P下半身", "TV", "T后面")
 	ELSE
-		LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("P下半身", "T下半身")
 	ENDIF
 ;貝合わせ
 CASE 80
-	LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
+	LOCAL = BIT_FORBIDCOM("P下半身", "T下半身")
 ;尿道插入
 CASE 83
-	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "T下半身", "T前面")
 ;手交などPLAYER之阴茎を手とかで刺激る
 CASE 90
-	LOCAL = BIT_FORBIDCOM("手交以外", "Ｔ指")
+	LOCAL = BIT_FORBIDCOM("手交以外", "T指")
 CASE 91
-	LOCAL = BIT_FORBIDCOM("口交以外", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("口交以外", "T顔")
 CASE 92
-	LOCAL = BIT_FORBIDCOM("乳交以外", "Ｔ胸")
+	LOCAL = BIT_FORBIDCOM("乳交以外", "T胸")
 CASE 93
-	LOCAL = BIT_FORBIDCOM("素股以外", "Ｔ下半身")
+	LOCAL = BIT_FORBIDCOM("素股以外", "T下半身")
 CASE 94
-	LOCAL = BIT_FORBIDCOM("洗浴服务以外", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("洗浴服务以外", "T前面")
 CASE 95
 	IF PENIS(MASTER)
-		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("足交以外", "T下半身")
 	ELSE
-		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("足交以外", "T下半身")
 	ENDIF
 CASE 96
-	LOCAL = BIT_FORBIDCOM("PA", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("PA", "T顔")
 CASE 97
-	LOCAL = BIT_FORBIDCOM("摩擦胖次以外", "Ｔ指")
+	LOCAL = BIT_FORBIDCOM("摩擦胖次以外", "T指")
 CASE 98
-	LOCAL = BIT_FORBIDCOM("PV", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("PV", "T顔")
 CASE 104
-	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ胸", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P顔", "T胸", "T前面")
 ;逆肛交
 CASE 125 TO 129
-	LOCAL = BIT_FORBIDCOM("P下半身", "P后面", "Ｔ阴茎", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P后面", "T阴茎", "T前面")
 ;逆强暴などPLAYER之Vを刺激る
 CASE 120 TO 124
-	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ阴茎", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "T阴茎", "T前面")
 CASE 140
-	LOCAL = BIT_FORBIDCOM("P阴茎", "P前面", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("P阴茎", "P前面", "T顔")
 CASE 141
-	LOCAL = BIT_FORBIDCOM("P指", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P指", "TV")
 CASE 142
-	LOCAL = BIT_FORBIDCOM("P指", "ＴA")
+	LOCAL = BIT_FORBIDCOM("P指", "TA")
 CASE 143
-	LOCAL = BIT_FORBIDCOM("P指", "P前面", "Ｔ下半身")
+	LOCAL = BIT_FORBIDCOM("P指", "P前面", "T下半身")
 ENDSELECT
 TCVAR:ARG:25 = LOCAL
 
@@ -723,7 +723,7 @@ ENDSELECT
 
 ;-------------------------------------------------
 ;Ｗ逆推之时には助手之指令口上とSOURCE等を管理する
-;助手之取得経験は邪魔だから隐藏ことにした
+;助手之取得经验は邪魔だから隐藏ことにした
 ;-------------------------------------------------
 @EQUIP_COM_3P
 #DIM MEMO_LINECOUNT
@@ -1016,7 +1016,7 @@ SIF ARG:1
 CALL ORGASM_ADD_A
 CALL ORGASM_ADD_B
 
-;各种経験之变动
+;各种经验之变动
 CALL GET_EXP_COM, ARG:3
 
 ;指令によるＨ氛围之獲得
@@ -1028,10 +1028,10 @@ CALL CHECK_INSERT
 ;ソース之计算
 CALL CALC_SOURCE
 
-;被虐快乐経験、奉仕快乐経験等之チェック
+;被虐快乐经验、奉仕快乐经验等之チェック
 CALL EXP_GOT_CHECK
 
-;异常経験チェック
+;异常经验チェック
 SIF ARG:1
 	CALL EXP50_CHECK
 

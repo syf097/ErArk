@@ -10,11 +10,11 @@ ELSE
 	PRINTFORMW 用舌头仔细地舔污垢…
 
 ENDIF
-;経験や汚れなど之处理は全部ここで行う
+;经验や汚れなど之处理は全部ここで行う
 CALL SETFLAG, "打扫舐阴", TARGET
 
-PRINTFORML 舐阴経験＋１
-PRINTFORML 打扫舐阴経験＋１
+PRINTFORML 舐阴经验＋１
+PRINTFORML 打扫舐阴经验＋１
 PRINTL 
 
 ;CALL SELF_KOJO, "打扫舐阴"
@@ -230,11 +230,11 @@ ELSE
 	CALL COUNTER_DOWN
 ENDIF
 
-;経験や汚れなど之处理は全部ここで行う
+;经验や汚れなど之处理は全部ここで行う
 CALL SETFLAG, "打扫口交", TARGET
 
-PRINTFORML 口交経験＋１
-PRINTFORML 打扫口交経験＋１
+PRINTFORML 口交经验＋１
+PRINTFORML 打扫口交经验＋１
 PRINTL 
 
 RETURN 1
@@ -283,15 +283,15 @@ IF PENIS(PLAYER)
 	ENDIF
 	NOWEX:PLAYER:射精 = LOCAL
 	EX:PLAYER:射精 += NOWEX:PLAYER:射精
-	EXP:PLAYER:射精経験 += NOWEX:PLAYER:射精
-	EXP:精液経験 += LOCAL * 2
+	EXP:PLAYER:射精经验 += NOWEX:PLAYER:射精
+	EXP:精液经验 += LOCAL * 2
 	IF LOCAL >= 3
 		PRINTFORM 超大量
 	ELSEIF LOCAL == 2
 		PRINTFORM 大量
 	ENDIF
 	PRINTL 射精
-	PRINTFORML 精液経験＋{LOCAL * 2}
+	PRINTFORML 精液经验＋{LOCAL * 2}
 
 	;PLAYER之阴茎に精液汚れを追加
 	CALL ADD_STAIN, PLAYER, "P", "精液"
@@ -302,33 +302,33 @@ IF PENIS(PLAYER)
 	ELSEIF SELECTCOM == 91 || SELECTCOM == 99 || SELECTCOM == 140 || ARGS == "打扫口交"
 		;梦魇之口⇔调教者之P之汚れが移动
 		CALL EQ_STAIN, TARGET, PLAYER, 0, 2
-		CALL SETFLAG, "饮精経験", LOCAL
+		CALL SETFLAG, "饮精经验", LOCAL
 	;胸に汚れを追加
 	ELSEIF SELECTCOM == 81 || SELECTCOM == 92
 		CALL ADD_STAIN, TARGET, "B", "精液"
 	;Vに汚れを追加
 	ELSEIF (SELECTCOM >= 60 && SELECTCOM <= 69) || INSERT("V插入")
-		CALL SETFLAG, "膣内精液経験", LOCAL
+		CALL SETFLAG, "膣内精液经验", LOCAL
 	;Aに汚れを追加
 	ELSEIF (SELECTCOM >= 70 && SELECTCOM <= 79) || INSERT("A插入")
-		CALL SETFLAG, "肛内精液経験", LOCAL
+		CALL SETFLAG, "肛内精液经验", LOCAL
 	;VかPに汚れを追加
 	ELSEIF SELECTCOM == 83 || INSERT("尿道插入")
-		CALL SETFLAG, "膀胱精液経験", LOCAL
+		CALL SETFLAG, "膀胱精液经验", LOCAL
 	;手に汚れを追加
 	ELSEIF SELECTCOM == 90 || SELECTCOM == 97
 		CALL ADD_STAIN, TARGET, "手", "精液"
 	ENDIF
 ELSE
 	PRINTFORMW %CALLNAME:PLAYER%不堪重负高潮了……
-	EXP:PLAYER:绝顶経験 += LOCAL
+	EXP:PLAYER:绝顶经验 += LOCAL
 	IF LOCAL >= 3
 		PRINTFORM 超强
 	ELSEIF LOCAL == 2
 		PRINTFORM 强
 	ENDIF
 	PRINTFORML 绝顶
-	PRINTFORML 绝顶経験＋{LOCAL}
+	PRINTFORML 绝顶经验＋{LOCAL}
 ENDIF
 
 ;暴发回数
