@@ -34,7 +34,7 @@ IF CONFIG("脱处女过滤")
 	CASE 60 TO 69
 		IF TALENT:处女 == 1 && TEQUIP:逆推 == 0
 			PRINTFORM %CALLNAME:TARGET%的处女被
-			IF PENIS(PLAYER) && (CHECK_STAIN(STAIN:PLAYER:Ｐ, "A") || (PREVCOM >= 70 && PREVCOM <= 79) || INSERT("A插入") )
+			IF PENIS(PLAYER) && (CHECK_STAIN(STAIN:PLAYER:P, "A") || (PREVCOM >= 70 && PREVCOM <= 79) || INSERT("A插入") )
 				PRINTFORM 用肛门弄污秽的阴茎
 
 			ELSE
@@ -115,7 +115,7 @@ IF TEQUIP:逆推 == 0
 					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享用的话用一下润滑液或许会比较……」
 			;V润が必要と助言
 			CASE 60 TO 79
-				SELECTCASE GET_PALAMLV(PALAM:V润 + PALAM:PLAYER:Ｐ润) - MAX(SIZE("阴茎", PLAYER) - ABL:V扩张, 0)
+				SELECTCASE GET_PALAMLV(PALAM:V润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:V扩张, 0)
 				CASE 1
 
 				CASE IS <= 0
@@ -123,7 +123,7 @@ IF TEQUIP:逆推 == 0
 				ENDSELECT
 			;A润が必要と助言
 			CASE 70 TO 79
-				SELECTCASE GET_PALAMLV(PALAM:A润 + PALAM:PLAYER:Ｐ润) - MAX(SIZE("阴茎", PLAYER) - ABL:A扩张, 0)
+				SELECTCASE GET_PALAMLV(PALAM:A润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:A扩张, 0)
 				CASE 1
 					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享乐的话、要用一下润滑液吗…」
 				CASE IS <= 0
@@ -213,7 +213,7 @@ CASE 83
 	CALL TEXT, "追加地之文：尿道插入后"
 ENDSELECT
 
-SIF LINECOUNT > MEMO_LINECOUNT || COND("３Ｐ")
+SIF LINECOUNT > MEMO_LINECOUNT || COND("３P")
 	RETURN 0
 
 ;追加自慰
@@ -276,11 +276,11 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 60, 83
 		PRINTFORM %CALLNAME:TARGET%
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
-			ENDIF
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
+			; ENDIF
 			IF RAND:2
 				PRINTFORM 一边吸引着、
 
@@ -330,12 +330,12 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 70
 		PRINTFORM %CALLNAME:TARGET%は
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%吸引着视线的同时、
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%吸引着视线的同时、
 
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%卖弄着的同时、
-			ENDIF
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%卖弄着的同时、
+			; ENDIF
 			IF COND("视力") && RAND:2
 				PRINTFORMW 带着兴奋的神色凝视着%CALLNAME:PLAYER%…
 			ELSE
@@ -355,11 +355,11 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 62, 72
 		PRINTFORM %CALLNAME:TARGET%は
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
-			ENDIF
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
+			; ENDIF
 			IF RAND:2
 				PRINTFORM 一边吸引着、
 
@@ -1141,10 +1141,10 @@ ELSEIF NOWEX:绝顶数合计
 	ENDIF
 ENDIF
 
-IF NOWEX:绝顶数合计 + NOWEX:射精 >= RAND:3 + 1 && STATE("束缚术：Ｐ", PLAYER)
+IF NOWEX:绝顶数合计 + NOWEX:射精 >= RAND:3 + 1 && STATE("束缚术：P", PLAYER)
 	PRINTFORML …%CALLNAME:TARGET%因为多次的绝顶，对阴茎的束缚术慢慢松懈了
 
-	CALL SETFLAG, "Ｐ束缚术弱体标志", PLAYER
+	CALL SETFLAG, "P束缚术弱体标志", PLAYER
 ENDIF
 
 ;绝顶おもらし…利尿剂が无いと、まず漏尿はしない。漏尿癖があると、しやすくなる。
@@ -1483,15 +1483,15 @@ CASE "指令"
 		LOCAL = TCVAR:PLAYER:101
 
 		VARSET LOCALS
-		FOR LCOUNT, 0, NUM("弱点")
-			SIF GETBIT(TALENT:MASTER:弱点, LCOUNT) == 0 || GETBIT(WEEKNESS, LCOUNT) == 0
-				CONTINUE
-			LOCAL:1 += 1
-			SIF RAND:(LOCAL:1)
-				CONTINUE
-			LOCALS = %NAMES("弱点", LCOUNT)%
-			LOCAL += 1000 * LOCAL:1
-		NEXT
+		; FOR LCOUNT, 0, NUM("弱点")
+		; 	SIF GETBIT(TALENT:MASTER:弱点, LCOUNT) == 0 || GETBIT(WEEKNESS, LCOUNT) == 0
+		; 		CONTINUE
+		; 	LOCAL:1 += 1
+		; 	SIF RAND:(LOCAL:1)
+		; 		CONTINUE
+		; 	LOCALS = %NAMES("弱点", LCOUNT)%
+		; 	LOCAL += 1000 * LOCAL:1
+		; NEXT
 
 		SIF LOCALS == ""
 			RETURN 0
@@ -1902,7 +1902,7 @@ ELSE
 
 		;余力がある场合はさらに追击判定(CALL BOUHATUなどはこ之台词之中で行う)
 		IF BASE:PLAYER:精力 >= 10
-			LOCALS:1 = ＥＸ追击：%LOCALS%
+			LOCALS:1 = EＸ追击：%LOCALS%
 			TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS:1
 		ENDIF
 

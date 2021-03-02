@@ -26,7 +26,7 @@ VARSET TFLAG, 0, 0, 31
 ;反击したか之标志を初期化
 TFLAG:90 = 0
 
-;NOWEX、TCVAR:0～TCVAR:29は毎回合初期化＆假阴茎はＰ汚れなし
+;NOWEX、TCVAR:0～TCVAR:29は毎回合初期化＆假阴茎はP汚れなし
 CALL SETFLAG, "回合开始", TARGET
 CALL SETFLAG, "回合开始", MASTER
 SIF ASSI
@@ -107,9 +107,9 @@ ELSE
 	;六九式判定
 	CALL SET_PLAY69
 
-	;３Ｐによる協力指令管理
+	;３Pによる協力指令管理
 	SIF ASSI && STATE("击沈", ASSI) == 0 && (PREVCOM:1 >= 0 || PREVCOM:2 >= 0)
-		CALL SET_SELECTCOM_ASSI, "３Ｐ"
+		CALL SET_SELECTCOM_ASSI, "３P"
 ;坏心眼い人は思ったとおりに动いてくれない、とかどうだろう
 ;ELSEIF TEQUIP:逆推 == 0 && TALENT:坏心眼 && ABL:顺从 + ABL:侍奉精神 - MARK:反抗刻印 <= 5
 ;	IF SELECTCOM == 91 && NO:TARGET == 12
@@ -158,7 +158,7 @@ CASEELSE
 ENDSELECT
 
 ;占有不可な场合
-IF TEQUIP:Ｗ逆推 || COND("３Ｐ")
+IF TEQUIP:Ｗ逆推 || COND("３P")
 	TEQUIP:接吻 = 0
 	TEQUIP:ASSI:接吻 = 0
 ENDIF
@@ -278,7 +278,7 @@ IF TEQUIP:逆推
 	ENDIF
 	TEQUIP:高潮管理 = 0
 
-	;３ＰはＷ逆推に移行
+	;３PはＷ逆推に移行
 	SIF TEQUIP:逆推 && SELECTCOM:1 >= 90 && SELECTCOM:1 <= 97
 		CALL SETFLAG, "Ｗ逆推"
 ELSE
@@ -342,7 +342,7 @@ DRAWLINE
 CALL KOJO_MESSAGE_AFTER_COM
 
 ;-------------------------------------------------
-;各种标志之CLｅAｎＵｐ
+;各种标志之CLEAｎＵP
 
 ;-------------------------------------------------
 CALL SETFLAG, "回合終了", TARGET

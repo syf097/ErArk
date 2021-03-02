@@ -20,7 +20,7 @@ FOR LCOUNT, 1, CHARANUM
 NEXT
 ;MASTER之精力限界值リセット
 MAXBASE:MASTER:精力 = 10 + ABL:MASTER:技巧*4
-SIF CONFIG("ＥASＹ")
+SIF CONFIG("EASY")
 	MAXBASE:MASTER:精力 += 5
 
 ;装饰品效果（精力）
@@ -33,7 +33,7 @@ MAXBASE:MASTER:精力 = MULTIPLY(MAXBASE:MASTER:精力, 100 + TALENT:MASTER:精�
 
 ;精力之回復处理
 FOR LCOUNT, 1, CHARANUM
-	SIF BASE:LCOUNT:精力 == 0 || BASE:LCOUNT:精力 > MAXBASE:LCOUNT:精力 || CONFIG("ＥASＹ")
+	SIF BASE:LCOUNT:精力 == 0 || BASE:LCOUNT:精力 > MAXBASE:LCOUNT:精力 || CONFIG("EASY")
 		BASE:LCOUNT:精力 = MAXBASE:LCOUNT:精力
 NEXT
 
@@ -327,7 +327,7 @@ NEXT
 ;反击之标志消去
 VARSET TFLAG, 0, 90, 98
 
-;Ｗ逆推や３Ｐ、脱力、挑逗之时には反击は无
+;Ｗ逆推や３P、脱力、挑逗之时には反击は无
 SIF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || SELECTCOM:2 >= 0 || STATE("脱力", TARGET) || TEQUIP:PLAYER:高潮管理 || COND("排泄：限界")
 	RETURN 0
 ;反击してこない指令群
@@ -788,7 +788,7 @@ RETURN LOCAL
 
 @COUNTER_FASCINATION
 ;恍惚、逆推判定
-SIF TEQUIP:拘束 || TEQUIP:触手 || TEQUIP:尿道ブジー || COND("３Ｐ")
+SIF TEQUIP:拘束 || TEQUIP:触手 || TEQUIP:尿道ブジー || COND("３P")
 	RETURN 0
 SIF STATE("击沈", PLAYER) || STATE("恍惚", PLAYER)
 	RETURN 0
@@ -879,7 +879,7 @@ SIF STATE("醉酒", TARGET) || STATE("烂醉", TARGET)
 SIF BASE:性欲 >= MAXBASE:性欲
 	TFLAG:93 -= 20
 
-;装饰品（逆推率ＵＰ）
+;装饰品（逆推率ＵP）
 SIF TALENT:PLAYER:逆推率 > 0
 	TFLAG:93 += TALENT:PLAYER:逆推率
 
@@ -1027,7 +1027,7 @@ SIF STATE("防强术", PLAYER)
 ;装饰品效果（技巧）
 SIF TALENT:PLAYER:技巧强化 > 0
 	LOCAL = MULTIPLY(LOCAL, 100 + TALENT:PLAYER:技巧强化)
-;１Ｔごとに復帰率が５％ＵＰ
+;１Ｔごとに復帰率が５％ＵP
 SELECTCASE TFLAG:99
 CASE 0
 	LOCAL = 0

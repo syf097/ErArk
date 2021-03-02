@@ -1,0 +1,240 @@
+﻿;-------------------------------------------------
+;手套之関数
+;指定番号によって名前がCSTR:48に代入される。
+;99番までは、そ之番号之梦魇之手套。
+;EQUIP:手套は手套之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_GLOVE, ARG, ARG:1
+;ARG之手套をARG:1番之も之にする。ARG:1==0なら手套を脱がす
+;汚れ＆ずれたりした标志等を初期化して新品にする
+STAIN:ARG:手套 = 0
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0 || COND("指之使用", ARG) == 0
+	EQUIP:ARG:手套 = 0
+	CSTR:ARG:48 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:48 = %PALAM_GLOVE(ARG:1, ARG, 1)%
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之穿いている手套之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@GLOVE(ARG, ARG:1)
+#FUNCTIONS
+IF ARG:1 == 0
+	LOCALS = %CSTR:ARG:48%
+ELSE
+	IF CHECK_GLOVE("手露出", ARG)
+		LOCALS = 手
+	ELSEIF CHECK_GLOVE("指露出", ARG)
+		LOCALS = 指
+	ELSEIF CHECK_GLOVE("铠甲", ARG)
+		LOCALS = 护手
+	ELSEIF CHECK_GLOVE("肉球", ARG)
+		LOCALS = 肉球
+	ELSE
+		LOCALS = 手套
+	ENDIF
+ENDIF
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之手套之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_GLOVE(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_GLOVE(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之手套之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_GLOVE(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+
+IF ARG:1 > 0 && COND("指之使用", ARG:1) == 0
+	SIF ARG:2 > 0
+		EQUIP:(ARG:1):手套 = LOCAL
+	RETURNF LOCALS
+ENDIF
+
+SELECTCASE ARG
+CASE 1, 48
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 洋装衣袖
+		LOCAL = SETFLAG_GLOVE("长", "手露出", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 洋装衣袖
+		LOCAL = SETFLAG_GLOVE("长", "手露出", "黒")
+	ELSE
+		LOCALS = 洋装衣袖
+		LOCAL = SETFLAG_GLOVE("长", "手露出", "紫")
+	ENDIF
+CASE 2
+	LOCALS = 小恶魔之手套
+	LOCAL = SETFLAG_GLOVE("手首まで")
+CASE 4
+	IF CFLAG:(ARG:1):8 == 3
+		LOCALS = 妖精之手套
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "荷叶边", "紫")
+	ELSE
+		LOCALS = 妖精之手套
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "荷叶边", "纯白")
+	ENDIF
+CASE 6
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 肉球连指手套
+		LOCAL = SETFLAG_GLOVE("肉球", "毛皮", "青")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 肉球连指手套
+		LOCAL = SETFLAG_GLOVE("肉球", "毛皮", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 肉球连指手套
+		LOCAL = SETFLAG_GLOVE("肉球", "毛皮", "黄")
+	ELSE
+		LOCALS = 肉球连指手套
+		LOCAL = SETFLAG_GLOVE("肉球", "毛皮")
+	ENDIF
+CASE 12
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 宝龙之鱗护手
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "铠甲", "黒")
+	ELSEIF CFLAG:(ARG:1):8 != 2
+		LOCALS = 亜龙人之鱗护手
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "铠甲", "薄緑")
+	ENDIF
+CASE 17
+	LOCALS = 皮质衣袖
+	LOCAL = SETFLAG_GLOVE("长", "皮质", "黒")
+CASE 19, 43, 47
+	LOCALS = 手套
+	LOCAL = SETFLAG_GLOVE("手首まで")
+CASE 22
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 忍手甲
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "和风", "手甲", "橙色")
+	ELSE
+		LOCALS = 忍手甲
+		LOCAL = SETFLAG_GLOVE("肘まで", "手露出", "和风", "手甲", "薄緑")
+	ENDIF
+CASE 23
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 不思議兔之手套
+		LOCAL = SETFLAG_GLOVE("肘まで", "荷叶边", "丝绸", "赤")
+	ELSE
+		LOCALS = 不思議兔之手套
+		LOCAL = SETFLAG_GLOVE("肘まで", "荷叶边", "丝绸", "白")
+	ENDIF
+CASE 26
+	LOCALS = 龙骑兵之护手
+	LOCAL = SETFLAG_GLOVE("长", "手露出", "铠甲", "薄緑")
+CASE 28
+	LOCALS = 手甲
+	LOCAL = SETFLAG_GLOVE("长", "铠甲", "赤")
+CASE 30
+	LOCALS = 手套
+	LOCAL = SETFLAG_GLOVE("手首まで", "指露出", "纯白")
+CASE 34
+	LOCALS = 洋装手套
+	LOCAL = SETFLAG_GLOVE("长", "薄青")
+CASE 35
+	LOCALS = 洋装手套
+	LOCAL = SETFLAG_GLOVE("长", "荷叶边", "紫")
+CASE 41
+	LOCALS = 巨大爪子
+	LOCAL = SETFLAG_GLOVE("コキ不可", "长", "手露出", "铠甲", "巨大", "爪", "黒")
+CASE 50
+	LOCALS = 洋装手套
+	LOCAL = SETFLAG_GLOVE("长", "荷叶边", "指露出", "黒")
+CASE 52
+	LOCALS = 洋装衣袖
+	LOCAL = SETFLAG_GLOVE("长", "手露出", "薄青")
+CASE 58
+	LOCALS = 手套
+	LOCAL = SETFLAG_GLOVE("肘まで", "荷叶边", "丝绸", "赤")
+CASE 60
+	LOCALS = 手套
+	LOCAL = SETFLAG_GLOVE("手首まで", "毛皮")
+CASE 61
+	LOCALS = 手甲
+	LOCAL = SETFLAG_GLOVE("长", "铠甲", "白")
+CASE 100
+	LOCALS = 丝绸手套
+	LOCAL = SETFLAG_GLOVE("丝绸", "纯白")
+CASE 101
+	LOCALS = 洋装手套
+	LOCAL = SETFLAG_GLOVE("长", "蕾丝")
+CASE 102
+	LOCALS = 皮质衣袖
+	LOCAL = SETFLAG_GLOVE("肘まで", "皮质", "手露出")
+CASE 103
+	LOCALS = 洋装衣袖
+	LOCAL = SETFLAG_GLOVE("长", "蕾丝", "手露出")
+ENDSELECT
+
+SIF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):手套 = LOCAL
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之手套之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_GLOVE(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "手首まで"
+		SETBIT LOCAL, 0
+	CASE "肘まで"
+		SETBIT LOCAL, 1
+	CASE "长"
+		SETBIT LOCAL, 2
+	CASE "荷叶边"
+		SETBIT LOCAL, 3
+	CASE "肉球"
+		SETBIT LOCAL, 4
+	CASE "爪"
+		SETBIT LOCAL, 5
+	CASE "和风"
+		SETBIT LOCAL, 6
+	CASE "手甲"
+		SETBIT LOCAL, 6
+		LOCAL |= SETFLAG_COMMON("铠甲")
+	CASE "巨大"
+		SETBIT LOCAL, 7
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之手套が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_GLOVE(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:手套 == 0
+	RETURNF 0
+SIF (SETFLAG_GLOVE(ARGS)&EQUIP:ARG:手套) == SETFLAG_GLOVE(ARGS)
+	RETURNF 1
+RETURNF 0
+

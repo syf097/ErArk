@@ -425,12 +425,12 @@ SELECTCASE ARGS
 CASE "折り返し文字数"
 	RETURNF 78
 CASE "目标金额"
-	SIF CONFIG("ＥASＹ")
+	SIF CONFIG("EASY")
 		RETURNF 100000
 	RETURNF 1000000
 CASE "目标金额：ＮＯＲMAL"
 	RETURNF 1000000
-CASE "目标金额：ＥASＹ"
+CASE "目标金额：EASY"
 	RETURNF 100000
 CASE "回合数"
 	SIF ARG == 0 && TARGET
@@ -526,7 +526,7 @@ CASE "弱点"
 			BREAK
 		LOCAL += 1
 	NEXT
-CASE "ＥＮＤ閲览済"
+CASE "EＮＤ閲览済"
 	FOR LCOUNT, 1, 100
 		SIF FLAG:(1200 + LCOUNT) >= 2
 			LOCAL += 1
@@ -1076,11 +1076,11 @@ CASE "射精禁止中"
 		SIF COND("尿道使用中", ARG)
 			RETURNF 1
 	ENDIF
-	SIF COND("Ｐ束缚术弱体标志", ARG)
+	SIF COND("P束缚术弱体标志", ARG)
 		RETURNF 0
 	SIF BASE:ARG:快感许容值男 >= MAX(MAXBASE:ARG:快感许容值男*2, MAXBASE:ARG:绝顶*4)
 		RETURNF 0
-	SIF STATE("束缚术：Ｐ", ARG)
+	SIF STATE("束缚术：P", ARG)
 		RETURNF 1
 
 CASE "秘法对象"
@@ -1154,7 +1154,7 @@ CASE "中出され量"
 		RETURNF 0
 	ENDIF
 	RETURNF LOCAL
-CASE "３Ｐ"
+CASE "３P"
 	SIF SELECTCOM:2 >= 0
 		RETURNF 1
 CASE "人里"
@@ -1906,18 +1906,18 @@ CASE "外观：肠洗浄"
 CASE "外观：A润滑液"
 	SIF GETBIT(CFLAG:ARG:368, 22) || GETBIT(CFLAG:ARG:368, 23)
 		RETURNF 1
-CASE "外观：Ｐ准备"
+CASE "外观：P准备"
 	SIF PENIS(ARG) == 0
 		RETURNF 0
 	IF GETBIT(CFLAG:ARG:368, 26)
 		RETURNF 1
 	ENDIF
-CASE "外观：Ｐ掃除"
+CASE "外观：P掃除"
 	SIF PENIS(ARG) == 0
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 26) == 0 && COND("真性包茎", ARG) == 0
 		RETURNF 1
-CASE "Ｐ不潔"
+CASE "P不潔"
 	SIF PENIS(ARG) == 0
 		RETURNF 0
 	SIF GETBIT(BASE:ARG:老废物, 0)
@@ -1985,7 +1985,7 @@ CASE "外观：口独占"
 CASE "外观：接吻独占"
 	SIF GETBIT(CFLAG:ARG:368, 44)
 		RETURNF 1
-CASE "外观：Ｐ独占"
+CASE "外观：P独占"
 	SIF PENIS(ARG) == 0
 		RETURNF 0
 	SIF GETBIT(CFLAG:ARG:368, 45)
@@ -2044,7 +2044,7 @@ CASE "恋慕取得可能"
 		RETURNF 0
 	SIF CFLAG:ARG:2 >= 2500 && (CFLAG:ARG:2 - 2500)/5 + EXP:ARG:奉仕快乐経験 >= 500
 		RETURNF 1
-	SIF CONFIG("ＥASＹ") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:奉仕快乐経験 >= 300
+	SIF CONFIG("EASY") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:奉仕快乐経験 >= 300
 		RETURNF 1
 CASE "淫乱取得可能"
 	;欲望が3以上、绝顶経験や精液経験など之合计が1000以上、自慰成瘾と精液成瘾之合计3以上、今回之绝顶数が10以上で淫乱
@@ -2182,7 +2182,7 @@ CASE "针术标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 10)
 CASE "剃毛标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 11)
-CASE "Ｐ束缚术弱体标志"
+CASE "P束缚术弱体标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 12)
 CASE "子宮插入标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 13)
@@ -2314,16 +2314,16 @@ CASE "相性○"
 		RETURNF 1
 
 ;主に一晩开放で之襲击属性に使用
-CASE "强奸Ｐ"
+CASE "强奸P"
 	LOCAL = TALENT:ARG:粗野*2 + TALENT:ARG:力量 + TALENT:ARG:刚强 + TALENT:ARG:傲慢 + TALENT:ARG:强硬 + TALENT:ARG:抖S*3 + (ABL:ARG:S属性 + 1)/2
 
 	;欲求不满に寄る补正有
 	LOCAL += BASE:ARG:欲求不满/3
 	RETURNF LOCAL
-CASE "和奸Ｐ"
+CASE "和奸P"
 	LOCAL = TALENT:ARG:内向 + TALENT:ARG:保守 + TALENT:ARG:开朗*2 + TALENT:ARG:鼓舞*2 + TALENT:魅惑*2 + TALENT:ARG:献身*5 + ABL:ARG:侍奉精神
 	RETURNF LOCAL
-CASE "肉便器Ｐ"
+CASE "肉便器P"
 	LOCAL = TALENT:ARG:性变态*3 + TALENT:ARG:抖M*5 + ABL:ARG:M属性
 
 	;欲求不满に寄る补正大
@@ -3017,9 +3017,9 @@ CASE "精液之优勢", "胎儿之父亲"
 		LOCALS = 无法被定义的对象（BUG，BUG！看到这个的人请给我报告）
 	ENDSELECT
 CASE "一晩开放で之襲击属性"
-	IF COND("强奸Ｐ", ARG) >= MAX(COND("和奸Ｐ", ARG), COND("肉便器Ｐ", ARG) )
+	IF COND("强奸P", ARG) >= MAX(COND("和奸P", ARG), COND("肉便器P", ARG) )
 		LOCALS = 强奸
-	ELSEIF COND("和奸Ｐ", ARG) >= COND("肉便器Ｐ", ARG)
+	ELSEIF COND("和奸P", ARG) >= COND("肉便器P", ARG)
 		LOCALS = 和奸
 	ELSE
 		LOCALS = 肉便器
@@ -3041,7 +3041,7 @@ CASE "V尿道之初期扩张度"
 	SIF TALENT:ARG:史莱姆
 		LOCALS = %ADDNUM_STR(LOCALS, 10)%
 
-CASE "Ｐ尿道之初期扩张度"
+CASE "P尿道之初期扩张度"
 	LOCALS = 5/5/5/5/5/5/5/5/5/5/
 	SIF TALENT:ARG:妖精
 		LOCALS = %ADDNUM_STR(LOCALS, -2)%
@@ -3348,7 +3348,7 @@ CASE "胸部罩杯"
 	CASEELSE
 
 		VARSET LOCALS
-		SPLIT "---, AAA, AA, A, B, C, Ｄ, Ｅ, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, L, M, Ｎ, Ｏ, Ｐ, Ｑ, Ｒ, S, Ｔ, Ｕ, V, Ｗ, Ｘ, Ｙ, Ｚ", ", ", LOCALS
+		SPLIT "---, AAA, AA, A, B, C, Ｄ, E, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, L, M, Ｎ, Ｏ, P, Ｑ, Ｒ, S, Ｔ, Ｕ, V, Ｗ, Ｘ, Y, Ｚ", ", ", LOCALS
 		LOCALS = %LOCALS:(BASE:ARG:罩杯)%
 	ENDSELECT
 CASE "お尻"
@@ -4678,9 +4678,9 @@ VARSET LOCALS
 ;色と記号之設定
 IF CONFIG("画面表示：カラーバー")
 	SELECTCASE ARGS
-	CASE "ＰALAM绝顶"
+	CASE "PALAM绝顶"
 		LOCAL = DEF_COLOR("ショッキング粉红色")
-	CASE "ＰALAM"
+	CASE "PALAM"
 		LOCAL = ((DEF_COLOR("白")/65536)/10*(10-MIN(10, GET_PALAMLV(ARG))))*65536
 		LOCAL += (((DEF_COLOR("白")/256)%256)/10*(10-MIN(10, GET_PALAMLV(ARG))))*256
 		LOCAL += ((DEF_COLOR("白")%256)/10*(10-MIN(10, GET_PALAMLV(ARG))))
@@ -4742,7 +4742,7 @@ ENDIF
 
 ;PALAM形式之バー之最大值之算出
 SELECTCASE ARGS
-CASE "ＰALAM", "ＰALAM绝顶"
+CASE "PALAM", "PALAM绝顶"
 	IF GET_PALAMLV(ARG) >= 16
 		ARG:1 = PALAM_LV(16)
 	ELSE
@@ -4758,7 +4758,7 @@ CASE IS <= 0
 	PRINTPLAINFORM %LOCALS:1 * ARG:2%
 CASE IS >= ARG:1
 	SELECTCASE ARGS
-	CASE "黄色槽", "白色槽", "", "ＰALAM"
+	CASE "黄色槽", "白色槽", "", "PALAM"
 		SIF ARG:2 >= 3
 			LOCALS:2 = MAX
 	ENDSELECT

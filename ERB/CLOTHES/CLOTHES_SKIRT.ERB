@@ -1,0 +1,189 @@
+﻿;-------------------------------------------------
+;迷你裙をはかせる関数
+;指定番号によって名前がCSTR:43に代入される。
+;EQUIP:迷你裙は迷你裙之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_SKIRT, ARG, ARG:1, ARG:2
+;汚れ＆ずれたりした标志等を初期化して新品にする
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0
+	EQUIP:ARG:迷你裙 = 0
+	CSTR:ARG:43 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:43 = %PALAM_SKIRT(ARG:1, ARG)%
+
+TCVAR:ARG:26 = 0
+
+;-------------------------------------------------
+;ARG之迷你裙之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@SKIRT(ARG, ARG:1)
+#FUNCTIONS
+IF ARG:1 == 0
+	LOCALS = %CSTR:ARG:43%
+ELSE
+	IF CHECK_SKIRT("铠甲", ARG)
+		LOCALS = 下摆
+	ELSEIF CHECK_SKIRT("吊带睡裙", ARG)
+		LOCALS = 吊带睡裙
+	ELSEIF CHECK_SKIRT("Ｙ领衬衫", ARG)
+		LOCALS = 衬衫
+	ELSEIF CHECK_SKIRT("袴", ARG)
+		LOCALS = 袴
+	ELSEIF CHECK_SKIRT("和服", ARG)
+		LOCALS = 裾
+	ELSEIF CHECK_SKIRT("巻き迷你裙", ARG)
+		LOCALS = 腰布
+	ELSE
+		LOCALS = 迷你裙
+	ENDIF
+ENDIF
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之迷你裙之正式名称(基本的には用いない)
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_SKIRT(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_SKIRT(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之迷你裙之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+
+;はずだが、EQUIPなどについては衬衫之ところに統合
+;-------------------------------------------------
+@PALAM_SKIRT(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+
+SELECTCASE ARG
+CASE 10
+
+	LOCALS = 腰布
+CASE 12
+	LOCALS = 下摆
+CASE 14
+	LOCALS = 腰布
+CASE 16
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 迷你裙
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 和服
+	ELSE
+		LOCALS = 红白巫女服
+	ENDIF
+CASE 22
+	LOCALS = 裾
+CASE 28
+
+	LOCALS = 迷你裙
+CASE 30
+	LOCALS = 巻布
+CASE 50, 112
+
+	LOCALS = 迷你裙
+CASE 100
+
+	LOCALS = 衬衫下摆
+CASE 101
+
+	LOCALS = 筒裙
+CASE 102
+	LOCALS = 和服
+CASE 103
+
+	LOCALS = 围裙
+CASE 105
+
+	LOCALS = 护士服裙
+CASE 107
+
+	LOCALS = 百褶裙
+CASE 108
+	LOCALS = 红白巫女服
+CASE 109
+	LOCALS = 裾
+CASE 111
+	LOCALS = 荷叶边迷你裙
+CASEELSE
+	LOCALS = 迷你裙
+ENDSELECT
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之迷你裙之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_SKIRT(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "长"
+		SETBIT LOCAL, 0
+	CASE "マキシ", "ベリー长", "超长"
+		SETBIT LOCAL, 1
+		SETBIT LOCAL, 0
+	CASE "短"
+		SETBIT LOCAL, 2
+	CASE "超短", "超细", "迷你裙"
+		SETBIT LOCAL, 3
+		SETBIT LOCAL, 2
+	CASE "フレア"
+		SETBIT LOCAL, 4
+	CASE "タイト"
+		SETBIT LOCAL, 5
+	CASE "プリーツ"
+		SETBIT LOCAL, 6
+	CASE "袴"
+		SETBIT LOCAL, 7
+		SETBIT LOCAL, 0
+		SETBIT LOCAL, 1
+	CASE "洋装"
+		SETBIT LOCAL, 8
+	CASE "臀部ボーン", "臀部ボーン洋装"
+		SETBIT LOCAL, 9
+		SETBIT LOCAL, 8
+	CASE "围裙"
+		SETBIT LOCAL, 10
+	CASE "和服", "和服"
+		SETBIT LOCAL, 11
+	CASE "巻き迷你裙", "巻き"
+		SETBIT LOCAL, 12
+	CASE "吊带睡裙"
+		SETBIT LOCAL, 13
+	CASE "Ｙ领衬衫"
+		SETBIT LOCAL, 14
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+
+;-------------------------------------------------
+;ARG之迷你裙が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_SKIRT(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:迷你裙 == 0
+	RETURNF 0
+SIF (SETFLAG_SKIRT(ARGS)&EQUIP:ARG:迷你裙) == SETFLAG_SKIRT(ARGS)
+	RETURNF 1
+RETURNF 0
+

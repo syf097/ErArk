@@ -209,7 +209,7 @@ TALENT:240 , 素質:束缚术
 TALENT:241 , 素質:全强术
 TALENT:242 , 素質:大根术
 TALENT:243 , 素質:快感术
-TALENT:501 , 素質:ＥＰ强化
+TALENT:501 , 素質:EP强化
 TALENT:502 , 素質:精力强化
 TALENT:503 , 素質:技巧强化
 TALENT:504 , 素質:精神力强化
@@ -604,7 +604,7 @@ PALAM:12 , パラ:A润
 PALAM:13 , パラ:抑郁
 PALAM:14 , パラ:快B
 PALAM:15 , パラ:快M
-PALAM:16 , パラ:Ｐ润
+PALAM:16 , パラ:P润
 PALAM:21 , パラ:膣内精液量
 PALAM:22 , パラ:肠内精液量
 PALAM:23 , パラ:Extacy
@@ -1249,7 +1249,7 @@ TALENTNAME:240 , 素質名称:束缚术
 TALENTNAME:241 , 素質名称:全强术
 TALENTNAME:242 , 素質名称:大根术
 TALENTNAME:243 , 素質名称:快感术
-TALENTNAME:501 , 素質名称:ＥＰ强化
+TALENTNAME:501 , 素質名称:EP强化
 TALENTNAME:502 , 素質名称:精力强化
 TALENTNAME:503 , 素質名称:技巧强化
 TALENTNAME:504 , 素質名称:精神力强化
@@ -1470,7 +1470,7 @@ TALENT:PLAYER:240 , 素質:调教者:束缚术
 TALENT:PLAYER:241 , 素質:调教者:全强术
 TALENT:PLAYER:242 , 素質:调教者:大根术
 TALENT:PLAYER:243 , 素質:调教者:快感术
-TALENT:PLAYER:501 , 素質:调教者:ＥＰ强化
+TALENT:PLAYER:501 , 素質:调教者:EP强化
 TALENT:PLAYER:502 , 素質:调教者:精力强化
 TALENT:PLAYER:503 , 素質:调教者:技巧强化
 TALENT:PLAYER:504 , 素質:调教者:精神力强化
@@ -1691,7 +1691,7 @@ TALENT:MASTER:240 , 素質:主人:束缚术
 TALENT:MASTER:241 , 素質:主人:全强术
 TALENT:MASTER:242 , 素質:主人:大根术
 TALENT:MASTER:243 , 素質:主人:快感术
-TALENT:MASTER:501 , 素質:主人:ＥＰ强化
+TALENT:MASTER:501 , 素質:主人:EP强化
 TALENT:MASTER:502 , 素質:主人:精力强化
 TALENT:MASTER:503 , 素質:主人:技巧强化
 TALENT:MASTER:504 , 素質:主人:精神力强化
@@ -1912,7 +1912,7 @@ TALENT:ASSI:240 , 素質:助手:束缚术
 TALENT:ASSI:241 , 素質:助手:全强术
 TALENT:ASSI:242 , 素質:助手:大根术
 TALENT:ASSI:243 , 素質:助手:快感术
-TALENT:ASSI:501 , 素質:助手:ＥＰ强化
+TALENT:ASSI:501 , 素質:助手:EP强化
 TALENT:ASSI:502 , 素質:助手:精力强化
 TALENT:ASSI:503 , 素質:助手:技巧强化
 TALENT:ASSI:504 , 素質:助手:精神力强化
@@ -2133,7 +2133,7 @@ TALENT:TARGET:240 , 素質:奴隶:束缚术
 TALENT:TARGET:241 , 素質:奴隶:全强术
 TALENT:TARGET:242 , 素質:奴隶:大根术
 TALENT:TARGET:243 , 素質:奴隶:快感术
-TALENT:TARGET:501 , 素質:奴隶:ＥＰ强化
+TALENT:TARGET:501 , 素質:奴隶:EP强化
 TALENT:TARGET:502 , 素質:奴隶:精力强化
 TALENT:TARGET:503 , 素質:奴隶:技巧强化
 TALENT:TARGET:504 , 素質:奴隶:精神力强化
@@ -3478,7 +3478,7 @@ PALAMNAME:12 , パラ名称:A润
 PALAMNAME:13 , パラ名称:抑郁
 PALAMNAME:14 , パラ名称:快B
 PALAMNAME:15 , パラ名称:快M
-PALAMNAME:16 , パラ名称:Ｐ润
+PALAMNAME:16 , パラ名称:P润
 PALAMNAME:21 , パラ名称:膣内精液量
 PALAMNAME:22 , パラ名称:肠内精液量
 PALAMNAME:23 , パラ名称:Extacy
@@ -3504,7 +3504,7 @@ PALAM:PLAYER:12 , パラ:调教者:A润
 PALAM:PLAYER:13 , パラ:调教者:抑郁
 PALAM:PLAYER:14 , パラ:调教者:快B
 PALAM:PLAYER:15 , パラ:调教者:快M
-PALAM:PLAYER:16 , パラ:调教者:Ｐ润
+PALAM:PLAYER:16 , パラ:调教者:P润
 PALAM:PLAYER:21 , パラ:调教者:膣内精液量
 PALAM:PLAYER:22 , パラ:调教者:肠内精液量
 PALAM:PLAYER:23 , パラ:调教者:Extacy
@@ -3530,7 +3530,7 @@ PALAM:MASTER:12 , パラ:主人:A润
 PALAM:MASTER:13 , パラ:主人:抑郁
 PALAM:MASTER:14 , パラ:主人:快B
 PALAM:MASTER:15 , パラ:主人:快M
-PALAM:MASTER:16 , パラ:主人:Ｐ润
+PALAM:MASTER:16 , パラ:主人:P润
 PALAM:MASTER:21 , パラ:主人:膣内精液量
 PALAM:MASTER:22 , パラ:主人:肠内精液量
 PALAM:MASTER:23 , パラ:主人:Extacy
@@ -3556,7 +3556,7 @@ PALAM:ASSI:12 , パラ:助手:A润
 PALAM:ASSI:13 , パラ:助手:抑郁
 PALAM:ASSI:14 , パラ:助手:快B
 PALAM:ASSI:15 , パラ:助手:快M
-PALAM:ASSI:16 , パラ:助手:Ｐ润
+PALAM:ASSI:16 , パラ:助手:P润
 PALAM:ASSI:21 , パラ:助手:膣内精液量
 PALAM:ASSI:22 , パラ:助手:肠内精液量
 PALAM:ASSI:23 , パラ:助手:Extacy
@@ -3582,7 +3582,7 @@ PALAM:TARGET:12 , パラ:奴隶:A润
 PALAM:TARGET:13 , パラ:奴隶:抑郁
 PALAM:TARGET:14 , パラ:奴隶:快B
 PALAM:TARGET:15 , パラ:奴隶:快M
-PALAM:TARGET:16 , パラ:奴隶:Ｐ润
+PALAM:TARGET:16 , パラ:奴隶:P润
 PALAM:TARGET:21 , パラ:奴隶:膣内精液量
 PALAM:TARGET:22 , パラ:奴隶:肠内精液量
 PALAM:TARGET:23 , パラ:奴隶:Extacy
@@ -3608,7 +3608,7 @@ UP:12 , パラ上升:A润
 UP:13 , パラ上升:抑郁
 UP:14 , パラ上升:快B
 UP:15 , パラ上升:快M
-UP:16 , パラ上升:Ｐ润
+UP:16 , パラ上升:P润
 UP:21 , パラ上升:膣内精液量
 UP:22 , パラ上升:肠内精液量
 UP:23 , パラ上升:Extacy
@@ -3634,7 +3634,7 @@ DOWN:12 , パラ下降:A润
 DOWN:13 , パラ下降:抑郁
 DOWN:14 , パラ下降:快B
 DOWN:15 , パラ下降:快M
-DOWN:16 , パラ下降:Ｐ润
+DOWN:16 , パラ下降:P润
 DOWN:21 , パラ下降:膣内精液量
 DOWN:22 , パラ下降:肠内精液量
 DOWN:23 , パラ下降:Extacy
@@ -3744,7 +3744,7 @@ NOWEX:39 , 调教绝顶回数:尿道绝顶边缘
 ;●汚れへ变换,
 STAIN:0 , 汚れ:M
 STAIN:1 , 汚れ:手
-STAIN:2 , 汚れ:Ｐ
+STAIN:2 , 汚れ:P
 STAIN:3 , 汚れ:V
 STAIN:4 , 汚れ:A
 STAIN:5 , 汚れ:B
@@ -3760,7 +3760,7 @@ STAIN:19 , 汚れ:靴
 ;●汚れ:调教者へ变换,
 STAIN:PLAYER:0 , 汚れ:调教者:M
 STAIN:PLAYER:1 , 汚れ:调教者:手
-STAIN:PLAYER:2 , 汚れ:调教者:Ｐ
+STAIN:PLAYER:2 , 汚れ:调教者:P
 STAIN:PLAYER:3 , 汚れ:调教者:V
 STAIN:PLAYER:4 , 汚れ:调教者:A
 STAIN:PLAYER:5 , 汚れ:调教者:B
@@ -3776,7 +3776,7 @@ STAIN:PLAYER:19 , 汚れ:调教者:靴
 ;●汚れ:主人へ变换,
 STAIN:MASTER:0 , 汚れ:主人:M
 STAIN:MASTER:1 , 汚れ:主人:手
-STAIN:MASTER:2 , 汚れ:主人:Ｐ
+STAIN:MASTER:2 , 汚れ:主人:P
 STAIN:MASTER:3 , 汚れ:主人:V
 STAIN:MASTER:4 , 汚れ:主人:A
 STAIN:MASTER:5 , 汚れ:主人:B
@@ -3792,7 +3792,7 @@ STAIN:MASTER:19 , 汚れ:主人:靴
 ;●汚れ:助手へ变换,
 STAIN:ASSI:0 , 汚れ:助手:M
 STAIN:ASSI:1 , 汚れ:助手:手
-STAIN:ASSI:2 , 汚れ:助手:Ｐ
+STAIN:ASSI:2 , 汚れ:助手:P
 STAIN:ASSI:3 , 汚れ:助手:V
 STAIN:ASSI:4 , 汚れ:助手:A
 STAIN:ASSI:5 , 汚れ:助手:B
@@ -3808,7 +3808,7 @@ STAIN:ASSI:19 , 汚れ:助手:靴
 ;●汚れ:奴隶へ变换,
 STAIN:TARGET:0 , 汚れ:奴隶:M
 STAIN:TARGET:1 , 汚れ:奴隶:手
-STAIN:TARGET:2 , 汚れ:奴隶:Ｐ
+STAIN:TARGET:2 , 汚れ:奴隶:P
 STAIN:TARGET:3 , 汚れ:奴隶:V
 STAIN:TARGET:4 , 汚れ:奴隶:A
 STAIN:TARGET:5 , 汚れ:奴隶:B

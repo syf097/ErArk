@@ -2,7 +2,7 @@
 ;多人数PLAYで用いる共通处理はここで行う
 ;-------------------------------------------------
 ;-------------------------------------------------
-;３Ｐにおける指令口上之汎用部分
+;３Pにおける指令口上之汎用部分
 ;-------------------------------------------------
 @TRAIN_MESSAGE_3P
 ;同じ指令之組み合わせで连续实行
@@ -54,7 +54,7 @@ IF SELECTCOM:2 == PREVCOM:2 && SELECTCOM == PREVCOM
 
 	CASEELSE
 		;こ之值は助手側之行动で之分岐(PREVCOM:2で之分岐と思って問題ない)
-		SELECTCASE CHECK_COM("３Ｐ奉仕")
+		SELECTCASE CHECK_COM("３P奉仕")
 		;乳头奸
 		CASE 82
 			SELECTCASE SELECTCOM
@@ -194,7 +194,7 @@ CASE 60 TO 79, 82, 83, 140
 CASEELSE
 	PRINTFORM %CALLNAME:TARGET%对%CALLNAME:(PLAYER:1)%
 
-	SELECTCASE CHECK_COM("３Ｐ奉仕")
+	SELECTCASE CHECK_COM("３P奉仕")
 	;乳头奸
 	CASE 82
 		PRINTFORM 同时%TEXTR("的乳头侵犯着", "用胸接受的东西")%
@@ -338,7 +338,7 @@ CASEELSE
 ENDSELECT
 
 ;-------------------------------------------------
-;３Ｐにおける射精口上之汎用部分
+;３Pにおける射精口上之汎用部分
 ;-------------------------------------------------
 @SAMEN_SHOOT_MESSAGE_3P, ARGS
 PRINTFORM %CALLNAME:(PLAYER:1)%
@@ -430,21 +430,21 @@ ENDSELECT
 
 
 ;-------------------------------------------------
-;３Ｐにおける助手之指令決定（自由行动は今之ところ无）
+;３Pにおける助手之指令決定（自由行动は今之ところ无）
 ;-------------------------------------------------
 @SET_SELECTCOM_ASSI_3P
 SELECTCASE SELECTCOM
 CASE 82, 90 TO 104, 140
 	SIF CHECK_COM("Ｗ奉仕")
 		SELECTCOM:1 = SELECTCOM
-	SIF CHECK_COM("３Ｐ奉仕")
+	SIF CHECK_COM("３P奉仕")
 		SELECTCOM:2 = PREVCOM:2
 CASE 60 TO 69
 	IF CHECK_COM("V双枪插入")
 		SELECTCOM:2 = 64
 	ELSEIF CHECK_COM("二穴插入")
 		SELECTCOM:2 = 74
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		SELECTCOM:2 = PREVCOM:2
 	ENDIF
 CASE 70 TO 79
@@ -452,11 +452,11 @@ CASE 70 TO 79
 		SELECTCOM:2 = 75
 	ELSEIF CHECK_COM("二穴插入")
 		SELECTCOM:2 = 65
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		SELECTCOM:2 = PREVCOM:2
 	ENDIF
 CASE 83
-	SIF CHECK_COM("３Ｐ奉仕")
+	SIF CHECK_COM("３P奉仕")
 		SELECTCOM:2 = PREVCOM:2
 ENDSELECT
 
@@ -502,28 +502,28 @@ FOR LCOUNT, 1, 6
 	ELSE
 		SELECTCASE ARGS
 		;PLAYERに对する指令管理
-		CASE "Ｐ顔"
+		CASE "P顔"
 			SETBIT LOCAL, 20
-		CASE "Ｐ下半身"
+		CASE "P下半身"
 			SETBIT LOCAL, 21
 			SETBIT LOCAL, 22
 			SETBIT LOCAL, 23
 			SETBIT LOCAL, 24
-		CASE "Ｐ阴茎"
+		CASE "P阴茎"
 			SETBIT LOCAL, 22
-		CASE "ＰV"
+		CASE "PV"
 			SETBIT LOCAL, 23
-		CASE "ＰA"
+		CASE "PA"
 			SETBIT LOCAL, 24
-		CASE "Ｐ胸"
+		CASE "P胸"
 			SETBIT LOCAL, 25
-		CASE "Ｐ指"
+		CASE "P指"
 			SETBIT LOCAL, 26
-		CASE "Ｐ前面"
+		CASE "P前面"
 			SETBIT LOCAL, 27
 			SETBIT LOCAL, 25
 			SETBIT LOCAL, 22
-		CASE "Ｐ后面"
+		CASE "P后面"
 			SETBIT LOCAL, 28
 			SETBIT LOCAL, 24
 		;PLAYERに对する奉仕指令
@@ -614,50 +614,50 @@ VARSET LOCAL
 SELECTCASE ARG:1
 ;顔面骑乘などPLAYER之口を刺激る
 CASE 1
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P顔", "ＴV")
 CASE 4
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ阴茎")
+	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ阴茎")
 CASE 5
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "Ｔ胸")
+	LOCAL = BIT_FORBIDCOM("P指", "Ｔ胸")
 CASE 6
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ顔")
 CASE 9
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "ＴA")
+	LOCAL = BIT_FORBIDCOM("P顔", "ＴA")
 ;骑乘位などPLAYER之阴茎をVやAで刺激る
 CASE 60, 62, 63
-	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
 CASE 61
-	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ后面")
 CASE 64
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ后面")
 CASE 65
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P下半身", "ＴV")
 CASE 66 TO 69
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV")
+		LOCAL = BIT_FORBIDCOM("P下半身", "ＴV")
 	ELSE
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
 	ENDIF
 CASE 70, 72, 73
-	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
 CASE 71
-	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ后面")
 CASE 74
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ后面")
 CASE 75
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV", "Ｔ后面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "ＴV", "Ｔ后面")
 CASE 76 TO 79
 	IF TEQUIP:逆推
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "ＴV", "Ｔ后面")
+		LOCAL = BIT_FORBIDCOM("P下半身", "ＴV", "Ｔ后面")
 	ELSE
-		LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+		LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
 	ENDIF
 ;貝合わせ
 CASE 80
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｔ下半身")
+	LOCAL = BIT_FORBIDCOM("P下半身", "Ｔ下半身")
 ;尿道插入
 CASE 83
-	LOCAL = BIT_FORBIDCOM("Ｐ前面", "Ｔ下半身", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P前面", "Ｔ下半身", "Ｔ前面")
 ;手交などPLAYER之阴茎を手とかで刺激る
 CASE 90
 	LOCAL = BIT_FORBIDCOM("手交以外", "Ｔ指")
@@ -676,27 +676,27 @@ CASE 95
 		LOCAL = BIT_FORBIDCOM("足交以外", "Ｔ下半身")
 	ENDIF
 CASE 96
-	LOCAL = BIT_FORBIDCOM("ＰA", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("PA", "Ｔ顔")
 CASE 97
 	LOCAL = BIT_FORBIDCOM("摩擦胖次以外", "Ｔ指")
 CASE 98
-	LOCAL = BIT_FORBIDCOM("ＰV", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("PV", "Ｔ顔")
 CASE 104
-	LOCAL = BIT_FORBIDCOM("Ｐ顔", "Ｔ胸", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P顔", "Ｔ胸", "Ｔ前面")
 ;逆肛交
 CASE 125 TO 129
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ后面", "Ｔ阴茎", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P后面", "Ｔ阴茎", "Ｔ前面")
 ;逆强暴などPLAYER之Vを刺激る
 CASE 120 TO 124
-	LOCAL = BIT_FORBIDCOM("Ｐ下半身", "Ｐ前面", "Ｔ阴茎", "Ｔ前面")
+	LOCAL = BIT_FORBIDCOM("P下半身", "P前面", "Ｔ阴茎", "Ｔ前面")
 CASE 140
-	LOCAL = BIT_FORBIDCOM("Ｐ阴茎", "Ｐ前面", "Ｔ顔")
+	LOCAL = BIT_FORBIDCOM("P阴茎", "P前面", "Ｔ顔")
 CASE 141
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴV")
+	LOCAL = BIT_FORBIDCOM("P指", "ＴV")
 CASE 142
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "ＴA")
+	LOCAL = BIT_FORBIDCOM("P指", "ＴA")
 CASE 143
-	LOCAL = BIT_FORBIDCOM("Ｐ指", "Ｐ前面", "Ｔ下半身")
+	LOCAL = BIT_FORBIDCOM("P指", "P前面", "Ｔ下半身")
 ENDSELECT
 TCVAR:ARG:25 = LOCAL
 
@@ -717,7 +717,7 @@ RETURNF 0
 SELECTCASE ARGS
 CASE "Ｗ逆推"
 	CALL SET_SELECTCOM_ASSI_W
-CASE "３Ｐ"
+CASE "３P"
 	CALL SET_SELECTCOM_ASSI_3P
 ENDSELECT
 
@@ -1046,7 +1046,7 @@ SELECTCOM = MEMO_SELECTCOM
 
 
 ;-------------------------------------------------
-;３Ｐにおける绝顶口上之处理
+;３Pにおける绝顶口上之处理
 ;-------------------------------------------------
 @KOJO_MESSAGE_SAMEN_AND_EXTACY_3P
 ;Ｗ逆推などTARGETが二人之时
@@ -1067,8 +1067,8 @@ IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0
 	SWAP PREVCOM, PREVCOM:1
 	SWAP TCVAR:PLAYER:5, TCVAR:PLAYER:6
 ENDIF
-;PLAYERが二人之、いわゆる３Ｐ之时
-IF COND("３Ｐ") && COND("绝顶", PLAYER:1) && COND("绝顶", PLAYER) == 0
+;PLAYERが二人之、いわゆる３P之时
+IF COND("３P") && COND("绝顶", PLAYER:1) && COND("绝顶", PLAYER) == 0
 	CALL SETFLAG, "调教者交代"
 
 	CALL KOJO_MESSAGE_SAMEN_AND_EXTACY

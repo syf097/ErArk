@@ -11,7 +11,7 @@ CASE IS < 0
 	BASE:PLAYER:绝顶 -= TCVAR:PLAYER:101
 	TCVAR:PLAYER:101 = 0
 	TCVAR:PLAYER:1 = 0
-	IF COND("３Ｐ")
+	IF COND("３P")
 		CALL SETFLAG, "调教者交代"
 		BASE:PLAYER:绝顶 -= TCVAR:PLAYER:101
 		TCVAR:PLAYER:101 = 0
@@ -20,7 +20,7 @@ CASE IS < 0
 	ENDIF
 CASEELSE
 	CALL SAMEN_CHECK_PLAYER, ARG
-	IF COND("３Ｐ")
+	IF COND("３P")
 		CALL SETFLAG, "调教者交代"
 		CALL SAMEN_CHECK_PLAYER, ARG
 		CALL SETFLAG, "调教者交代"
@@ -341,7 +341,7 @@ CASE 70 TO 79
 CASE 80
 	B = MULTIPLY(B, MIN(10 + GET_PALAMLV(PALAM:V润)*40, 120) + ABL:欲望*10)
 CASE 16, 81 TO 89, 93, 94, 100
-	B = MULTIPLY(B, MIN(10 + GET_PALAMLV(PALAM:PLAYER:Ｐ润)*40, 120) + ABL:欲望*10)
+	B = MULTIPLY(B, MIN(10 + GET_PALAMLV(PALAM:PLAYER:P润)*40, 120) + ABL:欲望*10)
 ENDSELECT
 
 ;主に技能による补正
@@ -368,8 +368,8 @@ LOCAL = MULTIPLY(LOCAL, B/10)
 ;非常に效果が高い
 LOCAL = CALCF("基礎补正", LOCAL)
 
-;逆推orＷ逆推or３Ｐ之时之补正
-IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || COND("３Ｐ")
+;逆推orＷ逆推or３P之时之补正
+IF TEQUIP:Ｗ逆推 || SELECTCOM:1 >= 0 || COND("３P")
 	TIMES LOCAL, 0.70
 ELSEIF TEQUIP:逆推
 	IF ABL:PLAYER:M属性
@@ -968,16 +968,16 @@ SIF TEQUIP:触手
 	RETURN 0
 
 CALL SETFLAG, "射精＆绝顶チェック", PLAYER
-;３Ｐ
-IF COND("３Ｐ")
+;３P
+IF COND("３P")
 	CALL SETFLAG, "调教者交代"
 	CALL SETFLAG, "射精＆绝顶チェック", PLAYER
 	CALL SETFLAG, "调教者交代"
 ENDIF
 
 ;PLAYERに阴茎があるなら、どこに射精したかor我慢したか之TFLAGをここで設定する。
-;３Ｐなら变更不可とする（今后变更可能にするかも）
-IF PENIS(PLAYER) && COND("绝顶", PLAYER) && COND("３Ｐ") == 0 && COND("射精禁止中", PLAYER) == 0
+;３Pなら变更不可とする（今后变更可能にするかも）
+IF PENIS(PLAYER) && COND("绝顶", PLAYER) && COND("３P") == 0 && COND("射精禁止中", PLAYER) == 0
 	;后之TFLAG判定之ために代入
 	SELECTCASE TCVAR:PLAYER:5
 	CASE 1, 5
@@ -1067,15 +1067,15 @@ IF PENIS(PLAYER) && COND("绝顶", PLAYER) && COND("３Ｐ") == 0 && COND("射�
 ENDIF
 
 ;射精or绝顶
-IF COND("绝顶", PLAYER) || (COND("３Ｐ") && COND("绝顶", PLAYER:1) )
+IF COND("绝顶", PLAYER) || (COND("３P") && COND("绝顶", PLAYER:1) )
 	CALL CALC, "同时绝顶"
 
 	IF COND("绝顶", PLAYER)
-		SIF STATE("束缚术：Ｐ", PLAYER)
+		SIF STATE("束缚术：P", PLAYER)
 			PRINTFORML %CALLNAME:PLAYER%异常高涨的欲望无法拘束而射精了
 		PRINTFORML %TEXTS("绝顶", PLAYER)%
 	ENDIF
-	SIF COND("３Ｐ") && COND("绝顶", PLAYER:1)
+	SIF COND("３P") && COND("绝顶", PLAYER:1)
 		PRINTFORML %TEXTS("绝顶", PLAYER:1)%
 
 	;绝顶した时之文本を出力します。
@@ -1094,7 +1094,7 @@ IF COND("绝顶", PLAYER) || (COND("３Ｐ") && COND("绝顶", PLAYER:1) )
 			CALL CALC, "绝顶させた处理", ASSI
 		CALL CALC, "绝顶した处理", PLAYER
 	ENDIF
-	IF COND("３Ｐ") && COND("绝顶", PLAYER:1)
+	IF COND("３P") && COND("绝顶", PLAYER:1)
 		CALL SETFLAG, "调教者交代"
 		CALL CALC, "绝顶させた处理", TARGET
 		CALL CALC, "绝顶した处理", PLAYER
@@ -1117,7 +1117,7 @@ ELSEIF EX:PLAYER:忍住了没丢 == 0 && BASE:PLAYER:绝顶 >= MAXBASE:PLAYER:�
 ENDIF
 
 ;侍奉精神LV２以上、技巧LV２以上で实行值を30以上上回っているなら汚れをなめ取る
-IF ABL:侍奉精神 > MAX(1, RAND:5) && ABL:技巧 >= 2 && SHOOT("口") && TCVAR:28 >= 30 && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
+IF ABL:侍奉精神 > MAX(1, RAND:5) && ABL:技巧 >= 2 && SHOOT("口") && TCVAR:28 >= 30 && STAIN:PLAYER:P != SET_STAIN(0, "P")
 	SIF COND("绝顶", PLAYER) && TFLAG:8 == 0 && ABL:侍奉精神 > RAND:5
 		TFLAG:8 = 1
 ENDIF
@@ -1288,7 +1288,7 @@ CASE 1 TO 6
 	TEQUIP:深喉口交 = 0
 ENDSELECT
 
-;３Ｐなど复数人が调教側之ときには、相方はPLAYER:1となっている
+;３Pなど复数人が调教側之ときには、相方はPLAYER:1となっている
 ;ARGに角色编号が代入されている场合にはARGを一时的にTARGETと交换する
 @SAMEN_SHOOT_MESSAGE, ARG
 SIF ARG > 0
@@ -1800,7 +1800,7 @@ ELSEIF SHOOT("口")
 		PRINTFORM %CALLNAME:MASTER%
 		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
 		PRINTFORMW 在%CALLNAME:TARGET%之口射出\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精…
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		PRINTFORM 和%CALLNAME:PLAYER%在\@ SELECTCOM == 140 ? 起伏着腰部 # \@
 		CALL SAMEN_SHOOT_MESSAGE_3P, "口"
 		PRINTFORMW 在%CALLNAME:TARGET%之\@ SELECTCOM == 140 ? 咽喉之深处 # 口 \@射出\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
@@ -2086,7 +2086,7 @@ ELSEIF SHOOT("乳头奸")
 	PRINTFORM %CALLNAME:PLAYER%
 	IF TEQUIP:逆推
 		PRINTFORMW 对%CALLNAME:TARGET%抽插着、在她的乳房之中射入了\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@精液…
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		;左右乳头奸
 		IF CHECK_COM("左右乳头奸")
 			PRINTFORM %CALLNAME:(PLAYER:1)%配合侵犯着另一只乳房、
@@ -2222,7 +2222,7 @@ ELSEIF SHOOT("胸")
 		PRINTFORM %CALLNAME:MASTER%
 		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
 		PRINTFORMW 在%CALLNAME:TARGET%之胸内\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		PRINTFORM %CALLNAME:PLAYER%
 		CALL SAMEN_SHOOT_MESSAGE_3P, "胸"
 		PRINTFORMW 在%CALLNAME:TARGET%之胸内\@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
@@ -2320,7 +2320,7 @@ ELSEIF SHOOT("手")
 
 		ENDIF
 		PRINTFORMW \@ COND("绝顶", PLAYER) >= 2 ? 大量 # \@射精
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		PRINTFORM %CALLNAME:PLAYER%和
 		CALL SAMEN_SHOOT_MESSAGE_3P, "手"
 		PRINTFORM %CALLNAME:TARGET%
@@ -2456,7 +2456,7 @@ ELSEIF SHOOT("中出")
 	IF SHOOT_A("なぶられ中")
 		CALL TEXT, "追加地之文：Ｗ逆推中之射精"
 		LOCALS = 、
-	ELSEIF CHECK_COM("３Ｐ奉仕")
+	ELSEIF CHECK_COM("３P奉仕")
 		CALL SAMEN_SHOOT_MESSAGE_3P, "中出"
 		PRINTFORM 
 	;两乳夹头
@@ -2611,7 +2611,7 @@ ELSEIF SHOOT("中出")
 		RESETCOLOR
 	ENDIF
 
-	IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("V双枪插入") + CHECK_COM("A双枪插入")
+	IF COND("３P") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("V双枪插入") + CHECK_COM("A双枪插入")
 		PRINTFORM 二人分之
 	ELSEIF (SHOOT("膣内") && NOWEX:V绝顶) || (SHOOT("A") && NOWEX:A绝顶)
 		SIF NOWEX:精液绝顶 == 0
@@ -2636,7 +2636,7 @@ ELSEIF SHOOT("中出")
 		ENDSELECT
 
 		PRINTFORM %CALLNAME:TARGET%之
-		IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
+		IF COND("３P") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
 			PRINTFORM 两穴里
 		ELSEIF SHOOT("膣内")
 			PRINTFORM 阴道内
@@ -2654,7 +2654,7 @@ ELSEIF SHOOT("中出")
 			PRINTFORM 微微蠕动着、
 		ENDIF
 		IF TALENT:淫穴 + TALENT:尻穴狂 && RAND:4 == 0
-			IF COND("３Ｐ") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
+			IF COND("３P") && PENIS(PLAYER:1) && COND("绝顶", PLAYER:1) && CHECK_COM("二穴插入")
 			ELSEIF SHOOT("膣内")
 				PRINTFORM 阴道口里
 			ELSE
@@ -2837,7 +2837,7 @@ ELSEIF SHOOT("逆强暴") || SHOOT("逆肛交") || SHOOT("舐肛奉侍") || SHOO
 		SIF TEQUIP:Ｗ逆推
 			CALL TEXT, "追加地之文：Ｗ逆推中之射精"
 
-		IF CHECK_COM("３Ｐ奉仕")
+		IF CHECK_COM("３P奉仕")
 			IF COND("绝顶", PLAYER:1)
 				PRINTFORM %CALLNAME:(PLAYER:1)%不断地在里面射精
 			ELSEIF INSERT("骑乘位")
@@ -2934,7 +2934,7 @@ ELSEIF TCVAR:PLAYER:5 == 30
 	PRINTFORML %CALLNAME:PLAYER%は强制的高潮了…
 ELSE
 	PRINTFORM %CALLNAME:PLAYER%
-	IF COND("３Ｐ")
+	IF COND("３P")
 		PRINTFORM 和%CALLNAME:(PLAYER:1)%
 		IF CHECK_COM("二穴插入")
 			PRINTFORM 合力侵犯着前后两个淫穴、
@@ -3159,8 +3159,8 @@ ELSEIF NOWEX:射精
 		ENDSELECT
 	ENDIF
 
-	;Ｐに精液汚れ
-	CALL ADD_STAIN, TARGET, "Ｐ", "精液"
+	;Pに精液汚れ
+	CALL ADD_STAIN, TARGET, "P", "精液"
 ENDIF
 SIF FLAG:8
 	CALL TARGET_EJAC_CHECK_TEXT, TARGET

@@ -16,7 +16,7 @@ CALL SIMULATE_TRAIN_CALC
 ;結果发表
 CALL SIMULATE_TRAIN_SHOW
 
-;ARGにはPLAYヤー以外之人之人数。例えば３Ｐする场合にはARGを２にする。１は省略可能
+;ARGにはPLAYヤー以外之人之人数。例えば３Pする场合にはARGを２にする。１は省略可能
 @SIMULATE_TRAIN_FIRST, ARG
 #DIM LCOUNT
 SIF ARG <= 1
@@ -302,7 +302,7 @@ IF PLAYER < 0
 	RETURN 0
 ENDIF
 
-;各种珠ＧＥＴ
+;各种珠ＧEＴ
 FOR LCOUNT2, 0, 16
 	SELECTCASE LCOUNT2
 	CASE 3, 11, 12, 13

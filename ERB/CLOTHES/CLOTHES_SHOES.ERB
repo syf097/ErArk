@@ -1,0 +1,341 @@
+﻿;-------------------------------------------------
+;靴之関数
+;指定番号によって名前がCSTR:47に代入される。
+;99番までは、そ之番号之梦魇之靴。
+;EQUIP:靴は靴之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_SHOES, ARG, ARG:1
+;ARG之靴をARG:1番之も之にする。ARG:1==0なら靴を脱がす
+;汚れ＆ずれたりした标志等を初期化して新品にする
+STAIN:ARG:靴 = 0
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0 || COND("靴之着用", ARG) == 0
+	EQUIP:ARG:靴 = 0
+	CSTR:ARG:47 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:47 = %PALAM_SHOES(ARG:1, ARG, 1)%
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之穿いている靴之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@SHOES(ARG, ARG:1)
+#FUNCTIONS
+IF ARG:1 == 0
+	LOCALS = %CSTR:ARG:47%
+ELSE
+	IF CHECK_SHOES("舞鞋", ARG)
+		LOCALS = 舞鞋
+	ELSEIF CHECK_SHOES("乐福鞋", ARG)
+		LOCALS = 乐福鞋
+	ELSEIF CHECK_SHOES("便鞋", ARG)
+		LOCALS = 便鞋
+	ELSEIF CHECK_SHOES("靴子", ARG)
+		LOCALS = 靴子
+	ELSEIF CHECK_SHOES("高跟鞋", ARG)
+		LOCALS = 高跟鞋
+	ELSEIF CHECK_SHOES("草鞋", ARG)
+		LOCALS = 草鞋
+	ELSEIF CHECK_SHOES("凉鞋", ARG)
+		LOCALS = 凉鞋
+	ELSEIF CHECK_SHOES("运动鞋", ARG)
+		LOCALS = 运动鞋
+	ELSEIF EQUIP:ARG:靴
+		LOCALS = 靴
+	ELSE
+		LOCALS = 足
+	ENDIF
+ENDIF
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之靴之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_SHOES(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_SHOES(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之靴之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_SHOES(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+IF ARG:1 > 0 && COND("靴之着用", ARG:1) == 0
+	SIF ARG:2 > 0
+		EQUIP:(ARG:1):靴 = LOCAL
+	RETURNF LOCALS
+ENDIF
+
+SELECTCASE ARG
+CASE 1
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 淫魔靴
+		LOCAL = SETFLAG_SHOES("长筒皮靴", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 淫魔靴
+		LOCAL = SETFLAG_SHOES("长筒皮靴", "黒")
+	ELSE
+		LOCALS = 淫魔靴
+		LOCAL = SETFLAG_SHOES("长筒皮靴", "紫")
+	ENDIF
+CASE 2
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 小恶魔乐福
+		LOCAL = SETFLAG_SHOES("乐福鞋", "薄緑")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 小恶魔乐福
+		LOCAL = SETFLAG_SHOES("乐福鞋", "紫")
+	ELSE
+		LOCALS = 小恶魔乐福
+		LOCAL = SETFLAG_SHOES("乐福鞋", "赤")
+	ENDIF
+CASE 3
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 花精之短靴
+		LOCAL = SETFLAG_SHOES("短靴子", "薄桃")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 树精之短靴
+		LOCAL = SETFLAG_SHOES("短靴子", "緑")
+	ELSE
+		LOCALS = 树精之短靴
+		LOCAL = SETFLAG_SHOES("短靴子", "薄緑")
+	ENDIF
+CASE 4
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 妖精凉鞋
+		LOCAL = SETFLAG_SHOES("凉鞋", "薄桃")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 妖精凉鞋
+		LOCAL = SETFLAG_SHOES("凉鞋", "薄緑")
+	ELSE
+		LOCALS = 妖精凉鞋
+		LOCAL = SETFLAG_SHOES("凉鞋", "紫")
+	ENDIF
+CASE 5
+	IF CFLAG:(ARG:1):8 == 1
+		LOCALS = 沙滩鞋
+		LOCAL = SETFLAG_SHOES("便鞋")
+	ENDIF
+CASE 6
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 猫足便鞋
+		LOCAL = SETFLAG_SHOES("便鞋", "青")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 猫足便鞋
+		LOCAL = SETFLAG_SHOES("便鞋", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 猫足便鞋
+		LOCAL = SETFLAG_SHOES("便鞋", "黄")
+	ELSE
+		LOCALS = 猫足便鞋
+		LOCAL = SETFLAG_SHOES("便鞋", "赤")
+	ENDIF
+CASE 8, 9
+	IF CFLAG:(ARG:1):8 != 2
+		LOCALS = 乐福鞋
+		LOCAL = SETFLAG_SHOES("乐福鞋")
+	ENDIF
+CASE 12
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 宝龙之鳞片靴
+		LOCAL = SETFLAG_SHOES("长筒皮靴", "铠甲", "黒")
+	ELSEIF CFLAG:(ARG:1):8 != 2
+		LOCALS = 亜龙人之鳞片靴
+		LOCAL = SETFLAG_SHOES("长筒皮靴", "铠甲", "薄緑")
+	ENDIF
+CASE 16
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 布靴
+		LOCAL = SETFLAG_SHOES("短靴子", "黒")
+	ELSE
+		LOCALS = 草鞋
+		LOCAL = SETFLAG_SHOES("草鞋")
+	ENDIF
+CASE 17
+	IF CFLAG:(ARG:1):8 != 1
+		LOCALS = 女王高跟
+		LOCAL = SETFLAG_SHOES("高跟鞋", "黒")
+	ENDIF
+CASE 19, 47
+	LOCALS = 魔女靴
+	LOCAL = SETFLAG_SHOES("短靴子")
+CASE 22
+	LOCALS = 草鞋
+	LOCAL = SETFLAG_SHOES("草鞋")
+CASE 23
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 舞鞋
+		LOCAL = SETFLAG_SHOES("舞鞋", "赤")
+	ELSE
+		LOCALS = 舞鞋
+		LOCAL = SETFLAG_SHOES("舞鞋", "薄緑")
+	ENDIF
+CASE 24
+	LOCALS = 小皮靴
+	LOCAL = SETFLAG_SHOES("小皮靴")
+CASE 25
+	LOCALS = 高跟鞋
+	LOCAL = SETFLAG_SHOES("高跟鞋", "黒")
+CASE 26
+	LOCALS = 靴子
+	LOCAL = SETFLAG_SHOES("靴子", "铠甲")
+CASE 27, 33, 49, 54, 58
+	LOCALS = 舞鞋
+	LOCAL = SETFLAG_SHOES("舞鞋")
+CASE 28
+	LOCALS = 靴子
+	LOCAL = SETFLAG_SHOES("靴子", "铠甲")
+CASE 32, 46, 55
+	LOCALS = 乐福鞋
+	LOCAL = SETFLAG_SHOES("乐福鞋")
+CASE 33
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 高跟鞋
+		LOCAL = SETFLAG_SHOES("高跟鞋", "青")
+	ELSE
+		LOCALS = 高跟鞋
+		LOCAL = SETFLAG_SHOES("高跟鞋", "赤")
+	ENDIF
+CASE 34
+	LOCALS = 高跟鞋
+	LOCAL = SETFLAG_SHOES("高跟鞋", "薄青")
+CASE 35
+	LOCALS = 高跟鞋
+	LOCAL = SETFLAG_SHOES("高跟鞋", "紫")
+CASE 42
+	IF CFLAG:(ARG:1):209 == 2
+		LOCALS = 不思議的靴子
+		LOCAL = SETFLAG_SHOES("高跟鞋", "铠甲")
+	ENDIF
+CASE 43
+	LOCALS = 长筒皮靴
+	LOCAL = SETFLAG_SHOES("长筒皮靴", "薄緑")
+CASE 48
+	LOCALS = 高跟鞋
+	LOCAL = SETFLAG_SHOES("高跟鞋", "紫")
+CASE 50
+	LOCALS = 靴子
+	LOCAL = SETFLAG_SHOES("靴子", "黒")
+CASE 61
+	LOCALS = 靴子
+	LOCAL = SETFLAG_SHOES("靴子", "白")
+CASE 100
+	LOCALS = 舞鞋
+	LOCAL = SETFLAG_SHOES("舞鞋")
+CASE 101
+	LOCALS = 乐福鞋
+	LOCAL = SETFLAG_SHOES("乐福鞋")
+CASE 102
+	LOCALS = 便鞋
+	LOCAL = SETFLAG_SHOES("便鞋")
+CASE 103
+	LOCALS = 短靴子
+	LOCAL = SETFLAG_SHOES("短靴子")
+CASE 104
+	LOCALS = 靴子
+	LOCAL = SETFLAG_SHOES("靴子")
+CASE 105
+	LOCALS = 长筒皮靴
+	LOCAL = SETFLAG_SHOES("长筒皮靴")
+CASE 106
+	LOCALS = 高跟鞋
+	LOCAL = SETFLAG_SHOES("高跟鞋")
+CASE 107
+	LOCALS = 草鞋
+	LOCAL = SETFLAG_SHOES("草鞋")
+CASE 108
+	LOCALS = 凉鞋
+	LOCAL = SETFLAG_SHOES("凉鞋")
+CASE 109
+	LOCALS = 运动鞋
+	LOCAL = SETFLAG_SHOES("运动鞋")
+ENDSELECT
+
+SIF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):靴 = LOCAL
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之靴之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_SHOES(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "足首まで"
+		SETBIT LOCAL, 0
+	CASE "长"
+		SETBIT LOCAL, 1
+	CASE "靴子"
+		SETBIT LOCAL, 2
+	CASE "短靴子"
+		SETBIT LOCAL, 2
+		SETBIT LOCAL, 0
+	CASE "长筒皮靴"
+		SETBIT LOCAL, 2
+		SETBIT LOCAL, 1
+	CASE "便鞋"
+		SETBIT LOCAL, 3
+		SETBIT LOCAL, 0
+		LOCAL |= SETFLAG_COMMON("指露出")
+	CASE "乐福鞋"
+		SETBIT LOCAL, 4
+		SETBIT LOCAL, 0
+	CASE "小皮靴"
+		SETBIT LOCAL, 5
+		SETBIT LOCAL, 0
+	CASE "足袋"
+		SETBIT LOCAL, 6
+		SETBIT LOCAL, 0
+	CASE "舞鞋"
+		SETBIT LOCAL, 7
+		SETBIT LOCAL, 0
+	CASE "高跟鞋"
+		SETBIT LOCAL, 8
+		SETBIT LOCAL, 0
+	CASE "草鞋"
+		SETBIT LOCAL, 9
+		SETBIT LOCAL, 0
+		LOCAL |= SETFLAG_COMMON("指露出")
+	CASE "凉鞋"
+		SETBIT LOCAL, 10
+		SETBIT LOCAL, 0
+	CASE "运动鞋"
+		SETBIT LOCAL, 11
+		SETBIT LOCAL, 0
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之靴が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_SHOES(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:靴 == 0
+	RETURNF 0
+SIF (SETFLAG_SHOES(ARGS)&EQUIP:ARG:靴) == SETFLAG_SHOES(ARGS)
+	RETURNF 1
+RETURNF 0

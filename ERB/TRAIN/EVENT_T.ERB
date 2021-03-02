@@ -1473,17 +1473,17 @@ CASE "追加地之文：骑乘位"
 	PRINTFORM %CALLNAME:TARGET%
 	IF TALENT:好色 + TALENT:淫乱 && (TALENT:怕羞 == 0 || TEQUIP:媚药) && RAND:2
 		IF RAND:3 && (COND("性癖：腋", PLAYER) || RAND:2)
-			IF RAND:2
-				PRINTFORM 似乎是故意的，在撩起头发的动作中，%TEXTS("腋：视覚")%
-			ELSE
-				PRINTFORM 似乎是故意的，在\@ TALENT:多手 ? 腕 # 两手 \@拢起头发的动作中%TEXTS("腋：视覚")%
-			ENDIF
-			IF RAND:2
-				PRINTFORM 散发潮气着、
-			ELSE
-				PRINTFORM 展示着、
-			ENDIF
-			CALL SETFLAG, "腋现せ标志", TARGET
+			; IF RAND:2
+			; 	PRINTFORM 似乎是故意的，在撩起头发的动作中，%TEXTS("腋：视覚")%
+			; ELSE
+			; 	PRINTFORM 似乎是故意的，在\@ TALENT:多手 ? 腕 # 两手 \@拢起头发的动作中%TEXTS("腋：视覚")%
+			; ENDIF
+			; IF RAND:2
+			; 	PRINTFORM 散发潮气着、
+			; ELSE
+			; 	PRINTFORM 展示着、
+			; ENDIF
+			; CALL SETFLAG, "腋现せ标志", TARGET
 		ELSEIF RAND:2 && CHECK_CLO("V露出") + CHECK_CLO("A露出") && COND("指之使用") && ABL:露阴癖 >= 3
 			IF TALENT:性别 != 1 && CHECK_CLO("V露出") && RANDIF(1, CHECK_CLO("A露出") )
 				PRINTFORM 用手指掰开小穴、
@@ -1875,64 +1875,7 @@ CASE "绝顶"
 		LOCALS = 超%LOCALS%
 	ENDSELECT
 	LOCALS = %LOCALS% \@ (ARG == ASSI || SELECTCOM == 161) ? (%TEXTS("助手之名称")%）# \@
-	CASE "内衣之色"
-	SELECTCASE SETFLAG_COMMON("赤", "緑", "黄", "青", "白", "浓")&ARG
-	CASE 1p54, 1p54+1p59
-		LOCALS = 赤
-	CASE 1p55, 1p55+1p58
-		LOCALS = 緑色
-	CASE 1p56, 1p56+1p58
-		LOCALS = 黄色
-	CASE 1p57, 1p57+1p58
-		LOCALS = 青
-	CASE 1p58, 1p58+1p59
-		LOCALS = 白
-	CASE 1p54+1p58
-		LOCALS = 粉红色
-	CASE 1p57+1p59
-		LOCALS = 紺色
-	CASE 1p54+1p56
-		LOCALS = 橙色
-	CASE 1p54+1p57
-		LOCALS = 紫色
-	CASE 1p54+1p55+1p56+1p57
-		LOCALS = 黒
-	ENDSELECT
-CASE "衣装之色"
-	SELECTCASE SETFLAG_COMMON("赤", "緑", "黄", "青", "白", "浓")&ARG
-	CASE 1p54
-		LOCALS = 赤
-	CASE 1p55
-		LOCALS = 緑
-	CASE 1p56
-		LOCALS = 黄
-	CASE 1p57
-		LOCALS = 青
-	CASE 1p58
-		LOCALS = 白
-	CASE 1p54+1p58
-		LOCALS = 薄桃
-	CASE 1p54+1p59
-		LOCALS = 真紅
-	CASE 1p55+1p58
-		LOCALS = 薄緑
-	CASE 1p56+1p58
-		LOCALS = 薄黄
-	CASE 1p57+1p58
-		LOCALS = 薄青
-	CASE 1p57+1p59
-		LOCALS = 紺
-	CASE 1p54+1p56
-		LOCALS = 橙
-	CASE 1p54+1p57
-		LOCALS = 紫
-	CASE 1p58+1p59
-		LOCALS = 纯白
-	CASE 1p54+1p55+1p56+1p57
-		LOCALS = 黒
-	ENDSELECT
-	;SIF SETFLAG_COMMON("縞")&ARG
-	;	LOCALS = %LOCALS%縞
+
 CASE "阴茎：视覚"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
@@ -1944,7 +1887,7 @@ CASE "阴茎：视覚"
 		ELSE
 			LOCALS = 射精したばかり之
 		ENDIF
-	ELSEIF CHECK_STAIN(STAIN:Ｐ, "精液") && RAND:3 == 0
+	ELSEIF CHECK_STAIN(STAIN:P, "精液") && RAND:3 == 0
 		LOCALS = 精液と先走り之汁でぬるぬる之
 	ELSEIF ARG == TARGET && PALAM:ARG:欲情 < 500 && TEQUIP:ARG:媚药 == 0 && INSERT("插入", ARG) == 0
 		IF RAND:2
@@ -1982,7 +1925,7 @@ CASE "阴茎：视覚"
 			ENDIF
 		CASE 1
 		CASEELSE
-			IF RAND:3 == 0 && TALENT:ARG:外表年龄 >= 2
+			IF RAND:3 == 0 
 				LOCALS = 貧相的
 
 			ELSEIF RAND:2
@@ -2238,21 +2181,21 @@ CASE "V：视覚", "V：感触"
 			ELSE
 				LOCALS = トロトロ之
 			ENDIF
-		ELSEIF CALCF("V发情") >= 3 && PREVCOM >= 60 && PREVCOM <= 69 && RANDIF(1, CALCF("V发情"), CHECK_STAIN(STAIN:V, "精液"), EX:V绝顶 > 3, TALENT:阴蒂穿环 + TALENT:阴唇穿环)
-			IF RAND:2
-				LOCALS = 淫らに口を开けた
-			ELSE
-				LOCALS = ぱっくり开いた
-			ENDIF
-		ELSEIF COND("阴毛") && (!RAND:3 || PREVCOM == 145)
-		ELSEIF TALENT:阴蒂穿环 + TALENT:阴唇穿环 && RANDIF(1, CALCF("V发情"), CHECK_STAIN(STAIN:V, "精液"), EX:V绝顶 > 3)
-			IF RAND:2
-				LOCALS = 穿环が輝く
-			ELSE
-				SIF TALENT:阴蒂穿环 && TALENT:阴唇穿环 && RAND:2
-					LOCALS = 幾つも之
-				LOCALS = %LOCALS%穿环で饰られた
-			ENDIF
+		; ELSEIF CALCF("V发情") >= 3 && PREVCOM >= 60 && PREVCOM <= 69 && RANDIF(1, CALCF("V发情"), CHECK_STAIN(STAIN:V, "精液"), EX:V绝顶 > 3, TALENT:阴蒂穿环 + TALENT:阴唇穿环)
+		; 	IF RAND:2
+		; 		LOCALS = 淫らに口を开けた
+		; 	ELSE
+		; 		LOCALS = ぱっくり开いた
+		; 	ENDIF
+		; ELSEIF COND("阴毛") && (!RAND:3 || PREVCOM == 145)
+		; ELSEIF TALENT:阴蒂穿环 + TALENT:阴唇穿环 && RANDIF(1, CALCF("V发情"), CHECK_STAIN(STAIN:V, "精液"), EX:V绝顶 > 3)
+		; 	IF RAND:2
+		; 		LOCALS = 穿环が輝く
+		; 	ELSE
+		; 		SIF TALENT:阴蒂穿环 && TALENT:阴唇穿环 && RAND:2
+		; 			LOCALS = 幾つも之
+		; 		LOCALS = %LOCALS%穿环で饰られた
+		; 	ENDIF
 		ELSEIF EX:V绝顶 > 3 && RANDIF(1, CALCF("V发情"), CHECK_STAIN(STAIN:V, "精液"))
 			LOCALS = イきまくった
 		ELSEIF CHECK_STAIN(STAIN:V, "精液") && RANDIF(2, CALCF("V发情") )
@@ -2324,12 +2267,12 @@ CASE "V：视覚", "V：感触"
 						LOCALS = 小孩子っぽさ之残る
 					ENDIF
 				;刚刚长出（大人）
-				ELSE
-					IF RAND:2 && BASE:阴毛%100 >= 5
-						LOCALS = だいぶ毛が生え揃ってきた
-					ELSE
-						LOCALS = 阴毛之薄い
-					ENDIF
+				; ELSE
+				; 	IF RAND:2 && BASE:阴毛%100 >= 5
+				; 		LOCALS = だいぶ毛が生え揃ってきた
+				; 	ELSE
+				; 		LOCALS = 阴毛之薄い
+				; 	ENDIF
 				ENDIF
 			CASE 5
 				IF PREVCOM == 145
@@ -2365,13 +2308,13 @@ CASE "V：视覚", "V：感触"
 				ENDIF
 			ENDSELECT
 		ENDIF
-		SIF TALENT:娇小 && TALENT:幼稚 && !RAND:3
-			LOCALS = %LOCALS%幼い
-		IF PALAM:欲情 < PALAM_LV(6 - ABL:V扩张) && ABL:V扩张 <= 4
-			LOCALS = %LOCALS%ワレメ
-		ELSE
+		; SIF TALENT:娇小 && TALENT:幼稚 && !RAND:3
+		; 	LOCALS = %LOCALS%幼い
+		; IF PALAM:欲情 < PALAM_LV(6 - ABL:V扩张) && ABL:V扩张 <= 4
+		; 	LOCALS = %LOCALS%ワレメ
+		; ELSE
 			LOCALS = %LOCALS%V
-		ENDIF
+		; ENDIF
 	ENDIF
 	SWAP ARG, TARGET
 CASE "阴蒂穿环"
@@ -2408,70 +2351,70 @@ CASE "腋"
 	CASEELSE
 		LOCALS = 腋
 	ENDSELECT
-CASE "腋：视覚"
-	SIF ARG == 0 && TARGET
-		ARG = TARGET
-	SWAP ARG, TARGET
-	IF RAND:3 == 0
-		LOCALS = 
-	ELSEIF (PALAM:欲情 >= 10000 && RAND:3 == 0) || PALAM:欲情 >= 30000
-		LOCALS = %TEXTR("汗ばんだ", "发情した")%
-	ELSEIF CHECK_CLO("腋露出") == 0
-		SIF PALAM:欲情 >= 10000 && RAND:3 == 0
-			LOCALS = 汗润湿之出来た
-	ELSE
-		SELECTCASE COND("腋毛")
-		;光溜溜
+; CASE "腋：视覚"
+; 	SIF ARG == 0 && TARGET
+; 		ARG = TARGET
+; 	SWAP ARG, TARGET
+; 	IF RAND:3 == 0
+; 		LOCALS = 
+; 	ELSEIF (PALAM:欲情 >= 10000 && RAND:3 == 0) || PALAM:欲情 >= 30000
+; 		LOCALS = %TEXTR("汗ばんだ", "发情した")%
+; 	ELSEIF CHECK_CLO("腋露出") == 0
+; 		SIF PALAM:欲情 >= 10000 && RAND:3 == 0
+; 			LOCALS = 汗润湿之出来た
+; 	ELSE
+; 		SELECTCASE COND("腋毛")
+; 		;光溜溜
 
 
-		CASE 0 TO 3
-			IF RAND:3 == 0 && COND("腋毛") == 3 && TALENT:外表年龄 >= 2
-				LOCALS = 手入れ之行き届いた
-			ELSEIF RAND:2
-				LOCALS = %TEXTR("艶かしい", "綺麗な")%
-			ELSE
-				LOCALS = %TEXTR("つるつる", "スベスベ")%之
-			ENDIF
-		;うっすら
-		CASE 4
-			IF CONDS("腋毛") == "剃毛痕迹"
-				IF RAND:2
-					LOCALS = ちょっとお手入れ不足な
-				ELSE
-					LOCALS = ジョリジョリした剃毛痕迹之目立つ
-				ENDIF
-			ELSE
-				IF RAND:2
-					LOCALS = うっすら毛之生えた
-				ELSE
-					LOCALS = 産毛之ような细く柔らかな毛で彩られた
+; 		CASE 0 TO 3
+; 			IF RAND:3 == 0 && COND("腋毛") == 3 && TALENT:外表年龄 >= 2
+; 				LOCALS = 手入れ之行き届いた
+; 			ELSEIF RAND:2
+; 				LOCALS = %TEXTR("艶かしい", "綺麗な")%
+; 			ELSE
+; 				LOCALS = %TEXTR("つるつる", "スベスベ")%之
+; 			ENDIF
+; 		;うっすら
+; 		CASE 4
+; 			IF CONDS("腋毛") == "剃毛痕迹"
+; 				IF RAND:2
+; 					LOCALS = ちょっとお手入れ不足な
+; 				ELSE
+; 					LOCALS = ジョリジョリした剃毛痕迹之目立つ
+; 				ENDIF
+; 			ELSE
+; 				IF RAND:2
+; 					LOCALS = うっすら毛之生えた
+; 				ELSE
+; 					LOCALS = 産毛之ような细く柔らかな毛で彩られた
 
 
-				ENDIF
-			ENDIF
-		;いっぱい
-		CASEELSE
-			IF RAND:2
-				LOCALS = 毛深い
-			ELSE
-				LOCALS = たっぷりと毛之生えた
-			ENDIF
-		ENDSELECT
-	ENDIF
-	SELECTCASE GETFONT()
-	CASE "しねきゃぷしょん"
-		LOCALS = %LOCALS%脇
-	CASEELSE
-		LOCALS = %LOCALS%腋
-	ENDSELECT
-	SWAP ARG, TARGET
+; 				ENDIF
+; 			ENDIF
+; 		;いっぱい
+; 		CASEELSE
+; 			IF RAND:2
+; 				LOCALS = 毛深い
+; 			ELSE
+; 				LOCALS = たっぷりと毛之生えた
+; 			ENDIF
+; 		ENDSELECT
+; 	ENDIF
+; 	SELECTCASE GETFONT()
+; 	CASE "しねきゃぷしょん"
+; 		LOCALS = %LOCALS%脇
+; 	CASEELSE
+; 		LOCALS = %LOCALS%腋
+; 	ENDSELECT
+; 	SWAP ARG, TARGET
 CASE "お尻：感触"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	SWAP ARG, TARGET
 
 	;大きさに（あんまり）関係ない形容
-	SELECTCASE TALENT:外表年龄
+	SELECTCASE RAND:3;TALENT:外表年龄
 	CASE 0, 1
 		LOCALS = %TEXTR("充满弹性的", "娇嫩柔软的", "像被剥壳后的蛋般白嫩的")%尻
 
@@ -2567,9 +2510,9 @@ CASE "阴蒂"
 
 		ENDIF
 	ENDSELECT
-	IF TALENT:阴蒂穿环 && RAND:2
-		LOCALS = %TEXTS("阴蒂穿环")%で饰られた
-	ELSEIF TALENT:C敏感 && RAND:3 == 0
+	; IF TALENT:阴蒂穿环 && RAND:2
+	; 	LOCALS = %TEXTS("阴蒂穿环")%で饰られた
+	IF TALENT:C敏感 && RAND:3 == 0
 		LOCALS = 敏感な
 	ENDIF
 CASE "A"
@@ -2584,34 +2527,34 @@ CASE "A"
 		LOCALS = 快感にほぐれた
 	;今回调教ではまだA经验増加０
 	ELSEIF EXP_GAIN(1) == 0
-		IF ABL:A扩张 >= 2 && (ABL:A扩张 >= 5 || EXP:A经验 >= 300) && RANDIF(2, TALENT:全天塞肛)
-			IF RAND:2 && TALENT:性别 != 1 && TALENT:处女 == 0 && EXP:A经验 >= MAX(EXP:V经验*2, 200) && EXP:A性交経験 >= MAX(EXP:V性交経験*2, 100)
-				LOCALS = %TEXTR("膣", "前之穴")%よりも遥かに経験丰富な
-			ELSE
-				LOCALS = %TEXTR("一目で技巧込まれ具合之现て取れる", "一目で分かるほど技巧込まれた", "周边之色が变わるほどに技巧込まれた")%
-			ENDIF
-		ELSEIF CHECK_CLO("A露出") && !CHECK_CLO("V露出") && RANDIF(1, TALENT:全天塞肛)
+		; IF ABL:A扩张 >= 2 && (ABL:A扩张 >= 5 || EXP:A经验 >= 300) && RANDIF(2, TALENT:全天塞肛)
+		; 	IF RAND:2 && TALENT:性别 != 1 && TALENT:处女 == 0 && EXP:A经验 >= MAX(EXP:V经验*2, 200) && EXP:A性交経験 >= MAX(EXP:V性交経験*2, 100)
+		; 		LOCALS = %TEXTR("膣", "前之穴")%よりも遥かに経験丰富な
+		; 	ELSE
+		; 		LOCALS = %TEXTR("一目で技巧込まれ具合之现て取れる", "一目で分かるほど技巧込まれた", "周边之色が变わるほどに技巧込まれた")%
+		; 	ENDIF
+		IF CHECK_CLO("A露出") && !CHECK_CLO("V露出")
 			LOCALS = そこだけ露出している
-		ELSEIF TALENT:全天塞肛
-			IF RAND:2
-				LOCALS = 常に扩张されているおかげで\@ TALENT:全天塞肛 >= 3 ? 緩みきった # 緩み气味之 \@
-			ELSE
-				LOCALS = \@ TALENT:全天塞肛 >= 3 ? すっかり緩んだ # 口之閉じきってない \@
-			ENDIF
+		; ELSEIF TALENT:全天塞肛
+		; 	IF RAND:2
+		; 		LOCALS = 常に扩张されているおかげで\@ TALENT:全天塞肛 >= 3 ? 緩みきった # 緩み气味之 \@
+		; 	ELSE
+		; 		LOCALS = \@ TALENT:全天塞肛 >= 3 ? すっかり緩んだ # 口之閉じきってない \@
+		; 	ENDIF
 		ENDIF
 	;直前にA系调教なら、そ之描写优先
 	ELSE
 		;A系调教やA敏感やA经验300or150以上にあわせて乱数分岐
 		SELECTCASE PREVCOM
 		CASE 33, 70 TO 79, 136 TO 138, 142, 143, 202
-			IF ABL:A扩张 >= 4 && RAND:3
-				LOCALS = ポッカリと口を开けて\@ PREVEX("A中出")  ? 精液をたらして # \@いる
-			ELSEIF ABL:A扩张 >= 3 && RAND:3
-				LOCALS = 綻ん\@ PREVEX("A中出")  ? で精液を滲ませている # だ \@
-			ELSEIF ABL:A扩张 >= 2 || TALENT:A敏感
-				LOCALS = ヒクヒクと妖しく蠢\@ PREVEX("A中出")  ? いて精液を漏らしている # く \@
+			; IF ABL:A扩张 >= 4 && RAND:3
+			; 	LOCALS = ポッカリと口を开けて\@ PREVEX("A中出")  ? 精液をたらして # \@いる
+			; ELSEIF ABL:A扩张 >= 3 && RAND:3
+			; 	LOCALS = 綻ん\@ PREVEX("A中出")  ? で精液を滲ませている # だ \@
+			; ELSEIF ABL:A扩张 >= 2 || TALENT:A敏感
+			; 	LOCALS = ヒクヒクと妖しく蠢\@ PREVEX("A中出")  ? いて精液を漏らしている # く \@
 			;A中出直后
-			ELSEIF PREVEX("A中出")
+			IF PREVEX("A中出")
 				LOCALS = 中出された
 
 
@@ -2644,7 +2587,7 @@ CASE "A"
 			LOCALS = 精液を注がれたばかり之
 		ELSEIF EXP_GAIN(18) && (RAND:3 == 0 || PREVEX("A中出") )
 			LOCALS = 精液之零れる
-		ELSEIF PREVEX("绝顶数合计") && ABL:A扩张 >= 2
+		ELSEIF PREVEX("绝顶数合计")
 			LOCALS = 绝顶之余韻で緩んだ
 		;绝顶边缘
 		ELSEIF EX:忍住了没丢 && RAND:3 == 0
@@ -2655,42 +2598,42 @@ CASE "A"
 			ELSE
 				LOCALS = ヒクヒクと妖しく蠢く
 			ENDIF
-		ELSEIF TALENT:外表年龄 == 0 && RAND:3 == 0
-			IF RAND:2
-				LOCALS = 可爱い
-			ELSE
-				LOCALS = 娇小的
+		; ELSEIF TALENT:外表年龄 == 0 && RAND:3 == 0
+		; 	IF RAND:2
+		; 		LOCALS = 可爱い
+		; 	ELSE
+		; 		LOCALS = 娇小的
 
 
-			ENDIF
-		ELSEIF RAND:3 == 0 && COND("阴毛") >= 7 && TALENT:外表年龄 >= 2
-			IF RAND:2 && TALENT:外表年龄 >= 3
-				LOCALS = 浓い阴毛に覆われた
-			ELSE
-				LOCALS = 阴毛で缘取られた
-			ENDIF
+		; 	ENDIF
+		; ELSEIF RAND:3 == 0 && COND("阴毛") >= 7 && TALENT:外表年龄 >= 2
+		; 	IF RAND:2 && TALENT:外表年龄 >= 3
+		; 		LOCALS = 浓い阴毛に覆われた
+		; 	ELSE
+		; 		LOCALS = 阴毛で缘取られた
+		; 	ENDIF
 		ELSEIF RAND:2
-			IF ABL:A扩张 >= 4 && EXP:A经验 >= 150
+			IF EXP:A经验 >= 150
 				IF RAND:2
 					LOCALS = 経験丰富な
 				ELSE
 					LOCALS = 技巧込まれた
 				ENDIF
-			ELSEIF ABL:A扩张 >= 2 && EXP:A经验 >= 50
+			ELSEIF EXP:A经验 >= 50
 				LOCALS = 柔らかい
-			ELSEIF TALENT:外表年龄 < 2
-				LOCALS = 可爱らしい
+			; ELSEIF TALENT:外表年龄 < 2
+			; 	LOCALS = 可爱らしい
 			ENDIF
-		ELSE
-			IF ABL:A扩张 >= 6
-				LOCALS = ポッカリと口を开けた
-			ELSEIF ABL:A扩张 >= 4
-				LOCALS = 僅かに口を开けている
-			ELSEIF ABL:A扩张 >= 2
-				LOCALS = 僅かに緩んだ
-			ELSE
-				LOCALS = キュッと窄まった
-			ENDIF
+		; ELSE
+		; 	IF ABL:A扩张 >= 6
+		; 		LOCALS = ポッカリと口を开けた
+		; 	ELSEIF ABL:A扩张 >= 4
+		; 		LOCALS = 僅かに口を开けている
+		; 	ELSEIF ABL:A扩张 >= 2
+		; 		LOCALS = 僅かに緩んだ
+		; 	ELSE
+		; 		LOCALS = キュッと窄まった
+		; 	ENDIF
 		ENDIF
 	ENDIF
 	SWAP ARG, TARGET
@@ -2698,17 +2641,17 @@ CASE "欧派", "欧派：描写"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	SWAP ARG, TARGET
-	IF TALENT:孕娠 && RAND:3 == 0
-		IF GETBITS(CFLAG:468, 0, 1) && RAND:2
-			LOCALS = 因孕娠而变大的
+	; IF TALENT:孕娠 && RAND:3 == 0
+	; 	IF GETBITS(CFLAG:468, 0, 1) && RAND:2
+	; 		LOCALS = 因孕娠而变大的
 
 
-		ELSE
-			LOCALS = 因奶水而涨开的
+	; 	ELSE
+	; 		LOCALS = 因奶水而涨开的
 
 
-		ENDIF
-	ELSEIF TALENT:巨乳
+	; 	ENDIF
+	IF TALENT:巨乳
 		;爆乳
 		IF TALENT:巨乳 >= 2 && RAND:3 == 0
 			IF RAND:2
@@ -2854,8 +2797,8 @@ CASE "太股：描写"
 	SWAP ARG, TARGET
 	IF RAND:3 == 0
 		LOCALS = 引き締まった
-	ELSEIF TALENT:外表年龄 >= 2 && TALENT:力量 == 0 && RAND:3 == 0
-		LOCALS = むっちりとした
+	; ELSEIF TALENT:外表年龄 >= 2 && TALENT:力量 == 0 && RAND:3 == 0
+	; 	LOCALS = むっちりとした
 	ELSEIF RAND:2
 		LOCALS = 柔らかな
 	ELSE
@@ -2923,25 +2866,25 @@ CASE "V插入前"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	;綻び具合
-	IF ABL:V扩张 >= 2 && PALAM:欲情 >= PALAM_LV(6 - ABL:V扩张/2) && RAND:4
+	IF PALAM:欲情 >= PALAM_LV(4) && RAND:4
 		LOCAL = 1
 	ELSE
 		LOCAL = 0
 	ENDIF
-	;LOCAL:1は插入するも之之過不足。-2以下で緩い、1以上でキツい。
-	LOCAL:1 = SIZE("阴茎", PLAYER) - ABL:V扩张
-	IF LOCAL:1 <= -2
-		LOCAL:1 = MIN(LOCAL:1 + CALCF("阴茎喜欢度", TARGET), -1)
-	ELSEIF LOCAL:1 >= 1
-		LOCAL:1 = MAX(LOCAL:1 - CALCF("阴茎喜欢度", TARGET), -1)
-	ENDIF
+	; ;LOCAL:1は插入するも之之過不足。-2以下で緩い、1以上でキツい。
+	; LOCAL:1 = SIZE("阴茎", PLAYER) - ABL:V扩张
+	; IF LOCAL:1 <= -2
+	; 	LOCAL:1 = MIN(LOCAL:1 + CALCF("阴茎喜欢度", TARGET), -1)
+	; ELSEIF LOCAL:1 >= 1
+	; 	LOCAL:1 = MAX(LOCAL:1 - CALCF("阴茎喜欢度", TARGET), -1)
+	; ENDIF
 
 	IF TALENT:处女 == 1
 		LOCALS = 男を知らない
 	ELSEIF LOCAL:1 <= -2 && LOCAL
 		LOCALS = ゆるみ气味之
-	ELSEIF TALENT:阴唇穿环 && LOCAL == 0 && RAND:3 == 0
-		LOCALS = 穿环で饰られた
+	; ELSEIF TALENT:阴唇穿环 && LOCAL == 0 && RAND:3 == 0
+	; 	LOCALS = 穿环で饰られた
 	;前回CV绝顶or中出
 	ELSEIF PREVEX("C绝顶") + PREVEX("V绝顶") + PREVEX("V中出") && RAND:2
 		IF PREVEX("V中出") && RAND:3
@@ -3130,7 +3073,7 @@ CASE "六九式"
 	;奉仕系
 	CASE 90 TO 98, 105, 150
 		IF RAND:3 == 0
-			IF TALENT:性别女 && RAND:2
+			IF TALENT:性别 ==2 && RAND:2
 				IF CHECK_CLO("胖次露出") && CHECK_PANTIES("润湿")
 					IF RAND:2
 						LOCALS = 涌き出る爱液による恥ずかしい润湿を现られる事
@@ -3157,11 +3100,11 @@ CASE "六九式"
 				IF PREVCOM == 13
 					LOCALS = Vを隅々まで现られてる事
 				ELSEIF RAND:2
-					IF TALENT:阴蒂穿环 && RAND:2
-						LOCALS = 穿环越しに淫核に響く快感
-					ELSE
+					; IF TALENT:阴蒂穿环 && RAND:2
+					; 	LOCALS = 穿环越しに淫核に響く快感
+					; ELSE
 						LOCALS = 淫核に与えられる快感
-					ENDIF
+					; ENDIF
 				ELSE
 					LOCALS = 膣に差し込まれる舌
 				ENDIF

@@ -25,8 +25,8 @@ CALL EQUIP_1
 ;-------------------------------------------------
 CALL CALC_SOURCE
 
-;助手が调教側として参加している３Ｐ之场合
-IF COND("３Ｐ")
+;助手が调教側として参加している３P之场合
+IF COND("３P")
 	CALL SETFLAG, "调教者交代"
 	TRYCALLFORM SOURCE_COM{SELECTCOM}, 50
 	TRYCALLFORM FLAG_COM{SELECTCOM}, 50
@@ -213,7 +213,7 @@ CALL KOJO_MESSAGE_SAMEN_AND_EXTACY
 SIF NEXTCOM == 999
 	RETURN 0
 ;-------------------------------------------------
-;PLAYER、龙、触手之射精＆绝顶をトリガーにした口上（３Ｐ）
+;PLAYER、龙、触手之射精＆绝顶をトリガーにした口上（３P）
 ;-------------------------------------------------
 CALL KOJO_MESSAGE_SAMEN_AND_EXTACY_3P
 ;口上による强制終了
@@ -357,7 +357,7 @@ SIF PLAYER != MASTER || TEQUIP:触手
 LOCAL = TFLAG:30 + NOWEX:同时绝顶
 SIF NOWEX:绝顶数合计
 	LOCAL += 1
-;绝顶的地方に对应する敏感系之素質があるなら、係数ＵＰ
+;绝顶的地方に对应する敏感系之素質があるなら、係数ＵP
 SIF NOWEX:C绝顶 > 0 && (TALENT:淫核 || TALENT:C敏感)
 	LOCAL += 2
 SIF NOWEX:V绝顶 > 0 && (TALENT:淫穴 || TALENT:V敏感)
@@ -585,7 +585,7 @@ ELSE
 	ENDIF
 ENDIF
 
-IF COND("３Ｐ")
+IF COND("３P")
 	SWAP SELECTCOM, SELECTCOM:2
 	SWAP PLAYER, PLAYER:1
 	CALL CALC, "経験取得", SELECTCOM
@@ -1233,7 +1233,7 @@ ENDIF
 ;多重绝顶した时之珠之处理
 IF CHECK_ECST(TARGET) >= 2
 	;EASYモードで无いなら、媚药を使った场合にはBＯＮＵSを减らす
-	IF CONFIG("ＥASＹ") == 0 && TEQUIP:媚药
+	IF CONFIG("EASY") == 0 && TEQUIP:媚药
 		LOCAL = (CHECK_ECST(TARGET) - 1) * 100
 	ELSE
 		LOCAL = (CHECK_ECST(TARGET) - 1) * 1000
@@ -1467,7 +1467,7 @@ IF TALENT:ARG:处女 == 1 && COND("处女丧失标志", ARG) && GETBITS(CFLAG:AR
 		SETBIT CFLAG:ARG:11, 1
 	;3P
 	;ELSEIF 
-	;	PRINT ３Ｐ
+	;	PRINT ３P
 	;	LOCAL += 1
 	;	SETBIT CFLAG:ARG:11, 2
 

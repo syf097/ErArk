@@ -1,0 +1,509 @@
+﻿;-------------------------------------------------
+;メガネなど其他小物之関数
+;EQUIP:装饰品でビット管理する
+;他之も之と异なり記号的な意味が非常に强い
+;-------------------------------------------------
+@SET_OTHER, ARG, ARG:1
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0
+	EQUIP:ARG:装饰品 = 0
+	CSTR:ARG:49 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:49 = %PALAM_OTHER(ARG:1, ARG, 1)%
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之身につけている小物之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@OTHER(ARG, ARG:1)
+#FUNCTIONS
+SELECTCASE ARG:1
+CASE 0
+	LOCALS = %CSTR:ARG:49%
+CASE 1
+	LOCALS = %CSTR:ARG:49%
+ENDSELECT
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之小物之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_OTHER(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_OTHER(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之小物之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_OTHER(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+
+SELECTCASE ARG
+CASE 1, 38, 39, 40
+	LOCAL = SETFLAG_OTHER("项链")
+	LOCALS = 项链\/\/\/\/
+CASE 2
+	LOCAL = SETFLAG_OTHER("发箍")
+	LOCALS = \/\/\/发箍\/
+CASE 3
+	;LOCAL = SETFLAG_OTHER("鲜花发饰", "吊袜带")
+	;LOCALS = \/\/\/鲜花发饰\/情爱之宿木
+	LOCAL = SETFLAG_OTHER("鲜花发饰")
+	LOCALS = \/\/\/鲜花发饰\/
+CASE 4
+	IF CFLAG:(ARG:1):8 == 2
+		LOCAL = SETFLAG_OTHER("荷叶边项链", "团子发饰")
+
+		LOCALS = 荷叶边项链\/\/\/团子发饰\/
+	ELSE
+		LOCAL = SETFLAG_OTHER("荷叶边项链", "缎带")
+		LOCALS = 荷叶边项链\/\/\/妖精之缎带\/
+	ENDIF
+CASE 6
+	LOCAL = SETFLAG_OTHER("铃铛项链")
+	LOCALS = 铃铛项链\/\/\/\/
+
+
+
+CASE 7
+	LOCAL = SETFLAG_OTHER("犬之项圈")
+	LOCALS = 犬之项圈\/\/\/\/
+CASE 8, 9
+	IF CFLAG:(ARG:1):8 == 2
+		LOCAL = SETFLAG_OTHER("")
+		LOCALS = \/\/\/\/
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCAL = SETFLAG_OTHER("缎带项链")
+		LOCALS = 缎带项链\/\/\/\/
+	ELSE
+		LOCAL = SETFLAG_OTHER("缎带项链", "缎带")
+		LOCALS = 缎带项链\/\/\/可爱い缎带\/
+	ENDIF
+CASE 10
+	IF CFLAG:(ARG:1):8 == 2
+		LOCAL = SETFLAG_OTHER("荷叶边项链", "头饰")
+
+		LOCALS = 荷叶边项链\/\/\/头饰\/
+	ELSE
+		LOCAL = SETFLAG_OTHER("链式项链", "宝冠")
+
+		LOCALS = 链式项链\/\/\/拉米亚之王冠\/
+	ENDIF
+CASE 11
+	IF CFLAG:(ARG:1):8 == 2
+		LOCAL = SETFLAG_OTHER("水手帽")
+		LOCALS = \/\/\/水手帽\/
+	ENDIF
+CASE 14
+	LOCAL = SETFLAG_OTHER("链式项链", "王冠")
+	LOCALS = 链式项链\/\/\/王冠\/
+CASE 15
+	IF CFLAG:(ARG:1):8 == 2
+		LOCAL = SETFLAG_OTHER("魔女之帽子")
+		LOCALS = \/\/\/魔女之帽子\/
+	ELSE
+		LOCAL = SETFLAG_OTHER("鲜花发饰")
+		LOCALS = \/\/\/鲜花发饰\/
+	ENDIF
+CASE 16
+	IF CFLAG:(ARG:1):8 == 2
+		;LOCAL = SETFLAG_OTHER("团子发饰", "吊袜带")
+		;LOCALS = \/\/\/团子发饰\/淋湿剥落的御纸币
+		LOCAL = SETFLAG_OTHER("团子发饰")
+		LOCALS = \/\/\/团子发饰\/
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		;LOCAL = SETFLAG_OTHER("发簪", "吊袜带")
+		;LOCALS = \/\/\/发簪\/淋湿剥落的御纸币
+		LOCAL = SETFLAG_OTHER("发簪")
+		LOCALS = \/\/\/发簪\/
+	ELSE
+		;LOCAL = SETFLAG_OTHER("吊袜带")
+		;LOCALS = \/\/\/\/淋湿剥落的御纸币
+	ENDIF
+CASE 17
+	IF CFLAG:(ARG:1):8 == 1
+		LOCAL = SETFLAG_OTHER("丝绸礼帽")
+		LOCALS = \/\/丝绸礼帽\/\/
+	ELSE
+		LOCAL = SETFLAG_OTHER("犬之项圈")
+
+		LOCALS = 犬之项圈\/\/\/\/
+	ENDIF
+CASE 18
+	LOCAL = SETFLAG_OTHER("蕾丝项链", "发簪")
+	LOCALS = 蕾丝项链\/\/\/发簪\/
+CASE 19, 47
+	LOCAL = SETFLAG_OTHER("项链", "魔女之帽子")
+
+	LOCALS = 项链\/\/魔女之帽子\/\/
+CASE 20, 21
+	LOCAL = SETFLAG_OTHER("编织项链")
+	LOCALS = 编织项链\/\/\/\/
+CASE 22
+	LOCAL = SETFLAG_OTHER("护额")
+	LOCALS = \/\/\/护额\/
+CASE 23, 33, 58
+	LOCAL = SETFLAG_OTHER("领带", "丝绸礼帽")
+
+	LOCALS = 蝴蝶结的蝴蝶领带\/\/时髦丝绸帽子\/\/
+CASE 24, 26
+	LOCAL = SETFLAG_OTHER("发箍")
+	LOCALS = \/\/\/发箍\/
+CASE 25
+	LOCAL = SETFLAG_OTHER("毛皮围巾", "头饰", "斗篷")
+
+	LOCALS = 夜魔之围巾\/\/\/头饰\/常夜之外套
+CASE 27
+	LOCAL = SETFLAG_OTHER("头饰")
+	LOCALS = \/\/\/头饰\/
+CASE 28
+	LOCAL = SETFLAG_OTHER("革制项链", "护额")
+
+	LOCALS = 革制项链\/\/\/护额\/
+CASE 29
+	;LOCAL = SETFLAG_OTHER("吊袜带")
+	;LOCALS = \/\/\/\/袖珍史莱姆
+CASE 30
+	LOCAL = SETFLAG_OTHER("蕾丝项链", "鲜花发饰")
+	LOCALS = 蕾丝项链\/\/\/鲜花发饰\/
+CASE 31
+	;LOCAL = SETFLAG_OTHER("犬之项圈", "宝冠", "吊袜带")
+
+	;LOCALS = 犬之项圈\/\/\/仔鬼之帽子\/仔鬼之道具袋
+	LOCAL = SETFLAG_OTHER("犬之项圈", "宝冠")
+	LOCALS = 犬之项圈\/\/\/仔鬼之帽子\/
+CASE 33
+	;LOCAL = SETFLAG_OTHER("吊袜带")
+	;LOCALS = \/\/\/\/贪食的宝箱
+CASE 34
+	LOCAL = SETFLAG_OTHER("宝石发饰")
+
+	LOCALS = \/\/\/結晶之冠\/
+CASE 35
+	LOCAL = SETFLAG_OTHER("编织项链", "贝雷帽")
+
+	LOCALS = 编织项链\/\/贝雷帽\/\/
+CASE 41
+	LOCAL = SETFLAG_OTHER("犬之项圈")
+
+	LOCALS = 犬之项圈\/\/\/\/
+CASE 42
+	IF CFLAG:(ARG:1):209 == 1
+		LOCAL = SETFLAG_OTHER("项链")
+		LOCALS = 项链\/\/\/\/
+	ENDIF
+CASE 46
+	LOCAL = SETFLAG_OTHER("荷叶边项链", "发箍")
+	LOCALS = 荷叶边项链\/\/\/发箍\/
+CASE 48
+	;ヴェールは帽子…？保留
+	;LOCAL = SETFLAG_OTHER("吊袜带")
+	;LOCALS = \/\/\/\/夜之面纱
+CASE 49
+	LOCAL = SETFLAG_OTHER("皇冠")
+	LOCALS = \/\/\/皇冠\/
+CASE 50
+	LOCAL = SETFLAG_OTHER("荷叶边项链", "缎带")
+	LOCALS = 荷叶边项链\/\/\/缎带\/
+CASE 54
+	LOCAL = SETFLAG_OTHER("眼鏡", "魔女之帽子")
+
+	LOCALS = \/司书之眼鏡\/\/司书之帽子\/
+CASE 55
+	LOCAL = SETFLAG_OTHER("缎带")
+	LOCALS = \/\/\/真っ赤な缎带\/
+CASE 57
+	LOCAL = SETFLAG_OTHER("鲜花发饰")
+	LOCALS = \/\/\/真紅之发饰\/
+CASE 60
+	LOCAL = SETFLAG_OTHER("毛皮围巾")
+	LOCALS = 毛皮围巾\/\/\/\/
+CASE 100
+	LOCAL = SETFLAG_OTHER("项链")
+	LOCALS:10 = 项链
+CASE 101
+	LOCAL = SETFLAG_OTHER("蕾丝项链")
+	LOCALS:10 = 蕾丝项链
+CASE 102
+	LOCAL = SETFLAG_OTHER("荷叶边项链")
+	LOCALS:10 = 荷叶边项链
+CASE 103
+	LOCAL = SETFLAG_OTHER("缎带项链")
+	LOCALS:10 = 缎带项链
+CASE 104
+	LOCAL = SETFLAG_OTHER("编织项链")
+	LOCALS:10 = 编织项链
+CASE 105
+	LOCAL = SETFLAG_OTHER("革制项链")
+	LOCALS:10 = 革制项链
+CASE 106
+	LOCAL = SETFLAG_OTHER("铃铛项链")
+	LOCALS:10 = 铃铛项链
+CASE 107
+	LOCAL = SETFLAG_OTHER("链式项链")
+	LOCALS:10 = 链式项链
+CASE 108
+	LOCAL = SETFLAG_OTHER("犬之项圈")
+	LOCALS:10 = 犬之项圈
+CASE 109
+	LOCAL = SETFLAG_OTHER("毛皮围巾")
+	LOCALS:10 = 毛皮围巾
+CASE 110
+	LOCAL = SETFLAG_OTHER("领带")
+	LOCALS:10 = 领带
+
+CASE 120
+	LOCAL = SETFLAG_OTHER("眼鏡")
+	LOCALS:11 = 眼鏡
+
+CASE 125
+	LOCAL = SETFLAG_OTHER("丝绸礼帽")
+	LOCALS:12 = 丝绸礼帽
+CASE 126
+	LOCAL = SETFLAG_OTHER("魔女之帽子")
+	LOCALS:12 = 魔女之帽子
+CASE 127
+	LOCAL = SETFLAG_OTHER("贝雷帽")
+	LOCALS:12 = 贝雷帽
+
+CASE 130
+	LOCAL = SETFLAG_OTHER("猫耳")
+	LOCALS:12 = 猫耳
+CASE 131
+	LOCAL = SETFLAG_OTHER("兔耳")
+	LOCALS:12 = 兔耳
+CASE 132
+	LOCAL = SETFLAG_OTHER("狐耳")
+	LOCALS:12 = 狐耳
+CASE 133
+	LOCAL = SETFLAG_OTHER("犬耳")
+	LOCALS:12 = 犬耳
+
+CASE 140
+	LOCAL = SETFLAG_OTHER("发箍")
+	LOCALS:13 = 发箍
+CASE 141
+	LOCAL = SETFLAG_OTHER("缎带")
+	LOCALS:13 = 缎带
+CASE 142
+	LOCAL = SETFLAG_OTHER("宝冠")
+	LOCALS:13 = 宝冠
+CASE 143
+	LOCAL = SETFLAG_OTHER("王冠")
+	LOCALS:13 = 王冠
+CASE 144
+	LOCAL = SETFLAG_OTHER("发簪")
+	LOCALS:13 = 发簪
+CASE 145
+	LOCAL = SETFLAG_OTHER("团子发饰")
+	LOCALS:13 = 团子发饰
+CASE 146
+	LOCAL = SETFLAG_OTHER("鲜花发饰")
+	LOCALS:13 = 鲜花发饰
+CASE 147
+	LOCAL = SETFLAG_OTHER("宝石发饰")
+	LOCALS:13 = 宝石发饰
+CASE 148
+	LOCAL = SETFLAG_OTHER("头饰")
+	LOCALS:13 = 头饰
+CASE 149
+	LOCAL = SETFLAG_OTHER("皇冠")
+	LOCALS:13 = 皇冠
+CASE 150
+	LOCAL = SETFLAG_OTHER("护额")
+	LOCALS:13 = 护额
+
+CASE 155
+	LOCAL = SETFLAG_OTHER("吊袜带")
+	LOCALS:14 = 吊袜带
+CASE 156
+	LOCAL = SETFLAG_OTHER("斗篷")
+	LOCALS:14 = 斗篷
+ENDSELECT
+
+IF ARG:1 > 0 && ARG:2 > 0
+	SELECTCASE ARG
+	CASE IS < 100
+		EQUIP:(ARG:1):装饰品 = LOCAL
+	CASEELSE
+		SPLIT CSTR:(ARG:1):49, "/", LOCALS
+		;今装备しているも之と選んだも之が同じ场合には外す处理
+		IF (LOCAL&EQUIP:(ARG:1):装饰品) == LOCAL
+			EQUIP:(ARG:1):装饰品 -= LOCAL
+			IF LOCALS:10 != ""
+				LOCALS:0 = 
+			ELSEIF LOCALS:11 != ""
+				LOCALS:1 = 
+			ELSEIF LOCALS:12 != ""
+				LOCALS:2 = 
+			ELSEIF LOCALS:13 != ""
+				LOCALS:3 = 
+			ELSEIF LOCALS:14 != ""
+				LOCALS:4 = 
+			ENDIF
+		ELSE
+			IF LOCALS:10 != ""
+				EQUIP:(ARG:1):装饰品 = CLEARBITS(EQUIP:(ARG:1):装饰品, 0, 19)
+				LOCALS:0 = %LOCALS:10%
+			ELSEIF LOCALS:11 != ""
+				EQUIP:(ARG:1):装饰品 = CLEARBITS(EQUIP:(ARG:1):装饰品, 20, 24)
+				LOCALS:1 = %LOCALS:11%
+			ELSEIF LOCALS:12 != ""
+				EQUIP:(ARG:1):装饰品 = CLEARBITS(EQUIP:(ARG:1):装饰品, 25, 39)
+				LOCALS:2 = %LOCALS:12%
+			ELSEIF LOCALS:13 != ""
+				EQUIP:(ARG:1):装饰品 = CLEARBITS(EQUIP:(ARG:1):装饰品, 40, 54)
+				LOCALS:3 = %LOCALS:13%
+			ELSEIF LOCALS:14 != ""
+				EQUIP:(ARG:1):装饰品 = CLEARBITS(EQUIP:(ARG:1):装饰品, 55, 63)
+				LOCALS:4 = %LOCALS:14%
+			ENDIF
+			EQUIP:(ARG:1):装饰品 |= LOCAL
+		ENDIF
+		LOCALS = %LOCALS:0%\/%LOCALS:1%\/%LOCALS:2%\/%LOCALS:3%\/%LOCALS:4%
+	ENDSELECT
+ENDIF
+
+SIF LOCALS == ""
+	LOCALS = %LOCALS:10%%LOCALS:11%%LOCALS:12%%LOCALS:13%%LOCALS:14%
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之小物之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_OTHER(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	;0bit～19bitは首周り
+	CASE "项链"
+		SETBIT LOCAL, 0
+	CASE "蕾丝项链"
+		SETBIT LOCAL, 1
+	CASE "荷叶边项链"
+		SETBIT LOCAL, 2
+	CASE "缎带项链"
+		SETBIT LOCAL, 3
+	CASE "编织项链"
+		SETBIT LOCAL, 4
+
+	CASE "革制项链"
+		SETBIT LOCAL, 5
+	CASE "铃铛项链"
+		SETBIT LOCAL, 6
+	CASE "链式项链"
+		SETBIT LOCAL, 7
+
+	CASE "犬之项圈"
+		SETBIT LOCAL, 8
+	CASE "毛皮围巾"
+		SETBIT LOCAL, 9
+	CASE "领带"
+		SETBIT LOCAL, 10
+
+	;20bit～24bitはメガネなど顔につけるも之
+	CASE "眼鏡", "メガネ"
+		SETBIT LOCAL, 20
+
+
+	;25bit～39bitは帽子や付け耳など
+	CASE "丝绸礼帽"
+		SETBIT LOCAL, 25
+
+	CASE "魔女之帽子"
+		SETBIT LOCAL, 26
+	CASE "贝雷帽"
+		SETBIT LOCAL, 27
+	CASE "水手帽"
+		SETBIT LOCAL, 28
+
+	CASE "猫耳"
+		SETBIT LOCAL, 30
+	CASE "兔耳"
+		SETBIT LOCAL, 31
+	CASE "狐耳"
+		SETBIT LOCAL, 32
+	CASE "犬耳"
+		SETBIT LOCAL, 33
+
+	;40bit～54bitは发饰
+	CASE "发箍"
+		SETBIT LOCAL, 40
+	CASE "缎带"
+		SETBIT LOCAL, 41
+	CASE "宝冠"
+		SETBIT LOCAL, 42
+	CASE "王冠"
+		SETBIT LOCAL, 43
+	CASE "发簪"
+		SETBIT LOCAL, 44
+	CASE "团子发饰"
+		SETBIT LOCAL, 45
+	CASE "鲜花发饰"
+		SETBIT LOCAL, 46
+	CASE "宝石发饰"
+		SETBIT LOCAL, 47
+	CASE "头饰"
+		SETBIT LOCAL, 48
+	CASE "皇冠"
+		SETBIT LOCAL, 49
+	CASE "护额"
+		SETBIT LOCAL, 50
+
+	;55bit～は其他
+	CASE "吊袜带"
+		SETBIT LOCAL, 55
+	CASE "斗篷"
+		SETBIT LOCAL, 56
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之身につけている小物が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_OTHER(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:装饰品 == 0
+	RETURNF 0
+SELECTCASE ARGS
+CASE "首周り"
+	SIF GETBITS(EQUIP:ARG:装饰品, 0, 19)
+		RETURNF 1
+CASE "眼鏡等"
+	SIF GETBITS(EQUIP:ARG:装饰品, 20, 24)
+		RETURNF 1
+CASE "帽子"
+	SIF GETBITS(EQUIP:ARG:装饰品, 25, 39)
+		RETURNF 1
+CASE "发饰"
+	SIF GETBITS(EQUIP:ARG:装饰品, 40, 54)
+		RETURNF 1
+CASE "其他装饰具"
+	SIF GETBITS(EQUIP:ARG:装饰品, 55, 63)
+		RETURNF 1
+CASEELSE
+	SIF (SETFLAG_OTHER(ARGS)&EQUIP:ARG:装饰品) == SETFLAG_OTHER(ARGS)
+		RETURNF 1
+ENDSELECT
+RETURNF 0
+

@@ -93,9 +93,9 @@ RESTART
 @CONFIG(ARGS)
 #FUNCTION
 SELECTCASE ARGS
-CASE "SＨＯＰ非表示"
+CASE "SＨＯP非表示"
 	RETURNF GETBIT(FLAG:2, 0)
-CASE "SＨＯＰ１割引"
+CASE "SＨＯP１割引"
 	RETURNF GETBIT(FLAG:2, 1)
 CASE "自动购入"
 	RETURNF FLAG:9
@@ -257,7 +257,7 @@ CASE "助手对象でも恋慕適用"
 	RETURNF FLAG:218
 CASE "难易度"
 	RETURNF FLAG:220
-CASE "ＥASＹ"
+CASE "EASY"
 	SIF FLAG:220 == 1
 		RETURNF 1
 CASE "ＮＯＲMAL"
@@ -362,7 +362,7 @@ CASE "调教对象变更不可"
 	RETURNF FLAG:252
 CASE "VA详细表示"
 	RETURNF GETBIT(FLAG:254, 0)
-CASE "VA详细表示：手动LVＵＰ"
+CASE "VA详细表示：手动LVＵP"
 	RETURNF GETBIT(FLAG:254, 1)
 
 CASE "咖啡屋描写"
@@ -430,8 +430,8 @@ CASE "项目：体型"
 	RETURNF GETBIT(FLAG:3, 5)
 CASE "项目：性癖"
 	RETURNF GETBIT(FLAG:3, 6)
-CASE "项目：弱点"
-	RETURNF GETBIT(FLAG:3, 7)
+; CASE "项目：弱点"
+; 	RETURNF GETBIT(FLAG:3, 7)
 CASE "项目：属性"
 	RETURNF GETBIT(FLAG:3, 8)
 CASE "项目：宝珠"
@@ -569,7 +569,7 @@ CASE "系统＆事件全般"
 	SETCOLOR DEF_COLOR("暗黄色")
 	IF CONFIG("ＨAＲＤ")
 		PRINTL HARD
-	ELSEIF CONFIG("ＥASＹ")
+	ELSEIF CONFIG("EASY")
 		PRINTL EASY
 	ELSE
 		PRINTL NORMAL
@@ -585,7 +585,7 @@ CASE "系统＆事件全般"
 	PRINTFORM  [ 4] \@ CONFIG("VA详细表示") ? ○ # －\@ 详细显示V和A能力：
 	SETCOLOR DEF_COLOR("暗黄色")
 	IF CONFIG("VA详细表示")
-		PRINTFORML 显示，并且VA扩张LV的变化为\@ CONFIG("VA详细表示：手动LVＵＰ") ? 手动 # 自动 \@进行
+		PRINTFORML 显示，并且VA扩张LV的变化为\@ CONFIG("VA详细表示：手动LVＵP") ? 手动 # 自动 \@进行
 	ELSE
 		PRINTFORML 不显示
 	ENDIF
@@ -634,7 +634,7 @@ CASE "系统＆事件全般"
 	RESETCOLOR
 	PRINTFORM  [ 9] \@ CONFIG("表示人数") ? ○ # －\@ 角色表中显示人数的设定：
 	SETCOLOR DEF_COLOR("暗黄色")
-	PRINTFORML \@ CONFIG("表示人数") ? １Ｐ{CONFIG("表示人数"), 2}人表示 # 默认 \@\@ CONFIG("世代别表示") ? ＆世代别 # \@
+	PRINTFORML \@ CONFIG("表示人数") ? １P{CONFIG("表示人数"), 2}人表示 # 默认 \@\@ CONFIG("世代别表示") ? ＆世代别 # \@
 	RESETCOLOR
 	PRINTFORM  [10] \@ CONFIG("日常") ? ○ # －\@ 梦魇们的日常事件发生频度：
 	SETCOLOR DEF_COLOR("暗黄色")
@@ -740,30 +740,30 @@ CASE "性癖"
 	ENDIF
 	CLEARLINE LINECOUNT - MEMO_LINECOUNT
 	RESTART
-CASE "弱点"
-	REDRAW 0
-	PRINTL 进行弱点的设定。请随意选择
-	FOR LCOUNT, 0, NUM("弱点")
-		PRINTFORMLC 　[{LCOUNT, 2}] \@GETBIT(TALENT:MASTER:弱点, LCOUNT) ? ○ # － \@ %NAMES("弱点", LCOUNT)%
-		SIF LCOUNT%3 == 2
-			PRINTL 
-	NEXT
-	PRINTL 
-	PRINTL   [99] 全选
-	PRINTL  [100] 返回
-	CALL INPUT_SELECT, NUM("弱点"), 99, 100
-	IF RESULT == 100
-		REDRAW 1
-		RETURN 0
-	ELSEIF RESULT == 99
-		FOR LCOUNT, 0, NUM("弱点")
-			SETBIT TALENT:MASTER:弱点, LCOUNT
-		NEXT
-	ELSEIF RESULT >= 0 && RESULT <= NUM("属性") - 1
-		INVERTBIT TALENT:MASTER:弱点, RESULT
-	ENDIF
-	CLEARLINE LINECOUNT - MEMO_LINECOUNT
-	RESTART
+; CASE "弱点"
+; 	REDRAW 0
+; 	PRINTL 进行弱点的设定。请随意选择
+; 	FOR LCOUNT, 0, NUM("弱点")
+; 		PRINTFORMLC 　[{LCOUNT, 2}] \@GETBIT(TALENT:MASTER:弱点, LCOUNT) ? ○ # － \@ %NAMES("弱点", LCOUNT)%
+; 		SIF LCOUNT%3 == 2
+; 			PRINTL 
+; 	NEXT
+; 	PRINTL 
+; 	PRINTL   [99] 全选
+; 	PRINTL  [100] 返回
+; 	CALL INPUT_SELECT, NUM("弱点"), 99, 100
+; 	IF RESULT == 100
+; 		REDRAW 1
+; 		RETURN 0
+; 	ELSEIF RESULT == 99
+; 		FOR LCOUNT, 0, NUM("弱点")
+; 			SETBIT TALENT:MASTER:弱点, LCOUNT
+; 		NEXT
+; 	ELSEIF RESULT >= 0 && RESULT <= NUM("属性") - 1
+; 		INVERTBIT TALENT:MASTER:弱点, RESULT
+; 	ENDIF
+; 	CLEARLINE LINECOUNT - MEMO_LINECOUNT
+; 	RESTART
 CASE "自动购入"
 	REDRAW 0
 	PRINTL  ～自动补充消耗品设定一览～
@@ -1478,9 +1478,9 @@ CASE "３サイズ"
 	PRINTFORML  [ 0] \@ CONFIG("３サイズ：表示") ? ○ # － \@ 显示三围和身高
 	SIF CONFIG("３サイズ：表示") == 0
 		SETCOLOR DEF_COLOR("灰色")
-	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {1, 2} # × \@] \@ CONFIG("３サイズ：Ｆ") ? ○ # － \@ Ｅ～Ｆ罩杯为巨乳
-	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {2, 2} # × \@] \@ CONFIG("３サイズ：Ｇ") ? ○ # － \@ Ｅ～Ｇ罩杯为巨乳
-	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {3, 2} # × \@] \@ CONFIG("３サイズ：Ｈ") ? ○ # － \@ Ｅ～Ｈ罩杯为巨乳
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {1, 2} # × \@] \@ CONFIG("３サイズ：Ｆ") ? ○ # － \@ E～Ｆ罩杯为巨乳
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {2, 2} # × \@] \@ CONFIG("３サイズ：Ｇ") ? ○ # － \@ E～Ｇ罩杯为巨乳
+	PRINTFORML  [\@ CONFIG("３サイズ：表示") ? {3, 2} # × \@] \@ CONFIG("３サイズ：Ｈ") ? ○ # － \@ E～Ｈ罩杯为巨乳
 	RESETCOLOR
 	PRINTFORML [100] 返回
 
@@ -1499,7 +1499,7 @@ CASE "３サイズ"
 		IF CONFIG("３サイズ：表示")
 			SETBIT FLAG:239, 1
 			PRINTFORML 请继续设定巨乳的上限
-			PRINTFORMW 默认设定Ｅ～Ｆ罩杯为巨乳
+			PRINTFORMW 默认设定E～Ｆ罩杯为巨乳
 		ELSE
 			FLAG:239 = 0
 		ENDIF
@@ -1570,7 +1570,7 @@ CASE "VA详细表示"
 		PRINTFORML 可以初始化所有人物的VA扩张等级）
 	ENDIF
 	PRINTFORML  [ 0] \@ CONFIG("VA详细表示") ? ○ # － \@ 详细显示（会出现在人物的能力页面）
-	PRINTFORML  [\@ CONFIG("VA详细表示") ? {1, 2} # × \@] \@ CONFIG("VA详细表示：手动LVＵＰ") ? ○ # － \@ 手动提升V扩张度和A扩张度等级（前提是设置为详细显示）
+	PRINTFORML  [\@ CONFIG("VA详细表示") ? {1, 2} # × \@] \@ CONFIG("VA详细表示：手动LVＵP") ? ○ # － \@ 手动提升V扩张度和A扩张度等级（前提是设置为详细显示）
 	PRINTFORML [100] 返回
 
 	IF CONFIG("VA详细表示")
@@ -1590,7 +1590,7 @@ CASE "VA详细表示"
 	CASE 1
 		INVERTBIT FLAG:254, 1
 		;たった一度之初期化
-		IF CONFIG("VA详细表示：手动LVＵＰ") && GETBIT(FLAG:11, 0) == 0
+		IF CONFIG("VA详细表示：手动LVＵP") && GETBIT(FLAG:11, 0) == 0
 			PRINTFORML 将所有人物的V扩张度和A扩张度初始化吗？
 			PRINTFORML 只能初始化一次，请想清纯
 			PRINTFORML [ 0] 是的
@@ -1604,8 +1604,8 @@ CASE "VA详细表示"
 				NEXT
 				SETBIT FLAG:11, 0
 			ENDIF
-		;自动LVを選んだなら早速LVＵＰ
-		ELSEIF CONFIG("VA详细表示：手动LVＵＰ") == 0
+		;自动LVを選んだなら早速LVＵP
+		ELSEIF CONFIG("VA详细表示：手动LVＵP") == 0
 			FOR LCOUNT, 1, CHARANUM
 				ABL:LCOUNT:V扩张 = CALCF("V扩张之上限", LCOUNT)
 				ABL:LCOUNT:A扩张 = CALCF("A扩张之上限", LCOUNT)
@@ -1618,9 +1618,9 @@ CASE "VA详细表示"
 CASE "咖啡屋"
 	INVERTBIT FLAG:258, 0
 	IF CONFIG(ARGS)
-		PRINTW 不发生ＥVｅｎｔ
+		PRINTW 不发生EVEｎｔ
 	ELSE
-		PRINTW ＥVｅｎｔ随时间发生
+		PRINTW EVEｎｔ随时间发生
 	ENDIF
 CASE "寝取られ"
 	INVERTBIT FLAG:262, 0
