@@ -170,7 +170,7 @@ CASE "朝之母乳搾り"
 		PRINTFORML 早晨、来到厨房对%CALLNAME:TARGET%那巨大的乳房榨取母乳、
 
 		;孕娠または生产经历
-		IF TALENT:孕娠 || TALENT:生产经历 || TALENT:泌乳体質
+		IF TALENT:孕娠 || TALENT:生产经历 || TALENT:泌乳体质
 			IF RAND:2 == 0
 				PRINTFORML %CALLNAME:TARGET%因高潮而瞪大眼睛，带着一副恍惚的表情从乳房里喷出了乳汁…
 
@@ -189,7 +189,7 @@ CASE "朝之母乳搾り"
 	IF TALENT:巨乳
 		EXP:喷乳经验 += LOCAL * 2
 		PRINTFORML %EXPNAME:54%＋{LOCAL*2}
-		IF TALENT:献身 || TALENT:好色 || TALENT:泌乳体質
+		IF TALENT:献身 || TALENT:好色 || TALENT:泌乳体质
 			IF RAND:2 == 0
 				PRINTFORML %CALLNAME:TARGET%找到%CALLNAME:MASTER%、嫣然一笑微笑着招手…
 				PRINTFORML 靠近后、%CALLNAME:TARGET%抱住%CALLNAME:MASTER%的头、把还滴着乳汁的乳头高兴的塞进%CALLNAME:MASTER%嘴里挤了起来…
@@ -492,7 +492,7 @@ VARSET LOCALS
 CALL COM_ABLE6
 SIF RESULT && TALENT:恋慕 && ABL:顺从 >= 3 && CHECK_COM("接吻")
 	LOCALS:0 = 朝接吻
-SIF TALENT:恋慕 && TALENT:泌乳体質 && ABL:顺从 >= 3 && ABL:侍奉精神 >= 3 && EXP:喷乳经验 >= 20
+SIF TALENT:恋慕 && TALENT:泌乳体质 && ABL:顺从 >= 3 && ABL:侍奉精神 >= 3 && EXP:喷乳经验 >= 20
 	LOCALS:1 = 朝之母乳搾り
 CALL COM_ABLE95
 SIF RESULT && ABL:S属性 >= 3

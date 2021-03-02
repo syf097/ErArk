@@ -116,14 +116,14 @@ CASE "手指插入", "按摩棒"
 CASE "V插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
 	;V性交经验がある程度必要
-	SIF EXP:ARG:V性交经验 < MAX(EXP_LV(2*(LOCAL - TALENT:ARG:好色) - ABL:ARG:V扩张), 1)
+	SIF EXP:ARG:V性交经验 < MAX(EXP_LV(LOCAL), 1)
 		RETURNF 0
 CASE "A手指插入", "肛用按摩棒"
 	LOCAL = MAX(SIZE("肛用按摩棒", ARG), 1)
 CASE "A插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
 	;A性交经验がある程度必要
-	SIF EXP:ARG:A性交经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:A扩张), 1)
+	SIF EXP:ARG:A性交经验 < MAX(EXP_LV(LOCAL*2), 1)
 		RETURNF 0
 CASE "拳交"
 	SELECTCASE SELECTCOM
@@ -141,16 +141,16 @@ CASE "V拳交", "A拳交"
 	LOCAL = SIZE("拳交", PLAYER)
 CASE "两穴拳交"
 	LOCAL = SIZE("Ｗ拳交", PLAYER)
-CASE "龙奸"
-	SELECTCASE SELECTCOM
-	CASE 304
-		ARGS = V龙奸
-	CASE 305
-		ARGS = A龙奸
-	ENDSELECT
-	LOCAL = SIZE("龙")
-CASE "V龙奸", "A龙奸"
-	LOCAL = SIZE("龙")
+; CASE "龙奸"
+; 	SELECTCASE SELECTCOM
+; 	CASE 304
+; 		ARGS = V龙奸
+; 	CASE 305
+; 		ARGS = A龙奸
+; 	ENDSELECT
+; 	LOCAL = SIZE("龙")
+; CASE "V龙奸", "A龙奸"
+; 	LOCAL = SIZE("龙")
 ENDSELECT
 
 
@@ -185,7 +185,7 @@ CASE "手指插入", "按摩棒", "V插入", "V拳交", "V龙奸"
 				RETURNF 0
 		ENDSELECT
 		;痛が少ないことが必要
-		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 + TALENT:ARG:抖M*500
+		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 
 			RETURNF 0
 	ENDSELECT
 	RETURNF 1
@@ -219,15 +219,15 @@ CASE "A手指插入", "肛用按摩棒", "A插入", "A拳交", "A龙奸"
 				RETURNF 0
 		ENDSELECT
 		;痛が少ないことが必要
-		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 + TALENT:ARG:抖M*500
+		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 
 			RETURNF 0
 	ENDSELECT
 	RETURNF 1
 CASE "尿道插入"
 	LOCAL = MAX(SIZE("阴茎", PLAYER), 1)
 	;尿道性交经验がある程度必要
-	SIF EXP:ARG:尿道性交经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:尿道扩张), 1)
-		RETURNF 0
+	; SIF EXP:ARG:尿道性交经验 < MAX(EXP_LV(LOCAL*2 - ABL:ARG:尿道扩张), 1)
+	; 	RETURNF 0
 	;快乐が强くて苦痛などが少ないならＯＫ
 	SIF CUP:ARG:快C >= 3000 && MAX(CUP:ARG:苦痛, CUP:ARG:恐怖/10, CUP:ARG:反感) < 300
 		RETURNF 1
@@ -235,13 +235,13 @@ CASE "尿道插入"
 	SIF CUP:ARG:反感 >= 500
 		RETURNF 0
 	;侵入してくるモノを气持ちよく插入られるかを判定
-	SIF ABL:ARG:尿道扩张 + TALENT:ARG:尿道狂 <= MAX(LOCAL, 1)
-		RETURNF 0
+	; SIF ABL:ARG:尿道扩张 + TALENT:ARG:尿道狂 <= MAX(LOCAL, 1)
+	; 	RETURNF 0
 	;苦痛が殆どないならＯＫ
 	SIF CUP:ARG:苦痛 < 100
 		RETURNF 1
 	;痛が少ないことが必要
-	SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 + TALENT:ARG:抖M*500
+	SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100
 		RETURNF 0
 	RETURNF 1
 CASE "两穴拳交"
@@ -269,7 +269,7 @@ CASE "两穴拳交"
 		SIF PALAM:ARG:A润 < PALAM_LV(LOCAL - ABL:ARG:A扩张 + 2)
 			RETURNF 0
 		;痛が少ないことが必要
-		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 + TALENT:ARG:抖M*500
+		SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 
 			RETURNF 0
 	ENDSELECT
 	RETURNF 1
@@ -293,18 +293,18 @@ CASE "玩弄尿道"
 	SIF CUP:ARG:苦痛 < 100
 		RETURNF 1
 	;痛が少ないことが必要
-	SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100 + TALENT:ARG:抖M*500
+	SIF CUP:ARG:苦痛 >= 500 + ABL:ARG:M属性*100
 		RETURNF 0
 	RETURNF 1
 CASE "喉奸"
 	SIF ARG:1 == 0 && PLAYER > 0
 		ARG:1 = PLAYER
 	;喉まで插入られるかを判定。
-	SIF ABL:ARG:喉扩张 <= SIZE("阴茎", ARG:1)
-		RETURNF 0
-	SIF TALENT:ARG:嘔吐反射耐性 == 0 && EXP:ARG:口交经验 < MIN(EXP_LV(SIZE("阴茎", ARG:1) + 2), 100)
-		RETURNF 0
-	LOCAL = ABL:ARG:喉扩张 - SIZE("阴茎", ARG:1) + TALENT:ARG:嘔吐反射耐性 + 1
+	; SIF ABL:ARG:喉扩张 <= SIZE("阴茎", ARG:1)
+	; 	RETURNF 0
+	; SIF TALENT:ARG:嘔吐反射耐性 == 0 && EXP:ARG:口交经验 < MIN(EXP_LV(SIZE("阴茎", ARG:1) + 2), 100)
+	; 	RETURNF 0
+	; LOCAL = ABL:ARG:喉扩张 - SIZE("阴茎", ARG:1) + TALENT:ARG:嘔吐反射耐性 + 1
 CASE "口内放尿", "膣内放尿", "子宮内放尿", "温泉灌肠", "乳内放尿", "膀胱内放尿"
 	SIF ABL:ARG:M属性 >= 3
 		RETURNF 1
@@ -315,8 +315,8 @@ CASE "口内放尿", "膣内放尿", "子宮内放尿", "温泉灌肠", "乳内�
 	SIF MAX(CUP:ARG:恐怖, CUP:ARG:反感, CUP:ARG:抑郁) < 300
 		RETURNF 1
 CASE "阴毛管理", "腋毛管理"
-	SIF MAX(ABL:ARG:露阴癖, ABL:ARG:M属性) >= 3
-		RETURNF 1
+	; SIF MAX(ABL:ARG:露阴癖, ABL:ARG:M属性) >= 3
+	; 	RETURNF 1
 ENDSELECT
 RETURNF LOCAL
 
@@ -764,7 +764,7 @@ RETURNF LOCAL
 ;-------------------------------------------------
 @PENIS(ARG)
 #FUNCTION
-SIF TALENT:ARG:扶她 || TALENT:ARG:性别 == 1
+SIF  TALENT:ARG:性别 == 1
 	RETURNF 1
 RETURNF 0
 
@@ -773,7 +773,7 @@ RETURNF 0
 ;-------------------------------------------------
 @VAGINA(ARG)
 #FUNCTION
-SIF TALENT:ARG:扶她 || TALENT:ARG:性别女
+SIF TALENT:ARG:性别 == 2
 	RETURNF 1
 RETURNF 0
 
@@ -1349,7 +1349,7 @@ CASE "润滑液按摩"
 CASE "爱抚"
 	SIF TEQUIP:逆推 || TEQUIP:六九式 || ABL:PLAYER:技巧 < 3
 		RETURNF 0
- 	SIF RANDFIX(3, NUM("回合数") ) == 0
+	SIF RANDFIX(3, NUM("回合数") ) == 0
 		RETURNF 1
 CASE "打扫舐阴"
 	SIF ARG == 0
@@ -1402,15 +1402,15 @@ CASE "恥垢打扫舐阴"
 		SIF PREVPLAY("打扫舐阴", PLAYER) == 0 || CHECK_STAIN(STAIN:V, "V恥垢") == 0
 			RETURNF 0
 		;打扫舐阴よりは难易度高い
-		SIF TALENT:PLAYER:无视脏污 || TALENT:PLAYER:性变态
+		SIF TALENT:PLAYER:无视脏污 
 			RETURNF 1
-		IF PLAYER == MASTER
-			SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
-				RETURNF 1
-		ELSE
-			SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
-				RETURNF 1
-		ENDIF
+		; IF PLAYER == MASTER
+		; 	SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
+		; 		RETURNF 1
+		; ELSE
+		; 	SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
+		; 		RETURNF 1
+		; ENDIF
 	CASE 98
 		SIF COND("恥垢打扫舐阴标志")
 			RETURNF 1
@@ -1424,7 +1424,7 @@ CASE "恥垢打扫舐阴"
 		;打扫舐阴よりは难易度高い
 		SIF PLAYER == MASTER && TALENT:恋慕
 			RETURNF 1
-		SIF ABL:侍奉精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
+		SIF ABL:侍奉精神  + TALENT:嗅觉弱点  >= 5 || TALENT:无视脏污
 			RETURNF 1
 	ENDSELECT
 CASE "插入自慰"
@@ -1457,8 +1457,8 @@ CASE "舔乳头可能"
 		RETURNF 0
 	SIF TEQUIP:乳头夹 || TEQUIP:搾乳机 || TEQUIP:触手
 		RETURNF 0
-	IF TALENT:PLAYER:气味钝感 || TALENT:PLAYER:无视脏污
-	ELSEIF PLAYER == MASTER && (TALENT:偏爱 || TALENT:相思相爱)
+	IF  TALENT:PLAYER:无视脏污
+	; ELSEIF PLAYER == MASTER && (TALENT:偏爱 || TALENT:相思相爱)
 	ELSEIF PLAYER == ASSI && ABL:ASSI:顺从 >= 4
 	ELSE
 		SIF CHECK_STAIN(STAIN:B, "A", "破瓜之血")
@@ -1467,12 +1467,12 @@ CASE "舔乳头可能"
 			RETURNF 0
 		SIF ABL:PLAYER:精液成瘾 == 0 && CHECK_STAIN(STAIN:B, "精液")
 			RETURNF 0
-		SIF TALENT:PLAYER:旧日支配者的末裔 == 0 && CHECK_STAIN(STAIN:B, "触手")
-			RETURNF 0
+		; SIF TALENT:PLAYER:旧日支配者的末裔 == 0 && CHECK_STAIN(STAIN:B, "触手")
+		; 	RETURNF 0
 	ENDIF
 	RETURNF 1
 CASE "饮用母乳可能"
-	SIF TEQUIP:乳头夹 || TEQUIP:搾乳机 || TEQUIP:触手 || TALENT:泌乳体質 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
+	SIF TEQUIP:乳头夹 || TEQUIP:搾乳机 || TEQUIP:触手 || TALENT:泌乳体质 == 0 
 		RETURNF 0
 	SIF CHECK_COM("舔乳头可能", ARG)
 		RETURNF 1
@@ -1570,9 +1570,9 @@ CASE "轻轻擦拭"
 	RETURNF 1
 CASE "两穴观察"
 	;能力と素質で限制
-	SIF ABL:露阴癖 >= 5 || TALENT:抖M
-		RETURNF 1
-	SIF ABL:露阴癖 + ABL:M属性 + TALENT:不知耻 + TALENT:淫乱*2 + TALENT:抖M + TALENT:性变态 - TALENT:怕羞*2 - TALENT:清纯*2 < 5
+	; SIF  TALENT:抖M
+	; 	RETURNF 1
+	SIF  ABL:M属性  + TALENT:淫乱*2 - TALENT:怕羞*2  < 5
 		RETURNF 0
 	RETURNF 1
 
@@ -1599,7 +1599,7 @@ CASE "插入前暴发"
 CASE "进攻Ｇ点"
 	SIF ARG == 0
 		ARG = SELECTCOM
-	SIF ARG != 8 || ABL:PLAYER:技巧 + ABL:PLAYER:指技 < 3 || COND("前T调教者") != PLAYER || PREVCOM != 8 || TEQUIP:按摩棒 || TEQUIP:触手
+	SIF ARG != 8 || ABL:PLAYER:技巧  < 2 || COND("前T调教者") != PLAYER || PREVCOM != 8 || TEQUIP:按摩棒 || TEQUIP:触手
 		RETURNF 0
 	RETURNF 1
 CASE "狂野摇摆"
@@ -1613,7 +1613,7 @@ CASE "狂野摇摆"
 	;基本值は欲望
 	LOCAL = ABL:ARG:欲望
 	IF INSERT("V插入", ARG) && SELECTCOM >= 60 && SELECTCOM <= 69
-		SIF EXP:ARG:V经验 + EXP:ARG:V性交经验*2 + EXP:ARG:腰技经验 <= 50
+		SIF EXP:ARG:V经验 + EXP:ARG:V性交经验*2  <= 40
 			RETURNF 0
 		IF TALENT:ARG:淫穴
 			LOCAL += 5
@@ -1622,11 +1622,11 @@ CASE "狂野摇摆"
 			SIF TALENT:ARG:怕羞
 				LOCAL -= 5
 			;清纯
-			SIF TALENT:ARG:清纯
-				LOCAL -= 3
+			; SIF TALENT:ARG:清纯
+			; 	LOCAL -= 3
 		ENDIF
 	ELSEIF INSERT("A插入", ARG) && SELECTCOM >= 70 && SELECTCOM <= 79
-		SIF EXP:ARG:A经验 + EXP:ARG:A性交经验*2 <= 50 || EXP:ARG:腰技经验 <= 20
+		SIF EXP:ARG:A经验 + EXP:ARG:A性交经验*2 <= 50 
 			RETURNF 0
 		SIF ABL:ARG:A感觉 < 3
 			LOCAL -= 5
@@ -1643,12 +1643,12 @@ CASE "狂野摇摆"
 			SIF TALENT:ARG:怕羞
 				LOCAL -= 5
 			;清纯
-			SIF TALENT:ARG:清纯
-				LOCAL -= 3
+			; SIF TALENT:ARG:清纯
+			; 	LOCAL -= 3
 		ENDIF
 	ELSEIF INSERT("尿道插入", ARG) && SELECTCOM == 83
-		SIF EXP:ARG:尿道经验 + EXP:ARG:尿道性交经验*2 <= 50 || EXP:ARG:腰技经验 <= 20 || PENIS(ARG)
-			RETURNF 0
+		; SIF EXP:ARG:尿道经验 + EXP:ARG:尿道性交经验*2 <= 50 || PENIS(ARG)
+		; 	RETURNF 0
 		SIF TALENT:ARG:尿道性感 == 0
 			LOCAL -= 5
 
@@ -1659,19 +1659,19 @@ CASE "狂野摇摆"
 			SIF TALENT:ARG:怕羞
 				LOCAL -= 5
 			;清纯
-			SIF TALENT:ARG:清纯
-				LOCAL -= 3
+			; SIF TALENT:ARG:清纯
+			; 	LOCAL -= 3
 		ENDIF
 	ELSE
 		RETURNF 0
 	ENDIF
 	;强硬
-	IF TALENT:ARG:强硬
-		LOCAL += 2
-		;PLAYERがあまりイってない
-		SIF EXP_GAIN(6, ARG) < 5
-			LOCAL += 1
-	ENDIF
+	; IF TALENT:ARG:强硬
+	; 	LOCAL += 2
+	; 	;PLAYERがあまりイってない
+	; 	SIF EXP_GAIN(6, ARG) < 5
+	; 		LOCAL += 1
+	; ENDIF
 	;好色
 	SIF TALENT:ARG:好色
 		LOCAL += 1
@@ -1679,8 +1679,8 @@ CASE "狂野摇摆"
 	SIF TALENT:ARG:淫乱
 		LOCAL += 2
 	;腰技
-	SIF ABL:ARG:腰技 || EXP:ARG:腰技经验 >= 100
-		LOCAL += 1
+	; SIF ABL:ARG:腰技 || EXP:ARG:腰技经验 >= 100
+	; 	LOCAL += 1
 
 	SIF COND("发情期", ARG)
 		LOCAL += 2
@@ -1707,15 +1707,15 @@ CASE "刺激插入部位"
 	SIF COND("３P") || PREVCOM:2 >= 0
 		RETURNF ARG
 	IF TEQUIP:逆推
-		SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 || EXP:腰技经验 < 20
+		SIF ABL:技巧  <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 
 			RETURNF ARG
 	ELSE
-		SIF ABL:PLAYER:技巧 + ABL:PLAYER:腰技 <= 2
+		SIF ABL:PLAYER:技巧  <= 2
 			RETURNF ARG
 	ENDIF
 	;小根术だとＧスポ之み
-	SIF SIZE("阴茎", PLAYER) == 0 && TALENT:妖精 == 0
-		RETURNF 66
+	; SIF SIZE("阴茎", PLAYER) == 0 && TALENT:妖精 == 0
+	; 	RETURNF 66
 	;たまにはＧスポ選択
 	SIF RAND:5 == 0
 		RETURNF 66
@@ -1742,8 +1742,8 @@ CASE "刺激插入部位"
 	SIF SIZE("阴茎", PLAYER) > MAX(ABL:V扩张, 1)
 		LOCAL += 10
 	;子宮性感が无い对象だとＧスポを攻める之が无难
-	SIF TALENT:子宮性感 == 0 && TALENT:史莱姆 == 0
-		LOCAL -= 50
+	; SIF TALENT:子宮性感 == 0 && TALENT:史莱姆 == 0
+	; 	LOCAL -= 50
 	;LOCAL之值は0～100
 	SELECTCASE LOCAL
 	CASE IS >= 100
@@ -1820,13 +1820,13 @@ CASE "恥垢打扫口交"
 		SIF PREVPLAY("打扫口交", PLAYER) == 0 || CHECK_STAIN(STAIN:P, "P恥垢") == 0
 			RETURNF 0
 		;打扫口交よりは难易度高い
-		SIF TALENT:PLAYER:无视脏污 || TALENT:PLAYER:性变态
+		SIF TALENT:PLAYER:无视脏污 
 			RETURNF 1
 		IF PLAYER == MASTER
-			SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
-				RETURNF 1
+			; SIF COND("性癖：气味癖", PLAYER) && TALENT:偏爱 + TALENT:相思相爱
+			; 	RETURNF 1
 		ELSE
-			SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:献身 + TALENT:PLAYER:气味钝感 + TALENT:PLAYER:嗅觉弱点 - TALENT:PLAYER:气味敏感 >= 5
+			SIF ABL:PLAYER:侍奉精神 + TALENT:PLAYER:嗅觉弱点  >= 5
 				RETURNF 1
 		ENDIF
 	CASE 91
@@ -1842,7 +1842,7 @@ CASE "恥垢打扫口交"
 		;打扫口交よりは难易度高い
 		SIF PLAYER == MASTER && TALENT:恋慕
 			RETURNF 1
-		SIF ABL:侍奉精神 + TALENT:献身 + TALENT:气味钝感 + TALENT:嗅觉弱点 - TALENT:气味敏感 >= 5 || TALENT:性变态 || TALENT:无视脏污
+		SIF ABL:侍奉精神  + TALENT:嗅觉弱点 >= 5 || TALENT:无视脏污
 			RETURNF 1
 	ENDSELECT
 CASE "手搓口交"
@@ -1862,7 +1862,7 @@ CASE "乳夹口交"
 CASE "刺激肛门手交"
 	SIF COND("前T调教者") != PLAYER || TEQUIP:Ｗ逆推 || TEQUIP:六九式
 		RETURNF 0
-	SIF ABL:侍奉精神 + TALENT:献身 < 3 && ABL:S属性 < 3
+	SIF ABL:侍奉精神 < 3 && ABL:S属性 < 3
 		RETURNF 0
 	SIF ARG == 0
 		ARG = SELECTCOM
@@ -1910,15 +1910,15 @@ CASE "足交：两足交"
 
 CASE "熔融之吻"
 	;荡唇
-	SIF TALENT:荡唇
-		RETURNF 1
+	; SIF TALENT:荡唇
+	; 	RETURNF 1
 	LOCAL = RAND:(BASE:精力 + 1)
 	;斯图娜には相性が恶い
-	SIF NO:TARGET == 34
-		LOCAL *= 5
+	; SIF NO:TARGET == 34
+	; 	LOCAL *= 5
 	;梅罗娜が荡唇
-	SIF TALENT:ARG:荡唇
-		LOCAL /= 4
+	; SIF TALENT:ARG:荡唇
+	; 	LOCAL /= 4
 	;M敏感
 	SIF TALENT:M敏感
 		LOCAL /= 2
@@ -1993,7 +1993,7 @@ CASE "强制放尿"
 	;お浴室以外で顺从３未满
 	SIF TEQUIP:浴室PLAY == 0 && ABL:顺从 <= 2
 		RETURNF 1
-	SIF MAX(ABL:顺从 - 1, ABL:欲望 - 1, ABL:露阴癖, ABL:M属性) < 3
+	SIF MAX(ABL:顺从 - 1, ABL:欲望 - 1, ABL:M属性) < 3
 		RETURNF 1
 CASE "双枪拳交"
 	SIF ARG == 0
@@ -2972,12 +2972,12 @@ CASE "阴茎之直径"
 	SIF ARG == 0
 		ARG = PLAYER
 
-	IF TALENT:ARG:妖精
-		LOCAL = -7
-	ELSEIF STATE("小根术", ARG)
-		LOCAL = 0
+	; IF TALENT:ARG:妖精
+	; 	LOCAL = -7
+	; ELSEIF STATE("小根术", ARG)
+	; 	LOCAL = 0
 	;性别女は假阴茎
-	ELSEIF TALENT:ARG:性别女
+	IF TALENT:ARG:性别 == 2
 		LOCAL = 7
 	ELSE
 		LOCAL = SIZE("基本阴茎サイズ", ARG)*7
@@ -2989,10 +2989,10 @@ CASE "阴茎"
 	SIF ARG == 0
 		ARG = PLAYER
 	;妖精or小根术
-	SIF TALENT:ARG:妖精 || STATE("小根术", ARG)
-		RETURNF 0
+	; SIF TALENT:ARG:妖精 || STATE("小根术", ARG)
+	; 	RETURNF 0
 	;性别女は假阴茎
-	SIF TALENT:ARG:性别女
+	SIF TALENT:ARG:性别 ==2
 		RETURNF 1
 	LOCAL = SIZE("基本阴茎サイズ", ARG)
 		SELECTCASE RAND:100
@@ -3032,8 +3032,8 @@ CASE "按摩棒"
 		LOCAL = 5
 	ENDSELECT
 	;妖精用按摩棒
-	SIF TALENT:ARG:妖精
-		LOCAL = MAX(LOCAL - 1, 0)
+	; SIF TALENT:ARG:妖精
+	; 	LOCAL = MAX(LOCAL - 1, 0)
 CASE "肛用按摩棒"
 	SIF ARG == 0
 		ARG = TARGET
@@ -3055,8 +3055,8 @@ CASE "肛用按摩棒"
 		LOCAL = 5
 	ENDSELECT
 	;妖精用按摩棒
-	SIF TALENT:ARG:妖精
-		LOCAL = MAX(LOCAL - 1, 0)
+	; SIF TALENT:ARG:妖精
+	; 	LOCAL = MAX(LOCAL - 1, 0)
 CASE "拳交"
 	SIF ARG == 0
 		ARG = PLAYER
@@ -3110,8 +3110,8 @@ CASE "阴茎"
 	ELSEIF STATE("精强术", ARG)
 		LOCAL += 1
 	ENDIF
-	SIF TALENT:ARG:龙之血
-		LOCAL += 2
+	; SIF TALENT:ARG:龙之血
+	; 	LOCAL += 2
 CASE "按摩棒"
 	SIF ARG == 0
 		ARG = TARGET
@@ -3150,8 +3150,8 @@ CASE "拳交"
 	SIF STATE("皮肤硬化", ARG)
 		LOCAL += 1
 	;史莱姆
-	SIF TALENT:ARG:史莱姆
-		LOCAL -= 2
+	; SIF TALENT:ARG:史莱姆
+	; 	LOCAL -= 2
 CASE "龙"
 	RETURNF 4
 ENDSELECT
@@ -3287,7 +3287,7 @@ CASE "皮肤硬化"
 	SETBIT EQUIP:ARG:ステート变化, 9
 CASE "具现"
 	SETBIT EQUIP:ARG:ステート变化, 10
-	TALENT:ARG:性别女 = 0
+	TALENT:ARG:性别 = 0
 	TALENT:ARG:扶她 = 2
 CASE "束缚术：手"
 	SETBIT EQUIP:ARG:ステート变化, 11
@@ -3360,7 +3360,7 @@ CASE "皮肤硬化"
 	CLEARBIT EQUIP:ARG:ステート变化, 9
 CASE "具现"
 	CLEARBIT EQUIP:ARG:ステート变化, 10
-	TALENT:ARG:性别女 = 1
+	TALENT:ARG:性别 = 2
 	TALENT:ARG:扶她 = 0
 CASE "束缚术"
 	CLEARBIT EQUIP:ARG:ステート变化, 11

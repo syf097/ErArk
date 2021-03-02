@@ -305,7 +305,7 @@ IF PENIS(TARGET)
 	CALL PRINT_BAR, "溜め槽", BASE:绝顶, MAXBASE:绝顶, 24
 	PRINTFORM ({BASE:绝顶}/{MAXBASE:绝顶})　
 ENDIF
-IF TALENT:泌乳体質
+IF TALENT:泌乳体质
 	SIF MAXBASE:喷乳 == 0
 		MAXBASE:喷乳 = 10000
 	PRINTFORM 母乳
@@ -313,7 +313,7 @@ IF TALENT:泌乳体質
 	PRINTFORM ({BASE:喷乳}/{MAXBASE:喷乳})
 ENDIF
 
-SIF PENIS(TARGET) || TALENT:泌乳体質
+SIF PENIS(TARGET) || TALENT:泌乳体质
 	PRINTL 
 
 IF EX:处女丧失 || EX:C绝顶 || EX:尿道绝顶 || EX:V绝顶 || EX:A绝顶 || EX:B绝顶 || EX:M绝顶 || EX:射精 || EX:喷乳 || EX:能量吸收

@@ -1753,7 +1753,7 @@ CASE "追加地之文：Ｗ逆推中之射精"
 CASE "饮用母乳"
 	SELECTCASE SELECTCOM
 	CASE 5
-		SIF TALENT:泌乳体質 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
+		SIF TALENT:泌乳体质 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
 			RETURN 0
 		IF TEQUIP:触手
 			PRINTFORMW 每当紧夹着乳房的触手收紧玩弄乳房并将之形状改变时、乳头都会喷出母乳…
@@ -1795,7 +1795,7 @@ CASE "饮用母乳"
 	CASE 90, 97, 104
 		SIF CHECK_COM("Ｗ奉仕")
 			RETURN 0
-		SIF TALENT:泌乳体質 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
+		SIF TALENT:泌乳体质 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
 			RETURN 0
 		SIF CHECK_COM("舔乳头可能") == 0
 			RETURN 0
