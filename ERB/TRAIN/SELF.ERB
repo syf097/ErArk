@@ -78,15 +78,15 @@ CASE "调教后性爱"
 
 
 				CALL SIMULATE_TRAIN_COM, 91, 1
-			; ELSEIF TALENT:偏爱 + TALENT:相思相爱 && RAND:2
-			; 	IF TALENT:PLAYER:无视脏污 && ABL:S属性 >= 3 && RAND:5 == 0
-			; 		PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子用舌头舔干净%CALLNAME:TARGET%的漂亮小穴后、离开了房间…
+			ELSEIF TALENT:偏爱 + TALENT:相思相爱 && RAND:2
+				IF TALENT:PLAYER:无视脏污 && ABL:S属性 >= 3 && RAND:5 == 0
+					PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子用舌头舔干净%CALLNAME:TARGET%的漂亮小穴后、离开了房间…
 
-			; 		CALL SIMULATE_TRAIN_COM, 1, LOCAL
-			; 	ELSE
-			; 		PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子帮%CALLNAME:TARGET%擦拭干净那漂亮的娇躯、离开了房间…
+					CALL SIMULATE_TRAIN_COM, 1, LOCAL
+				ELSE
+					PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子帮%CALLNAME:TARGET%擦拭干净那漂亮的娇躯、离开了房间…
 
-			; 	ENDIF
+				ENDIF
 			ELSE
 				PRINTFORMW %CALLNAME:PLAYER%一脸满足的样子棒%CALLNAME:TARGET%清洁了漂亮的肉棒、离开了房间…
 				CALL SIMULATE_TRAIN_COM, 91, 1

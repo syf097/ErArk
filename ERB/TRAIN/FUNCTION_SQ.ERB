@@ -535,7 +535,7 @@ CASE "宝珠：淫核取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 	SIF TALENT:ARG:C敏感
 		LOCAL /= 2
@@ -543,13 +543,13 @@ CASE "宝珠：尿道狂取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 CASE "宝珠：淫穴取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 	SIF TALENT:ARG:V敏感
 		LOCAL /= 2
@@ -557,7 +557,7 @@ CASE "宝珠：尻穴狂取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 	SIF TALENT:ARG:A敏感
 		LOCAL /= 2
@@ -565,7 +565,7 @@ CASE "宝珠：淫乳取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 	SIF TALENT:ARG:B敏感
 		LOCAL /= 2
@@ -573,7 +573,7 @@ CASE "宝珠：荡唇取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳
+	SIF TALENT:ARG:淫核 + TALENT:ARG:淫穴 + TALENT:ARG:尻穴狂 + TALENT:ARG:淫乳 + TALENT:ARG:荡唇
 		LOCAL *= 5
 	SIF TALENT:ARG:M敏感
 		LOCAL /= 2
@@ -585,14 +585,14 @@ CASE "宝珠：抖M取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	; SIF TALENT:ARG:抖S
-	; 	LOCAL = 300000
+	SIF TALENT:ARG:抖S
+		LOCAL = 300000
 CASE "宝珠：抖S取得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
 	LOCAL = 100000
-	; SIF TALENT:ARG:抖M
-	; 	LOCAL = 300000
+	SIF TALENT:ARG:抖M
+		LOCAL = 300000
 CASE "宝珠：秘法习得"
 	SIF ARG == 0 && TARGET
 		ARG = TARGET
@@ -720,10 +720,10 @@ CASE "日常事件出演可能"
 
 ; 		LOCAL += 1
 ; 	NEXT
-; CASE "醉酒"
-; 	FOR LCOUNT, 1, CHARANUM
-; 		SIF STATE("醉酒", LCOUNT)
-; 			LOCAL += 1
+CASE "醉酒"
+	FOR LCOUNT, 1, CHARANUM
+		SIF STATE("醉酒", LCOUNT)
+			LOCAL += 1
 ; 	NEXT
 ; CASE "馆内露出观客数"
 ; 	FOR LCOUNT, 151, 155
@@ -1009,8 +1009,8 @@ CASE "润滑液按摩实行済"
 		RETURNF 1
 
 CASE "假阴茎"
-	; SIF ITEM:假阴茎 == 0 || CONFIG("假阴茎过滤")
-	; 	RETURNF 0
+	SIF ITEM:假阴茎 == 0 || CONFIG("假阴茎过滤")
+		RETURNF 0
 	RETURNF 1
 CASE "双头按摩棒"
 	RETURNF GETBIT(TEQUIP:ARG:按摩棒, 10)
@@ -1034,11 +1034,11 @@ CASE "温泉灌肠"
 	RETURNF GETBIT(TEQUIP:ARG:灌肠, 11)
 
 CASE "排泄：危险域"
-	; SIF TEQUIP:ARG:灌肠 && BASE:ARG:排泄欲 >= 8000
-	; 	RETURNF 1
+	SIF TEQUIP:ARG:灌肠 && BASE:ARG:排泄欲 >= 8000
+		RETURNF 1
 CASE "排泄：限界"
-	; SIF BASE:ARG:排泄欲 >= MAXBASE:ARG:排泄欲
-	; 	RETURNF 1
+	SIF BASE:ARG:排泄欲 >= MAXBASE:ARG:排泄欲
+		RETURNF 1
 
 CASE "运命检閲：爱抚"
 	RETURNF GETBIT(TEQUIP:ARG:运命检閲, 0)
@@ -1587,19 +1587,19 @@ CASE "调教空白期间"
 
 ;条件を緩く
 CASE "主动夜袭可能"
-	;相思相爱による主动夜袭限制有
-	; SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
-	; 	RETURNF 0
-	; SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
-	; 	RETURNF 0
+	相思相爱による主动夜袭限制有
+	SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
+		RETURNF 0
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
+		RETURNF 0
 	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:顺从+ABL:ARG:欲望+MAX(ABL:ARG:V感觉, ABL:ARG:A感觉)+ABL:ARG:侍奉精神 > 10) && BASE:ARG:体力 >= 500
 		RETURNF 1
 CASE "主动朝袭可能"
 	;相思相爱による主动夜袭限制有だと主动朝袭も禁止
-	; SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
-	; 	RETURNF 0
-	; SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
-	; 	RETURNF 0
+	SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
+		RETURNF 0
+	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
+		RETURNF 0
 	SIF (TALENT:ARG:恋慕 || TALENT:ARG:淫乱 || ABL:ARG:欲望 >= 3) && BASE:ARG:体力 >= 800
 		RETURNF 1
 
@@ -1857,42 +1857,42 @@ CASE "腋毛"
 ; 		RETURNF 1
 ; 	ENDIF
 
-; CASE "外观：阴毛"
-; 	IF GETBIT(CFLAG:ARG:368, 1)
-; 		RETURNF 3
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 2)
-; 		RETURNF 5
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 3)
-; 		RETURNF 7
-; 	ENDIF
-; CASE "外观：腋毛"
-; 	IF GETBIT(CFLAG:ARG:368, 6)
-; 		RETURNF 3
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 7)
-; 		RETURNF 7
-; 	ENDIF
-; CASE "外观：V扩张"
-; 	SIF TALENT:ARG:性别 == 1
-; 		RETURNF 0
-; 	IF GETBIT(CFLAG:ARG:368, 11)
-; 		RETURNF 1
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 12)
-; 		RETURNF 2
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 13)
-; 		RETURNF 3
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 14)
-; 		RETURNF 4
-; 	ENDIF
-; CASE "外观：A扩张"
-; 	IF GETBIT(CFLAG:ARG:368, 16)
-; 		RETURNF 1
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 17)
-; 		RETURNF 2
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 18)
-; 		RETURNF 3
-; 	ELSEIF GETBIT(CFLAG:ARG:368, 19)
-; 		RETURNF 4
-; 	ENDIF
+CASE "外观：阴毛"
+	IF GETBIT(CFLAG:ARG:368, 1)
+		RETURNF 3
+	ELSEIF GETBIT(CFLAG:ARG:368, 2)
+		RETURNF 5
+	ELSEIF GETBIT(CFLAG:ARG:368, 3)
+		RETURNF 7
+	ENDIF
+CASE "外观：腋毛"
+	IF GETBIT(CFLAG:ARG:368, 6)
+		RETURNF 3
+	ELSEIF GETBIT(CFLAG:ARG:368, 7)
+		RETURNF 7
+	ENDIF
+CASE "外观：V扩张"
+	SIF TALENT:ARG:性别 == 1
+		RETURNF 0
+	IF GETBIT(CFLAG:ARG:368, 11)
+		RETURNF 1
+	ELSEIF GETBIT(CFLAG:ARG:368, 12)
+		RETURNF 2
+	ELSEIF GETBIT(CFLAG:ARG:368, 13)
+		RETURNF 3
+	ELSEIF GETBIT(CFLAG:ARG:368, 14)
+		RETURNF 4
+	ENDIF
+CASE "外观：A扩张"
+	IF GETBIT(CFLAG:ARG:368, 16)
+		RETURNF 1
+	ELSEIF GETBIT(CFLAG:ARG:368, 17)
+		RETURNF 2
+	ELSEIF GETBIT(CFLAG:ARG:368, 18)
+		RETURNF 3
+	ELSEIF GETBIT(CFLAG:ARG:368, 19)
+		RETURNF 4
+	ENDIF
 CASE "外观：A准备"
 	IF GETBIT(CFLAG:ARG:368, 21)
 		RETURNF 1
@@ -3052,23 +3052,23 @@ CASE "一晩开放で之襲击属性"
 ; 		LOCALS = %ADDNUM_STR(LOCALS, 5)%
 
 
-; CASE "调教知识"
-; 	SELECTCASE TALENT:ARG:调教知识
-; 	CASE 1p0
-; 		LOCALS = 爱抚・奉仕知识
-; 	CASE 1p1
-; 		LOCALS = 好为人师
-; 	CASE 1p2
-; 		LOCALS = SM知识
-; 	CASE 1p3
-; 		LOCALS = A调教知识
-; 	CASE 1p4
-; 		LOCALS = 性器扩张知识
-; 	CASE 1p5
-; 		LOCALS = 道具技巧
-; 	CASE 1p6
-; 		LOCALS = 露出知识
-; 	ENDSELECT
+CASE "调教知识"
+	SELECTCASE TALENT:ARG:调教知识
+	CASE 1p0
+		LOCALS = 爱抚・奉仕知识
+	CASE 1p1
+		LOCALS = 好为人师
+	CASE 1p2
+		LOCALS = SM知识
+	CASE 1p3
+		LOCALS = A调教知识
+	CASE 1p4
+		LOCALS = 性器扩张知识
+	CASE 1p5
+		LOCALS = 道具技巧
+	CASE 1p6
+		LOCALS = 露出知识
+	ENDSELECT
 ; CASE "机嫌"
 ; 	SELECTCASE MARK:ARG:机嫌
 ; 	CASE 1
@@ -3080,350 +3080,350 @@ CASE "一晩开放で之襲击属性"
 ; 	CASEELSE
 ; 		LOCALS = 普通
 ; 	ENDSELECT
-; CASE "使用薫香"
-; 	SELECTCASE GETBITS(TEQUIP:MASTER:薫香, 4, 9)
-; 	CASE 1p4
-; 		LOCALS = 茉莉香
-; 	CASE 1p5
-; 		LOCALS = 薰衣草香
-; 	CASE 1p6
-; 		LOCALS = 麝香
-; 	CASE 1p7
-; 		LOCALS = 檀香
-; 	CASE 1p8
-; 		LOCALS = 迷迭香
-; 	CASE 1p9
-; 		LOCALS = 乳香
-; 	CASEELSE
-; 		LOCALS = 
-; 	ENDSELECT
-; CASE "肤色"
-; 	SELECTCASE TALENT:ARG:肤色
-; 	CASE 1
-; 		LOCALS = 褐肤
-; 	CASE 2
-; 		LOCALS = 白肤
-; 	CASE 3
-; 		LOCALS = 青肌
-; 	CASEELSE
-; 		LOCALS = 普通
-; 	ENDSELECT
-; CASE "体型"
+CASE "使用薫香"
+	SELECTCASE GETBITS(TEQUIP:MASTER:薫香, 4, 9)
+	CASE 1p4
+		LOCALS = 茉莉香
+	CASE 1p5
+		LOCALS = 薰衣草香
+	CASE 1p6
+		LOCALS = 麝香
+	CASE 1p7
+		LOCALS = 檀香
+	CASE 1p8
+		LOCALS = 迷迭香
+	CASE 1p9
+		LOCALS = 乳香
+	CASEELSE
+		LOCALS = 
+	ENDSELECT
+CASE "肤色"
+	SELECTCASE TALENT:ARG:肤色
+	CASE 1
+		LOCALS = 褐肤
+	CASE 2
+		LOCALS = 白肤
+	CASE 3
+		LOCALS = 青肌
+	CASEELSE
+		LOCALS = 普通
+	ENDSELECT
+CASE "体型"
 ; 	;まずは妖精や娇小かどうかで大きく分け、腰部、臀部、胸围で细かく分ける
 ; 	;腰部之太さについては100*腰部/身长之值で(细い, 普通, 大, 肥满) = (36以下, 37～39, 40～49, 50以上)
 ; 	;臀部之大きさについては100*臀部/身长之值で(细い, 普通, 大きい) = (50以下, 51～53, 54以上)
 ; 	;COND("巨臀")とCOND("小臀")で臀部判定も
-; 	IF TALENT:ARG:性别 == 1 && COND("男孩子？", ARG) == 0
-; 		LOCALS = 性别男
-; 	ELSEIF TALENT:ARG:妖精
-; 		LOCALS = 妖精
-; 	ELSEIF TALENT:ARG:娇小 || TALENT:ARG:外表年龄 == 0
-; 		IF TALENT:ARG:巨乳
-; 			LOCALS = \@ TALENT:ARG:外表年龄 ? 娇小丰满 # 巨乳萝莉 \@
-; 		ELSEIF TALENT:ARG:贫乳
-; 			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 			;腰部略粗
+	IF TALENT:ARG:性别 == 1
+		LOCALS = 性别男
+	; ELSEIF TALENT:ARG:妖精
+	; 	LOCALS = 妖精
+	ELSEIF TALENT:ARG:娇小 || TALENT:ARG:外表年龄 == 0
+		IF TALENT:ARG:巨乳
+			LOCALS = \@ TALENT:ARG:外表年龄 ? 娇小丰满 # 巨乳萝莉 \@
+		ELSEIF TALENT:ARG:贫乳
+			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+			;腰部略粗
 
 
-; 			CASE IS >= 40
-; 				LOCALS = 小孩子体型
+			CASE IS >= 40
+				LOCALS = 小孩子体型
 
 
-; 			;腰部普通以下
-; 			CASEELSE
-; 				IF COND("阴毛", ARG) == 1
-; 					LOCALS = 平坦无毛
+			;腰部普通以下
+			CASEELSE
+				IF COND("阴毛", ARG) == 1
+					LOCALS = 平坦无毛
 
 
-; 				ELSE
-; 					LOCALS = 飞机场
+				ELSE
+					LOCALS = 飞机场
 
 
-; 				ENDIF
-; 			ENDSELECT
-; 		ELSE
-; 			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 			;腰部略粗
+				ENDIF
+			ENDSELECT
+		ELSE
+			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+			;腰部略粗
 
 
-; 			CASE IS >= 40
-; 				LOCALS = 小孩子体型
+			CASE IS >= 40
+				LOCALS = 小孩子体型
 
 
-; 			;腰部普通以下
-; 			CASEELSE
-; 				LOCALS = \@ TALENT:ARG:外表年龄 ? 小不点 # 发育途中 \@
-; 			ENDSELECT
-; 		ENDIF
-; 	ELSE
-; 		SELECTCASE COND("巨臀", ARG)
-; 		;超尻
-; 		CASE IS >= 3
-; 			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 			;腰部粗大
-; 			CASE IS >= 40
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 超丰满
-; 				ELSE
-; 					LOCALS = 肉嘟嘟
+			;腰部普通以下
+			CASEELSE
+				LOCALS = \@ TALENT:ARG:外表年龄 ? 小不点 # 发育途中 \@
+			ENDSELECT
+		ENDIF
+	ELSE
+		SELECTCASE COND("巨臀", ARG)
+		;超尻
+		CASE IS >= 3
+			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+			;腰部粗大
+			CASE IS >= 40
+				IF TALENT:ARG:巨乳
+					LOCALS = 超丰满
+				ELSE
+					LOCALS = 肉嘟嘟
 
-; 				ENDIF
-; 			;腰部普通
-; 			CASE 37 TO 39
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 超丰满臀部
+				ENDIF
+			;腰部普通
+			CASE 37 TO 39
+				IF TALENT:ARG:巨乳
+					LOCALS = 超丰满臀部
 
-; 				ELSE
-; 					LOCALS = 超尻
-; 				ENDIF
-; 			;腰部细い
-; 			CASEELSE
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 				ELSE
-; 					LOCALS = 纤体超尻
+				ELSE
+					LOCALS = 超尻
+				ENDIF
+			;腰部细い
+			CASEELSE
+				IF TALENT:ARG:巨乳
+					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+				ELSE
+					LOCALS = 纤体超尻
 
-; 				ENDIF
-; 			ENDSELECT
-; 		;爆尻
-; 		CASE 2
-; 			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 			;腰部略粗
-
-
-; 			CASE IS >= 40
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 丰满
-; 				ELSE
-; 					LOCALS = 肉嘟嘟
+				ENDIF
+			ENDSELECT
+		;爆尻
+		CASE 2
+			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+			;腰部略粗
 
 
-; 				ENDIF
-; 			;腰部普通
-; 			CASE 37 TO 39
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 爆尻丰肥
+			CASE IS >= 40
+				IF TALENT:ARG:巨乳
+					LOCALS = 丰满
+				ELSE
+					LOCALS = 肉嘟嘟
 
 
-; 				ELSE
-; 					LOCALS = 爆尻
-; 				ENDIF
-; 			;腰部细い
-; 			CASEELSE
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 				ELSE
-; 					LOCALS = 爆尻
-; 				ENDIF
-; 			ENDSELECT
-; 		;巨臀
-; 		CASE 1
-; 			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 			;腰部略粗
+				ENDIF
+			;腰部普通
+			CASE 37 TO 39
+				IF TALENT:ARG:巨乳
+					LOCALS = 爆尻丰肥
 
 
-; 			CASE IS >= 40
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 丰满
-; 				ELSE
-; 					LOCALS = 肉嘟嘟
+				ELSE
+					LOCALS = 爆尻
+				ENDIF
+			;腰部细い
+			CASEELSE
+				IF TALENT:ARG:巨乳
+					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+				ELSE
+					LOCALS = 爆尻
+				ENDIF
+			ENDSELECT
+		;巨臀
+		CASE 1
+			SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+			;腰部略粗
 
 
-; 				ENDIF
-; 			;腰部普通
-; 			CASE 37 TO 39
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 丰肥
-; 				ELSE
-; 					LOCALS = 大尻
-; 				ENDIF
-; 			;腰部细い
-; 			CASEELSE
-; 				IF TALENT:ARG:巨乳
-; 					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 				ELSE
-; 					LOCALS = 大尻
-; 				ENDIF
-; 			ENDSELECT
-; 		CASE 0
-; 			;臀部略细
+			CASE IS >= 40
+				IF TALENT:ARG:巨乳
+					LOCALS = 丰满
+				ELSE
+					LOCALS = 肉嘟嘟
 
 
-; 			IF COND("小臀", ARG)
-; 				SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 				;腰部略粗
+				ENDIF
+			;腰部普通
+			CASE 37 TO 39
+				IF TALENT:ARG:巨乳
+					LOCALS = 丰肥
+				ELSE
+					LOCALS = 大尻
+				ENDIF
+			;腰部细い
+			CASEELSE
+				IF TALENT:ARG:巨乳
+					LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+				ELSE
+					LOCALS = 大尻
+				ENDIF
+			ENDSELECT
+		CASE 0
+			;臀部略细
 
 
-; 				CASE IS >= 40
-; 					IF TALENT:ARG:巨乳
-; 						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 					ELSE
-; 						LOCALS = 大意了……
+			IF COND("小臀", ARG)
+				SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+				;腰部略粗
 
 
-; 					ENDIF
-; 				;腰部普通以下
-; 				CASEELSE
-; 					IF TALENT:ARG:巨乳
-; 						LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 					ELSE
-; 						LOCALS = 纤瘦
+				CASE IS >= 40
+					IF TALENT:ARG:巨乳
+						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+					ELSE
+						LOCALS = 大意了……
 
 
-; 					ENDIF
-; 				ENDSELECT
-; 			;臀部普通
-; 			ELSE
-; 				SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 				;腰部略粗
+					ENDIF
+				;腰部普通以下
+				CASEELSE
+					IF TALENT:ARG:巨乳
+						LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+					ELSE
+						LOCALS = 纤瘦
 
 
-; 				CASE IS >= 40
-; 					IF TALENT:ARG:巨乳
-; 						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 					ELSE
-; 						LOCALS = 大意了……
+					ENDIF
+				ENDSELECT
+			;臀部普通
+			ELSE
+				SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+				;腰部略粗
 
 
-; 					ENDIF
-; 				;腰部普通
-; 				CASE 37 TO 39
-; 					IF TALENT:ARG:巨乳
-; 						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 					ELSEIF TALENT:ARG:贫乳
-; 						LOCALS = 贫乳
-; 					ELSE
-; 						LOCALS = 普通
-; 					ENDIF
-; 				;腰部细い
-; 				CASEELSE
-; 					IF TALENT:ARG:巨乳
-; 						LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
-; 					ELSE
-; 						LOCALS = 纤瘦
+				CASE IS >= 40
+					IF TALENT:ARG:巨乳
+						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+					ELSE
+						LOCALS = 大意了……
 
 
-; 					ENDIF
-; 				ENDSELECT
-; 			ENDIF
-; 		ENDSELECT
-; 	ENDIF
-; CASE "腰部"
-; 	IF TALENT:ARG:妖精
-; 		LOCALS = 妖精
-; 	ELSE
-; 		SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
-; 		;腰部略粗
+					ENDIF
+				;腰部普通
+				CASE 37 TO 39
+					IF TALENT:ARG:巨乳
+						LOCALS = %TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+					ELSEIF TALENT:ARG:贫乳
+						LOCALS = 贫乳
+					ELSE
+						LOCALS = 普通
+					ENDIF
+				;腰部细い
+				CASEELSE
+					IF TALENT:ARG:巨乳
+						LOCALS = 纤体%TALENT_NAME(110, TALENT:ARG:巨乳, ARG)%
+					ELSE
+						LOCALS = 纤瘦
 
 
-; 		CASE IS >= 40
-; 			LOCALS = 略粗
-; 		;腰部普通
-; 		CASE 37 TO 39
-; 			LOCALS = 普通
-; 		;腰部细い
-; 		CASEELSE
-; 			LOCALS = 略细
-; 		ENDSELECT
-; 	ENDIF
-; CASE "欧派"
-; 	IF TALENT:ARG:性别 == 1
-; 		LOCALS = 性别男
-; 	ELSEIF TALENT:ARG:巨乳 >= 3
-; 		LOCALS = 超乳
-; 	ELSEIF TALENT:ARG:巨乳 == 2
-; 		LOCALS = 爆乳
-; 	ELSEIF TALENT:ARG:巨乳
-; 		LOCALS = 巨乳
-; 	ELSEIF TALENT:ARG:贫乳
-; 		LOCALS = 贫乳
-; 	ELSE
-; 		LOCALS = 普乳
-; 	ENDIF
-; CASE "胸部罩杯"
-; 	SELECTCASE BASE:ARG:罩杯
-; 	CASE IS < 0
-; 		LOCALS = ---
-; 	CASE IS >= 28
-; 		LOCALS = Z
-; 	CASEELSE
+					ENDIF
+				ENDSELECT
+			ENDIF
+		ENDSELECT
+	ENDIF
+CASE "腰部"
+	IF TALENT:ARG:妖精
+		LOCALS = 妖精
+	ELSE
+		SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
+		;腰部略粗
 
-; 		VARSET LOCALS
-; 		SPLIT "---, AAA, AA, A, B, C, Ｄ, E, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, L, M, Ｎ, Ｏ, P, Ｑ, Ｒ, S, T, Ｕ, V, Ｗ, Ｘ, Y, Ｚ", ", ", LOCALS
-; 		LOCALS = %LOCALS:(BASE:ARG:罩杯)%
-; 	ENDSELECT
-; CASE "お尻"
-; 	IF TALENT:ARG:性别 == 1
-; 		LOCALS = 
-; 	ELSEIF TALENT:ARG:巨臀 >= 3
-; 		LOCALS = 超尻
-; 	ELSEIF TALENT:ARG:巨臀 == 2
-; 		LOCALS = 爆尻
-; 	ELSEIF TALENT:ARG:巨臀
-; 		LOCALS = 巨臀
-; 	ELSEIF TALENT:ARG:小臀
-; 		LOCALS = 小臀
-; 	ELSE
-; 		LOCALS = 
-; 	ENDIF
-; CASE "臀部サイズ"
-; 	SELECTCASE BASE:ARG:臀部
-; 	CASE IS <= 71
-; 		LOCALS = XS
-; 	CASE 72 TO 76
-; 		LOCALS = 3S
-; 	CASE 77 TO 81
-; 		LOCALS = SS
-; 	CASE 82 TO 86
-; 		LOCALS = S
-; 	CASE 87 TO 91
-; 		LOCALS = M
-; 	CASE 92 TO 96
-; 		LOCALS = L
-; 	CASE 97 TO 101
-; 		LOCALS = LL
-; 	CASE 102 TO 106
-; 		LOCALS = 3L
-; 	CASE 107 TO 111
-; 		LOCALS = 4L
-; 	CASE 112 TO 116
-; 		LOCALS = 5L
-; 	CASEELSE
-; 		LOCALS = XL
-; 	ENDSELECT
-; CASE "阴茎サイズ"
-; 	SELECTCASE SIZE("阴茎", ARG)
-; 	CASE 0
-; 		LOCALS = 小
-; 	CASE 1
-; 		LOCALS = 普
-; 	CASE 2
-; 		LOCALS = 巨根
-; 	CASE 3
-; 		LOCALS = 马尺寸
-; 	CASE 4
-; 		LOCALS = 手臂尺寸
-; 	CASE 5
-; 		LOCALS = 龙根
-; 	CASEELSE
-; 		LOCALS = 規格外
-; 	ENDSELECT
-; CASE "もと之性别"
-; 	IF COND("性转换中", ARG)
-; 		IF GETBIT(CFLAG:ARG:4, 18)
-; 			LOCALS = 性别女
-; 		ELSEIF GETBITS(CFLAG:ARG:4, 19, 20)
-; 			LOCALS = 扶她
-; 		ELSE
-; 			LOCALS = 性别男
-; 		ENDIF
-; 	ELSEIF TALENT:ARG:性别女
-; 		LOCALS = 性别女
-; 	ELSEIF TALENT:ARG:扶她
-; 		LOCALS = 扶她
-; 	ELSE
-; 		LOCALS = 性别男
-; 	ENDIF
+
+		CASE IS >= 40
+			LOCALS = 略粗
+		;腰部普通
+		CASE 37 TO 39
+			LOCALS = 普通
+		;腰部细い
+		CASEELSE
+			LOCALS = 略细
+		ENDSELECT
+	ENDIF
+CASE "欧派"
+	IF TALENT:ARG:性别 == 1
+		LOCALS = 性别男
+	ELSEIF TALENT:ARG:巨乳 >= 3
+		LOCALS = 超乳
+	ELSEIF TALENT:ARG:巨乳 == 2
+		LOCALS = 爆乳
+	ELSEIF TALENT:ARG:巨乳
+		LOCALS = 巨乳
+	ELSEIF TALENT:ARG:贫乳
+		LOCALS = 贫乳
+	ELSE
+		LOCALS = 普乳
+	ENDIF
+CASE "胸部罩杯"
+	SELECTCASE BASE:ARG:罩杯
+	CASE IS < 0
+		LOCALS = ---
+	CASE IS >= 28
+		LOCALS = Z
+	CASEELSE
+
+		VARSET LOCALS
+		SPLIT "---, AAA, AA, A, B, C, Ｄ, E, Ｆ, Ｇ, Ｈ, Ｉ, Ｊ, Ｋ, L, M, Ｎ, Ｏ, P, Ｑ, Ｒ, S, T, Ｕ, V, Ｗ, Ｘ, Y, Ｚ", ", ", LOCALS
+		LOCALS = %LOCALS:(BASE:ARG:罩杯)%
+	ENDSELECT
+CASE "お尻"
+	IF TALENT:ARG:性别 == 1
+		LOCALS = 
+	ELSEIF TALENT:ARG:巨臀 >= 3
+		LOCALS = 超尻
+	ELSEIF TALENT:ARG:巨臀 == 2
+		LOCALS = 爆尻
+	ELSEIF TALENT:ARG:巨臀
+		LOCALS = 巨臀
+	ELSEIF TALENT:ARG:小臀
+		LOCALS = 小臀
+	ELSE
+		LOCALS = 
+	ENDIF
+CASE "臀部サイズ"
+	SELECTCASE BASE:ARG:臀部
+	CASE IS <= 71
+		LOCALS = XS
+	CASE 72 TO 76
+		LOCALS = 3S
+	CASE 77 TO 81
+		LOCALS = SS
+	CASE 82 TO 86
+		LOCALS = S
+	CASE 87 TO 91
+		LOCALS = M
+	CASE 92 TO 96
+		LOCALS = L
+	CASE 97 TO 101
+		LOCALS = LL
+	CASE 102 TO 106
+		LOCALS = 3L
+	CASE 107 TO 111
+		LOCALS = 4L
+	CASE 112 TO 116
+		LOCALS = 5L
+	CASEELSE
+		LOCALS = XL
+	ENDSELECT
+CASE "阴茎サイズ"
+	SELECTCASE SIZE("阴茎", ARG)
+	CASE 0
+		LOCALS = 小
+	CASE 1
+		LOCALS = 普
+	CASE 2
+		LOCALS = 巨根
+	CASE 3
+		LOCALS = 马尺寸
+	CASE 4
+		LOCALS = 手臂尺寸
+	CASE 5
+		LOCALS = 龙根
+	CASEELSE
+		LOCALS = 規格外
+	ENDSELECT
+CASE "もと之性别"
+	; IF COND("性转换中", ARG)
+	; 	IF GETBIT(CFLAG:ARG:4, 18)
+	; 		LOCALS = 性别女
+	; 	ELSEIF GETBITS(CFLAG:ARG:4, 19, 20)
+	; 		LOCALS = 扶她
+	; 	ELSE
+	; 		LOCALS = 性别男
+	; 	ENDIF
+	IF TALENT:ARG:性别 == 2
+		LOCALS = 性别女
+	; ELSEIF TALENT:ARG:扶她
+	; 	LOCALS = 扶她
+	ELSE
+		LOCALS = 性别男
+	ENDIF
 ; CASE "动物分类"
 ; 	SELECTCASE MAX(TALENT:ARG:兽耳, TALENT:ARG:尾巴, TALENT:ARG:犄角, TALENT:ARG:翼, TALENT:ARG:兽足)
 ; 	CASE 1
@@ -3526,46 +3526,46 @@ CASE "体位"
 			LOCALS = 骑乘位
 		ENDIF
 	ENDSELECT
-; CASE "阴毛", "腋毛"
-; 	SELECTCASE ARGS
-; 	CASE "阴毛"
-; 		LOCAL = BASE:ARG:阴毛
-; 	CASE "腋毛"
-; 		LOCAL = BASE:ARG:腋毛
-; 	ENDSELECT
-; 	SELECTCASE LOCAL/100
-; 	CASE 1
-; 		IF ARGS == "阴毛"
-; 			LOCALS = 白虎
-; 		ELSE
-; 			LOCALS = 无毛
-; 		ENDIF
-; 	CASE 2
-; 		LOCALS = 脱毛处理
-; 	CASE 3
-; 		LOCALS = 光溜溜
-; 	CASE 4
-; 		IF TALENT:ARG:外表年龄 >= 2 && LOCAL%100 <= 2
-; 			LOCALS = 剃毛痕迹
-; 		ELSEIF TALENT:ARG:外表年龄 >= 3
-; 			LOCALS = 无阴毛
+CASE "阴毛", "腋毛"
+	SELECTCASE ARGS
+	CASE "阴毛"
+		LOCAL = BASE:ARG:阴毛
+	CASE "腋毛"
+		LOCAL = BASE:ARG:腋毛
+	ENDSELECT
+	SELECTCASE LOCAL/100
+	CASE 1
+		IF ARGS == "阴毛"
+			LOCALS = 白虎
+		ELSE
+			LOCALS = 无毛
+		ENDIF
+	CASE 2
+		LOCALS = 脱毛处理
+	CASE 3
+		LOCALS = 光溜溜
+	CASE 4
+		IF TALENT:ARG:外表年龄 >= 2 && LOCAL%100 <= 2
+			LOCALS = 剃毛痕迹
+		ELSEIF TALENT:ARG:外表年龄 >= 3
+			LOCALS = 无阴毛
 
-; 		ELSE
-; 			LOCALS = 刚刚长出
-; 		ENDIF
-; 	CASE 5
-; 		LOCALS = 处理完毕
-
-
-; 	CASE 6
-; 		LOCALS = 自然生长
+		ELSE
+			LOCALS = 刚刚长出
+		ENDIF
+	CASE 5
+		LOCALS = 处理完毕
 
 
-; 	CASE 7
-; 		LOCALS = 放任生长
+	CASE 6
+		LOCALS = 自然生长
 
 
-; 	ENDSELECT
+	CASE 7
+		LOCALS = 放任生长
+
+
+	ENDSELECT
 
 ; CASE "朝之对象"
 ; 	LOCALS = %CALLNAME:FINDCHARA(CFLAG:90, COND("朝事件", ARG), MASTER + 1)%
