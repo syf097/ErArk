@@ -1649,19 +1649,19 @@ CASE "狂野摇摆"
 	ELSEIF INSERT("尿道插入", ARG) && SELECTCOM == 83
 		; SIF EXP:ARG:尿道经验 + EXP:ARG:尿道性交经验*2 <= 50 || PENIS(ARG)
 		; 	RETURNF 0
-		SIF TALENT:ARG:尿道性感 == 0
-			LOCAL -= 5
+		; SIF TALENT:ARG:尿道性感 == 0
+		; 	LOCAL -= 5
 
-		IF TALENT:ARG:尿道狂
-			LOCAL += 5
-		ELSE
+		; IF TALENT:ARG:尿道狂
+		; 	LOCAL += 5
+		; ELSE
 			;怕羞
 			SIF TALENT:ARG:怕羞
 				LOCAL -= 5
 			;清纯
 			; SIF TALENT:ARG:清纯
 			; 	LOCAL -= 3
-		ENDIF
+		; ENDIF
 	ELSE
 		RETURNF 0
 	ENDIF
@@ -2966,7 +2966,7 @@ CASE "基本阴茎サイズ"
 			RETURNF 1
 		ENDIF
 	ELSE
-		RETURNF 1 + (TALENT:ARG:龙之血 > 0) - (TALENT:ARG:梦魇 + TALENT:ARG:上位梦魇 + TALENT:ARG:魔王之碎片 == 0 && TALENT:ARG:外表年龄 == 0)
+		RETURNF 1
 	ENDIF
 CASE "阴茎之直径"
 	SIF ARG == 0

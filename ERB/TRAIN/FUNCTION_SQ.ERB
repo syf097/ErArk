@@ -724,7 +724,7 @@ CASE "醉酒"
 	FOR LCOUNT, 1, CHARANUM
 		SIF STATE("醉酒", LCOUNT)
 			LOCAL += 1
-; 	NEXT
+ 	NEXT
 ; CASE "馆内露出观客数"
 ; 	FOR LCOUNT, 151, 155
 ; 		SIF TFLAG:LCOUNT
@@ -1235,9 +1235,9 @@ CASE "子宮口松弛度"
 	ENDIF
 	SIF MARK:ARG:淫紋 >= 4
 		RETURNF 1
-; CASE "梦魇"
-; 	SIF TALENT:ARG:梦魇 || TALENT:ARG:上位梦魇
-; 		RETURNF 1
+CASE "梦魇"
+	; SIF TALENT:ARG:梦魇 || TALENT:ARG:上位梦魇
+		RETURNF 0
 ; CASE "男孩子？"
 ; 	SIF TALENT:ARG:性别 == 1 && TALENT:ARG:男孩子？ && TALENT:ARG:高大 == 0
 ; 		RETURNF 1
@@ -1273,7 +1273,7 @@ CASE "子宮口松弛度"
 ; 	SIF GETBIT(BASE:ARG:バイオ莉兹ム, 20)
 ; 		RETURNF 1
 CASE "胎内之精液量"
-	RETURNF BASE:ARG:胎内精子量+BASE:ARG:胎内精液量
+	RETURNF BASE:ARG:胎内精液量
 ; CASE "具现可能"
 ; 	SIF TALENT:ARG:具现 && PENIS(TARGET) == 0
 ; 		RETURNF 1
@@ -1587,7 +1587,7 @@ CASE "调教空白期间"
 
 ;条件を緩く
 CASE "主动夜袭可能"
-	相思相爱による主动夜袭限制有
+	;相思相爱による主动夜袭限制有
 	SIF CONFIG("相思相爱：主动夜袭限制") && TALENT:MASTER:相思相爱 && TALENT:ARG:相思相爱 == 0
 		RETURNF 0
 	SIF TALENT:ARG:V损伤 || TALENT:ARG:A损伤
@@ -2056,7 +2056,7 @@ CASE "淫乱取得可能"
 CASE "淫核取得不可能"
 	RETURNF (JUEL:ARG:快C < NUM("宝珠：淫核取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:C感觉 < 4)*4 + (EX:ARG:C绝顶 < 20)*32 + TALENT:ARG:淫核*64
 CASE "尿道狂取得不可能"
-	RETURNF (JUEL:ARG:快C < NUM("宝珠：尿道狂取得", ARG) ) + (ABL:ARG:欲望 < 4)*4 + (EX:ARG:尿道绝顶 < 10)*32 + TALENT:ARG:尿道狂*64
+	RETURNF (JUEL:ARG:快C < NUM("宝珠：尿道狂取得", ARG) ) + (ABL:ARG:欲望 < 4)*4  
 CASE "淫穴取得不可能"
 	RETURNF (JUEL:ARG:快V < NUM("宝珠：淫穴取得", ARG) ) + (ABL:ARG:欲望 < 4 || ABL:ARG:V感觉 < 4)*4 + (EX:ARG:V绝顶 < 20)*32 + TALENT:ARG:淫穴*64
 CASE "尻穴狂取得不可能"
@@ -3309,9 +3309,9 @@ CASE "体型"
 		ENDSELECT
 	ENDIF
 CASE "腰部"
-	IF TALENT:ARG:妖精
-		LOCALS = 妖精
-	ELSE
+	; IF TALENT:ARG:妖精
+	; 	LOCALS = 妖精
+	
 		SELECTCASE 100*BASE:ARG:腰部/BASE:ARG:身长
 		;腰部略粗
 
@@ -3325,7 +3325,7 @@ CASE "腰部"
 		CASEELSE
 			LOCALS = 略细
 		ENDSELECT
-	ENDIF
+	
 CASE "欧派"
 	IF TALENT:ARG:性别 == 1
 		LOCALS = 性别男

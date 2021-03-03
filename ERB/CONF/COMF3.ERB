@@ -223,7 +223,7 @@ VARSET LOCAL
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 0)
 	LOCAL:0 = ABL:C感觉 + TALENT:淫核 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
-	LOCAL:1 = ABL:V感觉 + TALENT:淫壷 + 1
+	LOCAL:1 = ABL:V感觉 + TALENT:淫穴 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 	LOCAL:2 = ABL:A感觉 + TALENT:尻穴狂 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 3)
@@ -389,7 +389,7 @@ ELSE
 		PRINTFORML %CALLNAME:TARGET%的身体因为插入肛门中的震动棒不停震动着而不停抽动着
 		PRINTFORMW 震动棒不停刮扫上褶皱的肠壁，都能引起一次次高潮
 	ELSEIF ABL:自慰成瘾 >= 3
-		IF TALENT:性别男 || (TALENT:扶她 && RAND:2 == 0)
+		IF TALENT:性别 == 1 || (TALENT:扶她 && RAND:2 == 0)
 			PRINTFORML %CALLNAME:TARGET%粗暴地撸动着炙热坚硬的肉棒
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%一边呻吟着一边用手抽插着蜜穴
@@ -476,7 +476,7 @@ RETURNF LOCAL
 SIF COND("调教中") == 0
 	RETURN 0
 ;自慰成瘾0LV、苦痛あり、性欲满足、Ｗ逆推中、手が余ってない
-SIF ABL:自慰成瘾 == 0 || TEQUIP:Ｗ逆推 || CUP:苦痛 > PALAM_LV(ABL:Ｍ属性) || BASE:性欲 >= MAXBASE:性欲 || CALCF("自由な手") <= 0
+SIF ABL:自慰成瘾 == 0 || TEQUIP:Ｗ逆推 || CUP:苦痛 > PALAM_LV(ABL:M属性) || BASE:性欲 >= MAXBASE:性欲 || CALCF("自由な手") <= 0
 	RETURN 0
 ;TARGETが插入奉仕している側
 SIF INSERT("插入中")

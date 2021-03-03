@@ -121,7 +121,7 @@ CASE 80
 	IF CHECK_COM("双头按摩棒PLAY")
 		LOCAL = 500 + ABL:技巧*200 + ABL:V感觉*100
 		;締まり对決。值が大きいほど快乐が少なくなる（TARGETに与える快乐は増える）
-		SELECTCASE ABL:V技巧 - ABL:V扩张 - (ABL:PLAYER:V技巧 - ABL:PLAYER:V扩张)
+		SELECTCASE ABL:技巧 - ABL:V扩张 - (ABL:PLAYER:技巧 - ABL:PLAYER:V扩张)
 		CASE IS >= 3
 			TIMES LOCAL, 2.00
 		CASE 2
@@ -149,8 +149,8 @@ CASE 81
 CASE 82
 	;罩杯之大きさで强化
 	LOCAL = 500 + ABL:技巧*200 + ABL:B感觉*100 + BASE:罩杯*200
-	SIF TALENT:史莱姆
-		LOCAL += 500
+	; SIF TALENT:史莱姆
+	; 	LOCAL += 500
 ;尿道插入
 CASE 83
 	LOCAL = ABL:技巧*100 + ABL_U(TARGET)*100 + ABL:M属性*500
@@ -194,7 +194,7 @@ CASE 140
 	ENDIF
 
 	;阴茎を全部插入られないと快感低め
-	SELECTCASE SIZE("阴茎", PLAYER) - ABL:喉扩张
+	SELECTCASE SIZE("阴茎", PLAYER)
 	CASE IS >= 3
 		TIMES LOCAL, 0.10
 	CASE 2
@@ -211,7 +211,7 @@ CASE 150
 	ENDIF
 
 	;阴茎を全部插入られないと快感低め
-	SELECTCASE SIZE("阴茎", PLAYER) - ABL:喉扩张
+	SELECTCASE SIZE("阴茎", PLAYER)
 	CASE IS >= 3
 		TIMES LOCAL, 0.10
 	CASE 2
@@ -311,7 +311,7 @@ SIF LOCAL == 0
 ;また、反击があった场合にもTCVAR:PLAYER:2はONとなる。
 SELECTCASE SELECTCOM
 CASE 4, 6
-	SIF TALENT:PLAYER:性别女 || TALENT:PLAYER:扶她
+	SIF TALENT:PLAYER:性别 == 2
 		TCVAR:PLAYER:2 = 1
 CASE 10, 16, 60 TO 79, 81 TO 83, 140, 150, 162, 177
 	SIF PENIS(PLAYER)
@@ -485,7 +485,7 @@ CASE 60 TO 69, 177
 	SELECTCASE ABL:V扩张 - SIZE("阴茎", PLAYER)
 	CASE IS <= 0
 		TIMES B, 1.20
-	CASE IS <= ABL:V技巧
+	CASE IS <= ABL:技巧
 		LOCAL = LIMIT(150 * BASE:体力 / MAXBASE:体力, 25, 100)
 		B = MULTIPLY(B, LOCAL)
 	CASEELSE
@@ -514,7 +514,7 @@ CASE 70 TO 79
 	SELECTCASE ABL:A扩张 - SIZE("阴茎", PLAYER)
 	CASE IS <= 0
 		TIMES B, 1.20
-	CASE IS <= ABL:A技巧
+	CASE IS <= ABL:技巧
 		LOCAL = LIMIT(150 * BASE:体力 / MAXBASE:体力, 25, 100)
 		B = MULTIPLY(B, LOCAL)
 	CASEELSE
@@ -531,8 +531,8 @@ CASE 83
 	SIF INSERT("狂野摇摆")
 		TIMES B, 1.50
 	;PLAYERが童贞
-	SIF EXP:PLAYER:V插入经验 + EXP:PLAYER:尿道插入经验 == 0
-		TIMES B, 3.00
+	; SIF EXP:PLAYER:V插入经验 + EXP:PLAYER:尿道插入经验 == 0
+	; 	TIMES B, 3.00
 ;PLAYER之Aを刺激
 CASE 96, 107, 109, 110, 125 TO 129, 305
 	;ABL:A感觉をみる
@@ -679,8 +679,8 @@ CASE 90, 97
 	;ABL:指技
 	B = SOURCE_EXABL(B, 31, TARGET)
 	;多手
-	SIF TALENT:多手
-		TIMES B, 2.00
+	; SIF TALENT:多手
+	; 	TIMES B, 2.00
 ;胸を使う指令（例外的に胸を揉んだりする之もＯＫ）
 CASE 64, 74, 81, 82, 92, 94, 104
 	;淫乳
@@ -1387,20 +1387,20 @@ IF SHOOT("冲击")
 
 			ENDIF
 		;天使之輪
-		ELSEIF (BASE:种族 == 20 || BASE:种族 == 21) && (RAND:3 == 0 || COND("绝顶", PLAYER) >= 3)
-			IF TEQUIP:逆推
-				PRINTFORMW 浇到自己头上的光辉之环上
-				PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
+		; ELSEIF (BASE:种族 == 20 || BASE:种族 == 21) && (RAND:3 == 0 || COND("绝顶", PLAYER) >= 3)
+		; 	IF TEQUIP:逆推
+		; 		PRINTFORMW 浇到自己头上的光辉之环上
+		; 		PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
 
 
 
 
-			ELSE
-				PRINTFORMW 浇到%CALLNAME:TARGET%头上的光辉之环上
-				PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
+		; 	ELSE
+		; 		PRINTFORMW 浇到%CALLNAME:TARGET%头上的光辉之环上
+		; 		PRINTFORMW 实际上并不是很脏，但对违背道德的行为感到兴奋…
 
 
-			ENDIF
+		; 	ENDIF
 		ELSE
 			IF TEQUIP:逆推
 				PRINTFORML 浇到自己的头发上
@@ -1428,7 +1428,7 @@ IF SHOOT("冲击")
 					PRINTFORM 激烈的口奸里白花花的口水滴落下来
 
 
-				ELSEIF ABL:喉扩张 <= SIZE("阴茎", PLAYER) && RAND:2
+				ELSEIF RAND:2
 					IF RAND:2 || EXP:口交经验 >= 150
 						PRINTFORM 被毫不留情对待的喉咙
 
@@ -1460,8 +1460,8 @@ IF SHOOT("冲击")
 					ELSE
 						PRINTFORM 呕吐着
 					ENDIF
-				ELSEIF ABL:喉扩张 > SIZE("阴茎", PLAYER) && ABL:M属性 >= 3 && RAND:2
-					PRINTFORM 激烈的动作让呼吸变得急速
+				; ELSEIF ABL:喉扩张 > SIZE("阴茎", PLAYER) && ABL:M属性 >= 3 && RAND:2
+				; 	PRINTFORM 激烈的动作让呼吸变得急速
 
 
 				ENDIF
@@ -3119,7 +3119,7 @@ ELSEIF NOWEX:射精
 	EXP:射精经验 += NOWEX:射精
 	BASE:绝顶 = (PALAM:快C + CUP:快C - CDOWN:0) * MAXBASE:绝顶 / 10000
 	;精力减少(C绝顶でも减っているはずな之でここでは纯粋に射精で减るだけを扱う)
-	LOCAL = MAX(NOWEX:射精 - TALENT:梦魇 - TALENT:上位梦魇, 1)
+	LOCAL = MAX(NOWEX:射精, 1)
 	BASE:精力 = LIMIT(BASE:精力 - LOCAL, 0, MAXBASE:精力)
 	TCVAR:109 += LOCAL
 
@@ -3179,7 +3179,7 @@ ELSEIF NOWEX:ARG:射精
 	ENDIF
 	PRINTFORML %CALLNAME:ARG%%LOCALS%
 	PRINTFORML 射精经验＋{NOWEX:ARG:射精} \@ ARG == ASSI ? (助手) # \@
-	LOCAL = MAX(NOWEX:ARG:射精 - TALENT:ARG:梦魇 - TALENT:ARG:上位梦魇, 1)
+	LOCAL = MAX(NOWEX:ARG:射精, 1)
 	PRINTFORML 精力-{LOCAL}
 ENDIF
 

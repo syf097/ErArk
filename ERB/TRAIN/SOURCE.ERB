@@ -368,8 +368,8 @@ SIF NOWEX:B绝顶 > 0 && (TALENT:淫乳 || TALENT:B敏感)
 	LOCAL += 2
 SIF NOWEX:M绝顶 > 0 && (TALENT:荡唇 || TALENT:M敏感)
 	LOCAL += 2
-SIF NOWEX:尿道绝顶 > 0 && TALENT:尿道狂
-	LOCAL += 2
+; SIF NOWEX:尿道绝顶 > 0 && TALENT:尿道狂
+; 	LOCAL += 2
 ;射精+(性变态or性别男）
 SIF NOWEX:射精 > 0 && TALENT:性变态 + TALENT:性别 == 1
 	LOCAL += 2
@@ -410,8 +410,8 @@ SIF TALENT:偏爱
 SIF STATE("魅强术", PLAYER)
 	LOCAL += 1
 ;主人之人气
-SIF TALENT:MASTER:人气
-	LOCAL += 1
+; SIF TALENT:MASTER:人气
+; 	LOCAL += 1
 
 ;苦痛刻印によるペナルティ
 SIF MARK:苦痛刻印 > ABL:M属性 && TALENT:性变态 == 0
@@ -972,7 +972,7 @@ NEXT
 NOWEX:绝顶数合计 = NOWEX:C绝顶 + NOWEX:V绝顶 + NOWEX:A绝顶 + NOWEX:B绝顶 + NOWEX:M绝顶 + NOWEX:尿道绝顶
 NOWEX:绝顶边缘数合计 = NOWEX:C绝顶边缘 + NOWEX:V绝顶边缘 + NOWEX:A绝顶边缘 + NOWEX:B绝顶边缘 + NOWEX:M绝顶边缘 + NOWEX:尿道绝顶边缘
 ;MAXは12万
-MAXBASE:快感许容值女 = MIN(ABL:欲望*5000+TALENT:上位梦魇*5000+(JUEL:欲情+JUEL:快C+JUEL:快V+JUEL:快A+JUEL:快B+JUEL:快M)/200, 120000)
+MAXBASE:快感许容值女 = MIN(ABL:欲望*5000+(JUEL:欲情+JUEL:快C+JUEL:快V+JUEL:快A+JUEL:快B+JUEL:快M)/200, 120000)
 ;连续绝顶には弱い
 SIF PALAM:连续绝顶COMBO数
 	MAXBASE:快感许容值女 = DIVIDE(MAXBASE:快感许容值女, 100 + PALAM:连续绝顶COMBO数*10)
@@ -1132,7 +1132,7 @@ IF NOWEX:ARG:忍住了没丢
 		ENDIF
 	ENDIF
 ELSE
-	LOCAL = LIMIT(MAX(MAX(NOWEX:ARG:C绝顶, NOWEX:ARG:V绝顶, NOWEX:ARG:A绝顶, NOWEX:ARG:B绝顶, NOWEX:ARG:M绝顶) + CHECK_ECST(ARG) - TALENT:ARG:梦魇 - TALENT:ARG:上位梦魇, 0), 0, BASE:ARG:精力)
+	LOCAL = LIMIT(MAX(MAX(NOWEX:ARG:C绝顶, NOWEX:ARG:V绝顶, NOWEX:ARG:A绝顶, NOWEX:ARG:B绝顶, NOWEX:ARG:M绝顶) + CHECK_ECST(ARG), 0), 0, BASE:ARG:精力)
 	SIF LOCAL > 0
 		PRINTFORML 精力-{LOCAL} \@ ARG == ASSI ? (助手) # \@
 ENDIF
@@ -1152,15 +1152,15 @@ IF NOWEX:C绝顶
 	SIF SELECTCOM == 80
 		CALL SETFLAG, "中意的体位", 80, NOWEX:C绝顶
 	;尿道绝顶はC绝顶を上书きする
-	IF TALENT:尿道性感 && COND("尿道性感标志") && CHECK("玩弄尿道")
-		NOWEX:尿道绝顶 = NOWEX:C绝顶
-		NOWEX:C绝顶 = 0
-		;调教中ならば中意的体位に影響
-		IF COND("调教中")
-			SIF INSERT("尿道插入")
-				CALL SETFLAG, "中意的体位", 83, NOWEX:尿道绝顶
-		ENDIF
-	ENDIF
+	; IF TALENT:尿道性感 && COND("尿道性感标志") && CHECK("玩弄尿道")
+	; 	NOWEX:尿道绝顶 = NOWEX:C绝顶
+	; 	NOWEX:C绝顶 = 0
+	; 	;调教中ならば中意的体位に影響
+	; 	IF COND("调教中")
+	; 		SIF INSERT("尿道插入")
+	; 			CALL SETFLAG, "中意的体位", 83, NOWEX:尿道绝顶
+	; 	ENDIF
+	; ENDIF
 ENDIF
 IF NOWEX:V绝顶
 	SOURCE:露出 += 500 * NOWEX:V绝顶
@@ -1271,7 +1271,7 @@ EXP:绝顶经验 += NOWEX:绝顶数合计
 ;绝顶之内訳を記录
 ;CALL SETFLAG, "绝顶之記录"
 ;精力消費
-LOCAL = LIMIT(MAX(MAX(NOWEX:C绝顶, NOWEX:V绝顶, NOWEX:A绝顶, NOWEX:B绝顶, NOWEX:M绝顶, NOWEX:尿道绝顶) + CHECK_ECST(TARGET) - TALENT:梦魇 - TALENT:上位梦魇, 0), 0, BASE:精力)
+LOCAL = LIMIT(MAX(MAX(NOWEX:C绝顶, NOWEX:V绝顶, NOWEX:A绝顶, NOWEX:B绝顶, NOWEX:M绝顶, NOWEX:尿道绝顶) + CHECK_ECST(TARGET), 0), 0, BASE:精力)
 BASE:精力 -= LOCAL
 TCVAR:109 += LOCAL
 
@@ -1355,15 +1355,15 @@ ENDIF
 RESETCOLOR
 
 ;尿道性感之獲得…めんどくさい感觉な之で尿道弄り同时之C绝顶で良いこととする
-IF TALENT:尿道性感 == 0 && COND("尿道性感标志") && NOWEX:C绝顶 + NOWEX:尿道绝顶
-	TALENT:尿道性感 = 1
-	PRINTFORML ……%CALLNAME:TARGET%被玩弄尿道到竟然绝顶了、新世界的大门为她敞开
+; IF TALENT:尿道性感 == 0 && COND("尿道性感标志") && NOWEX:C绝顶 + NOWEX:尿道绝顶
+; 	TALENT:尿道性感 = 1
+; 	PRINTFORML ……%CALLNAME:TARGET%被玩弄尿道到竟然绝顶了、新世界的大门为她敞开
 
-	PRINTFORM %CALLNAME:TARGET%获得了
-	CALL PRINT_COLORTEXT, "[尿道性感]", DEF_COLOR("黄色")
-	PRINTFORML 。
-	FORCEWAIT
-ENDIF
+; 	PRINTFORM %CALLNAME:TARGET%获得了
+; 	CALL PRINT_COLORTEXT, "[尿道性感]", DEF_COLOR("黄色")
+; 	PRINTFORML 。
+; 	FORCEWAIT
+; ENDIF
 
 ;-------------------------------------------------
 ;尿意槽之増加
@@ -1582,7 +1582,7 @@ IF TALENT:ARG:A处女 && COND("A处女丧失标志", ARG) + EXP_GAIN(13, ARG) &&
 		SETBIT CFLAG:ARG:11, 30
 	ENDIF
 	;A性爱を先に经验 そ之２
-	IF (TALENT:ARG:性别 == 1 || TALENT:ARG:扶她 == 1) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
+	IF (TALENT:ARG:性别 == 1 ) && TALENT:ARG:童贞 && GETBIT(CFLAG:ARG:11, 31) == 0
 		LOCAL:50 += 1
 		SETBIT CFLAG:ARG:11, 31
 	ENDIF
@@ -1680,13 +1680,13 @@ IF INSERT("二穴插入", ARG) && GETBIT(CFLAG:ARG:12, 10) == 0
 	SETBIT CFLAG:ARG:12, 10
 ENDIF
 ;V扩张
-IF EXP_GAIN(53, ARG) && ABL:ARG:V扩张 - (TALENT:ARG:生产经历 > 0) + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 11) == 0
+IF EXP_GAIN(53, ARG) && ABL:ARG:V扩张>= 3 && GETBIT(CFLAG:ARG:12, 11) == 0
 	PRINTL ＜异常经验：V扩张＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 11
 ENDIF
 ;A扩张
-IF EXP_GAIN(57, ARG) && ABL:ARG:A扩张 + TALENT:ARG:妖精 >= 3 && GETBIT(CFLAG:ARG:12, 12) == 0
+IF EXP_GAIN(57, ARG) && ABL:ARG:A扩张  >= 3 && GETBIT(CFLAG:ARG:12, 12) == 0
 	PRINTL ＜异常经验：A扩张＞
 	LOCAL:50 += 1
 	SETBIT CFLAG:ARG:12, 12
@@ -1732,12 +1732,12 @@ IF INSERT("A插入", ARG) && EXP:ARG:A经验 >= MAX(EXP:ARG:V经验, 150) && EXP
 	SETBIT CFLAG:ARG:12, 18
 ENDIF
 ;妖精に小根术なしで插入
-IF TALENT:ARG:妖精 && INSERT("插入", ARG) && SIZE("阴茎", INSERT("插入对象", ARG) ) && GETBIT(CFLAG:ARG:12, 19) == 0
-	PRINTL ＜异常经验：妖精无小根术插入＞
+; IF TALENT:ARG:妖精 && INSERT("插入", ARG) && SIZE("阴茎", INSERT("插入对象", ARG) ) && GETBIT(CFLAG:ARG:12, 19) == 0
+; 	PRINTL ＜异常经验：妖精无小根术插入＞
 
-	LOCAL:50 += 1
-	SETBIT CFLAG:ARG:12, 19
-ENDIF
+; 	LOCAL:50 += 1
+; 	SETBIT CFLAG:ARG:12, 19
+; ENDIF
 ;抖S之本領发揮
 ;IF CUP:ARG:苦痛 >= 4500 && GETBIT(CFLAG:ARG:12, 20) == 0
 ;	PRINTL ＜异常经验：【SM】＞
@@ -1757,27 +1757,27 @@ IF PALAM:ARG:苦痛 + CUP:ARG:苦痛 >= 50000 && GETBIT(CFLAG:ARG:12, 22) == 0
 	SETBIT CFLAG:ARG:12, 22
 ENDIF
 ;不期望的怀孕…恋慕で无いときに、反抗刻印Lv3or反抗心or触手で孕娠之时
-IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
-	IF COND("精液之优勢", ARG) == -3 && MARK:ARG:龙奸刻印 == 2
-	ELSEIF MARK:ARG:反抗刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
-		PRINTL ＜异常经验：不期望的怀孕＞
+; IF TALENT:ARG:孕娠 && TALENT:ARG:恋慕 == 0 && GETBIT(CFLAG:ARG:12, 23) == 0
+; 	IF COND("精液之优勢", ARG) == -3 && MARK:ARG:龙奸刻印 == 2
+; 	ELSEIF MARK:ARG:反抗刻印 == 3 || TALENT:ARG:反抗心 || (COND("精液之优勢", ARG) == -5 && TALENT:ARG:旧日支配者的末裔 == 0)
+; 		PRINTL ＜异常经验：不期望的怀孕＞
 
-		LOCAL:50 += 1
-		SETBIT CFLAG:ARG:12, 23
-	ENDIF
-ENDIF
+; 		LOCAL:50 += 1
+; 		SETBIT CFLAG:ARG:12, 23
+; 	ENDIF
+; ENDIF
 ;触手
-IF EXP_GAIN(55, ARG) && TALENT:ARG:旧日支配者的末裔 == 0 && GETBIT(CFLAG:ARG:12, 24) == 0
-	PRINTL ＜异常经验：触手经验＞
-	LOCAL:50 += 1
-	SETBIT CFLAG:ARG:12, 24
-ENDIF
-;扶她(处理はSHOPでも行う)
-IF TALENT:ARG:扶她 == 2 && TALENT:ARG:具现 == 0 && GETBIT(CFLAG:ARG:12, 25) == 0
-	PRINTL ＜异常经验：扶她化＞
-	LOCAL:50 += 1
-	SETBIT CFLAG:ARG:12, 25
-ENDIF
+; IF EXP_GAIN(55, ARG) && TALENT:ARG:旧日支配者的末裔 == 0 && GETBIT(CFLAG:ARG:12, 24) == 0
+; 	PRINTL ＜异常经验：触手经验＞
+; 	LOCAL:50 += 1
+; 	SETBIT CFLAG:ARG:12, 24
+; ENDIF
+; ;扶她(处理はSHOPでも行う)
+; IF TALENT:ARG:扶她 == 2 && TALENT:ARG:具现 == 0 && GETBIT(CFLAG:ARG:12, 25) == 0
+; 	PRINTL ＜异常经验：扶她化＞
+; 	LOCAL:50 += 1
+; 	SETBIT CFLAG:ARG:12, 25
+; ENDIF
 ;初次之喷乳で、孕娠由来之喷乳体質で无い
 IF EXP_GAIN(54, ARG) && TALENT:ARG:泌乳体质 != 1 && TALENT:ARG:孕娠 == 0 && GETBIT(CFLAG:ARG:12, 26) == 0
 	PRINTL ＜异常经验：喷乳经验＞

@@ -84,8 +84,8 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 
 	ELSEIF SHOOT("尿道")
 		LOCAL = NOWEX:尿道绝顶
-		LOCAL:1 = EXP:尿道经验
-		LOCAL:2 = ABL:尿道扩张
+		; LOCAL:1 = EXP:尿道经验
+		; LOCAL:2 = ABL:尿道扩张
 		LOCAL:3 = EXP_GAIN(80)
 
 		LOCALS = 尿道
@@ -417,9 +417,9 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				ELSE
 					PRINTFORM ，用%NAMES("指")%打开
 				ENDIF
-				IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂)  || (SHOOT("尿道") && TALENT:尿道狂) ) && RAND:3 == 0
+				IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂) ) && RAND:3 == 0
 					PRINTFORM 充斥着贪欲
-				ELSEIF ( (SHOOT("膣内") && ABL:V感觉 >= 3) || (SHOOT("A") && ABL:A感觉 >= 3)  || (SHOOT("尿道") && TALENT:尿道性感) ) && RAND:3 == 0
+				ELSEIF ( (SHOOT("膣内") && ABL:V感觉 >= 3) || (SHOOT("A") && ABL:A感觉 >= 3) ) && RAND:3 == 0
 					PRINTFORM 抽动做着
 				ELSE
 					PRINTFORM 沾满了精液
@@ -466,8 +466,8 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 						ENDIF
 					ELSEIF TALENT:好色 + TALENT:淫乱 && RAND:3 == 0
 						PRINTFORM 因松缓而一边漏出尿液一边微微颤抖的小便之穴
-					ELSEIF TALENT:尿道性感 && RAND:3 == 0
-						PRINTFORM 因被给予的快感而不检点的绽放开的尿道口
+					; ELSEIF TALENT:尿道性感 && RAND:3 == 0
+					; 	PRINTFORM 因被给予的快感而不检点的绽放开的尿道口
 					ELSEIF RAND:2
 						PRINTFORM 渴望着被侵犯而啪咔的自己打开了的粘膜
 					ELSE
@@ -1656,7 +1656,7 @@ IF SELECTCOM == 141
 		PRINTFORML %CALLNAME:TARGET%は、用手指帮忙着扩大自己的阴道口，一边品味着露出的快感，腔穴中每一道皱褶都透露着漂亮的粉红色…
 
 
-	ELSEIF ABL:V扩张 >= ABL:V技巧
+	ELSEIF ABL:V扩张 >= ABL:技巧
 		IF ABL:V扩张 >= 6
 			PRINTFORML 随着从%CALLNAME:TARGET%的肉穴中拔出，在大开的腔穴里能看见深处一抽一抽的子宫口…
 
@@ -1676,7 +1676,7 @@ ELSEIF SELECTCOM == 142
 		PRINTFORML %CALLNAME:TARGET%用手指帮忙扩展着自己的肛门，神情恍惚地展示着被扩展开的肠道里面的景色，每一道皱褶都透露着漂亮的粉红色…
 
 
-	ELSEIF ABL:A扩张 >= ABL:A技巧
+	ELSEIF ABL:A扩张 >= ABL:技巧
 		IF ABL:A扩张 >= 6
 			PRINTFORML %CALLNAME:TARGET%之肛门上的皱纹被完全伸展开，宽阔的肠道变得一览无余…
 
@@ -1697,7 +1697,7 @@ ELSEIF SELECTCOM == 143
 		PRINTFORML 双手的手指，在扩大了的，内部完全展露的阴道口和肛门的四周来回抚摸着。…
 
 
-	ELSEIF ABL:A扩张 >= ABL:A技巧 || ABL:V扩张 >= ABL:V技巧
+	ELSEIF ABL:A扩张 >= ABL:技巧 || ABL:V扩张 >= ABL:技巧
 		PRINTFORML %CALLNAME:TARGET%的双足尽力的伸展到了最开。
 		PRINTFORML 被扩展拉大的膣口和肛门中有淫靡的粘液垂流下来…
 

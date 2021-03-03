@@ -106,13 +106,13 @@ IF TEQUIP:逆推 == 0
 	;助手之助言
 	IF ASSI && ABL:ASSI:助手 + TALENT:ASSI:聪慧 >= 3
 		IF CALCF("反抗刻印獲得", TARGET)
-			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@还太早\@ CALCF("反抗刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
+			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%还太早\@ CALCF("反抗刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
 		ELSEIF CALCF("苦痛刻印獲得", TARGET)
 			LOCALS:1 = 「这个PLAY或许会\@ CALCF("苦痛刻印獲得", TARGET) >= 2 ? 伴随着相当的苦痛 # 有些痛 \@」
 			SELECTCASE SELECTCOM
 			CASE 2, 33
 				SIF PALAM:A润 < 10000
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享用的话用一下润滑液或许会比较……」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享用的话用一下润滑液或许会比较……」
 			;V润が必要と助言
 			CASE 60 TO 79
 				SELECTCASE GET_PALAMLV(PALAM:V润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:V扩张, 0)
@@ -125,9 +125,9 @@ IF TEQUIP:逆推 == 0
 			CASE 70 TO 79
 				SELECTCASE GET_PALAMLV(PALAM:A润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:A扩张, 0)
 				CASE 1
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享乐的话、要用一下润滑液吗…」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享乐的话、要用一下润滑液吗…」
 				CASE IS <= 0
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享乐的话用一下润滑液比较……」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享乐的话用一下润滑液比较……」
 				ENDSELECT
 			ENDSELECT
 		ENDIF
@@ -434,8 +434,8 @@ ELSEIF RAND:3 == 0 && SELECTCOM >= 0 && SELECTCOM <= 19 && INSERT("插入") && (
 		SIF PENIS(TARGET) == 0 && ABL:C感觉 < 3
 			RETURN 0
 	CASE 15
-		SIF TALENT:尿道性感 == 0
-			RETURN 0
+		; SIF TALENT:尿道性感 == 0
+		; 	RETURN 0
 	ENDSELECT
 
 	IF RAND:4 == 0
@@ -544,10 +544,10 @@ IF NOWEX:绝顶数合计
 
 		CASE 83
 			IF TEQUIP:逆推
-				IF TALENT:尿道狂
-					PRINTFORM 从尿道奔涌而上的快乐让%TEXTR("头脑一阵空白", "流着口水", "沉迷的动起了腰")%
+				; IF TALENT:尿道狂
+				; 	PRINTFORM 从尿道奔涌而上的快乐让%TEXTR("头脑一阵空白", "流着口水", "沉迷的动起了腰")%
 
-				ELSEIF PENIS(TARGET)
+				IF PENIS(TARGET)
 					PRINTFORM 阴茎的内部被%CALLNAME:PLAYER%侵犯着
 				ELSE
 					PRINTFORM 被用尿道来sex的%CALLNAME:PLAYER%侵犯着
@@ -1619,7 +1619,7 @@ CASE "精液"
 		SIF EXP_GAIN(80) && RAND:3
 			RETURN 0
 		NOWEX:尿道绝顶 = 1
-		EX:尿道绝顶 += 1
+		; EX:尿道绝顶 += 1
 
 		TIMES CUP:V润, 2.00
 		TIMES CUP:欲情, 2.00
@@ -1666,7 +1666,7 @@ CASE "精液"
 
 		PRINTFORMW 绝顶了！
 	ELSEIF SHOOT("V中出")
-		IF BASE:胎内精子量 < 100 && NOWEX:V中出 == EX:V中出 && RAND:2
+		IF  NOWEX:V中出 == EX:V中出 && RAND:2
 			PRINTFORM 在饥饿的子宮里用精液款待了一番
 
 		ELSEIF RAND:2

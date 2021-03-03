@@ -146,11 +146,11 @@ FOR LCOUNT, 20, 25
 	JUEL:ARG:LCOUNT = TCVAR:ARG:(LCOUNT + 400)
 NEXT
 ;梦魇は精液经验でリフレッシュ
-IF TALENT:ARG:梦魇 + TALENT:ARG:上位梦魇
-	CALL CALC, "体力回復", TCVAR:ARG:320*30, ARG
-	CALL CALC, "气力回復", TCVAR:ARG:320*30, ARG
-	CALL CALC, "精力回復", TCVAR:ARG:320*2, ARG
-ENDIF
+; IF TALENT:ARG:梦魇 + TALENT:ARG:上位梦魇
+; 	CALL CALC, "体力回復", TCVAR:ARG:320*30, ARG
+; 	CALL CALC, "气力回復", TCVAR:ARG:320*30, ARG
+; 	CALL CALC, "精力回復", TCVAR:ARG:320*2, ARG
+; ENDIF
 
 ;------------------------------------------------------------------------
 ;ARGにはTARGET側之表示经验、ARG:1にはPLAYER側之表示经验之番号を入れる
@@ -392,7 +392,7 @@ ENDIF
 BASE:体力 = MAX(MEMO_BASE0 - 20*ARG:1, 1)
 BASE:气力 = MAX(MEMO_BASE1 - 10*ARG:1, 0)
 ;体力气力回復
-IF TALENT:梦魇 || TALENT:上位梦魇 || TALENT:吸精体質
+IF  TALENT:吸精体質
 	CALL CALC, "体力回復", COND("绝顶", PLAYER) * 10
 	CALL CALC, "气力回復", COND("绝顶", PLAYER) * 10
 ENDIF

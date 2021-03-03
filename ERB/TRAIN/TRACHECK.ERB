@@ -778,7 +778,7 @@ A = SOURCE:露出
 B = SOURCE:露出
 C = SOURCE:露出
 
-ABL:露阴癖をみる
+;ABL:露阴癖をみる
 SELECTCASE ABL:露阴癖
 CASE 0
 	TIMES A, 0.05
@@ -1128,10 +1128,10 @@ ENDSELECT
 
 IF GETBIT(TCVAR:29, 0) || GETBIT(TCVAR:29, 1)
 	LOCAL:1 = LOCAL
-	献身的
+	;献身的
 	SIF TALENT:献身
 		LOCAL:1 += 1
-	侍奉精神
+	;侍奉精神
 	SIF ABL:侍奉精神 == 5
 		LOCAL:1 += 1
 	SIF ABL:侍奉精神 >= 3

@@ -224,14 +224,14 @@ CASE "调教后百合PLAY"
 			CALL SIMULATE_TRAIN_COM, 98, RAND:LOCAL + 1
 			CALL SIMULATE_TRAIN_COM, 80, LOCAL/2 + 1
 
-			IF TALENT:扶她 && TALENT:PLAYER:扶她
-				PRINTFORML 互相摩擦着彼此的小穴、贪图着肉棒被吸吮的快感…
+			; IF TALENT:扶她 && TALENT:PLAYER:扶她
+			; 	PRINTFORML 互相摩擦着彼此的小穴、贪图着肉棒被吸吮的快感…
 
-				CALL SIMULATE_TRAIN_COM, 91, LOCAL/2 + 1
-			ELSE
+			; 	CALL SIMULATE_TRAIN_COM, 91, LOCAL/2 + 1
+			; ELSE
 				PRINTFORML 互相摩擦着彼此的小穴、贪图着快感…
 
-			ENDIF
+			; ENDIF
 			CALL SELF_KOJO, LOCALS
 
 			SWAP PLAYER, TARGET
@@ -347,7 +347,7 @@ CASE "调教后自慰"
 
 		PRINTFORML %EXPNAME:2%＋{LOCAL}
 		EXP:绝顶经验 += LOCAL
-		IF TALENT:性别女 == 0
+		IF TALENT:性别 == 2
 			PRINTFORML %EXPNAME:3%＋{LOCAL}
 			EXP:射精经验 += LOCAL
 		ENDIF

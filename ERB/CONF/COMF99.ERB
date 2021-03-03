@@ -1,0 +1,603 @@
+﻿@COM99
+;六九式
+CALL PRINT_TRAIN_NAME(SELECTCOM)
+
+IF TEQUIP:六九式
+	PRINTL 
+	PRINTFORMW \@ TEQUIP:逆推 ? %CALLNAME:TARGET% # %CALLNAME:PLAYER% \@六九式的姿势停止了…
+	STR:0 = %STR:2%
+	TEQUIP:六九式 = 0
+	TEQUIP:PLAYER:六九式 = 0
+	PREVCOM = 99
+	RETURN 0
+ENDIF
+;-------------------------------------------------
+;实行できるか之判定
+;-------------------------------------------------
+CALL SHOW_COM_ORDER_COM, 99
+
+;实行できない
+SIF TCVAR:28 == 0
+	RETURN 0
+;-------------------------------------------------
+;实行決定
+;-------------------------------------------------
+;相互打扫PLAY
+IF CHECK_COM("打扫口交", 91) + CHECK_COM("打扫舐阴", 98) && CHECK_COM("打扫口交", 4) + CHECK_COM("打扫舐阴", 1)
+	IF CHECK_COM("打扫口交", 91)
+		TEQUIP:六九式 = 91
+	ELSE
+		TEQUIP:六九式 = 98
+	ENDIF
+	IF CHECK_COM("打扫口交", 4)
+		TEQUIP:PLAYER:六九式 = 4
+	ELSE
+		TEQUIP:PLAYER:六九式 = 1
+	ENDIF
+ELSE
+	;阴茎あるならそっち优先
+	IF PENIS(PLAYER)
+		TEQUIP:六九式 = 91
+	ELSE
+		TEQUIP:六九式 = 98
+	ENDIF
+	IF PENIS(TARGET)
+		TEQUIP:PLAYER:六九式 = 4
+	ELSE
+		TEQUIP:PLAYER:六九式 = 1
+	ENDIF
+ENDIF
+
+CALL TRAIN_MESSAGE_B
+
+IF REFUSE_CHECK()
+	TEQUIP:六九式 = 0
+	TEQUIP:PLAYER:六九式 = 0
+	RETURN 0
+ENDIF
+
+STR:0 = %STR:2%
+
+;顔面骑乘ＯＮ
+SIF TEQUIP:顔面骑乘 + TEQUIP:逆推 && TEQUIP:PLAYER:六九式 == 1
+	TEQUIP:顔面骑乘 = 1
+;-------------------------------------------------
+;射精チェック
+;-------------------------------------------------
+CALL SAMEN_CHECK
+
+RETURN 1
+
+@FLAG_COM99, ARG
+TRYCALLFORM FLAG_COM{TEQUIP:PLAYER:六九式}, 70
+TRYCALLFORM FLAG_COM{TEQUIP:六九式}, 70
+
+@SOURCE_COM99, ARG
+VARSET LOCAL
+
+LOCAL:20 += 10
+LOCAL:21 += 50
+
+TRYCALLFORM SOURCE_COM{TEQUIP:PLAYER:六九式}, 70
+TRYCALLFORM SOURCE_COM{TEQUIP:六九式}, 70
+
+LOCAL:11 = CALCF("实行值による欲情追加") + 500
+LOCAL:12 = 1400
+LOCAL:13 = 1300
+LOCAL:14 = 800
+
+;ABL:奉仕精神をみる
+SELECTCASE ABL:奉仕精神
+CASE 0
+	LOCAL:4 = 20
+	LOCAL:5 = 150
+CASE 1
+	LOCAL:4 = 100
+	LOCAL:5 = 300
+CASE 2
+	LOCAL:4 = 250
+	LOCAL:5 = 600
+CASE 3
+	LOCAL:4 = 500
+	LOCAL:5 = 900
+CASE 4
+	LOCAL:4 = 800
+	LOCAL:5 = 1500
+CASEELSE
+	LOCAL:4 = 1260
+	LOCAL:5 = 2200
+ENDSELECT
+
+;ABL:技巧をみる
+SELECTCASE ABL:技巧
+CASE 0
+	TIMES LOCAL:4 , 0.50
+	TIMES LOCAL:5 , 0.50
+CASE 1
+	TIMES LOCAL:4 , 0.80
+	TIMES LOCAL:5 , 0.80
+CASE 2
+CASE 3
+	TIMES LOCAL:4 , 1.20
+	TIMES LOCAL:5 , 1.20
+CASE 4
+	TIMES LOCAL:4 , 1.50
+	TIMES LOCAL:5 , 1.50
+CASEELSE
+	TIMES LOCAL:4 , 2.00
+	TIMES LOCAL:5 , 2.00
+ENDSELECT
+
+CALL CALC, "调教ソース", LOCAL:0, LOCAL:1, LOCAL:2, LOCAL:3, LOCAL:4, LOCAL:5, LOCAL:6, LOCAL:7, LOCAL:8, LOCAL:9, LOCAL:10, LOCAL:11, LOCAL:12, LOCAL:13, LOCAL:14, LOCAL:15, LOCAL:16, LOCAL:17, LOCAL:18, LOCAL:19, LOCAL:20, LOCAL:21, ARG
+
+
+@TRAIN_MESSAGE_COM99
+;相互打扫PLAY
+IF CHECK_COM("打扫口交", 91) + CHECK_COM("打扫舐阴", 98) && CHECK_COM("打扫口交", 4) + CHECK_COM("打扫舐阴", 1)
+	PRINTFORMW %CALLNAME:PLAYER%和%CALLNAME:TARGET%用嘴巴把对方的性器舔得干干净净…
+;逆推
+ELSEIF TEQUIP:逆推
+	IF PREVCOM == SELECTCOM && COND("前Ｔ调教者") == PLAYER
+		PRINTFORMW %CALLNAME:TARGET%充分享受自己主导的六九式。…
+	ELSEIF PREVCOM == 91 && COND("前Ｔ调教者") == PLAYER
+		PRINTFORM %CALLNAME:TARGET%は阴茎を咥えたまま%CALLNAME:PLAYER%之顔を跨ぎ、
+		IF TEQUIP:PLAYER:六九式 == 4
+			PRINTFORMW 催促着去对方去舔眼前的东西…
+		ELSE
+			PRINTFORMW 脸上压上了小穴
+		ENDIF
+	ELSE
+		IF TEQUIP:顔面骑乘 && COND("前Ｔ调教者") == PLAYER
+			PRINTFORM %CALLNAME:TARGET%坐在%CALLNAME:PLAYER%之顔上、身体前倾
+		ELSE
+			PRINTFORM %CALLNAME:TARGET%は%CALLNAME:PLAYER%\@ COND("脚之使用") ? にまたがり、 # 之 \@
+			IF TEQUIP:PLAYER:六九式 == 4
+				PRINTFORM 口を犯し同时
+				SIF TEQUIP:六九式 == 91
+					PRINTFORM \@ COND("脚之使用") ?  # 、 \@自らも
+			ELSE
+				PRINTFORM 脸在胯股之间擦着
+				SIF TEQUIP:六九式 == 98
+					PRINTFORM \@ COND("脚之使用") ?  # 、 \@自らも
+			ENDIF
+		ENDIF
+		IF TEQUIP:六九式 == 91
+			PRINTFORMW 含着阴茎开始了…
+		ELSE
+			PRINTFORMW 用舌头舔小穴附和着…
+		ENDIF
+	ENDIF
+ELSE
+	IF PREVCOM == SELECTCOM && COND("前Ｔ调教者") == PLAYER
+		PRINTFORMW %CALLNAME:TARGET%と%CALLNAME:PLAYER%は互い之%TEXTR("性器を舐め", "股间に顔をうずめて、性器を舐めあい")%续けている…
+	ELSE
+		IF COND("脚之使用") == 0
+			PRINTFORM %CALLNAME:PLAYER%与%CALLNAME:TARGET%摆出了六九式之体勢、
+		ELSE
+			PRINTFORM %CALLNAME:PLAYER%让%CALLNAME:TARGET%跨在脸上、
+		ENDIF
+		IF PENIS(PLAYER) == PENIS(TARGET)
+			PRINTFORM 互相\@ PENIS(PLAYER) ? 侍奉 # 舔小穴 \@…
+		ELSE
+			IF TEQUIP:六九式 == 91
+				PRINTFORM そそり立つ阴茎をしゃぶらせ同时、
+			ELSE
+				PRINTFORM Ｖを舐めさせ同时、
+			ENDIF
+			IF TEQUIP:PLAYER:六九式 == 4
+				PRINTFORMW 目之前にぶら下がっている肉棒を味わった…
+			ELSE
+				PRINTFORMW Hな%TEXTS("气味")%をさせているＶに舌を這わせた…
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+
+@SET_PLAY69_TURNEND
+;道具指令等は、连续する之が自然な他之指令にする
+SELECTCASE TEQUIP:PLAYER:六九式
+CASE 31
+	TEQUIP:PLAYER:六九式 = 8
+CASE 33
+	TEQUIP:PLAYER:六九式 = 2
+CASE 34
+	TEQUIP:PLAYER:六九式 = 7
+CASE 39
+	TEQUIP:PLAYER:六九式 = 1
+CASE 141
+	TEQUIP:PLAYER:六九式 = 8
+CASE 142
+	TEQUIP:PLAYER:六九式 = 2
+CASE 143
+	IF RAND:2
+		TEQUIP:PLAYER:六九式 = 2
+	ELSE
+		TEQUIP:PLAYER:六九式 = 8
+	ENDIF
+ENDSELECT
+
+@SET_PLAY69
+;指令连续選択による派生
+CALL COMABLE_69
+;前回と今回之调教者が違うorＷ逆推中or六九式不可
+IF RESULT == 0 || COND("前Ｔ调教者") != PLAYER || TEQUIP:Ｗ逆推
+	TEQUIP:六九式 = 0
+	TEQUIP:PLAYER:六九式 = 0
+	RETURN 0
+ELSE
+	;褒めた时など、体勢が变わらない指令
+	SELECTCASE SELECTCOM
+	;逆推状态之媚药は骑乘位に移行する之で解除
+	CASE 261
+		IF TEQUIP:逆推
+			TEQUIP:六九式 = 0
+			TEQUIP:PLAYER:六九式 = 0
+		ENDIF
+	CASE 13, 14, 24, 146, 176, 230 TO 301
+		RETURN 0
+	ENDSELECT
+ENDIF
+
+SELECTCASE CHECK_EQUIP_69(SELECTCOM)
+CASE 1
+	;前回之调教が口交、舐阴强制か六九式だと六九式に
+	IF PREVCOM == 91 || PREVCOM == 98 || PREVCOM == 150 || TEQUIP:六九式
+		SIF TEQUIP:六九式 == 0
+			TEQUIP:六九式 = PREVCOM
+		TEQUIP:PLAYER:六九式 = SELECTCOM
+	ENDIF
+CASE 2
+	;前回之调教が舐阴、调教者口交か六九式だと六九式に
+	IF PREVCOM == 1 || PREVCOM == 4 || TEQUIP:顔面骑乘 || TEQUIP:六九式
+		;69に移行した时（TEQUIP:PLAYER:六九式は0も意味を持つ之で、TEQUIP:六九式で判定。）
+		IF TEQUIP:六九式 == 0
+			IF TEQUIP:顔面骑乘
+				TEQUIP:PLAYER:六九式 = TEQUIP:顔面骑乘
+			ELSE
+				TEQUIP:PLAYER:六九式 = PREVCOM
+			ENDIF
+		ENDIF
+		TEQUIP:六九式 = SELECTCOM
+	ENDIF
+CASE 3
+	;六九式中だと継续
+	SIF TEQUIP:六九式
+		TEQUIP:PLAYER:六九式 = SELECTCOM
+CASE 4
+	;六九式中だと継续
+	SIF TEQUIP:六九式
+		TEQUIP:六九式 = SELECTCOM
+CASEELSE
+	IF SELECTCOM != 99
+		TEQUIP:六九式 = 0
+		TEQUIP:PLAYER:六九式 = 0
+	ENDIF
+ENDSELECT
+
+@CHECK_EQUIP_69(ARG)
+#FUNCTION
+SELECTCASE ARG
+;PLAYER之行动　六九式に移行する股间弄り指令
+CASE 1, 4
+	RETURNF 1
+;TARGET之行动　六九式に移行する奉仕指令
+CASE 91, 98, 150
+	RETURNF 2
+;PLAYER之行动　六九式体勢で可能な爱抚系之股间弄り指令
+CASE 0 TO 2, 4, 7 TO 10, 15
+	RETURNF 3
+;PLAYER之行动　道具指令や打屁股、拳交
+CASE 30 TO 34, 39, 130, 141 TO 143
+	RETURNF 3
+;TARGET之行动　六九式体勢で可能な奉仕指令
+CASE 90 TO 92, 97, 98, 105
+	RETURNF 4
+;六九式も可能な指令(TEQUIP:六九式は变更させない)
+CASE 13, 14, 24, 146, 176, 230 TO 301
+	RETURNF 6
+CASE 99
+	RETURNF 7
+ENDSELECT
+RETURNF 0
+
+
+@COMABLE_69
+;六九式实行判定
+SIF TEQUIP:六九式
+	RETURN 1
+;拘束（足or体勢变更不可）だとダメ
+SIF GETBITS(TEQUIP:拘束, 21, 22)
+	RETURN 0
+;妖精だとダメ
+SIF TALENT:妖精
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+SIF ITEM:地垫 == 0 && NOITEM == 0
+	RETURN 0
+ENDIF
+;实行条件判定
+CALL COM_ORDER_COM99, 1
+RETURN RESULT
+
+
+@EQUIP_COM69
+;アクティブでない方之动きによるSOURCE等之变化を記述
+SIF SELECTCOM == 99
+	RETURN 0
+
+SELECTCASE SELECTCOM
+;PLAYER之行动　舐阴or调教者口交
+CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
+	CALLFORM SOURCE_COM{TEQUIP:六九式}, 50
+	CALLFORM FLAG_COM{TEQUIP:六九式}, 50
+;TARGET之行动　口交or乳交or舐阴奉侍
+CASE 13, 14, 90 TO 92, 97, 98, 105, 150
+	CALLFORM SOURCE_COM{TEQUIP:PLAYER:六九式}, 50
+	CALLFORM FLAG_COM{TEQUIP:PLAYER:六九式}, 50
+ENDSELECT
+
+@EQUIP_COM69_2
+;アクティブでない方之动きを描写する
+SIF SELECTCOM == 99
+	RETURN 0
+PRINTL ＜六九式中＞
+
+LOCAL:100 = SELECTCOM
+
+SELECTCASE SELECTCOM
+;PLAYER之行动　舐阴or调教者口交
+CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
+	PRINTFORM %CALLNAME:TARGET%は
+
+	SELECTCASE SELECTCOM
+	CASE 0
+		LOCALS = 秘部
+	CASE 2, 9, 33
+		LOCALS = 肛门
+	CASE 4, 10
+		LOCALS = 阴茎
+	CASE 8
+		LOCALS = 敏感的部位
+	CASE 15
+		LOCALS = 尿尿的小洞
+	CASE 30, 32, 34
+		LOCALS = 阴蒂
+	CASE 31, 39
+		LOCALS = 阴道
+	CASEELSE
+		LOCALS = 阴户
+	ENDSELECT
+
+	LOCAL = 50
+	IF TEQUIP:逆推
+		IF SELECTCOM == 1
+			IF CHECK_CLO("Ｖ露出")
+				PRINT 用脸磨蹭着阴户、
+			ELSE
+				PRINT 用脸一边压住阴户一边磨蹭、
+			ENDIF
+		ELSE
+			PRINT 表现出一脸享受的样子，不停摩擦贪图着快感、
+		ENDIF
+	ELSE
+		IF SELECTCOM == 130
+			PRINTFORM 被不停重复地扇着耳光
+		ELSEIF SELECTCOM >= 141 && SELECTCOM <= 143
+			PRINTFORM 突然在腹部挨了一击重拳
+		ELSEIF SELECTCOM == 31 || SELECTCOM == 33
+			PRINTFORM 玩弄着%LOCALS%上的按摩棒
+		ELSE
+			PRINTFORM 从%LOCALS%袭来一股剧烈的快感
+		ENDIF
+		;快感之量で反击力变动
+		IF NOWEX:绝顶数合计 && RAND:(1 + NOWEX:绝顶数合计)
+			PRINTL 极其强烈的感觉，如同在脑子里面搅动一样，没有一点反抗心余地…
+			LOCAL = 10
+		ELSEIF SOURCE:痛 > MAX(PALAM_LV(ABL:Ｍ属性), 500) && RAND:3
+			PRINT 带来
+			SIF SOURCE:痛 >= 3000
+				PRINT 激烈的
+			PRINTL 疼痛的感觉涌上大脑，顺着神经反馈到身子上出现了麻痹症状，做不出反抗心动作…
+			LOCAL = 10
+		ELSEIF MAX(CUP:快Ｃ, CUP:快Ｖ, CUP:快Ａ, CUP:快Ｂ, CUP:快Ｍ) >= 4000 && RAND:3
+			PRINT 身体不停扭动、
+			LOCAL = 30
+		ELSEIF (MAX(CUP:快Ｃ, CUP:快Ｖ, CUP:快Ａ, CUP:快Ｂ, CUP:快Ｍ) >= 1000 && RAND:3) || SOURCE:痛 >= 500
+			PRINT 尽力忍受着、
+			LOCAL = 50
+		ELSE
+			PRINT 尽管这样子、
+			LOCAL = 70
+		ENDIF
+	ENDIF
+
+	IF LOCAL == 10
+
+	ELSE
+		SELECTCASE TEQUIP:六九式
+		CASE 90
+			PRINTFORM 对%CALLNAME:PLAYER%的肉棒
+			IF ABL:技巧 >= 3 && RAND:3 == 0
+				PRINTFORML 用各种技巧控制着拤的速度…
+			ELSEIF ABL:Ｓ属性 && RAND:3 == 0
+				PRINTFORML 戏谑地玩弄着…
+			ELSEIF ABL:欲望 + ABL:奉仕精神 >= 3 && RAND:2 == 0
+				PRINTFORML 忘我的拤着…
+			ELSE
+				PRINTFORML 不停拤…
+			ENDIF
+		CASE 91, 150
+			PRINTFORM %CALLNAME:PLAYER%的肉棒
+			IF TEQUIP:深喉口交
+				;技巧４かつ奉仕精神３
+				IF ABL:技巧 >= 4 && ABL:奉仕精神 >= 3 && RAND:3 == 0
+					PRINTFORML 被食道挤压着，使咽喉中阵阵噗噗的呻吟，…
+				;奉仕精神3以上か欲情4以上
+				ELSEIF (ABL:奉仕精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+					PRINTFORML 迷恋上这种美妙的快感…
+				ELSEIF  RAND:2 == 0
+					PRINTFORML 被激烈的吮吸着…
+				ELSE
+					PRINTFORML 被深深地吸入咽喉中吮吸着…
+				ENDIF
+			ELSEIF TALENT:妖精 || ABL:顺从 <= 1 || ABL:奉仕精神 <= 1
+				;小只で追加
+				SIF TALENT:小只
+					PRINT 娇小的身躯
+				PRINTFORML 用舌尖舔舐着…
+			ELSEIF (ABL:顺从 >= 4 || ABL:奉仕精神 >= 3 || ABL:Ｍ属性 >= 3) && ABL:技巧 >= 3 && EXP:口交経験 >= 100 && RAND:3 == 0
+				;技巧４かつ奉仕精神３
+				IF ABL:技巧 >= 4 && ABL:奉仕精神 >= 3 && RAND:3 == 0
+					PRINTFORML 被食道挤压着，使咽喉中阵阵噗噗的呻吟，…
+				;奉仕精神3以上か欲情4以上
+				ELSEIF (ABL:奉仕精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+					PRINTFORML 迷恋上这种美妙的快感…
+				ELSEIF  RAND:2 == 0
+					PRINTFORML 被激烈的吮吸着…
+				ELSE
+					PRINTFORML 被深深地吸入咽喉中吮吸着…
+				ENDIF
+			ELSE
+				;奉仕精神3以上か欲情4以上
+				IF  (ABL:奉仕精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:3 >= 1
+					PRINTFORML 被激烈的吮吸着…
+				ELSEIF  RAND:2 == 0
+					PRINTFORML 被深深地吸入咽喉中吮吸着…
+				ELSE
+					PRINTFORML 用灵巧的舌头玩弄舔舐着…
+				ENDIF
+			ENDIF
+		CASE 92
+			PRINTFORM 对%CALLNAME:PLAYER%的肉棒
+			IF ABL:技巧 >= 3 && RAND:3 == 0
+				PRINTFORM 用各种技巧控制着拤的速度…
+			ELSEIF ABL:Ｓ属性 && RAND:3 == 0
+				PRINTFORM 戏谑地玩弄着…
+			ELSEIF ABL:欲望 + ABL:奉仕精神 >= 3 && RAND:2 == 0
+				PRINTFORM 深深迷恋着
+			ENDIF
+			IF TALENT:贫乳
+				PRINT 贫乏的
+			ELSEIF TALENT:巨乳
+				PRINT 丰满的
+			ENDIF
+			PRINTL 胸部摩擦着…
+		CASE 97
+			PRINTFORM %CALLNAME:PLAYER%的肉棒
+			IF CHECK_CLO("濡れ") && RAND:2 == 0
+				PRINT 湿润的
+			ELSEIF CHECK_CLO("潮湿")
+				PRINT 湿热的
+			ENDIF
+			PRINTFORM 在%CLO("股间")%
+			IF PREVCOM == SELECTCOM && COND("前Ｔ调教者") == PLAYER
+				PRINTL 咯吱咯吱地搔弄着…
+			ELSEIF RAND:2 == 0 && (TALENT:怕羞 == 0 || TALENT:淫乱 || TALENT:恋慕)
+				PRINTL 的小穴附近玩弄着能够触摸到的部位…
+			ELSE
+				PRINTL 将其紧紧包裹住…
+			ENDIF
+		CASE 98
+			PRINTFORML 入迷的品尝%CALLNAME:PLAYER%的肉穴…
+		CASE 105
+			PRINTFORM %CALLNAME:PLAYER%肉棒上的飞机杯
+			IF ABL:Ｓ属性 >= 3 && RAND:3 == 0
+				PRINTFORM 被用力地捏住然后
+			ELSEIF TALENT:好奇心 && RAND:3 == 0
+				PRINTFORM 被认真打量着然后
+			ELSEIF MARK:屈服刻印 == 0 && RAND:3 == 0
+				PRINTFORM 看着那个地方，脸上浮现出复杂的表情，然后伸出手
+			ELSEIF RAND:3 == 0
+				PRINTFORM 用手激烈的
+			ELSEIF RAND:2 == 0
+				PRINTFORM 咔呲咔呲地
+			ELSE
+				PRINTFORM 慢慢地
+			ENDIF
+			PRINTFORML 拤的着…
+		ENDSELECT
+	ENDIF
+
+	SELECTCOM = TEQUIP:六九式
+	CALL GET_EXP_COM
+
+	;射精槽之増加
+	CALL SAMEN_CHECK, LOCAL
+;TARGET之行动　口交or乳交or舐阴奉侍
+CASE 13, 14, 90 TO 92, 97, 98, 105, 150
+	SELECTCOM = TEQUIP:PLAYER:六九式
+	CALL GET_EXP_COM
+ENDSELECT
+SELECTCOM = LOCAL:100
+
+
+@COM_ORDER_COM99, ARG
+VARSET LOCAL
+LOCALS = 
+
+;すべて之命令に共通之要素を考慮
+;(顺从が高いと命令に従いやすいなど)
+CALL COM_ORDER, ARG
+
+LOCAL = RESULT
+
+;ABL:奉仕精神
+IF ABL:奉仕精神
+	LOCAL += ABL:奉仕精神 * 4
+	LOCALS = %LOCALS% + %ABLNAME:6%LV{ABL:奉仕精神}({ABL:奉仕精神 * 4})
+ENDIF
+;怕羞
+IF TALENT:怕羞
+	LOCAL -= 10
+	LOCALS = %LOCALS% - %TALENTNAME:35%(10)
+ENDIF
+;献身的
+IF TALENT:献身
+	LOCAL += 6
+	LOCALS = %LOCALS% + %TALENTNAME:63%(6)
+ENDIF
+;承认快感
+IF TALENT:承认快感
+	LOCAL += 3
+	LOCALS = %LOCALS% + %TALENTNAME:70%(3)
+ENDIF
+;否认快感
+IF TALENT:否认快感
+	LOCAL -= 1
+	LOCALS = %LOCALS% - %TALENTNAME:71%(1)
+ENDIF
+
+;媚药
+IF TEQUIP:媚药
+	LOCAL += 6
+	LOCALS = %LOCALS% + %ITEMNAME:31%(6)
+ENDIF
+
+;相互打扫PLAY
+IF CHECK_COM("打扫口交", 91) + CHECK_COM("打扫舐阴", 98) && CHECK_COM("打扫口交", 4) + CHECK_COM("打扫舐阴", 1)
+	IF CHECK_COM("打扫口交", 91)
+		LOCAL:1 = COM_ORDER_STAIN("Ｐ", "Ｍ")
+	ELSE
+		LOCAL:1 = COM_ORDER_STAIN("Ｖ", "Ｍ")
+	ENDIF
+ELSEIF PENIS(PLAYER)
+	LOCAL:1 = COM_ORDER_STAIN("Ｐ", "Ｍ")
+ELSE
+	LOCAL:1 = COM_ORDER_STAIN("Ｖ", "Ｍ")
+ENDIF
+
+;汚れあり
+IF LOCAL:1
+	LOCAL -= LOCAL:1
+	LOCALS = %LOCALS% - 汚れあり
+	;气味钝感
+	SIF TALENT:气味钝感 || TALENT:气味敏感
+		LOCALS = %LOCALS%、\@TALENT:气味钝感 ? %TALENTNAME:61% # %TALENTNAME:62%\@
+	LOCALS = %LOCALS%({LOCAL:1})
+ENDIF
+
+;合计を表示(33以上で实行)
+CALL PRINT_COM_ORDER_COM, LOCALS, ARG, LOCAL, 33
+
+RETURN RESULT

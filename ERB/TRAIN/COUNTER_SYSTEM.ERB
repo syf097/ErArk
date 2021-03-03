@@ -176,24 +176,24 @@ ELSE
 	;基本はV骑乘位だが、Aと尿道でも出来るかで分岐
 	IF CHECK("A插入") && CHECK("尿道插入")
 		;淫穴と尻穴狂之有无で确率にすごい偏りが出る
-		IF TALENT:淫穴 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 == 0 && RAND:10
-			CALL COUNTER_ABL, 5, 65, 66, 67, 68
-		ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 && TALENT:尿道狂 == 0 && RAND:10
-			CALL COUNTER_ABL, 5, 75
-		ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 && RAND:10
-			CALL COUNTER_ABL, 5, 83
-		ELSE
+		; IF TALENT:淫穴 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 == 0 && RAND:10
+		; 	CALL COUNTER_ABL, 5, 65, 66, 67, 68
+		; ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 && TALENT:尿道狂 == 0 && RAND:10
+		; 	CALL COUNTER_ABL, 5, 75
+		; ELSEIF TALENT:淫穴 == 0 && TALENT:尻穴狂 == 0 && TALENT:尿道狂 && RAND:10
+		; 	CALL COUNTER_ABL, 5, 83
+		; ELSE
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 75, 83
-		ENDIF
+		; ENDIF
 	ELSEIF CHECK("尿道插入")
 		;淫穴と尿道狂之有无で确率にすごい偏りが出る
-		IF TALENT:淫穴 && TALENT:尿道狂 == 0 && RAND:10
-			CALL COUNTER_ABL, 5, 65, 66, 67, 68
-		ELSEIF TALENT:淫穴 == 0 && TALENT:尿道狂 && RAND:10
-			CALL COUNTER_ABL, 5, 83
-		ELSE
+		; IF TALENT:淫穴 && TALENT:尿道狂 == 0 && RAND:10
+		; 	CALL COUNTER_ABL, 5, 65, 66, 67, 68
+		; ELSEIF TALENT:淫穴 == 0 && TALENT:尿道狂 && RAND:10
+		; 	CALL COUNTER_ABL, 5, 83
+		; ELSE
 			CALL COUNTER_ABL, 5, 65, 66, 67, 68, 83
-		ENDIF
+		; ENDIF
 	ELSEIF CHECK("A插入")
 		;淫穴と尻穴狂之有无で确率にすごい偏りが出る
 		IF TALENT:淫穴 && TALENT:尻穴狂 == 0 && RAND:10
@@ -215,12 +215,12 @@ IF ABL:骑乘位
 			SIF COND("发情期") || EXP:A性交经验 < MIN(50, EXP:V性交经验)
 				I:5 = 65
 		ENDIF
-	ELSEIF I:5 == 83 && TALENT:尿道狂 == 0
-		CALL COM_ABLE65
-		IF RESULT
-			SIF COND("发情期") 
-				I:5 = 65
-		ENDIF
+	; ELSEIF I:5 == 83 && TALENT:尿道狂 == 0
+	; 	CALL COM_ABLE65
+	; 	IF RESULT
+	; 		SIF COND("发情期") 
+	; 			I:5 = 65
+	; 	ENDIF
 	ENDIF
 	ABL:骑乘位 += TALENT:好色 + TALENT:淫乱 + LOCAL:2 + ABL:腰技
 	SIF MARK:淫紋 && TALENT:性别 != 1
@@ -242,9 +242,9 @@ IF ABL:骑乘位
 		SIF COND("弱点：尻技", PLAYER)
 			ABL:骑乘位 += 5
 	CASE 83
-		ABL:骑乘位 += TALENT:尿道狂*3
-		SIF INSERT("尿道插入")
-			ABL:骑乘位 += 5
+		; ABL:骑乘位 += TALENT:尿道狂*3
+		; SIF INSERT("尿道插入")
+		; 	ABL:骑乘位 += 5
 	ENDSELECT
 ENDIF
 
@@ -920,7 +920,7 @@ IF COND("逆推确率") > RAND:100
 	IF TEQUIP:逆推
 		PRINTL 
 		TFLAG:90 = 11
-		IF RAND:2 && TALENT:性别女 && TALENT:不知耻 && (TALENT:强硬 || ABL:S属性 + ABL:PLAYER:M属性 >= 5) && COND("室内") && USE_V(TARGET)
+		IF RAND:2 && TALENT:性别 ==2 && TALENT:不知耻 && (TALENT:强硬 || ABL:S属性 + ABL:PLAYER:M属性 >= 5) && COND("室内") && USE_V(TARGET)
 
 			PRINTL 
 			;PRINTFORML %CALLNAME:TARGET%飞跳到%CALLNAME:PLAYER%的脸上用大腿夹住、压上股间夺走视线朝床上逆推过去！
