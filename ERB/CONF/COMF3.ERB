@@ -58,8 +58,8 @@ ENDIF
 ;淋浴自慰之场合汚れをリセット、各种润滑半分。
 IF TEQUIP:淋浴 == 1
 	CALL RESET_STAIN_EX, "全部", TARGET
-	PALAM:Ｖ润 /= 2
-	PALAM:Ａ润 /= 2
+	PALAM:V润 /= 2
+	PALAM:A润 /= 2
 	PALAM:Ｐ润 /= 2
 ENDIF
 
@@ -76,38 +76,38 @@ LOCAL:21 += 80
 LOCAL:4 = 100 + ABL:技巧*100
 
 ;ABL:露阴癖をみる
-SELECTCASE ABL:露阴癖
-CASE 0
-	LOCAL:12 = 2000
-	LOCAL:13 = 500
-	LOCAL:14 = 800
-CASE 1
-	LOCAL:12 = 2300
-	LOCAL:13 = 800
-	LOCAL:14 = 600
-CASE 2
-	LOCAL:12 = 2600
-	LOCAL:13 = 1200
-	LOCAL:14 = 400
-CASE 3
-	LOCAL:12 = 2900
-	LOCAL:13 = 1900
-	LOCAL:14 = 200
-CASE 4
-	LOCAL:12 = 3200
-	LOCAL:13 = 2500
-	LOCAL:14 = 50
-CASEELSE
-	LOCAL:12 = 3500
-	LOCAL:13 = 3000
-	LOCAL:14 = 0
-ENDSELECT
+; SELECTCASE ABL:露阴癖
+; CASE 0
+; 	LOCAL:12 = 2000
+; 	LOCAL:13 = 500
+; 	LOCAL:14 = 800
+; CASE 1
+; 	LOCAL:12 = 2300
+; 	LOCAL:13 = 800
+; 	LOCAL:14 = 600
+; CASE 2
+; 	LOCAL:12 = 2600
+; 	LOCAL:13 = 1200
+; 	LOCAL:14 = 400
+; CASE 3
+; 	LOCAL:12 = 2900
+; 	LOCAL:13 = 1900
+; 	LOCAL:14 = 200
+; CASE 4
+; 	LOCAL:12 = 3200
+; 	LOCAL:13 = 2500
+; 	LOCAL:14 = 50
+; CASEELSE
+; 	LOCAL:12 = 3500
+; 	LOCAL:13 = 3000
+; 	LOCAL:14 = 0
+; ENDSELECT
 ;公开之ときは露出之SOURCE増加
 SIF TEQUIP:摄像机
 	TIMES LOCAL:12, 1.50
 
 IF GETBIT(CHECK_ONANIE(SELECTCOM), 0)
-	LOCAL:0 = CALCF("Ｃ刺激", 1)
+	LOCAL:0 = CALCF("C刺激", 1)
 	;淋浴使用中
 	SIF TEQUIP:淋浴
 		LOCAL:0 += 200
@@ -120,7 +120,7 @@ SIF GETBIT(CHECK_ONANIE(SELECTCOM), 3)
 	LOCAL:17 = CALCF("Ｂ刺激", 1)
 
 IF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
-	LOCAL:1 = CALCF("Ｖ刺激", 1)
+	LOCAL:1 = CALCF("V刺激", 1)
 	SIF TEQUIP:按摩棒
 		CALL SOURCE_COM31, 30
 ENDIF
@@ -129,11 +129,11 @@ IF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 	LOCAL:2 = CALCF("刺激肛门", 1)
 	SIF TEQUIP:肛用按摩棒
 		CALL SOURCE_COM33, 30
-	;ＡPLAYなら肠液分泌
+	;APLAYなら肠液分泌
 	LOCAL:19 = 100 * ABL:自慰成瘾
 ENDIF
 
-;ここから下は快ＣＶＡＢに对する补正が大量に来る之で、それをLOCAL:30に代入して短く表す
+;ここから下は快CVAＢに对する补正が大量に来る之で、それをLOCAL:30に代入して短く表す
 LOCAL:30 = ABL:技巧*10 - 100
 
 ;ABL:自慰成瘾をみる
@@ -156,25 +156,25 @@ CASEELSE
 ENDSELECT
 
 ;ABL:露阴癖をみる
-SELECTCASE ABL:露阴癖
-CASE 0
-	LOCAL:30 -= 50
-CASE 1
-	LOCAL:7 += 100
-	LOCAL:30 -= 30
-CASE 2
-	LOCAL:7 += 300
-	LOCAL:30 -= 10
-CASE 3
-	LOCAL:7 += 500
-	LOCAL:30 += 10
-CASE 4
-	LOCAL:7 += 700
-	LOCAL:30 += 30
-CASEELSE
-	LOCAL:7 += 1000
-	LOCAL:30 += 50
-ENDSELECT
+; SELECTCASE ABL:露阴癖
+; CASE 0
+; 	LOCAL:30 -= 50
+; CASE 1
+; 	LOCAL:7 += 100
+; 	LOCAL:30 -= 30
+; CASE 2
+; 	LOCAL:7 += 300
+; 	LOCAL:30 -= 10
+; CASE 3
+; 	LOCAL:7 += 500
+; 	LOCAL:30 += 10
+; CASE 4
+; 	LOCAL:7 += 700
+; 	LOCAL:30 += 30
+; CASEELSE
+; 	LOCAL:7 += 1000
+; 	LOCAL:30 += 50
+; ENDSELECT
 
 ;TARGET之指技をみる
 IF ABL:指技
@@ -219,13 +219,13 @@ CALL CALC, "调教ソース", LOCAL:0, LOCAL:1, LOCAL:2, LOCAL:3, LOCAL:4, LOCAL
 @TRAIN_MESSAGE_COM3
 
 VARSET LOCAL
-;自慰的地方之判定。0bit Ｃ自慰, 1bit Ｖ自慰, 2bit Ａ自慰, 3bit Ｂ自慰
+;自慰的地方之判定。0bit C自慰, 1bit V自慰, 2bit A自慰, 3bit Ｂ自慰
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 0)
-	LOCAL:0 = ABL:Ｃ感觉 + TALENT:淫核 + 1
+	LOCAL:0 = ABL:C感觉 + TALENT:淫核 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
-	LOCAL:1 = ABL:Ｖ感觉 + TALENT:淫壷 + 1
+	LOCAL:1 = ABL:V感觉 + TALENT:淫壷 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
-	LOCAL:2 = ABL:Ａ感觉 + TALENT:尻穴狂 + 1
+	LOCAL:2 = ABL:A感觉 + TALENT:尻穴狂 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 3)
 	LOCAL:3 = ABL:Ｂ感觉 + TALENT:淫乳 + 1
 
@@ -239,9 +239,9 @@ IF PREVCOM != SELECTCOM
 	ENDIF
 	PRINTFORM %CALLNAME:TARGET%
 	IF INSERT("插入")
-		IF INSERT("Ｖ插入")
+		IF INSERT("V插入")
 			LOCALS = 膣
-		ELSEIF INSERT("Ａ插入")
+		ELSEIF INSERT("A插入")
 			LOCALS = 肛门
 		ELSEIF INSERT("尿道插入")
 			LOCALS = 尿道
@@ -266,9 +266,9 @@ IF PREVCOM != SELECTCOM
 				ELSE
 					PRINTFORM 一边用舌头舔
 				ENDIF
-			ELSEIF TEQUIP:摄像机 && RANDIF(3, ABL:露阴癖 >= 3, TEQUIP:媚药)
+			ELSEIF TEQUIP:摄像机 
 				PRINTFORM 将视线移向镜头
-			ELSEIF TEQUIP:媚药 && RANDIF(2, ABL:露阴癖 >= 3)
+			ELSEIF TEQUIP:媚药 
 				PRINTFORM 春药刺激着身体、
 				SIF ABL:自慰成瘾 >= 3
 					PRINTFORM 如饥似渴地
@@ -354,7 +354,7 @@ IF PREVCOM != SELECTCOM
 			ELSE
 				PRINTFORM 尻穴
 			ENDIF
-			IF RAND:3 == 0 || !CHECK_CLO("Ａ露出")
+			IF RAND:3 == 0 || !CHECK_CLO("A露出")
 				PRINTFORM 用自己的手指玩弄着
 			ELSEIF RAND:2 == 0
 				PRINTFORM 用自己的手指搅动着
@@ -379,13 +379,13 @@ IF PREVCOM != SELECTCOM
 	ENDIF
 	PRINTW 享受着快感从欲望深处传来的快感
 ELSE
-	IF TEQUIP:按摩棒 && TEQUIP:肛用按摩棒 && ABL:Ｖ感觉 >= 5 && ABL:Ａ感觉 >= 5 && ABL:Ｃ感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	IF TEQUIP:按摩棒 && TEQUIP:肛用按摩棒 && ABL:V感觉 >= 5 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML %CALLNAME:TARGET%嘴角不停流着淫丝，身体一边战战兢兢不停痉挛着，一边因为猛烈的快感而不停呻吟着
 		PRINTFORMW 在猛烈的刺激下达到了顶峰不停着高潮着，爱液如同洪水一般不停的从蜜穴中喷涌而出，…
-	ELSEIF TEQUIP:按摩棒 && ABL:Ｖ感觉 >= 5 && ABL:Ｃ感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	ELSEIF TEQUIP:按摩棒 && ABL:V感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML 在振动棒的抽插震动的刺激下，%CALLNAME:TARGET%的爱液不停飞溅着
 		PRINTFORMW %CALLNAME:TARGET%不停的高潮着，身体渐渐失去了力气，连一个手指头都无法动弹
-	ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && ABL:Ａ感觉 >= 5 && ABL:Ｃ感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML %CALLNAME:TARGET%的身体因为插入肛门中的震动棒不停震动着而不停抽动着
 		PRINTFORMW 震动棒不停刮扫上褶皱的肠壁，都能引起一次次高潮
 	ELSEIF ABL:自慰成瘾 >= 3
@@ -412,8 +412,8 @@ ENDIF
 #DIM USE_HAND
 
 ;指令選択时的顕示ではARG == 3となっている
-;0bit Ｃ自慰, 1bit Ｖ自慰, 2bit Ａ自慰, 3bit Ｂ自慰
-;10bit 淋浴自慰, 11bit Ｖ按摩棒自慰, 12bit 肛用按摩棒自慰, 13bit 两穴按摩棒自慰, 14bit 飞机杯自慰
+;0bit C自慰, 1bit V自慰, 2bit A自慰, 3bit Ｂ自慰
+;10bit 淋浴自慰, 11bit V按摩棒自慰, 12bit 肛用按摩棒自慰, 13bit 两穴按摩棒自慰, 14bit 飞机杯自慰
 USE_HAND = CALCF("自由な手", ARG)
 SIF USE_HAND == 0
 	RETURNF 0
@@ -434,20 +434,20 @@ ELSEIF USE_HAND >= 2
 		IF GETBIT(LOCAL, 1) || GETBIT(LOCAL, 2)
 			SETBIT LOCAL, 1
 			SETBIT LOCAL, 2
-		ELSEIF TALENT:性别男 == 0 && (ABL:Ｖ感觉 >= ABL:Ａ感觉 || ABL:Ａ感觉 < 3)
+		ELSEIF TALENT:性别 == 1 && (ABL:V感觉 >= ABL:A感觉 || ABL:A感觉 < 3)
 			SETBIT LOCAL, 1
 		ELSE
 			SETBIT LOCAL, 2
 		ENDIF
 	ELSEIF ARG == 3
-		IF TEQUIP:按摩棒 && !GETBIT(LOCAL, 1) && ABL:Ｖ感觉 >= 3
+		IF TEQUIP:按摩棒 && !GETBIT(LOCAL, 1) && ABL:V感觉 >= 3
 			SETBIT LOCAL, 1
-		ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && !GETBIT(LOCAL, 2) && ABL:Ａ感觉 >= 3
+		ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && !GETBIT(LOCAL, 2) && ABL:A感觉 >= 3
 			SETBIT LOCAL, 2
 		ELSEIF GETBIT(LOCAL, 3)
-			IF ABL:Ｃ感觉 >= MAX(ABL:Ｖ感觉, ABL:Ａ感觉)
+			IF ABL:C感觉 >= MAX(ABL:V感觉, ABL:A感觉)
 				SETBIT LOCAL, 0
-			ELSEIF TALENT:性别男 == 0 && ABL:Ｖ感觉 >= ABL:Ａ感觉
+			ELSEIF TALENT:性别 == 1 && ABL:V感觉 >= ABL:A感觉
 				SETBIT LOCAL, 1
 			ELSE
 				SETBIT LOCAL, 2
@@ -530,10 +530,10 @@ CASE 1
 	ELSE
 		PRINTFORM 股间に%LOCALS%、
 		IF RAND:2 == 0 || (SELECTCOM >= 60 && SELECTCOM <= 79)
-			IF CALCF("Ｃ发情") >= 3
+			IF CALCF("C发情") >= 3
 				PRINTFORM 肥大的
 			ELSE
-				SIF CALCF("Ｃ发情") <= 1
+				SIF CALCF("C发情") <= 1
 					PRINTFORM 隔着包皮
 				PRINTFORM 敏感的
 			ENDIF
@@ -550,7 +550,7 @@ CASE 1
 				ELSE
 					PRINTFORMW 戏弄着贯穿阴核的阴蒂穿环…
 				ENDIF
-			ELSEIF CALCF("Ｃ发情") < 3 && RAND:2
+			ELSEIF CALCF("C发情") < 3 && RAND:2
 				PRINTW 慢慢翻转玩弄着阴蒂的顶端
 			ELSE
 				PRINTW 做着淫靡的事情，不停发出淫靡的声音
@@ -577,8 +577,8 @@ CASE 2
 		PRINTW 做着淫靡的事情，不停发出淫靡的声音
 		CALL EQ_STAIN, TARGET, TARGET, 1, 3
 	ENDIF
-	EXP:Ｖ経験 += 1
-	PRINTFORML Ｖ経験＋1
+	EXP:V経験 += 1
+	PRINTFORML V経験＋1
 CASE 4
 	PRINTFORM 在%LOCALS%的股间
 	IF TEQUIP:肛用按摩棒
@@ -587,8 +587,8 @@ CASE 4
 		PRINTW 玩弄着柔软的屁股上的尻穴…
 		CALL EQ_STAIN, TARGET, TARGET, 1, 4
 	ENDIF
-	EXP:Ａ経験 += 1
-	PRINTFORML Ａ経験＋1
+	EXP:A経験 += 1
+	PRINTFORML A経験＋1
 CASEELSE
 	IF TALENT:巨乳
 		IF RAND:2
@@ -647,10 +647,10 @@ CALL COM_ORDER, ARG
 LOCAL = RESULT
 
 ;ABL:露阴癖
-IF ABL:露阴癖
-	LOCAL += ABL:露阴癖 * 4
-	LOCALS = %LOCALS% + %ABLNAME:7%LV{ABL:露阴癖}({ABL:露阴癖 * 4})
-ENDIF
+; IF ABL:露阴癖
+; 	LOCAL += ABL:露阴癖 * 4
+; 	LOCALS = %LOCALS% + %ABLNAME:7%LV{ABL:露阴癖}({ABL:露阴癖 * 4})
+; ENDIF
 ;ABL:自慰成瘾
 IF ABL:自慰成瘾
 	LOCAL += ABL:自慰成瘾 * 3

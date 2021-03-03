@@ -72,7 +72,7 @@ CASE 60 TO 69
 	CASE 61
 		LOCAL += ABL:M属性*500
 	CASE 62
-		LOCAL += ABL:露阴癖*500
+		; LOCAL += ABL:露阴癖*500
 	CASE 63
 		TIMES LOCAL, 0.50
 		LOCAL += 50 + ABL:技巧*100 + ABL:M感觉*50
@@ -106,7 +106,7 @@ CASE 70 TO 79
 	CASE 61
 		LOCAL += ABL:M属性*500
 	CASE 62
-		LOCAL += ABL:露阴癖*500
+		; LOCAL += ABL:露阴癖*500
 	CASE 63
 		TIMES LOCAL, 0.50
 		LOCAL += 50 + ABL:技巧*100 + ABL:M感觉*50
@@ -1903,7 +1903,7 @@ ELSEIF SHOOT("口")
 	ELSE
 		PRINTFORM %CALLNAME:TARGET%
 		;插入から饮ませる
-		IF ABL:侍奉精神 >= 3 && SHOOT("膣内") + SHOOT("A") && ABL:侍奉精神 + TALENT:恋慕 + TALENT:淫乱 + TALENT:献身 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反抗刻印) > 3
+		IF ABL:侍奉精神 >= 3 && SHOOT("膣内") + SHOOT("A") && ABL:侍奉精神 + TALENT:恋慕 + TALENT:淫乱 - (TALENT:怕羞 + TALENT:气味敏感 + MARK:反抗刻印) > 3
 			IF RAND:3 == 0
 				PRINTFORM %TEXTR("污秽", "粘液的气味", "过分的气味", "性交后的气味")%
 

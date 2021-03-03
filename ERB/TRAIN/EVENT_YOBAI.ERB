@@ -49,7 +49,7 @@ CASE "主动夜袭骑乘位"
 			PRINTFORMW 「……」
 			PRINTFORMW 沉默着、用充满欲火的眼睛瞪着、
 		;[怕羞][清纯]持ち之场合分岐
-		ELSEIF TALENT:怕羞 || TALENT:清纯
+		ELSEIF TALENT:怕羞 
 			PRINTFORMW 带着忧郁和欲望之火的眼神、眼睛朝上看着%CALLNAME:MASTER%问了、
 			SELECTCASE NO:TARGET
 		CASE 16
@@ -60,7 +60,7 @@ CASE "主动夜袭骑乘位"
 				PRINTFORMW 「……」
 			ENDSELECT
 		;[纯情][献身][小恶魔][妄信]持ちなら分岐
-		ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+		ELSEIF TALENT:纯情 || TALENT:妄信 || TALENT:小恶魔
 			PRINTFORMW 「……」
 			PRINTFORMW 沉默着、用带着欲望眼神微笑着盯着%CALLNAME:MASTER%、
 		ENDIF
@@ -72,11 +72,11 @@ CASE "主动夜袭骑乘位"
 		IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
 			PRINTFORMW %CALLNAME:TARGET%发出脏话混杂着妩媚的娇声、不断淫乱的扭着腰渴望滋润子宫…
 		;[怕羞][清纯]持ち之场合分岐
-		ELSEIF TALENT:怕羞 || TALENT:清纯
+		ELSEIF TALENT:怕羞 
 			PRINTFORML %CALLNAME:TARGET%多次同时发出轻声的欢喜的悲鸣和道歉的话、
 			PRINTFORMW 天真的扭着腰腰渴望滋润子宫…
 		;[纯情][献身][小恶魔][妄信]持ちなら分岐
-		ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+		ELSEIF TALENT:纯情 ||  TALENT:妄信 || TALENT:小恶魔
 			PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰腰渴望滋润子宫…
 		;[开朗][好色][接受快感]持ち之场合分岐
 		ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:接受快感
@@ -90,12 +90,12 @@ CASE "主动夜袭骑乘位"
 	CALL CALC, "欲求不满解消", TARGET, LOCAL
 
 	PRINTFORM 好几次高潮后、
-	IF TALENT:偏爱 || TALENT:相思相爱
-		PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
-		;一緒に眠った标志。朝之对象として优先。
-		CFLAG:MASTER:96 = TARGET
-		CFLAG:96 = MASTER
-	ELSE
+	; IF TALENT:偏爱 || TALENT:相思相爱
+	; 	PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
+	; 	;一緒に眠った标志。朝之对象として优先。
+	; 	CFLAG:MASTER:96 = TARGET
+	; 	CFLAG:96 = MASTER
+	; ELSE
 		PRINTFORM 恋慕的%CALLNAME:TARGET%は
 		;对象がいっぱいいるときは紳士協定
 		IF RAND:CHARANUM >= 5
@@ -105,7 +105,7 @@ CASE "主动夜袭骑乘位"
 			CFLAG:MASTER:96 = TARGET
 			CFLAG:96 = MASTER
 		ENDIF
-	ENDIF
+	; ENDIF
 	CVARSET TEQUIP, 30, 0
 CASE "主动夜袭A骑乘位"
 	CVARSET TEQUIP, 30, 1
@@ -124,7 +124,7 @@ CASE "主动夜袭A骑乘位"
 		PRINTFORMW 「……」
 		PRINTFORMW 沉默着、用充满欲火的眼睛瞪着%CALLNAME:MASTER%、
 	;[怕羞][清纯]持ち之场合分岐
-	ELSEIF TALENT:怕羞 || TALENT:清纯
+	ELSEIF TALENT:怕羞 
 		PRINTFORMW 带着忧郁和欲望之火的眼神、眼睛朝上看着%CALLNAME:MASTER%问了、
 		SELECTCASE NO:TARGET
 	CASE 16
@@ -135,7 +135,7 @@ CASE "主动夜袭A骑乘位"
 			PRINTFORMW 「……」
 		ENDSELECT
 	;[纯情][献身][小恶魔][妄信]持ちなら分岐
-	ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+	ELSEIF TALENT:纯情 || TALENT:妄信 || TALENT:小恶魔
 		PRINTFORMW 「……」
 		PRINTFORMW 沉默着、用带着欲望眼神微笑着盯着%CALLNAME:MASTER%、
 	ENDIF
@@ -146,11 +146,11 @@ CASE "主动夜袭A骑乘位"
 	IF TALENT:傲慢 || TALENT:自大 || TALENT:强硬 || TALENT:坏心眼
 		PRINTFORMW %CALLNAME:TARGET%发出脏话混杂着妩媚的娇声、不断淫乱的扭着腰贪图着肛门的肉欲…
 	;[怕羞][清纯]持ち之场合分岐
-	ELSEIF TALENT:怕羞 || TALENT:清纯
+	ELSEIF TALENT:怕羞 
 		PRINTFORML %CALLNAME:TARGET%多次同时发出轻声的欢喜的悲鸣和道歉的话、
 		PRINTFORMW 天真的扭着腰贪图着肛门的肉欲…
 	;[纯情][献身][小恶魔][妄信]持ちなら分岐
-	ELSEIF TALENT:纯情 || TALENT:献身 || TALENT:妄信 || TALENT:小恶魔
+	ELSEIF TALENT:纯情 || TALENT:妄信 || TALENT:小恶魔
 		PRINTFORMW %CALLNAME:TARGET%微笑着、妖媚的扭着腰贪图着肛门的肉欲…
 	;[开朗][好色][接受快感]持ち之场合分岐
 	ELSEIF TALENT:开朗 || TALENT:好色 || TALENT:接受快感
@@ -163,12 +163,12 @@ CASE "主动夜袭A骑乘位"
 	CALL CALC, "欲求不满解消", TARGET, LOCAL
 
 	PRINTFORM 好几次高潮后、
-	IF TALENT:偏爱 || TALENT:相思相爱
-		PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
-		;一緒に眠った标志。朝之对象として优先。
-		CFLAG:MASTER:96 = TARGET
-		CFLAG:96 = MASTER
-	ELSE
+	; IF TALENT:偏爱 || TALENT:相思相爱
+	; 	PRINTFORMW 恋慕的两人紧紧拥抱着、陷入沉睡…
+	; 	;一緒に眠った标志。朝之对象として优先。
+	; 	CFLAG:MASTER:96 = TARGET
+	; 	CFLAG:96 = MASTER
+	; ELSE
 		PRINTFORM 恋慕的%CALLNAME:TARGET%
 		;对象がいっぱいいるときは紳士協定
 		IF RAND:CHARANUM >= 5
@@ -178,7 +178,7 @@ CASE "主动夜袭A骑乘位"
 			CFLAG:MASTER:96 = TARGET
 			CFLAG:96 = MASTER
 		ENDIF
-	ENDIF
+	; ENDIF
 	CVARSET TEQUIP, 30, 0
 
 CASE "旁边陪着睡"
@@ -250,7 +250,7 @@ ENDIF
 SELECTCASE CSTR:主动夜袭
 CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 	TARGET:1 = FIND_COND("主动夜袭可能", "淫乱", "相思相爱")
-	SIF TARGET:1 == 0 || TALENT:相思相爱 == 0 || COND("大被同眠")  || CFLAG:MASTER:96 == 0
+	SIF TARGET:1 == 0  || COND("大被同眠")  || CFLAG:MASTER:96 == 0
 		RETURN 0
 
 	;实行可能指令之确认

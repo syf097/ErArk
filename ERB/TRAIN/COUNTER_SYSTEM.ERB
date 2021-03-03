@@ -88,7 +88,7 @@ ELSE
 	CALL COUNTER_ABL, 0, 90, 97, 105
 ENDIF
 IF ABL:手
-	ABL:手 += TALENT:献身 + LOCAL:1 + ABL:指技
+	ABL:手 +=  LOCAL:1 + ABL:指技
 	SIF COND("弱点：手技", PLAYER)
 		ABL:手 += 5
 ENDIF
@@ -100,7 +100,7 @@ ELSE
 	CALL COUNTER_ABL, 1, 91, 98, 150
 ENDIF
 IF ABL:口
-	ABL:口 += TALENT:献身 + LOCAL:1 + ABL:舌技
+	ABL:口 +=LOCAL:1 + ABL:舌技
 	SIF COND("弱点：口技", PLAYER)
 		ABL:口 += 5
 ENDIF
@@ -111,7 +111,7 @@ ELSE
 	CALL COUNTER_ABL, 2, 82, 92, 104
 ENDIF
 IF ABL:胸
-	ABL:胸 += TALENT:献身 + TALENT:巨乳*3 + LOCAL:1 + ABL:魔乳
+	ABL:胸 += TALENT:巨乳*3 + LOCAL:1 + ABL:魔乳
 	SIF COND("弱点：乳交", PLAYER)
 		ABL:胸 += 5
 ENDIF
@@ -218,7 +218,7 @@ IF ABL:骑乘位
 	ELSEIF I:5 == 83 && TALENT:尿道狂 == 0
 		CALL COM_ABLE65
 		IF RESULT
-			SIF COND("发情期") || EXP:尿道性交经验 < MIN(50, EXP:V性交经验)
+			SIF COND("发情期") 
 				I:5 = 65
 		ENDIF
 	ENDIF
@@ -289,7 +289,7 @@ ELSE
 	CALL COUNTER_ABL, 9, 80, 93, 94
 ENDIF
 SIF ABL:素股
-	ABL:素股 += TALENT:献身 + LOCAL:1 + ABL:腰技/2
+	ABL:素股 +=  LOCAL:1 + ABL:腰技/2
 
 ;ABL:道具
 IF COND("调教側")
@@ -348,8 +348,8 @@ FOR LCOUNT, 230, 230 + NUM("存在秘法")
 	;绝顶してると駄目
 	SIF NOWEX:绝顶数合计
 		BREAK
-	SIF USE_MAGIC(LCOUNT, "反击") == 0
-		CONTINUE
+	; SIF USE_MAGIC(LCOUNT, "反击") == 0
+	; 	CONTINUE
 
 	TFLAG:94 += 20
 
@@ -486,7 +486,7 @@ LOCAL -= TALENT:怕羞*5
 ;不知耻
 LOCAL += TALENT:不知耻*3
 ;献身的
-LOCAL += TALENT:献身*5
+; LOCAL += TALENT:献身*5
 ;好色
 LOCAL += TALENT:好色*10
 ;淫乱

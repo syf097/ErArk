@@ -175,7 +175,7 @@ IF TEQUIP:Ｗ逆推
 
 			ENDIF
 		ELSE
-			IF NOWEX:ASSI:绝顶数合计 >= 2 && TALENT:ASSI:性别男 == 0 && RAND:2
+			IF NOWEX:ASSI:绝顶数合计 >= 2 && TALENT:ASSI:性别 == 1 && RAND:2
 				PRINT 的小穴biu~biu地往外喷着透明的液体
 
 			ELSE
@@ -271,11 +271,11 @@ SIF COND("连续实行")
 ;-------------------------------------------------
 ;体力・气力之减少
 ;-------------------------------------------------
-IF TALENT:V损伤 || TALENT:A损伤
-	SETCOLOR DEF_COLOR("黄色")
-	PRINTL ＜体内损伤中＞
-	RESETCOLOR
-ENDIF
+; IF TALENT:V损伤 || TALENT:A损伤
+; 	SETCOLOR DEF_COLOR("黄色")
+; 	PRINTL ＜体内损伤中＞
+; 	RESETCOLOR
+; ENDIF
 CALL CALC, "体力气力减少"
 ;体力・气力之变动を表示
 IF DOWNBASE:体力 || DOWNBASE:气力
@@ -392,8 +392,8 @@ SIF TALENT:坦率
 SIF TALENT:纯情
 	LOCAL += 2
 ;献身的
-SIF TALENT:献身
-	LOCAL += 1
+; SIF TALENT:献身
+; 	LOCAL += 1
 ;妄信
 SIF TALENT:妄信
 	LOCAL += 1

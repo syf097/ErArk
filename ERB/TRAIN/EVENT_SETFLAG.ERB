@@ -698,7 +698,7 @@ CASE "排泄"
 				PRINTFORML 在灌肠的刺激下，排泄出了大量\@ CHECK_STAIN(STAIN:A, "精液") ? 混合着精液 # \@的软粪，随后又一边放屁，一边从肛门拉出了有点便秘的硬块，积成了小山样的一堆。
 			ENDSELECT
 		ENDIF
-		SELECTCASE MIN(ABL:M属性, (ABL:露阴癖 + 1)/2)
+		SELECTCASE ABL:M属性
 		CASE 0
 			PRINTFORMW %CALLNAME:TARGET%露出苦闷和耻辱的表情…
 		CASE 1
@@ -1622,17 +1622,17 @@ CASE "助手对象之恋慕外し开始"
 ;@SHOW_USERCOM表示时、指令之終了时(@EVENTCOMEND)、调教終了时(@EVENTEND)で復帰させます。
 	SIF CONFIG("助手对象でも恋慕適用") || ASSIPLAY == 0
 		RETURN 0
-	SIF TALENT:相思相爱
-		CALL SET_CEVENT, "助手调教で之素質变化：相思相爱外し"
+	; SIF TALENT:相思相爱
+	; 	CALL SET_CEVENT, "助手调教で之素質变化：相思相爱外し"
 	SIF TALENT:恋慕
 		CALL SET_CEVENT, "助手调教で之素質变化：恋慕外し"
-	TALENT:相思相爱 = 0
+	; TALENT:相思相爱 = 0
 	TALENT:恋慕 = 0
 CASE "助手对象之恋慕外し終了"
 	SIF CONFIG("助手对象でも恋慕適用")
 		RETURN 0
-	SIF CEVENT("助手调教で之素質变化：相思相爱外し")
-		TALENT:相思相爱 = 1
+	; SIF CEVENT("助手调教で之素質变化：相思相爱外し")
+	; 	TALENT:相思相爱 = 1
 	SIF CEVENT("助手调教で之素質变化：恋慕外し")
 		TALENT:恋慕 = 1
 	CALL DEL_CEVENT_GROUP, "助手调教で之素質变化"
@@ -2570,16 +2570,16 @@ CASE "经验取得"
 			EXP:PLAYER:腰技经验 += 1
 		ENDIF
 	CASE 83
-		EXP:尿道经验 += 1
-		EXP:尿道性交经验 += 1
+		; EXP:尿道经验 += 1
+		; EXP:尿道性交经验 += 1
 		;动かしても大丈夫になるサイズまでは扩张
 		IF SIZE("阴茎之直径", PLAYER) > MIN_STR(CONDS("尿道扩张度") )
 			CALL SETFLAG, "尿道扩张", SIZE("阴茎之直径", PLAYER)
 		ELSEIF SIZE("阴茎之直径", PLAYER)*4/3 > MIN_STR(CONDS("尿道扩张度") )
 			CALL SETFLAG, "尿道扩张", MIN_STR(CONDS("尿道扩张度") ) + 1
 		ENDIF
-		EXP:PLAYER:尿道插入经验 += 1
-		EXP:PLAYER:刺激尿道经验 += 1
+		; EXP:PLAYER:尿道插入经验 += 1
+		; EXP:PLAYER:刺激尿道经验 += 1
 	CASE 92, 104
 		IF CHECK_COM("乳夹口交", ARG)
 			EXP:口交经验 += 1
@@ -3324,8 +3324,8 @@ CASE "调教补正值"
 		TCVAR:ARG:612 += 100
 	SIF TALENT:ARG:不知耻
 		TCVAR:ARG:612 -= 50
-	SIF TALENT:ARG:清纯
-		TCVAR:ARG:612 += 50
+	; SIF TALENT:ARG:清纯
+	; 	TCVAR:ARG:612 += 50
 	SIF TALENT:ARG:好奇心
 		TCVAR:ARG:614 -= 30
 	SIF TALENT:ARG:保守
@@ -3671,10 +3671,10 @@ CASE "调教补正值"
 		TCVAR:ARG:624 += 20
 		TCVAR:ARG:626 += 10
 	ENDIF
-	IF TALENT:ARG:清纯
-		TCVAR:ARG:624 += 20
-		TCVAR:ARG:628 += 50
-	ENDIF
+	; IF TALENT:ARG:清纯
+	; 	TCVAR:ARG:624 += 20
+	; 	TCVAR:ARG:628 += 50
+	; ENDIF
 
 	SIF TALENT:ARG:肠液分泌体質
 		TCVAR:ARG:632 += 200
@@ -3687,10 +3687,10 @@ CASE "调教补正值"
 		TCVAR:ARG:627 -= 30
 		TCVAR:ARG:627 += TEQUIP:ARG:称賛 * 10
 	ENDIF
-	IF TALENT:ARG:献身
-		TCVAR:ARG:626 += 50
-		TCVAR:ARG:627 += 50
-	ENDIF
+	; IF TALENT:ARG:献身
+	; 	TCVAR:ARG:626 += 50
+	; 	TCVAR:ARG:627 += 50
+	; ENDIF
 	SIF TALENT:ARG:接受快感
 		TCVAR:ARG:625 += 50
 	SIF TALENT:ARG:否认快感
@@ -4149,12 +4149,12 @@ CASE "中意的体位"
 
 	;初期設定
 	IF TALENT:ARG:中意的体位 == 0 && MAX(EXP:ARG:V性交经验, EXP:ARG:A性交经验, EXP:ARG:腰技经验) >= 10
-		LOCAL:0 = TALENT:ARG:清纯 + TALENT:ARG:坦率 + TALENT:ARG:优雅
+		LOCAL:0 = TALENT:ARG:坦率 + TALENT:ARG:优雅
 		LOCAL:1 = TALENT:ARG:好色 + TALENT:ARG:粗野
 		LOCAL:2 = TALENT:ARG:低姿态
 		LOCAL:3 = TALENT:ARG:内向 + TALENT:ARG:胆怯
 		LOCAL:4 = TALENT:ARG:开朗
-		LOCAL:5 = TALENT:ARG:坏心眼 + TALENT:ARG:献身
+		LOCAL:5 = TALENT:ARG:坏心眼 
 		LOCAL:6 = TALENT:ARG:好色 + TALENT:ARG:强硬 + TALENT:ARG:抖S + TALENT:ARG:傲慢
 		LOCAL:9 = TALENT:ARG:阴郁 + TALENT:ARG:冷静
 
@@ -4293,8 +4293,8 @@ CASE "每天之阴毛＆腋毛处理"
 	;剃るなと指示されていない
 	ELSE
 		;抖Mッ气や露阴癖が高いと、たま～に光溜溜にします
-		IF COND("阴毛", ARG) >= 4 && RAND:30 == 0 && MAX(ABL:ARG:露阴癖 - 1, ABL:ARG:M属性) >= 3
-			BASE:ARG:阴毛 = 300
+		; IF COND("阴毛", ARG) >= 4 && RAND:30 == 0 && MAX(ABL:ARG:露阴癖 - 1, ABL:ARG:M属性) >= 3
+		; 	BASE:ARG:阴毛 = 300
 			;PRINTFORMW %CALLNAME:ARG%的阴毛被剃得光溜溜地……
 		;食い込んでいる衣装之时には剃り整えます
 		ELSEIF COND("阴毛", ARG) >= 6 && CHECK_CLO("紧勒", ARG)
@@ -5124,7 +5124,7 @@ CASE "快乐补正"
 	ARG = MULTIPLY(ARG, LIMIT(80 + GET_PALAMLV(PALAM:欲情)*10, 100, 150) )
 
 	;ABL:侍奉精神とEXP:奉仕快乐经验
-	LOCAL:1 = MIN(ABL:侍奉精神*10 + EXP:奉仕快乐经验/20 + TALENT:献身*30, 100)
+	LOCAL:1 = MIN(ABL:侍奉精神*10 + EXP:奉仕快乐经验/20 , 100)
 	SELECTCASE SELECTCOM
 	CASE 6, 140
 		ARG = MULTIPLY(ARG, 100 + LOCAL:1)
@@ -5634,7 +5634,7 @@ CASE "称賛"
 	;胆怯
 	LOCAL += 5 * TALENT:胆怯
 	;献身的
-	LOCAL += 15 * TALENT:献身
+	; LOCAL += 15 * TALENT:献身
 	;幼稚
 	LOCAL += 20 * TALENT:幼稚
 	;坦率
@@ -5679,7 +5679,7 @@ CASE "称賛"
 		SIF ABL:M属性 < 3
 			LOCAL -= 45
 	CASE 5, 6
-		LOCAL += ABL:露阴癖 * 10
+		; LOCAL += ABL:露阴癖 * 10
 		;怕羞+露阴癖5未满＆羞恥系实行
 		; SIF TALENT:怕羞 && ABL:露阴癖 < 5
 		; 	LOCAL -= 35

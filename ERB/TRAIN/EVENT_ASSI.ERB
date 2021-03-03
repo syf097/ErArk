@@ -148,7 +148,7 @@ IF LOCAL && RANDIF(1, LOCAL:1)
 	CASE 4
 		PRINTFORM %CALLNAME:ASSI%把%CALLNAME:MASTER%的阴茎拿出来
 		;侍奉精神と献身で判定
-		IF ABL:ASSI:侍奉精神 + TALENT:ASSI:献身 >= 4 && COND("口之使用", ASSI)
+		IF ABL:ASSI:侍奉精神  >= 2 && COND("口之使用", ASSI)
 			PRINTFORMW 拉下包皮
 			PRINTFORMW 用舌头舔干净了……
 			TRYCALLFORM GUEST_KOJO_K{NO:ASSI}_{CFLAG:ASSI:209}, "助手：主人にP恥垢打扫口交", ASSI

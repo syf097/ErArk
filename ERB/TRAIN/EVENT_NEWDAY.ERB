@@ -189,7 +189,7 @@ CASE "朝之母乳搾り"
 	IF TALENT:巨乳
 		EXP:喷乳经验 += LOCAL * 2
 		PRINTFORML %EXPNAME:54%＋{LOCAL*2}
-		IF TALENT:献身 || TALENT:好色 || TALENT:泌乳体质
+		IF  TALENT:好色 || TALENT:泌乳体质
 			IF RAND:2 == 0
 				PRINTFORML %CALLNAME:TARGET%找到%CALLNAME:MASTER%、嫣然一笑微笑着招手…
 				PRINTFORML 靠近后、%CALLNAME:TARGET%抱住%CALLNAME:MASTER%的头、把还滴着乳汁的乳头高兴的塞进%CALLNAME:MASTER%嘴里挤了起来…
@@ -222,7 +222,7 @@ CASE "朝之母乳搾り"
 		JUEL:快B += LOCAL*50
 	ENDIF
 CASE "朝之新婚PLAY"
-	LOCAL = MAX(LOCAL + (ABL:侍奉精神 + ABL:露阴癖)/3, 1)
+	LOCAL = MAX(LOCAL + (ABL:侍奉精神 )/3, 1)
 	PRINTFORML 早上起来后、从厨房飘来一阵香味、
 
 	PRINTFORML 在那里%CALLNAME:TARGET%裸体只穿着围裙做着早餐…
@@ -325,13 +325,13 @@ CASE "朝接吻"
 			PRINTFORML 早上、醒来发现身体有点沉重……
 
 			PRINTFORMW 不知何时钻到床上的%CALLNAME:TARGET%、抱着%CALLNAME:MASTER%当做枕头、
-			IF TALENT:相思相爱 && RAND:2
-				PRINTFORML 无法忍耐对%CALLNAME:MASTER%的爱意然后吻住了%CALLNAME:TARGET%的嘴、
-				PRINTFORML %CALLNAME:TARGET%梦见了什么开心的事的样子抓住%CALLNAME:MASTER%的脸、深深的吻了过来…
+			; IF TALENT:相思相爱 && RAND:2
+			; 	PRINTFORML 无法忍耐对%CALLNAME:MASTER%的爱意然后吻住了%CALLNAME:TARGET%的嘴、
+			; 	PRINTFORML %CALLNAME:TARGET%梦见了什么开心的事的样子抓住%CALLNAME:MASTER%的脸、深深的吻了过来…
 
-			ELSE
+			; ELSE
 				PRINTFORMW 看到%CALLNAME:MASTER%睁开眼睛的%CALLNAME:TARGET%、把脸凑过来吻了一下…
-			ENDIF
+			; ENDIF
 		ENDIF
 	ENDIF
 
@@ -359,7 +359,7 @@ CASE "朝口交"
 	IF RESULT && COND("脚之使用") && ABL:欲望 >= 3 && ABL:侍奉精神 >= 3 && CLO_ORI(TARGET,"外套") == 0 && RAND:2
 		PRINTFORM 睁开眼睛…打开双腿的姿势跨在身上的%CALLNAME:TARGET%
 
-		IF (TALENT:淫乱 && ABL:露阴癖 >= 5 && RAND:2) || CLO_ORI(TARGET,"西装","内衣") == 0 || COND("外观：没穿胖次")
+		IF (TALENT:淫乱  && RAND:2) || CLO_ORI(TARGET,"西装","内衣") == 0 || COND("外观：没穿胖次")
 			IF RAND:3 == 0
 				PRINT 现在正在流着淫液小穴、
 
@@ -412,9 +412,9 @@ CASE "朝口交"
 	CALL SIMULATE_TRAIN, SELECTCOM, LOCAL
 
 	;打扫口交
-	IF ABL:侍奉精神 + TALENT:献身 - (COND("包茎", MASTER) > 0) >= 3
+	IF ABL:侍奉精神  - (COND("包茎", MASTER) > 0) >= 2
 		;MASTEＲが包茎
-		IF COND("包茎", MASTER) && ABL:侍奉精神 + TALENT:献身 >= 4 && RAND:3
+		IF COND("包茎", MASTER) && ABL:侍奉精神  >= 3 && RAND:3
 			PRINTFORM %CALLNAME:TARGET%把舌头伸进了%CALLNAME:MASTER%的
 			IF COND("真性包茎", MASTER)
 				PRINTFORML 龟头和包皮之间、用舌头把里面包皮垢清理干净后了进行早安的问候…

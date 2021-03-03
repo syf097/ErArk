@@ -24,17 +24,17 @@ IF ABL:ARG:欲望
 	ENDSELECT
 ENDIF
 ;精液欲チェック
-IF ABL:ARG:精液成瘾 + TALENT:ARG:梦魇*2 + TALENT:ARG:上位梦魇*2 >= 3
-	CALL SETFLAG, "精液欲槽", ARG
-	SELECTCASE BASE:ARG:精液欲
-	CASE 0
-	;大满足
-	CASE IS >= MAXBASE:ARG:精液欲 * 2
-		SETBIT CFLAG:ARG:99, 4
-	CASE IS >= MAXBASE:ARG:精液欲
-		SETBIT CFLAG:ARG:99, 3
-	ENDSELECT
-ENDIF
+; IF ABL:ARG:精液成瘾 + TALENT:ARG:梦魇*2 + TALENT:ARG:上位梦魇*2 >= 3
+; 	CALL SETFLAG, "精液欲槽", ARG
+; 	SELECTCASE BASE:ARG:精液欲
+; 	CASE 0
+; 	;大满足
+; 	CASE IS >= MAXBASE:ARG:精液欲 * 2
+; 		SETBIT CFLAG:ARG:99, 4
+; 	CASE IS >= MAXBASE:ARG:精液欲
+; 		SETBIT CFLAG:ARG:99, 3
+; 	ENDSELECT
+; ENDIF
 
 ;百合成瘾チェック
 ;PLAYER绝顶チェック
@@ -488,8 +488,8 @@ CASEELSE
 	;绝对变化(性格)
 	CASE "自慰しやすさ"
 		LOCAL = 60
-	CASE "献身"
-		LOCAL = 63
+	; CASE "献身"
+	; 	LOCAL = 63
 	CASE "容易成瘾"
 		LOCAL = 72
 	CASE "好色"

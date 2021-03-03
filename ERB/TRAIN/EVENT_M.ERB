@@ -60,13 +60,13 @@ IF CONFIG("脱处女过滤")
 
 		ENDIF
 	CASE 83
-		IF EXP:尿道性交经验 == 0
-			IF PENIS(TARGET)
-				PRINTFORML %CALLNAME:TARGET%的阴茎的处女被%CALLNAME:PLAYER%的那个给夺走真的可以吗？
-			ELSE
+		; IF EXP:尿道性交经验 == 0
+		; 	IF PENIS(TARGET)
+		; 		PRINTFORML %CALLNAME:TARGET%的阴茎的处女被%CALLNAME:PLAYER%的那个给夺走真的可以吗？
+		; 	ELSE
 				PRINTFORML %CALLNAME:TARGET%的尿道的处女给夺走真的可以吗？
-			ENDIF
-		ENDIF
+		; 	ENDIF
+		; ENDIF
 	ENDSELECT
 
 	IF LINECOUNT > MEMO_LINECOUNT
@@ -373,7 +373,7 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 				PRINTFORMW 兴奋的呼吸着并接受着%CALLNAME:PLAYER%的突进…
 			ENDIF
 			CALL SETFLAG, "腋现せ标志", TARGET
-		ELSEIF RAND:2 && ABL:露阴癖 >= 3 && MARK:屈服刻印 >= 2 && COND("指之使用")
+		ELSEIF RAND:2  && MARK:屈服刻印 >= 2 && COND("指之使用")
 			PRINTFORMW 用自己的胳膊抱起双脚、積極的用羞耻的体位愉悦的享受着…
 
 		ELSE
@@ -897,13 +897,13 @@ ELSEIF NOWEX:绝顶数合计
 		ELSE
 			PRINTFORM %LOCALS%干净、
 		ENDIF
-		IF TALENT:胆怯 + TALENT:清纯 && RANDIF(2, TALENT:好色, TALENT:开朗, TALENT:怕羞, TALENT:献身)
+		IF TALENT:胆怯  && RANDIF(2, TALENT:好色, TALENT:开朗, TALENT:怕羞)
 			PRINT 小心翼翼
 
-		ELSEIF TALENT:好色 && RANDIF(2, TALENT:开朗, TALENT:怕羞, TALENT:献身)
+		ELSEIF TALENT:好色 && RANDIF(2, TALENT:开朗, TALENT:怕羞)
 			PRINT 开心
 
-		ELSEIF TALENT:开朗 && RANDIF(2, TALENT:怕羞, TALENT:献身)
+		ELSEIF TALENT:开朗 && RANDIF(2, TALENT:怕羞)
 			IF LOCAL == 0
 				PRINT 娇羞
 
@@ -912,7 +912,7 @@ ELSEIF NOWEX:绝顶数合计
 				PRINT 侍奉般
 
 			ENDIF
-		ELSEIF TALENT:献身 && RANDIF(2, TALENT:怕羞)
+		ELSEIF RANDIF(2, TALENT:怕羞)
 			PRINT 温柔
 
 		ELSEIF TALENT:怕羞 && RAND:2
@@ -931,10 +931,10 @@ ELSEIF NOWEX:绝顶数合计
 			PRINT 老实
 
 		ELSE
-			IF TALENT:献身
-				PRINT 温柔
+			; IF TALENT:献身
+			; 	PRINT 温柔
 
-			ELSEIF TALENT:怕羞
+			IF TALENT:怕羞
 				PRINT 害羞
 
 			ELSE
@@ -1500,18 +1500,18 @@ CASE "指令"
 		LOCAL = MULTIPLY(LOCAL, 100 + EXP_GAIN(74, PLAYER)*10)
 
 		;性癖合致度
-		FOR LCOUNT, 0, NUM("属性")
-			SIF GETBIT(BASE:属性, LCOUNT) && GETBIT(TALENT:PLAYER:性癖, LCOUNT)
-				LOCAL += LOCAL*20/100 + 1000
-		NEXT
+		; FOR LCOUNT, 0, NUM("属性")
+		; 	SIF GETBIT(BASE:属性, LCOUNT) && GETBIT(TALENT:PLAYER:性癖, LCOUNT)
+		; 		LOCAL += LOCAL*20/100 + 1000
+		; NEXT
 		;偏爱or相思相爱
-		IF PLAYER == MASTER
-			IF TALENT:相思相爱
-				LOCAL += LOCAL*30/100 + 2000
-			ELSEIF TALENT:偏爱
-				LOCAL += LOCAL*20/100 + 1000
-			ENDIF
-		ENDIF
+		; IF PLAYER == MASTER
+		; 	IF TALENT:相思相爱
+		; 		LOCAL += LOCAL*30/100 + 2000
+		; 	ELSEIF TALENT:偏爱
+		; 		LOCAL += LOCAL*20/100 + 1000
+		; 	ENDIF
+		; ENDIF
 
 		SIF LOCAL < 1000 || LOCAL + BASE:PLAYER:绝顶 < MAX(MAXBASE:PLAYER:绝顶/4, 5000) || RAND:3
 			RETURN 0

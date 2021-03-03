@@ -811,10 +811,10 @@ ENDIF
 ;--------------------------------------------------------
 IF SELECTCOM == 3
 	PRINTFORM %CALLNAME:TARGET%
-	SIF TALENT:怕羞 && ABL:露阴癖 <= 3
+	SIF TALENT:怕羞 
 		PRINTFORM 极度羞恥的脸上染上一层媚意地赤红、
-	SIF TALENT:怕羞 && ABL:露阴癖 <= 1
-		PRINTFORM 眼眶中浮现出屈辱的泪水
+	; SIF TALENT:怕羞 && ABL:露阴癖 <= 1
+		; PRINTFORM 眼眶中浮现出屈辱的泪水
 	SIF TALENT:娇小
 		PRINTFORM 娇小的身体
 	SIF TALENT:娇小 == 0 && (TEQUIP:按摩棒 || TEQUIP:肛用按摩棒)
@@ -826,12 +826,12 @@ IF SELECTCOM == 3
 	ELSEIF TEQUIP:肛用按摩棒 && GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 		PRINTFORM 内插着肛用按摩棒被她抓着、
 	ENDIF
-	SIF TALENT:巨乳 && (ABL:露阴癖 == 3 || ABL:露阴癖 == 4)
+	SIF TALENT:巨乳 
 		PRINTFORM 像发挑战一般，一只手托起丰满的胸部的轻舔已经硬的不行的乳头、并为自己淫荡的动作感到羞耻而快乐
-	SIF TALENT:巨乳 == 0 && ABL:露阴癖 == 4
+	SIF TALENT:巨乳 == 0 
 		PRINTFORM 沉陷如裸露的快乐中，带着一副羞耻而快乐的表情
-	SIF ABL:露阴癖 == 5
-		PRINTFORM 完全沦陷在露出的快感之中，以一脸淫荡的表情把已经完全成为用于给人注视的自己原本隐秘的羞耻器官了张得更开，完完全全的展示在人眼前，一边将不断垂落的粘滑淫丝涂抹在身上各处，陷入越发羞耻越发快乐的循环之中，
+	; SIF ABL:露阴癖 == 5
+	; 	PRINTFORM 完全沦陷在露出的快感之中，以一脸淫荡的表情把已经完全成为用于给人注视的自己原本隐秘的羞耻器官了张得更开，完完全全的展示在人眼前，一边将不断垂落的粘滑淫丝涂抹在身上各处，陷入越发羞耻越发快乐的循环之中，
 	SIF TEQUIP:摄像机
 		PRINTFORM 面向摄像机
 	PRINTL 持续着自慰的行为。
