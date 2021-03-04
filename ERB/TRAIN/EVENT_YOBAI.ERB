@@ -283,22 +283,22 @@ CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 						ELSE
 							PRINTFORM 一边轻声耳语「如果看到母狗在这种地方被侵犯%CALLNAME:TARGET%会怎么想
 						ENDIF
-						SELECTCASE BASE:(TARGET:1):种族思考
-						;猫又系
-					CASE 6
-							PRINTFORM 喵～？」
-						;葛叶系
-					CASE 16
-							PRINTFORM 呢？」
-						;かな
-					CASE 2, 4, 15, 21, 23, 26, 28, 29, 31, 33, 39, 40, 41, 47, 50, 59
-							PRINTFORM ？
-					CASE 34
-							PRINTFORM 啊？」
-						;かしら
-					CASEELSE
+					; 	SELECTCASE BASE:(TARGET:1):种族思考
+					; 	;猫又系
+					; CASE 6
+					; 		PRINTFORM 喵～？」
+					; 	;葛叶系
+					; CASE 16
+					; 		PRINTFORM 呢？」
+					; 	;かな
+					; CASE 2, 4, 15, 21, 23, 26, 28, 29, 31, 33, 39, 40, 41, 47, 50, 59
+					; 		PRINTFORM ？
+					; CASE 34
+					; 		PRINTFORM 啊？」
+					; 	;かしら
+					; CASEELSE
 							PRINTFORM 呢哦？」
-						ENDSELECT
+						; ENDSELECT
 						PRINTFORM 之类的话、
 					ENDIF
 					PRINTFORMW 一边欲火焚身的那样抽插…！
@@ -355,7 +355,7 @@ FOR LCOUNT, 0, 10
 			CONTINUE
 		LOCALS = 主动夜袭骑乘位
 	CASE 1
-		SIF PENIS(PLAYER) == 0 || EXP:PLAYER:A插入経験 == 0 || CANTRAIN("逆推肛交骑乘位") == 0
+		SIF PENIS(PLAYER) == 0 || EXP:PLAYER:A插入经验 == 0 || CANTRAIN("逆推肛交骑乘位") == 0
 			CONTINUE
 		LOCALS = 主动夜袭A骑乘位
 

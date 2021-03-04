@@ -1,0 +1,339 @@
+﻿;-------------------------------------------------
+;紧身衣を着せる関数
+;指定番号によって名前がCSTR:44に代入される。
+;99番までは、そ之番号之梦魇之内衣。
+;EQUIP:紧身衣は紧身衣之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_BODYS, ARG, ARG:1
+;ARG之紧身衣をARG:1番之も之にする。ARG:1==0なら紧身衣を脱がす
+;汚れ＆ずれたりした标志等を初期化して新品にする
+STAIN:ARG:连身衣（下） = 0
+STAIN:ARG:连身衣（上） = 0
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0 || COND("脚之使用", ARG) == 0
+	EQUIP:ARG:紧身衣 = 0
+	CSTR:ARG:44 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:44 = %PALAM_BODYS(ARG:1, ARG, 1)%
+
+;SIF EQUIP:ARG:上着
+;	CALL SET_SHIRT, ARG
+SIF EQUIP:ARG:外套
+	CALL SET_OUTER, ARG
+;SIF EQUIP:ARG:外套 && !CHECK_OUTER("连裤袜", ARG)
+;	CALL SET_OUTER, ARG
+SIF EQUIP:ARG:ブラ
+	CALL SET_BRA, ARG
+IF EQUIP:ARG:紧身衣 && EQUIP:ARG:胖次
+	SIF CHECK_BODYS("紧勒", ARG) && !CHECK_PANTIES("紧勒", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+		CALL SET_PANTIES, ARG
+	SIF CHECK_BODYS("泳装", ARG) || CHECK_BODYS("拉链", ARG) || CHECK_BODYS("Ｖ露出", ARG) || CHECK_BODYS("Ａ露出", ARG)
+		CALL SET_PANTIES, ARG
+ENDIF
+
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之穿いている紧身衣之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==2なら色要素なし
+;ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@BODYS(ARG, ARG:1)
+#FUNCTIONS
+SELECTCASE ARG:1
+CASE 0
+	LOCALS = %CSTR:ARG:44%
+	SIF CONFIG("衣装之细かい色表示之禁止")
+		RETURNF LOCALS
+	LOCALS:1 = %TEXTS("衣装之色", EQUIP:ARG:紧身衣)%
+	SIF LOCALS:1 != "" && (SUBSTRING(CSTR:ARG:44, 0, 2) != SUBSTRING(LOCALS:1, 0, 2) )
+		LOCALS = %LOCALS%(%LOCALS:1%)
+CASE 1
+	IF CHECK_BODYS("竞技泳装", ARG)
+		LOCALS = 竞技泳装
+	ELSEIF CHECK_BODYS("连身泳装", ARG)
+		IF CHECK_BODYS("紧勒", ARG)
+			LOCALS = 高叉泳装
+		ELSE
+			LOCALS = 连衣裙
+		ENDIF
+	ELSEIF CHECK_BODYS("紧缚衣", ARG)
+		LOCALS = 紧缚衣
+	ELSEIF CHECK_BODYS("兔女郎装", ARG)
+		LOCALS = 兔女郎装
+	ELSEIF CHECK_BODYS("学校泳装", ARG)
+		LOCALS = 学校泳装
+	ELSEIF CHECK_BODYS("体操紧身服", ARG)
+		LOCALS = 体操紧身服
+	ELSE
+		LOCALS = 紧身衣
+	ENDIF
+CASE 2
+	LOCALS = %CSTR:ARG:44%
+ENDSELECT
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之紧身衣之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_BODYS(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_BODYS(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之紧身衣之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_BODYS(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+IF ARG:1 > 0 && COND("脚之使用", ARG:1) == 0
+	SIF ARG:2 > 0
+		EQUIP:(ARG:1):紧身衣 = LOCAL
+	RETURNF LOCALS
+ENDIF
+
+SELECTCASE ARG
+CASE 5
+	IF CFLAG:(ARG:1):8 == 1
+		LOCALS = 紺学校泳装
+		LOCAL = SETFLAG_BODYS("ズリ不可", "学校泳装", "紺")
+	ENDIF
+CASE 7
+	; IF TALENT:(ARG:1):四足歩行
+	; 	LOCALS = 毛皮之体操紧身服
+	; 	LOCAL = SETFLAG_BODYS("ズリ不可", "高叉", "体操紧身服", "毛皮", "黒")
+	; ENDIF
+CASE 11
+	IF CFLAG:(ARG:1):8 != 2
+		LOCALS = 羽体操紧身服
+		LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "羽", "谷间露出")
+	ENDIF
+CASE 12
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 体操紧身服
+		LOCAL = SETFLAG_BODYS("ズリ不可", "Ｖ后入", "体操紧身服", "黒")
+	ELSEIF CFLAG:(ARG:1):8 != 2
+		LOCALS = 体操紧身服
+		LOCAL = SETFLAG_BODYS("ズリ不可", "Ｖ后入", "体操紧身服", "薄緑")
+	ENDIF
+CASE 17
+	IF CFLAG:(ARG:1):8 == 1
+		LOCALS = 釉光体操紧身服
+		LOCAL = SETFLAG_BODYS("Ｖ后入", "体操紧身服", "釉光", "黒", "谷间露出")
+	ENDIF
+CASE 29
+	LOCALS = 史莱姆衣服
+	LOCAL = SETFLAG_BODYS("体操紧身服", "薄桃", "谷间露出")
+CASE 35
+	LOCALS = Ｈ的紧身衣
+	SIF ARG:1 > 0
+		LOCALS = %CALLNAME:(ARG:1)%之衣装
+	LOCAL = SETFLAG_BODYS("ズリ不可", "高叉", "丁字裤", "紧身衣", "紫")
+CASE 41
+	LOCALS = 不思議之体操紧身服
+	LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "拉链", "黒", "谷间露出")
+CASE 42
+	IF CFLAG:(ARG:1):209 == 1
+		LOCALS = 不思議之体操紧身服
+		LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "拉链", "黒", "谷间露出")
+	ENDIF
+CASE 48
+	LOCALS = 幻梦之帏
+	LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "紫", "谷间露出")
+CASE 100
+	LOCALS = 体操紧身服
+	LOCAL = SETFLAG_BODYS("ズリ不可", "体操紧身服")
+CASE 101
+	LOCALS = 性感体操紧身服
+	LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "体操紧身服", "谷间露出")
+CASE 102
+	LOCALS = 釉光体操紧身服
+	LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "釉光", "拉链", "谷间露出")
+CASE 103
+	IF ITEM:糟糕体操紧身服
+		LOCALS = 糟糕体操紧身服
+		LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "糟糕体操紧身服", "ＶＡ露出", "谷间露出", "乳首露出")
+	ENDIF
+CASE 104
+	IF ITEM:兔女郎装
+		LOCALS = 兔女郎装
+		LOCAL = SETFLAG_BODYS("Ｖ后入", "兔女郎装", "兔女郎")
+	ENDIF
+CASE 105
+	IF ITEM:兔女郎装
+		LOCALS = 高叉兔女郎
+		LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "兔女郎装", "釉光", "兔女郎")
+	ENDIF
+CASE 106
+	IF ITEM:紧缚衣
+		LOCALS = 紧缚衣
+		LOCAL = SETFLAG_BODYS("紧缚衣", "皮质", "拉链", "谷间露出", "乳首露出")
+	ENDIF
+CASE 107
+	IF ITEM:学校泳装
+		LOCALS = 学校泳装
+		LOCAL = SETFLAG_BODYS("ズリ不可", "学校泳装")
+		IF RAND:2
+			LOCAL += SETFLAG_BODYS("紺")
+		ELSE
+			LOCAL += SETFLAG_BODYS("白")
+		ENDIF
+	ENDIF
+CASE 108
+	IF ITEM:连身泳装
+		LOCALS = 连身泳装
+		LOCAL = SETFLAG_BODYS("ズリ不可", "连身泳装", "白")
+	ENDIF
+CASE 109
+	IF ITEM:连身泳装
+		LOCALS = 高叉泳装
+		LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "ズリ不可", "连身泳装")
+	ENDIF
+CASE 110
+	IF ITEM:连身泳装
+		LOCALS = 竞技泳装
+		LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "ズリ不可", "竞技泳装")
+		IF RAND:2
+			LOCAL += SETFLAG_BODYS("紺")
+		ELSE
+			LOCAL += SETFLAG_BODYS("黒")
+		ENDIF
+	ENDIF
+ENDSELECT
+
+SIF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):紧身衣 = LOCAL
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之紧身衣之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_BODYS(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "紧身衣"
+		SETBIT LOCAL, 0
+	CASE "高叉"
+		SETBIT LOCAL, 1
+	CASE "丁字裤", "Tフロント"
+		SETBIT LOCAL, 2
+	CASE "Ｖ后入", "V后入"
+		SETBIT LOCAL, 3
+	CASE "丁字裤", "T后入"
+		SETBIT LOCAL, 4
+	CASE "体操紧身服"
+		SETBIT LOCAL, 5
+	CASE "学校泳装"
+		SETBIT LOCAL, 6
+		LOCAL |= SETFLAG_COMMON("泳装")
+	CASE "兔女郎装"
+		SETBIT LOCAL, 7
+		LOCAL |= SETFLAG_COMMON("谷间露出")
+	CASE "紧缚衣"
+		SETBIT LOCAL, 8
+	CASE "连身泳装"
+		SETBIT LOCAL, 9
+		LOCAL |= SETFLAG_COMMON("泳装")
+	CASE "竞技泳装"
+		SETBIT LOCAL, 10
+		LOCAL |= SETFLAG_COMMON("泳装")
+	CASE "糟糕体操紧身服"
+		SETBIT LOCAL, 5
+		SETBIT LOCAL, 11
+	CASE "兔女郎"
+		IF RAND:3 == 0
+			LOCAL |= SETFLAG_COMMON("白")
+		ELSEIF RAND:2
+			LOCAL |= SETFLAG_COMMON("真紅")
+		ELSE
+			LOCAL |= SETFLAG_COMMON("黒")
+		ENDIF
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之紧身衣が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_BODYS(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:紧身衣 == 0
+	RETURNF 0
+SELECTCASE ARGS
+CASE "可裸露"
+	SIF SETFLAG_BODYS("はだけた")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF SETFLAG_BODYS("はだけ不可")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	RETURNF 1
+;ずれ不可でなく、ずらしていない
+CASE "ずらし可", "能撥开"
+	SIF SETFLAG_BODYS("Ｖ露出")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	IF SETFLAG_BODYS("拉链")&EQUIP:ARG:紧身衣
+		SIF SETFLAG_BODYS("拉链开")&EQUIP:ARG:紧身衣
+			RETURNF 0
+		SIF CHECK_BODYS("拉链閉")
+			RETURNF 1
+	ENDIF
+	SIF SETFLAG_BODYS("ずらした")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF SETFLAG_BODYS("ずれ不可")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	RETURNF 1
+;拉链があり、あけていない
+CASE "拉链閉"
+	SIF SETFLAG_BODYS("拉链开")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF SETFLAG_BODYS("拉链")&EQUIP:ARG:紧身衣
+		RETURNF 1
+CASE "露Ｖ胖次"
+	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "Ｖ露出", "缝隙")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	RETURNF 1
+CASE "露Ａ胖次"
+	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "Ａ露出", "缝隙")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	RETURNF 1
+CASE "紧勒"
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF SETFLAG_BODYS("高叉", "丁字裤")&EQUIP:ARG:紧身衣
+		RETURNF 1
+CASE "潮湿"
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF CHECK_STAIN(STAIN:ARG:连身衣（下）, "潮湿")
+		RETURNF 1
+CASE "润湿"
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:紧身衣
+		RETURNF 0
+	SIF CHECK_STAIN(STAIN:ARG:连身衣（下）, "濡れ")
+		RETURNF 1
+CASEELSE
+	SIF (SETFLAG_BODYS(ARGS)&EQUIP:ARG:紧身衣) == SETFLAG_BODYS(ARGS)
+		RETURNF 1
+ENDSELECT
+
+RETURNF 0

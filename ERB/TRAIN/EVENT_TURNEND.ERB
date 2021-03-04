@@ -24,8 +24,8 @@ ELSEIF TFLAG:15 == 0 && NOWEX:处女丧失
 	RETURN 0
 ENDIF
 
-;３Ｐ中
-SIF COND("３Ｐ")
+;３P中
+SIF COND("３P")
 	RETURN 0
 
 ;--------------------------------------------------------
@@ -84,8 +84,8 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 
 	ELSEIF SHOOT("尿道")
 		LOCAL = NOWEX:尿道绝顶
-		LOCAL:1 = EXP:尿道経験
-		LOCAL:2 = ABL:尿道扩张
+		; LOCAL:1 = EXP:尿道经验
+		; LOCAL:2 = ABL:尿道扩张
 		LOCAL:3 = EXP_GAIN(80)
 
 		LOCALS = 尿道
@@ -417,9 +417,9 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 				ELSE
 					PRINTFORM ，用%NAMES("指")%打开
 				ENDIF
-				IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂)  || (SHOOT("尿道") && TALENT:尿道狂) ) && RAND:3 == 0
+				IF ( (SHOOT("膣内") && TALENT:淫穴) || (SHOOT("A") && TALENT:尻穴狂) ) && RAND:3 == 0
 					PRINTFORM 充斥着贪欲
-				ELSEIF ( (SHOOT("膣内") && ABL:V感觉 >= 3) || (SHOOT("A") && ABL:A感觉 >= 3)  || (SHOOT("尿道") && TALENT:尿道性感) ) && RAND:3 == 0
+				ELSEIF ( (SHOOT("膣内") && ABL:V感觉 >= 3) || (SHOOT("A") && ABL:A感觉 >= 3) ) && RAND:3 == 0
 					PRINTFORM 抽动做着
 				ELSE
 					PRINTFORM 沾满了精液
@@ -466,8 +466,8 @@ IF EJECT_FLAG >= 100 || (RAND:3 == 0 && EJECT_FLAG > 0)
 						ENDIF
 					ELSEIF TALENT:好色 + TALENT:淫乱 && RAND:3 == 0
 						PRINTFORM 因松缓而一边漏出尿液一边微微颤抖的小便之穴
-					ELSEIF TALENT:尿道性感 && RAND:3 == 0
-						PRINTFORM 因被给予的快感而不检点的绽放开的尿道口
+					; ELSEIF TALENT:尿道性感 && RAND:3 == 0
+					; 	PRINTFORM 因被给予的快感而不检点的绽放开的尿道口
 					ELSEIF RAND:2
 						PRINTFORM 渴望着被侵犯而啪咔的自己打开了的粘膜
 					ELSE
@@ -528,16 +528,16 @@ ENDIF
 
 ;打扫口交…毎回だとウザいかな？
 OSOUJI_FLAG = 0
-SIF SHOOT("膣内") && CHECK_STAIN(STAIN:MASTER:Ｐ, "V")
+SIF SHOOT("膣内") && CHECK_STAIN(STAIN:MASTER:P, "V")
 	OSOUJI_FLAG = 1
-SIF SHOOT("A") && CHECK_STAIN(STAIN:MASTER:Ｐ, "A")
+SIF SHOOT("A") && CHECK_STAIN(STAIN:MASTER:P, "A")
 	OSOUJI_FLAG = 2
-SIF SHOOT("尿道") && CHECK_STAIN(STAIN:MASTER:Ｐ, "尿")
+SIF SHOOT("尿道") && CHECK_STAIN(STAIN:MASTER:P, "尿")
 	OSOUJI_FLAG = 3
 
 IF OSOUJI_FLAG && COND("绝顶", PLAYER) && INSERT("插入") == 0 && PENIS(PLAYER)
 	CALL OSOUJI_F
-ELSEIF TFLAG:8 && PENIS(PLAYER) && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
+ELSEIF TFLAG:8 && PENIS(PLAYER) && STAIN:PLAYER:P != SET_STAIN(0, "P")
 	;双枪口交はひとまず中止
 	;IF SELECTCOM == 
 	;	PRINTFORMW %CALLNAME:TARGET%は%CALLNAME:MASTER%和%CALLNAME:ASSI%之阴茎交换着舔着，将污秽舔去…
@@ -565,24 +565,24 @@ ELSEIF TFLAG:8 && PENIS(PLAYER) && STAIN:PLAYER:Ｐ != SET_STAIN(0, "Ｐ")
 		ENDIF
 	ENDIF
 
-	;助手之ためにPLAYER之Ｐ汚れを記录
-	LOCAL = STAIN:PLAYER:Ｐ
+	;助手之ためにPLAYER之P汚れを記录
+	LOCAL = STAIN:PLAYER:P
 
-	;経験や汚れなど之处理は全部ここで行う
+	;经验や汚れなど之处理は全部ここで行う
 	CALL SETFLAG, "打扫口交", TARGET, MASTER
 
-	PRINTFORML 口交経験＋１
-	PRINTFORML 打扫口交経験＋１
+	PRINTFORML 口交经验＋１
+	PRINTFORML 打扫口交经验＋１
 	PRINTL 
 
 	IF ASSI && SELECTCOM:1 == SELECTCOM
 
-		STAIN:PLAYER:Ｐ = LOCAL
+		STAIN:PLAYER:P = LOCAL
 
 		CALL SETFLAG, "打扫口交", ASSI, MASTER
 
-		PRINTFORML 口交経験＋１ (%TEXTS("助手之名称")%)
-		PRINTFORML 打扫口交経験＋１ (%TEXTS("助手之名称")%)
+		PRINTFORML 口交经验＋１ (%TEXTS("助手之名称")%)
+		PRINTFORML 打扫口交经验＋１ (%TEXTS("助手之名称")%)
 		PRINTL 
 	ENDIF
 	RETURN 0
@@ -862,33 +862,33 @@ ENDIF
 ;--------------------------------------------------------
 IF SELECTCOM == 4
 	IF TEQUIP:逆推
-		IF ABL:S属性 >= 5 && STAIN:Ｐ !=  SET_STAIN(0, "Ｐ") && RAND:3
+		IF ABL:S属性 >= 5 && STAIN:P !=  SET_STAIN(0, "P") && RAND:3
 			PRINTFORMW %CALLNAME:TARGET%的汚的阴茎在%CALLNAME:PLAYER%之口内被擦干净、污秽离去…
-			STAIN:Ｐ =  SET_STAIN(0, "Ｐ")
+			STAIN:P =  SET_STAIN(0, "P")
 		;PLAYERが您なら、无视脏污が必要
-		ELSEIF NO:PLAYER == 0 && ABL:PLAYER:技巧 + ABL:PLAYER:M属性 >= 5 && TALENT:PLAYER:无视脏污 && STAIN:Ｐ !=  SET_STAIN(0, "V") && RAND:3
+		ELSEIF NO:PLAYER == 0 && ABL:PLAYER:技巧 + ABL:PLAYER:M属性 >= 5 && TALENT:PLAYER:无视脏污 && STAIN:P !=  SET_STAIN(0, "V") && RAND:3
 			PRINTFORM %CALLNAME:PLAYER%、
-			IF CHECK_STAIN(STAIN:Ｐ, "A")
+			IF CHECK_STAIN(STAIN:P, "A")
 				PRINTFORM 被肠液弄脏了的
-			ELSEIF CHECK_STAIN(STAIN:Ｐ, "精液")
+			ELSEIF CHECK_STAIN(STAIN:P, "精液")
 				PRINTFORM 被精液弄脏了的
-			ELSEIF CHECK_STAIN(STAIN:Ｐ, "V")
+			ELSEIF CHECK_STAIN(STAIN:P, "V")
 				PRINTFORM 被爱液弄脏了的
 			ENDIF
 			PRINTFORMW %CALLNAME:TARGET%之阴茎用舌头打扫，一起咽下…
-			CALL RESET_STAIN_EX, "Ｐ", TARGET
+			CALL RESET_STAIN_EX, "P", TARGET
 			STAIN:PLAYER:M = 0
-		ELSEIF ABL:PLAYER:技巧 + ABL:PLAYER:侍奉精神 + ABL:PLAYER:M属性 >= 8 && STAIN:Ｐ != 2 && RAND:3
+		ELSEIF ABL:PLAYER:技巧 + ABL:PLAYER:侍奉精神 + ABL:PLAYER:M属性 >= 8 && STAIN:P != 2 && RAND:3
 			PRINTFORM %CALLNAME:PLAYER%は、
-			IF CHECK_STAIN(STAIN:Ｐ, "A")
+			IF CHECK_STAIN(STAIN:P, "A")
 				PRINTFORM 被肠液弄脏了的
-			ELSEIF CHECK_STAIN(STAIN:Ｐ, "精液")
+			ELSEIF CHECK_STAIN(STAIN:P, "精液")
 				PRINTFORM 被精液弄脏了的
-			ELSEIF CHECK_STAIN(STAIN:Ｐ, "V")
+			ELSEIF CHECK_STAIN(STAIN:P, "V")
 				PRINTFORM 被爱液弄脏了的
 			ENDIF
 			PRINTFORMW %CALLNAME:TARGET%之阴茎用舌头打扫，一起咽下…
-			STAIN:Ｐ = SET_STAIN(0, "V")
+			STAIN:P = SET_STAIN(0, "V")
 			STAIN:PLAYER:M = 0
 		ENDIF
 	ENDIF
@@ -1576,8 +1576,8 @@ IF SELECTCOM == 151 && TEQUIP:尿道ブジー
 		;自分から放尿した之で、最后まで出し切ります
 		BASE:尿意 = 0
 		;放尿
-		EXP:放尿経験 += 1
-		PRINTL 放尿経験＋１
+		EXP:放尿经验 += 1
+		PRINTL 放尿经验＋１
 		NOWEX:放尿 += 1
 		EX:放尿 += 1
 	ELSE
@@ -1656,7 +1656,7 @@ IF SELECTCOM == 141
 		PRINTFORML %CALLNAME:TARGET%は、用手指帮忙着扩大自己的阴道口，一边品味着露出的快感，腔穴中每一道皱褶都透露着漂亮的粉红色…
 
 
-	ELSEIF ABL:V扩张 >= ABL:V技巧
+	ELSEIF ABL:V扩张 >= ABL:技巧
 		IF ABL:V扩张 >= 6
 			PRINTFORML 随着从%CALLNAME:TARGET%的肉穴中拔出，在大开的腔穴里能看见深处一抽一抽的子宫口…
 
@@ -1676,7 +1676,7 @@ ELSEIF SELECTCOM == 142
 		PRINTFORML %CALLNAME:TARGET%用手指帮忙扩展着自己的肛门，神情恍惚地展示着被扩展开的肠道里面的景色，每一道皱褶都透露着漂亮的粉红色…
 
 
-	ELSEIF ABL:A扩张 >= ABL:A技巧
+	ELSEIF ABL:A扩张 >= ABL:技巧
 		IF ABL:A扩张 >= 6
 			PRINTFORML %CALLNAME:TARGET%之肛门上的皱纹被完全伸展开，宽阔的肠道变得一览无余…
 
@@ -1697,7 +1697,7 @@ ELSEIF SELECTCOM == 143
 		PRINTFORML 双手的手指，在扩大了的，内部完全展露的阴道口和肛门的四周来回抚摸着。…
 
 
-	ELSEIF ABL:A扩张 >= ABL:A技巧 || ABL:V扩张 >= ABL:V技巧
+	ELSEIF ABL:A扩张 >= ABL:技巧 || ABL:V扩张 >= ABL:技巧
 		PRINTFORML %CALLNAME:TARGET%的双足尽力的伸展到了最开。
 		PRINTFORML 被扩展拉大的膣口和肛门中有淫靡的粘液垂流下来…
 
@@ -1721,7 +1721,7 @@ IF SELECTCOM == 304 || SELECTCOM == 305
 
 	IF SELECTCOM == 305
 		IF CHECK("A龙奸") == 0
-			;扩张経験が少しはある
+			;扩张经验が少しはある
 			IF LOCAL >= 3
 				IF COND("指之使用") && RAND:3 == 0
 					PRINTFORML %CALLNAME:TARGET%は沉默地触摸着被龙的肉棒扩张到极致的肛门，似乎想确认自己容纳进龙的肉棒这件事的真实…在龙满意的喷射出可以覆盖住一个人的巨量精液后，%CALLNAME:TARGET%依然心情复杂地抚摸着扩张成了能轻松吞下人类手臂的肛门……
@@ -1786,7 +1786,7 @@ IF SELECTCOM == 304 || SELECTCOM == 305
 		ENDIF
 	ELSE
 		IF CHECK("V龙奸") == 0
-			;扩张経験が少しはある
+			;扩张经验が少しはある
 			IF LOCAL >= 3
 				IF COND("指之使用") && RAND:3 == 0
 					PRINTFORML %CALLNAME:TARGET%沉默地触摸着被龙的肉棒扩张到极致的腔穴…似乎想确认自己容纳进龙的肉棒这件事的真实…在龙满意的喷射出可以覆盖住一个人的巨量精液后，%CALLNAME:TARGET%依然心情复杂地抚摸着扩张成了能轻松吞下人类手臂的腔穴……

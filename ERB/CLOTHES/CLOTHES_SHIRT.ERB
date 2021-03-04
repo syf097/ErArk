@@ -1,0 +1,530 @@
+﻿;-------------------------------------------------
+;衬衫などを着せる関数
+;指定番号によって名前がCSTR:42に代入される。
+;99番までは、そ之番号之梦魇之内衣。
+;EQUIP:上着は衬衫之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_SHIRT, ARG, ARG:1, ARG:2
+;ARG之衬衫をARG:1番之も之にする。ARG:1==0なら衬衫を脱がす
+;基本的には迷你裙がセット。ARG:2で个别化はいずれ。
+;汚れ＆ずれたりした标志等を初期化して新品にする	
+
+STAIN:ARG:服 = 0
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0
+	EQUIP:ARG:上着 = 0
+	CSTR:ARG:42 = 
+	EQUIP:ARG:迷你裙 = 0
+	CSTR:ARG:43 = 
+	IF CHECK_OUTER("つなぎ", ARG)
+		EQUIP:ARG:外套 = 0
+		CSTR:ARG:45 = 
+	ENDIF
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:42 = %PALAM_SHIRT(ARG:1, ARG, 1)%
+CSTR:ARG:43 = %PALAM_SKIRT(ARG:1, ARG)%
+
+;SIF EQUIP:ARG:紧身衣
+;	CALL SET_BODYS, ARG
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之衬衫之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==2なら色要素なし
+;ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@SHIRT(ARG, ARG:1)
+#FUNCTIONS
+SELECTCASE ARG:1
+CASE 0
+	LOCALS = %CSTR:ARG:42%
+CASE 1
+	IF CHECK_SHIRT("铠甲", ARG)
+		LOCALS = 铠甲
+	ELSEIF CHECK_SHIRT("睡衣", ARG)
+		LOCALS = 睡衣
+	ELSEIF CHECK_SHIRT("哥特萝莉洋装", ARG)
+		LOCALS = 哥特萝莉洋装
+	ELSEIF CHECK_SHIRT("吊带睡裙", ARG)
+		LOCALS = 吊带睡裙
+	ELSEIF CHECK_SHIRT("露肩胸衣", ARG)
+		LOCALS = 露肩胸衣
+	ELSEIF CHECK_SHIRT("修道服", ARG)
+		LOCALS = 修道服
+	ELSEIF CHECK_SHIRT("洋装", ARG)
+		LOCALS = 洋装
+	ELSEIF CHECK_SHIRT("巫女服", ARG)
+		LOCALS = 巫女服
+	ELSEIF CHECK_SHIRT("水手服", ARG)
+		LOCALS = 水手服
+	ELSEIF CHECK_SHIRT("旗袍", ARG)
+		LOCALS = 旗袍
+	ELSEIF CHECK_SHIRT("护士服", ARG)
+		LOCALS = 护士服
+	ELSEIF CHECK_SHIRT("体操服", ARG)
+		LOCALS = 体操服
+	ELSEIF CHECK_SHIRT("妹抖服", ARG)
+		LOCALS = 妹抖服
+	ELSEIF CHECK_SHIRT("和服", ARG)
+		LOCALS = 和服
+	ELSEIF CHECK_SHIRT("西装", ARG)
+		LOCALS = 西装
+	ELSEIF CHECK_SHIRT("Ｙ领衬衫", ARG)
+		LOCALS = Ｙ领衬衫
+	ELSEIF CHECK_SHIRT("女侍服", ARG)
+		LOCALS = 女侍服
+	ELSE
+		LOCALS = 服
+	ENDIF
+CASE 2
+	LOCALS = %CSTR:ARG:42%
+ENDSELECT
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之衬衫之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_SHIRT(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_SHIRT(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之服之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_SHIRT(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+
+SELECTCASE ARG
+CASE 2
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 小恶魔之服
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "腋露出", "薄緑")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 小恶魔之服
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "腋露出", "紫")
+	ELSE
+		LOCALS = 小恶魔之服
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "腋露出", "赤")
+	ENDIF
+CASE 3
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 树精之露肩胸衣
+		LOCAL = SETFLAG_SHIRT("露肩胸衣", "谷间露出", "腋露出", "薄桃")
+		LOCAL:1 = SETFLAG_SKIRT("露肩胸衣", "短", "フレア", "薄桃")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 树精之露肩胸衣
+		LOCAL = SETFLAG_SHIRT("露肩胸衣", "谷间露出", "腋露出", "緑")
+		LOCAL:1 = SETFLAG_SKIRT("露肩胸衣", "短", "フレア", "緑")
+	ELSE
+		LOCALS = 树精之露肩胸衣
+		LOCAL = SETFLAG_SHIRT("露肩胸衣", "谷间露出", "腋露出", "薄緑")
+		LOCAL:1 = SETFLAG_SKIRT("露肩胸衣", "短", "フレア", "薄緑")
+	ENDIF
+CASE 5
+	IF CFLAG:(ARG:1):8 != 1
+		LOCALS = 风精连衣裙
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "腋露出", "透视", "薄緑")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "フレア", "透视", "薄緑")
+	ENDIF
+CASE 8, 9, 32
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 班西之外套
+		LOCAL = SETFLAG_SHIRT("连衣裙", "谷间露出", "腋露出")
+	ELSE
+		LOCALS = 村女服
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可")
+	ENDIF
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "围裙")
+CASE 10
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 哥特洋装
+		LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "洋装", "丝绸", "黒", "谷间露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "フレア", "洋装", "丝绸", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 拉米亚披纱
+		LOCAL = SETFLAG_SHIRT("连衣裙", "紺", "谷间露出", "腋露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "围裙", "紺")
+	ELSE
+		LOCALS = 拉米亚披纱
+		LOCAL = SETFLAG_SHIRT("连衣裙", "赤", "谷间露出", "腋露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "围裙", "赤")
+	ENDIF
+CASE 11
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 水手裙
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "腋露出", "セーラー")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "セーラー")
+	ENDIF
+CASE 12
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 宝龙之鳞甲
+		LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "铠甲", "腋露出", "黒")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "铠甲", "黒")
+	ELSE
+		LOCALS = 亜龙人之鳞甲
+		LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "铠甲", "腋露出", "薄緑")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "铠甲", "薄緑")
+	ENDIF
+CASE 14
+	LOCALS = 水之羽衣
+	LOCAL = SETFLAG_SHIRT("迷你裙着用", "薄青", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("短", "巻き迷你裙")
+CASE 15
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 修道服
+		LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "修道服", "青")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "超长", "青")
+	ELSE
+		LOCALS = 魔章鱼之连衣裙
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "腋露出", "橙")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "フレア", "橙")
+	ENDIF
+CASE 16
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 超短旗袍
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "旗袍", "黒")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "タイト", "缝隙", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 十二单衣
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "和服")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "和服")
+	ELSE
+		LOCALS = 狐之巫女服
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "巫女服", "迷你裙着用", "纯白")
+		LOCAL:1 = SETFLAG_SKIRT("袴", "赤")
+	ENDIF
+CASE 17
+	IF CFLAG:(ARG:1):8 == 1
+		LOCALS = 魔术师西装
+		LOCAL = SETFLAG_BODYS("黒", "谷间露出", "腋露出")
+	ENDIF
+CASE 18
+	LOCALS = 系带收腰洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "洋装", "黒", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "黒")
+CASE 19, 47
+	LOCALS = 魔女袍
+	LOCAL = SETFLAG_SHIRT("连衣裙", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "长")
+CASE 20
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 天使连衣裙
+		LOCAL = SETFLAG_SHIRT("连衣裙", "透视", "薄青", "谷间露出", "腋露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "透视", "薄青")
+	ELSE
+		LOCALS = 天使连衣裙
+		LOCAL = SETFLAG_SHIRT("连衣裙", "透视", "纯白", "谷间露出", "腋露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "透视", "纯白")
+	ENDIF
+CASE 21
+	LOCALS = 堕天使连衣裙
+	LOCAL = SETFLAG_SHIRT("连衣裙", "透视", "紫", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "透视", "紫")
+CASE 22
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 忍装束
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "和服", "薄緑")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "和服ー", "缝隙", "薄緑")
+	ELSE
+		LOCALS = 忍装束
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "和服", "薄青")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "和服ー", "缝隙", "薄青")
+	ENDIF
+CASE 24
+	LOCALS = 七枚之面纱
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "洋装", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "洋装ー")
+CASE 25
+	LOCALS = 夜之洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "洋装", "黒", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "超长", "洋装", "缝隙", "黒")
+CASE 27
+	LOCALS = 予言者袍
+	LOCAL = SETFLAG_SHIRT("连衣裙", "洋装", "薄緑", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "洋装", "缝隙", "薄緑")
+CASE 28
+	LOCALS = 雷天使之铠
+	LOCAL = SETFLAG_SHIRT("迷你裙着用", "はだけ不可", "ズリ不可", "铠甲", "赤", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("短", "フレア", "缝隙", "紫")
+CASE 30
+	LOCALS = 裹身布
+	LOCAL = SETFLAG_SHIRT("连衣裙", "布切れ", "纯白", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "巻き迷你裙", "纯白")
+CASE 33
+	LOCALS = 美美☆洋装
+	IF CFLAG:(ARG:1):8 == 4
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "洋装", "薄青")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "フレア", "洋装", "薄青")
+	ELSE
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "洋装", "薄桃")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "フレア", "洋装", "薄桃")
+	ENDIF
+CASE 34
+	LOCALS = 性感露肩胸衣
+	;LOCALS = 斯图娜之露肩胸衣
+	LOCAL = SETFLAG_SHIRT("露肩胸衣", "薄青", "谷间露出", "腋露出")
+CASE 38
+	LOCALS = 羽毛洋装
+	;LOCALS = 爱丝普拉娜之衬裙
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "薄緑", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "荷叶边", "薄緑")
+CASE 39
+	LOCALS = 蓝连衣裙
+	;LOCALS = 莉兹・拉兹之连衣裙
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "青", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "荷叶边", "青")
+CASE 40
+	LOCALS = 粉连衣裙
+	;LOCALS = 萝柯・芭萝柯之洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "薄桃", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "荷叶边", "薄桃")
+CASE 42
+	IF CFLAG:(ARG:1):209 == 2
+		LOCALS = 神奇板甲
+		LOCAL = SETFLAG_SHIRT("铠甲","谷间露出","脇露出","黒")
+	ENDIF
+CASE 43
+	LOCALS = 神奇洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "腋露出", "薄青")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "薄青")
+CASE 44
+	IF CFLAG:(ARG:1):209 == 3
+		LOCALS = 小可爱洋装
+		LOCAL = SETFLAG_SHIRT("连衣裙", "荷叶边", "透视", "腋露出")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "短", "荷叶边", "透视")
+	ENDIF
+CASE 46
+	LOCALS = 霍洛斯式妹抖服
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "妹抖服", "黒")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "围裙", "荷叶边", "黒")
+CASE 49
+	LOCALS = 雪之洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "洋装", "薄青", "谷间露出")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "超长", "臀部ボーン洋装", "薄青")
+CASE 50
+	LOCALS = 华丽洋装
+	LOCAL = SETFLAG_SHIRT("洋装", "迷你裙着用", "紫", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("短", "洋装", "荷叶边", "紫")
+CASE 52
+	LOCALS = 神秘洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "洋装", "腋露出", "薄青")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "缝隙", "薄青")
+CASE 54
+	LOCALS = 司书服装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "ズリ不可", "薄緑")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "长", "缝隙", "薄緑")
+CASE 55
+	LOCALS = 漂亮衬衫
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "赤")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "长", "围裙", "赤")
+CASE 57
+	LOCALS = 真紅之连衣裙
+	;LOCALS = 萨菲之洋装
+	LOCAL = SETFLAG_SHIRT("连衣裙", "はだけ不可", "腋露出", "赤")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "フレア", "围裙", "赤")
+CASE 60
+	LOCALS = 蜂纹小可爱
+	LOCAL = SETFLAG_BRA("迷你裙着用", "条纹", "谷间露出", "腋露出")
+	LOCAL:1 = SETFLAG_SKIRT("短")
+CASE 61
+	LOCALS = 战乙女铠甲
+	LOCAL = SETFLAG_SHIRT("はだけ不可", "ズリ不可", "铠甲", "白")
+CASE 100
+	LOCALS = %CALLNAME:MASTER%之Ｙ领衬衫
+	LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "Ｙ领衬衫")
+	LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "缝隙", "Ｙ领衬衫")
+CASE 101
+	IF ITEM:女教師
+		LOCALS = 女教師
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "女教師")
+		LOCAL:1 = SETFLAG_SKIRT("タイト")
+	ENDIF
+CASE 102
+	IF ITEM:和服
+		LOCALS = 和服
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "和服")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "和服")
+	ENDIF
+CASE 103
+	IF ITEM:妹抖服
+		LOCALS = 妹抖服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "妹抖服")
+		LOCAL:1 = SETFLAG_SKIRT("长", "围裙", "荷叶边")
+	ENDIF
+CASE 104
+	IF ITEM:体操服
+		LOCALS = 体操服
+		LOCAL = SETFLAG_SHIRT("ズリ不可", "体操服")
+	ENDIF
+CASE 105
+	IF ITEM:护士服
+		LOCALS = 护士服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "护士服", "薄桃")
+		LOCAL:1 = SETFLAG_SKIRT("薄桃")
+	ENDIF
+CASE 106
+	IF ITEM:旗袍
+		LOCALS = 旗袍
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "旗袍")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "タイト", "缝隙", "黒")
+	ENDIF
+CASE 107
+	IF ITEM:水手服
+		LOCALS = 水手服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "水手服")
+		LOCAL:1 = SETFLAG_SKIRT("プリーツ")
+	ENDIF
+CASE 108
+	IF ITEM:巫女服
+		LOCALS = 巫女服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "巫女服", "纯白")
+		LOCAL:1 = SETFLAG_SKIRT("袴", "赤")
+	ENDIF
+CASE 109
+	IF ITEM:吊带睡裙
+		LOCALS = 吊带睡裙
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "吊带睡裙", "腋露出", "透视")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "迷你裙", "吊带睡裙", "透视")
+	ENDIF
+CASE 110
+	IF ITEM:婚礼裙装
+		LOCALS = 婚礼裙装
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "婚礼裙装", "纯白")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "超长", "臀部ボーン洋装", "纯白")
+	ENDIF
+CASE 111
+	IF ITEM:哥特萝莉洋装
+		LOCALS = 哥特萝莉洋装
+		LOCAL = SETFLAG_SHIRT("连衣裙", "ズリ不可", "哥特萝莉洋装", "黒")
+		LOCAL:1 = SETFLAG_SKIRT("连衣裙", "荷叶边", "黒")
+	ENDIF
+CASE 112
+	IF ITEM:拉拉队服
+		LOCALS = 拉拉队服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "拉拉队服")
+		LOCAL:1 = SETFLAG_SKIRT("短", "プリーツ")
+	ENDIF
+; CASE 113
+; 	IF ITEM:睡衣 
+; 		LOCALS = 睡衣
+; 		LOCAL = SETFLAG_SHIRT("はだけ不可", "睡衣")
+; 	ENDIF
+; CASE 114
+; 	IF ITEM:睡衣 && TALENT:(ARG:1):小只 && COND("脚之使用", ARG:1)
+; 		LOCALS = 怪兽睡衣
+; 		LOCAL = SETFLAG_SHIRT("つなぎ", "はだけ不可", "睡衣")
+; 		LOCAL:2 = SETFLAG_OUTER("つなぎ", "ずれ不可", "コキ不可", "睡衣", "裤", "拉链")
+; 	ENDIF
+CASE 130
+	IF FLAG:401
+		LOCALS = 女侍服
+		LOCAL = SETFLAG_SHIRT("迷你裙着用", "ズリ不可", "女侍服")
+		IF GETBIT(FLAG:401, 10)
+			LOCAL:1 = SETFLAG_SKIRT("围裙", "荷叶边", "短")
+		ELSEIF GETBIT(FLAG:401, 11)
+			LOCAL:1 = SETFLAG_SKIRT("围裙", "荷叶边", "长")
+		ELSE
+			LOCAL:1 = SETFLAG_SKIRT("围裙", "荷叶边")
+		ENDIF
+	ENDIF
+ENDSELECT
+
+IF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):上着 = LOCAL
+	EQUIP:(ARG:1):迷你裙 = LOCAL:1
+	EQUIP:(ARG:1):外套 = LOCAL:2
+ENDIF
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之衬衫之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_SHIRT(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "Ｙ领衬衫"
+		SETBIT LOCAL, 0
+	CASE "女教師", "西装"
+		SETBIT LOCAL, 1
+	CASE "和服", "和服"
+		SETBIT LOCAL, 2
+	CASE "女仆", "妹抖服"
+		SETBIT LOCAL, 3
+	CASE "体操服"
+		SETBIT LOCAL, 4
+	CASE "护士", "护士", "护士服"
+		SETBIT LOCAL, 5
+	CASE "チャイナ", "旗袍"
+		SETBIT LOCAL, 6
+		LOCAL |= SETFLAG_COMMON("连衣裙")
+	CASE "セーラー", "水手服"
+		SETBIT LOCAL, 7
+	CASE "巫女", "巫女服"
+		SETBIT LOCAL, 8
+	CASE "洋装"
+		SETBIT LOCAL, 9
+	CASE "ウェディング", "婚礼裙装"
+		SETBIT LOCAL, 10
+		SETBIT LOCAL, 9
+	CASE "シスター", "修道服"
+		SETBIT LOCAL, 11
+	CASE "布切れ"
+		SETBIT LOCAL, 12
+	CASE "露肩胸衣"
+		SETBIT LOCAL, 13
+	CASE "吊带睡裙"
+		SETBIT LOCAL, 14
+	CASE "迷你裙着用"
+		SETBIT LOCAL, 15
+	CASE "女侍服"
+		SETBIT LOCAL, 16
+	CASE "哥特萝莉洋装"
+		SETBIT LOCAL, 17
+	CASE "拉拉队服"
+		SETBIT LOCAL, 18
+	CASE "睡衣"
+		SETBIT LOCAL, 19
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之衬衫が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_SHIRT(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:上着 == 0
+	RETURNF 0
+IF ARGS == "可裸露"
+	SIF SETFLAG_SHIRT("はだけた")&EQUIP:ARG:上着
+		RETURNF 0
+	SIF SETFLAG_SHIRT("はだけ不可")&EQUIP:ARG:上着
+		RETURNF 0
+	RETURNF 1
+ELSEIF (SETFLAG_SHIRT(ARGS)&EQUIP:ARG:上着) == SETFLAG_SHIRT(ARGS)
+	RETURNF 1
+ENDIF
+RETURNF 0
+

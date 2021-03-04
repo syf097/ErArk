@@ -556,7 +556,7 @@ CUP:恭顺 += A
 ;-------------------------------------------------
 ;痛覚之ソース
 ;-------------------------------------------------
-;Aは苦痛、Bは恐怖、Cは反感、Dは苦痛による欲情増加。被虐快乐経験取得でも使う。
+;Aは苦痛、Bは恐怖、Cは反感、Dは苦痛による欲情増加。被虐快乐经验取得でも使う。
 A = SOURCE:痛
 B = SOURCE:痛
 C = SOURCE:痛
@@ -1077,7 +1077,7 @@ RESETCOLOR
 FORCEWAIT
 
 ;-------------------------------------------------
-;奉仕快乐経験、嗜虐快乐経験、羞恥快乐経験、被虐快乐経験之チェック
+;奉仕快乐经验、嗜虐快乐经验、羞恥快乐经验、被虐快乐经验之チェック
 ;LOCALを计算に技巧、LOCAL:1～LOCAL:4がそれぞれに对应している
 ;-------------------------------------------------
 @EXP_GOT_CHECK
@@ -1309,40 +1309,40 @@ SIF LOCAL:1 + LOCAL:2 + LOCAL:3 + LOCAL:4 > 0 && FLAG:8
 
 IF LOCAL:1 > 0
 	SIF FLAG:8
-		PRINTFORML 奉仕快乐経験+{LOCAL:1}
-	EXP:奉仕快乐経験 += LOCAL:1
+		PRINTFORML 奉仕快乐经验+{LOCAL:1}
+	EXP:奉仕快乐经验 += LOCAL:1
 	TFLAG:26 = LOCAL:1
 ENDIF
 IF LOCAL:2 > 0
 	SIF FLAG:8
-		PRINTFORML 嗜虐快乐経験+{LOCAL:2}
-	EXP:嗜虐快乐経験 += LOCAL:2
+		PRINTFORML 嗜虐快乐经验+{LOCAL:2}
+	EXP:嗜虐快乐经验 += LOCAL:2
 	TFLAG:28 = LOCAL:2
 ENDIF
 IF LOCAL:3 > 0
 	SIF FLAG:8
-		PRINTFORML 羞恥快乐経験+{LOCAL:3}
-	EXP:羞恥快乐経験 += LOCAL:3
+		PRINTFORML 羞恥快乐经验+{LOCAL:3}
+	EXP:羞恥快乐经验 += LOCAL:3
 ENDIF
 IF LOCAL:4 > 0
 	SIF FLAG:8
-		PRINTFORML 被虐快乐経験+{LOCAL:4}
-	EXP:被虐快乐経験 += LOCAL:4
+		PRINTFORML 被虐快乐经验+{LOCAL:4}
+	EXP:被虐快乐经验 += LOCAL:4
 	TFLAG:27 = LOCAL:4
 ENDIF
 ;Ｈ氛围BＯＮＵS
 TFLAG:33 += (LOCAL:1 + LOCAL:2 + LOCAL:3 + LOCAL:4)/8
 
 
-;PLAYERが助手之时には嗜虐快乐経験を得るかも
+;PLAYERが助手之时には嗜虐快乐经验を得るかも
 SIF PLAYER == MASTER || CUP:苦痛 < 100
 	RETURN 0
-;上之被虐快乐経験に、抖S＆S属性で补正
+;上之被虐快乐经验に、抖S＆S属性で补正
 LOCAL:1 += GET_PALAMLV(CUP:苦痛)
 SIF TALENT:PLAYER:抖S
 	LOCAL:1 += GET_PALAMLV(CUP:苦痛*2)
 ;S属性
 SIF ABL:PLAYER:S属性 >= 3
 	LOCAL:1 += GET_PALAMLV(CUP:苦痛*3)
-EXP:PLAYER:嗜虐快乐経験 += LOCAL:1
+EXP:PLAYER:嗜虐快乐经验 += LOCAL:1
 

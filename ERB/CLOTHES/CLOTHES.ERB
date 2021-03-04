@@ -1,0 +1,611 @@
+﻿;-------------------------------------------------
+;ARG之身につけている衣装全てから条件を判定して文字列を出力する。
+;-------------------------------------------------
+@CLO(ARGS, ARG)
+#FUNCTIONS
+LOCALS = 
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SELECTCASE ARGS
+CASE "偏爱：泳装"
+
+CASE "股间"
+	IF CHECK_CLO("紧身衣露出", ARG)
+		LOCALS = %BODYS(ARG, 1)%
+	ELSEIF CHECK_CLO("外套露出", ARG)
+		LOCALS = %OUTER(ARG, 1)%
+	ELSEIF CHECK_CLO("胖次露出", ARG)
+		LOCALS = %PANTIES(ARG, 1)%
+	ENDIF
+CASE "摩擦胖次"
+	IF EQUIP:ARG:外套 && !CHECK_OUTER("コキ不可", ARG)
+		LOCALS = %OUTER(ARG, 1)%
+	ELSEIF EQUIP:ARG:胖次 && !CHECK_PANTIES("コキ不可", ARG)
+		LOCALS = %PANTIES(ARG, 1)%
+	ENDIF
+CASE "コスプレ"
+	IF SHIRT(ARG, 1) == "Ｙ领衬衫"
+		IF CHECK_CLO("裸露", ARG)
+			LOCALS = 裸穿Ｙ领衬衫
+		ELSE
+			LOCALS = Ｙ领衬衫
+		ENDIF
+	ELSEIF SHIRT(ARG) == "女教師"
+		LOCALS = 女教師
+	ELSEIF SHIRT(ARG) == "和服"
+		LOCALS = 和服
+	ELSEIF SHIRT(ARG, 1) == "妹抖服"
+		LOCALS = 妹抖服
+	ELSEIF SHIRT(ARG, 1) == "体操服"
+		LOCALS = 体操服
+	ELSEIF SHIRT(ARG, 1) == "护士服"
+		LOCALS = 护士服
+	ELSEIF SHIRT(ARG, 1) == "旗袍"
+		LOCALS = 旗袍
+	ELSEIF SHIRT(ARG, 1) == "水手服"
+		LOCALS = 水手服
+	ELSEIF SHIRT(ARG, 1) == "巫女服"
+		LOCALS = 巫女服
+	ELSEIF SHIRT(ARG, 1) == "吊带睡裙"
+		IF CHECK_CLO("裸露", ARG)
+			LOCALS = 裸穿吊带睡裙
+		ELSE
+			LOCALS = 吊带睡裙
+		ENDIF
+	ELSEIF SHIRT(ARG) == "婚礼裙装"
+		LOCALS = 婚礼裙装
+	ELSEIF SHIRT(ARG) == "哥特萝莉洋装"
+		LOCALS = 哥特萝莉洋装
+	ELSEIF SHIRT(ARG) == "拉拉队服"
+		LOCALS = 拉拉队服
+	ELSEIF PANTIES(ARG, 1) == "比基尼" && BRA(ARG, 1) == "比基尼"
+		LOCALS = 比基尼
+	ELSEIF BODYS(ARG, 1) == "学校泳装"
+		LOCALS = 学校泳装
+	ELSEIF BODYS(ARG, 1) == "糟糕体操紧身服"
+		LOCALS = 糟糕体操紧身服
+	ELSEIF BODYS(ARG, 1) == "紧缚衣"
+		LOCALS = 紧缚衣
+	ELSEIF BODYS(ARG, 1) == "兔女郎装"
+		LOCALS = 兔女郎装
+	ELSE
+		LOCALS = 該当なし
+	ENDIF
+ENDSELECT
+RETURNF LOCALS
+
+
+
+;-------------------------------------------------
+;ARG之身につけている衣装全てを综合して、ARGSが可能かを判定する
+;また、ど之指令を選択できるか、を判定する时之速度向上之ためにTCVAR:26を用いる
+;TCVAR:26はEVENTCOM之最初と、标志を弄る関数などで初期化されるため、调教中には恶さをしない…はず。
+;-------------------------------------------------
+@CHECK_CLO(ARGS, ARG)
+#FUNCTION
+VARSET LOCAL
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+;下には胖次など、セットたりえるも之必須
+SELECTCASE ARGS
+CASE "无上装"
+	SIF EQUIP:ARG:胖次 + EQUIP:ARG:迷你裙 + EQUIP:ARG:外套 && EQUIP:ARG:ブラ + EQUIP:ARG:上着 + EQUIP:ARG:紧身衣 == 0
+		RETURNF 1
+;上にはブラなど、セットたりえるも之必須
+CASE "无下装"
+	SIF EQUIP:ARG:ブラ && EQUIP:ARG:胖次 + EQUIP:ARG:迷你裙 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套 == 0
+		RETURNF 1
+;迷你裙など、胖次が现えない状态必須
+CASE "没穿胖次"
+	SIF EQUIP:ARG:上着 + EQUIP:ARG:迷你裙 && EQUIP:ARG:胖次 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套 == 0
+		RETURNF 1
+CASE "全裸"
+	SIF EQUIP:ARG:胖次 + EQUIP:ARG:ブラ + EQUIP:ARG:上着 + EQUIP:ARG:迷你裙 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套
+		RETURNF 0
+	SIF EQUIP:ARG:靴下 + EQUIP:ARG:靴 + EQUIP:ARG:手套
+		RETURNF 0
+	RETURNF 1
+CASE "裸露"
+	SIF EQUIP:ARG:胖次 + EQUIP:ARG:ブラ + EQUIP:ARG:上着 + EQUIP:ARG:迷你裙 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套
+		RETURNF 0
+	RETURNF 1
+CASE "内衣姿"
+	SIF EQUIP:ARG:胖次 + EQUIP:ARG:ブラ && EQUIP:ARG:上着 + EQUIP:ARG:迷你裙 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套 == 0
+		RETURNF 1
+CASE "外套直穿き"
+	SIF EQUIP:ARG:外套 && EQUIP:ARG:胖次 == 0
+		RETURNF 1
+; CASE "自分之服"
+; 	SIF EQUIP:ARG:上着 && NAME_SHIRT(BASE:ARG:种族, ARG) == SHIRT(ARG, 2)
+; 		RETURNF 1
+; 	SIF EQUIP:ARG:紧身衣 && NAME_BODYS(BASE:ARG:种族, ARG) == BODYS(ARG, 2)
+; 		RETURNF 1
+
+;以下、时间がかかる之でTCVAR使用
+CASE "摩擦胖次", "胖次コキ"
+	SIF GETBIT(TCVAR:ARG:26, 1)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣
+		RETURNF 0
+	IF EQUIP:ARG:外套
+		SIF !CHECK_OUTER("コキ不可", ARG)
+			LOCAL = 1
+	ELSEIF EQUIP:ARG:胖次 && !CHECK_PANTIES("コキ不可", ARG)
+		LOCAL = 1
+	ENDIF
+CASE "紧勒"
+	SIF GETBIT(TCVAR:ARG:26, 2)
+		RETURNF 1
+	;Ｖ露出
+	SIF GETBIT(TCVAR:ARG:26, 14)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套 == 0
+		RETURNF 0
+	SIF EQUIP:ARG:紧身衣 && !CHECK_BODYS("紧勒", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && !CHECK_OUTER("紧勒", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && !CHECK_PANTIES("紧勒", ARG)
+		RETURNF 0
+	LOCAL = 2
+CASE "潮湿"
+	SIF GETBIT(TCVAR:ARG:26, 3)
+		RETURNF 1
+	IF EQUIP:ARG:紧身衣 && CHECK_BODYS("潮湿", ARG)
+		LOCAL = 3
+	ELSEIF EQUIP:ARG:外套 && CHECK_OUTER("潮湿", ARG)
+		LOCAL = 3
+	ELSEIF EQUIP:ARG:胖次 && CHECK_PANTIES("潮湿", ARG)
+		LOCAL = 3
+	ENDIF
+CASE "润湿", "濡れ"
+	SIF GETBIT(TCVAR:ARG:26, 4)
+		RETURNF 1
+	IF EQUIP:ARG:紧身衣
+		SIF CHECK_BODYS("润湿", ARG)
+			LOCAL = 4
+	ELSEIF EQUIP:ARG:外套
+		SIF CHECK_OUTER("润湿", ARG)
+			LOCAL = 4
+	ELSEIF EQUIP:ARG:胖次
+		SIF CHECK_PANTIES("润湿", ARG)
+			LOCAL = 4
+	ENDIF
+;ブラなど、胸を覆うも之は"はだけ"る
+CASE "可裸露"
+	SIF GETBIT(TCVAR:ARG:26, 5)
+		RETURNF 1
+	IF EQUIP:ARG:上着 && CHECK_SHIRT("可裸露", ARG)
+		LOCAL = 5
+	ELSEIF EQUIP:ARG:紧身衣 && CHECK_BODYS("可裸露", ARG)
+		LOCAL = 5
+	ELSEIF EQUIP:ARG:ブラ && CHECK_BRA("可裸露", ARG)
+		SIF EQUIP:ARG:上着 && CHECK_SHIRT("はだけ不可", ARG)
+			RETURNF 0
+		SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("はだけ不可", ARG)
+			RETURNF 0
+		LOCAL = 5
+	ENDIF
+CASE "谷间露出"
+	SIF GETBIT(TCVAR:ARG:26, 6)
+		RETURNF 1
+	SIF EQUIP:ARG:上着 && !CHECK_SHIRT("はだけた", ARG) && !CHECK_SHIRT("谷间露出", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:紧身衣 && !CHECK_BODYS("はだけた", ARG) && !CHECK_BODYS("谷间露出", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:ブラ && !CHECK_BRA("はだけた", ARG) && !CHECK_BRA("谷间露出", ARG)
+		RETURNF 0
+	LOCAL = 6
+CASE "乳首露出", "B露出"
+	SIF GETBIT(TCVAR:ARG:26, 7)
+		RETURNF 1
+	SIF EQUIP:ARG:上着 && !CHECK_SHIRT("はだけた", ARG) && !CHECK_SHIRT("乳首露出", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:紧身衣 && !CHECK_BODYS("はだけた", ARG) && !CHECK_BODYS("乳首露出", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:ブラ && !CHECK_BRA("はだけた", ARG) && !CHECK_BRA("乳首露出", ARG)
+		RETURNF 0
+	LOCAL = 7
+CASE "ずらし可", "能撥开"
+	SIF GETBIT(TCVAR:ARG:26, 8)
+		RETURNF 1
+	IF EQUIP:ARG:紧身衣 && CHECK_BODYS("能撥开", ARG)
+		LOCAL = 8
+	ELSEIF EQUIP:ARG:外套 && CHECK_OUTER("能撥开", ARG)
+		LOCAL = 8
+	ELSEIF EQUIP:ARG:胖次 && CHECK_PANTIES("能撥开", ARG)
+		LOCAL = 8
+	ENDIF
+CASE "运动短裤露出"
+	SIF GETBIT(TCVAR:ARG:26, 9)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("运动短裤", ARG) && CHECK_OUTER("露Ｖ胖次", ARG)
+		LOCAL = 9
+CASE "外套露出"
+	SIF GETBIT(TCVAR:ARG:26, 10)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("露Ｖ胖次", ARG)
+		LOCAL = 10
+CASE "紧身衣露出"
+	SIF GETBIT(TCVAR:ARG:26, 11)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		LOCAL = 11
+CASE "连裤袜露出"
+	SIF GETBIT(TCVAR:ARG:26, 12)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("连裤袜", ARG) && CHECK_OUTER("露Ｖ胖次", ARG)
+		LOCAL = 12
+CASE "胖次露出"
+	SIF GETBIT(TCVAR:ARG:26, 13)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("露Ｖ胖次", ARG)
+		LOCAL = 13
+CASE "Ｖ露出"
+	SIF GETBIT(TCVAR:ARG:26, 14)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("露Ｖ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("露Ｖ胖次", ARG)
+		RETURNF 0
+	LOCAL = 14
+;これはＶ露出を含む
+CASE "Ｖ露出可"
+	SIF GETBIT(TCVAR:ARG:26, 14) || GETBIT(TCVAR:ARG:26, 15)
+		RETURNF 1
+	;调教外ならＯＫとする
+	SIF COND("调教中", ARG) == 0 && CHECK_PANTIES("贞操带", ARG) == 0
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ｖ胖次", ARG) && !CHECK_BODYS("能撥开", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && !CHECK_OUTER("连裤袜", ARG) && CHECK_OUTER("露Ｖ胖次", ARG) && !CHECK_OUTER("能撥开", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("露Ｖ胖次", ARG) && !CHECK_PANTIES("能撥开", ARG)
+		RETURNF 0
+	LOCAL = 15
+CASE "Ａ露出"
+	SIF GETBIT(TCVAR:ARG:26, 16)
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ａ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && CHECK_OUTER("露Ａ胖次", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("露Ａ胖次", ARG)
+		RETURNF 0
+	LOCAL = 16
+;これはＡ露出を含む
+CASE "Ａ露出可"
+	SIF GETBIT(TCVAR:ARG:26, 16) || GETBIT(TCVAR:ARG:26, 17)
+		RETURNF 1
+	;调教外ならＯＫとする
+	SIF COND("调教中", ARG) == 0 && CHECK_PANTIES("贞操带", ARG) == 0
+		RETURNF 1
+	SIF EQUIP:ARG:紧身衣 && CHECK_BODYS("露Ａ胖次", ARG) && !CHECK_BODYS("能撥开", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:外套 && !CHECK_OUTER("连裤袜", ARG) && CHECK_OUTER("露Ａ胖次", ARG) && !CHECK_OUTER("能撥开", ARG)
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("露Ａ胖次", ARG) && !CHECK_PANTIES("能撥开", ARG)
+		RETURNF 0
+	LOCAL = 17
+CASE "泳装姿"
+	SIF GETBIT(TCVAR:ARG:26, 18)
+		RETURNF 1
+	SIF EQUIP:ARG:上着 + EQUIP:迷你裙 + EQUIP:外套
+		RETURNF 0
+	IF EQUIP:ARG:紧身衣 && CHECK_BODYS("泳装", ARG)
+		LOCAL = 18
+	ELSEIF EQUIP:ARG:胖次 && CHECK_PANTIES("泳装", ARG)
+		LOCAL = 18
+	ENDIF
+CASE "比基尼姿"
+	SIF GETBIT(TCVAR:ARG:26, 19)
+		RETURNF 1
+	SIF EQUIP:ARG:上着 + EQUIP:迷你裙 + EQUIP:ARG:紧身衣 + EQUIP:ARG:外套
+		RETURNF 0
+	SIF EQUIP:ARG:胖次 && CHECK_PANTIES("泳装", ARG)
+		LOCAL = 19
+CASE "ずらした"
+	SIF GETBIT(TCVAR:ARG:26, 20)
+		RETURNF 1
+	IF EQUIP:ARG:紧身衣 && CHECK_BODYS("ずらした", ARG)
+		LOCAL = 20
+	ELSEIF EQUIP:ARG:外套 && CHECK_OUTER("ずらした", ARG)
+		LOCAL = 20
+	ELSEIF EQUIP:ARG:胖次 && CHECK_PANTIES("ずらした", ARG)
+		LOCAL = 20
+	ENDIF
+CASE "腋露出"
+	SIF GETBIT(TCVAR:ARG:26, 21)
+		RETURNF 1
+	SIF EQUIP:ARG:上着 && CHECK_SHIRT("腋露出", ARG) == 0
+		RETURNF 0
+	LOCAL = 21
+CASE "足露出"
+	SIF GETBIT(TCVAR:ARG:26, 22)
+		RETURNF 1
+	SIF EQUIP:ARG:靴
+		RETURNF 0
+	SIF EQUIP:ARG:靴下 && CHECK_SOCKS("足露出", ARG) == 0
+		RETURNF 0
+	LOCAL = 22
+ENDSELECT
+;TCVARに可能な事柄を記录
+IF LOCAL > 0
+	SETBIT TCVAR:ARG:26, LOCAL
+	RETURNF 1
+ENDIF
+
+RETURNF 0
+
+
+;-------------------------------------------------
+;色やゲーム的な限制など、それぞれにいちいち設定すると不具合起こしそうな标志はまとめてここで設定
+;ビット之19番まではそれぞれで个别設定。
+;つまり、ここでは20～63を設定する
+;-------------------------------------------------
+@SETFLAG_COMMON(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+VARSET LOCAL
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	;材質、形状等
+	SELECTCASE ARGS
+	CASE "泳装"
+		SETBIT LOCAL, 20
+	CASE "透け", "透视"
+		SETBIT LOCAL, 21
+	CASE "丝绸", "絹"
+		SETBIT LOCAL, 22
+	CASE "蕾丝"
+		SETBIT LOCAL, 23
+	CASE "革", "皮质"
+		SETBIT LOCAL, 24
+		SETBIT LOCAL, 49
+		SETBIT LOCAL, 50
+		SETBIT LOCAL, 52
+	CASE "毛皮"
+		SETBIT LOCAL, 25
+	CASE "铠甲"
+		SETBIT LOCAL, 26
+	CASE "羽"
+		SETBIT LOCAL, 27
+	CASE "釉光"
+		SETBIT LOCAL, 28
+		SETBIT LOCAL, 52
+	CASE "荷叶边"
+		SETBIT LOCAL, 29
+	CASE "拉链", "ジッパー"
+		SETBIT LOCAL, 30
+	CASE "缝隙"
+		SETBIT LOCAL, 31
+	CASE "Ｖ露出"
+		SETBIT LOCAL, 32
+	CASE "Ａ露出"
+		SETBIT LOCAL, 33
+	CASE "ＶＡ露出"
+		SETBIT LOCAL, 32
+		SETBIT LOCAL, 33
+	CASE "谷间露出"
+		SETBIT LOCAL, 34
+	CASE "乳首露出"
+		SETBIT LOCAL, 35
+	CASE "胸露出"
+		SETBIT LOCAL, 36
+		SETBIT LOCAL, 34
+		SETBIT LOCAL, 35
+	CASE "指露出", "足指露出"
+		SETBIT LOCAL, 37
+	CASE "手露出", "足露出"
+		SETBIT LOCAL, 38
+		SETBIT LOCAL, 37
+	CASE "腋露出"
+		SETBIT LOCAL, 39
+
+	;ゲーム的な限制等
+	CASE "つなぎ"
+		SETBIT LOCAL, 47
+	CASE "连衣裙"
+		SETBIT LOCAL, 48
+	CASE "ずれ不可", "はだけ不可"
+		SETBIT LOCAL, 49
+	CASE "コキ不可", "ズリ不可"
+		SETBIT LOCAL, 50
+	CASE "脱衣不可"
+		SETBIT LOCAL, 51
+	CASE "通气性なし", "通气性无"
+		SETBIT LOCAL, 52
+	;色や模大人
+	CASE "条纹", "縞"
+		SETBIT LOCAL, 53
+	CASE "赤"
+		SETBIT LOCAL, 54
+	CASE "緑"
+		SETBIT LOCAL, 55
+	CASE "黄"
+		SETBIT LOCAL, 56
+	CASE "青"
+		SETBIT LOCAL, 57
+	CASE "白"
+		SETBIT LOCAL, 58
+	CASE "浓"
+		SETBIT LOCAL, 59
+	;合成色
+	CASE "薄桃"
+		SETBIT LOCAL, 54
+		SETBIT LOCAL, 58
+	CASE "真紅"
+		SETBIT LOCAL, 54
+		SETBIT LOCAL, 59
+	CASE "薄緑"
+		SETBIT LOCAL, 55
+		SETBIT LOCAL, 58
+	CASE "薄青"
+		SETBIT LOCAL, 57
+		SETBIT LOCAL, 58
+	CASE "紺"
+		SETBIT LOCAL, 57
+		SETBIT LOCAL, 59
+	CASE "橙"
+		SETBIT LOCAL, 54
+		SETBIT LOCAL, 56
+	CASE "紫"
+		SETBIT LOCAL, 54
+		SETBIT LOCAL, 57
+	CASE "纯白"
+		SETBIT LOCAL, 58
+		SETBIT LOCAL, 59
+	CASE "黒"
+		SETBIT LOCAL, 54
+		SETBIT LOCAL, 55
+		SETBIT LOCAL, 56
+		SETBIT LOCAL, 57
+	;特殊な指定
+	CASE "条纹色"
+		IF RAND:5 == 0
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 55
+			SETBIT LOCAL, 56
+			SETBIT LOCAL, 57
+		ELSEIF RAND:4 == 0
+			SETBIT LOCAL, 57
+			SETBIT LOCAL, 58
+		ELSEIF RAND:3 == 0
+			SETBIT LOCAL, 56
+			SETBIT LOCAL, 58
+		ELSEIF RAND:2
+			SETBIT LOCAL, 55
+			SETBIT LOCAL, 58
+		ELSE
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 58
+		ENDIF
+	CASE "娴淑之色"
+		SIF RAND:3 == 0
+			SETBIT LOCAL, 53
+		IF RAND:2 && GETBIT(LOCAL, 53) == 0
+			IF RAND:3
+				SETBIT LOCAL, 58
+			ELSE
+				SETBIT LOCAL, 58
+				SETBIT LOCAL, 59
+			ENDIF
+		ELSEIF RAND:4 == 0
+			SETBIT LOCAL, 57
+			SETBIT LOCAL, 58
+		ELSEIF RAND:3 == 0
+			SETBIT LOCAL, 56
+			SETBIT LOCAL, 58
+		ELSEIF RAND:2
+			SETBIT LOCAL, 55
+			SETBIT LOCAL, 58
+		ELSE
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 58
+		ENDIF
+	CASE "Ｈめ之色"
+		IF RAND:5 == 0
+			SETBIT LOCAL, 58
+			SETBIT LOCAL, 59
+		ELSEIF RAND:4 == 0
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 59
+		ELSEIF RAND:3 == 0
+			SETBIT LOCAL, 54
+		ELSEIF RAND:2
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 57
+		ELSE
+			SETBIT LOCAL, 54
+			SETBIT LOCAL, 55
+			SETBIT LOCAL, 56
+			SETBIT LOCAL, 57
+		ENDIF
+	;状态变化60～63
+	CASE "はだけた", "はだけ"
+		SETBIT LOCAL, 60
+	CASE "ずらした", "ずらし"
+		SETBIT LOCAL, 61
+	CASE "拉链开"
+		SETBIT LOCAL, 62
+	CASE "可撕"
+		SETBIT LOCAL, 63
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+
+;-------------------------------------------------
+;服装之汚れやずらしなどを直して、初期状态に戻す
+;-------------------------------------------------
+@RESETFLAG_CLO, ARG
+FOR LOCAL, 10, 20
+	STAIN:ARG:LOCAL = 0
+NEXT
+FOR LOCAL, 40, 50
+	FOR LOCAL:1, 60, 64
+		CLEARBIT EQUIP:ARG:LOCAL, LOCAL:1
+	NEXT
+NEXT
+
+;-------------------------------------------------
+;ARG之种族衣装之有无を判定(どれか一つでも满たしていると1を返す)
+;-------------------------------------------------
+@CLO_ORI(ARG, ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5)
+#FUNCTION
+#DIM LCOUNT
+FOR LCOUNT, 1, 6
+	ARGS = %ARGS:LCOUNT%
+
+	SELECTCASE ARGS
+	CASE "服"
+		ARGS = %NAME_SHIRT(BASE:ARG:种族, ARG)%
+	CASE "西装"
+		ARGS = %NAME_BODYS(BASE:ARG:种族, ARG)%
+	CASE "外套"
+		ARGS = %NAME_OUTER(BASE:ARG:种族, ARG)%
+	CASE "内衣"
+		ARGS = %NAME_PANTIES(BASE:ARG:种族, ARG)%
+		SIF STRLENS(ARGS)
+			RETURNF 1
+		ARGS = %NAME_BRA(BASE:ARG:种族, ARG)%
+	ENDSELECT
+
+	SIF STRLENS(ARGS)
+		RETURNF 1
+NEXT
+RETURNF 0
+
+;-------------------------------------------------
+;ARG:2之色をARG:1と同じにする
+;-------------------------------------------------
+@SAME_COLOR, ARG, ARG:1, ARG:2
+SIF EQUIP:ARG:(ARG:1) == 0 || EQUIP:ARG:(ARG:2) == 0
+	RETURN 0
+;色が固定されている衣装
+SIF SUBSTRING(CSTR:ARG:(ARG:2), 0, 2) == SUBSTRING(TEXTS("衣装之色", EQUIP:ARG:(ARG:2) ), 0, 2)
+	RETURN 0
+;特殊な材質
+SIF ARG:2 == 41 && CHECK_BRA("麻单衣", ARG)
+	RETURN 0
+FOR LOCAL, 54, 60
+	CLEARBIT EQUIP:ARG:(ARG:2), LOCAL
+	SIF GETBIT(EQUIP:ARG:(ARG:1), LOCAL)
+		SETBIT EQUIP:ARG:(ARG:2), LOCAL
+NEXT
+

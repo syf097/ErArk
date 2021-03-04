@@ -26,7 +26,7 @@ NEXT
 
 
 ;-------------------------------------------------
-;PALAM之増减を表示させる（Ｐ润は表示しない）
+;PALAM之増减を表示させる（P润は表示しない）
 ;对应する珠之増加分も表示するように变更
 ;ARGにはTARGETかASSIしか入らない
 ;-------------------------------------------------
@@ -135,11 +135,11 @@ SIF TEQUIP:Ｗ逆推 && SELECTCOM:1 >= 0
 SIF LINECOUNT == MEMO_LINECOUNT
 	PRINTL 
 
-;PLAYER之阴茎之Ｐ润之处理
-CALL SETFLAG, "Ｐ润变动处理", MASTER
-IF COND("３Ｐ")
+;PLAYER之阴茎之P润之处理
+CALL SETFLAG, "P润变动处理", MASTER
+IF COND("３P")
 	SWAP SELECTCOM, SELECTCOM:2
-	CALL SETFLAG, "Ｐ润变动处理", ASSI
+	CALL SETFLAG, "P润变动处理", ASSI
 	SWAP SELECTCOM, SELECTCOM:2
 ENDIF
 
@@ -201,7 +201,7 @@ UP_BASE:5 = MAX(BASE_AFT:5 + UP_BASE:5 - BASE_PRE:5, 0)
 NAME_BASE:5 = 精力(调)
 
 ;母乳（调教对象）
-IF TALENT:泌乳体質
+IF TALENT:泌乳体质
 	BASE_AFT:6 = BASE:喷乳
 	BASE_PRE:6 = TCVAR:102
 	UP_BASE:6 = MAX(TCVAR:103, 0)

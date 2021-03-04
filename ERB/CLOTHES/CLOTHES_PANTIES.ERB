@@ -1,0 +1,636 @@
+﻿;-------------------------------------------------
+;胖次を穿かせる関数
+;指定番号によって名前がCSTR:40に代入される。
+;99番までは、そ之番号之梦魇之内衣。
+;EQUIP:胖次は胖次之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_PANTIES, ARG, ARG:1, ARG:2
+;ARG之胖次をARG:1番之も之にする。ARG:1==0なら胖次を脱がす
+;ARG:2はブラセット标志。==1なら现合ったブラをつける
+;汚れ＆ずれたりした标志等を初期化して新品にする
+STAIN:ARG:胖次 = 0
+TCVAR:ARG:26 = 0
+SIF TALENT:ARG:性别 == 1
+	ARG:2 = 0
+
+IF ARG:1 == 0
+	EQUIP:ARG:胖次 = 0
+	CSTR:ARG:40 = 
+	RETURN 0
+ENDIF
+
+;足が使えない
+IF COND("脚之使用", ARG) == 0
+	EQUIP:ARG:胖次 = 0
+	CSTR:ARG:40 = 
+	CALL SET_BRA, ARG, ARG:1
+ELSE
+	;名前とEQUIPを記录
+	CSTR:ARG:40 = %PALAM_PANTIES(ARG:1, ARG, 1)%
+	;Ｈな胖次はリネーム
+	SIF CHECK_PANTIES("超Ｈ", ARG)
+		CALL RENAME_PANTIES, ARG
+	;ブラもつける？
+	IF ARG:2
+		CALL SET_BRA, ARG, ARG:1
+		;素材などを揃える
+		IF CHECK_PANTIES("透视", ARG)
+			EQUIP:ARG:ブラ |= SETFLAG_COMMON("透视")
+		ELSEIF CHECK_BRA("透视", ARG)
+			EQUIP:ARG:ブラ -= SETFLAG_COMMON("透视")
+		ENDIF
+		IF CHECK_PANTIES("蕾丝", ARG)
+			EQUIP:ARG:ブラ |= SETFLAG_COMMON("蕾丝")
+		ELSEIF CHECK_BRA("蕾丝", ARG)
+			EQUIP:ARG:ブラ -= SETFLAG_COMMON("蕾丝")
+		ENDIF
+		IF CHECK_PANTIES("丝绸", ARG)
+			EQUIP:ARG:ブラ |= SETFLAG_COMMON("丝绸")
+		ELSEIF CHECK_BRA("丝绸", ARG)
+			EQUIP:ARG:ブラ -= SETFLAG_COMMON("丝绸")
+		ENDIF
+		;色をそろえる
+		CALL SAME_COLOR, ARG, 40, 41
+		;Ｈなブラはリネーム
+		SIF CHECK_BRA("超Ｈ", ARG)
+			CALL RENAME_BRA, ARG
+	ENDIF
+ENDIF
+
+IF EQUIP:ARG:胖次 && EQUIP:ARG:紧身衣
+	IF CHECK_BODYS("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
+		CALL SET_BODYS, ARG
+	ELSEIF CHECK_BODYS("高叉", ARG) && !CHECK_PANTIES("紧勒", ARG)
+		CALL SET_BODYS, ARG
+	ELSEIF CHECK_BODYS("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
+		CALL SET_BODYS, ARG
+	ELSEIF CHECK_BODYS("Ｖ后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+		CALL SET_BODYS, ARG
+	ENDIF
+ENDIF
+IF EQUIP:ARG:胖次 && EQUIP:ARG:外套
+	IF CHECK_OUTER("连裤袜", ARG)
+	ELSEIF CHECK_OUTER("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
+		CALL SET_OUTER, ARG
+	ELSEIF CHECK_OUTER("高叉", ARG) && !CHECK_PANTIES("紧勒", ARG)
+		CALL SET_OUTER, ARG
+	ELSEIF CHECK_OUTER("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
+		CALL SET_OUTER, ARG
+	ELSEIF CHECK_OUTER("Ｖ后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+		CALL SET_OUTER, ARG
+	ENDIF
+ENDIF
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之穿いている胖次之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@PANTIES(ARG, ARG:1)
+#FUNCTIONS
+SELECTCASE ARG:1
+CASE 0
+	LOCALS = %CSTR:ARG:40%
+	SIF CONFIG("衣装之细かい色表示之禁止")
+		RETURNF LOCALS
+	LOCALS:1 = %TEXTS("衣装之色", EQUIP:ARG:胖次)%
+	SIF LOCALS:1 != "" && (SUBSTRING(CSTR:ARG:40, 0, 2) != SUBSTRING(LOCALS:1, 0, 2) )
+		LOCALS = %LOCALS%(%LOCALS:1%)
+CASE 1
+	IF CHECK_PANTIES("拳击短裤", ARG)
+		LOCALS = 拳击短裤
+	ELSEIF CHECK_PANTIES("男用胖次", ARG)
+		LOCALS = 男用胖次
+	ELSEIF CHECK_PANTIES("四角裤", ARG)
+		LOCALS = 四角裤
+	ELSEIF CHECK_PANTIES("兜裆布", ARG)
+		LOCALS = 兜裆布
+	;比基尼って呼称は上下合わせないとちょっと微妙かも
+	;ELSEIF CHECK_PANTIES("泳装", ARG)
+	;	LOCALS = 比基尼
+	ELSEIF CHECK_PANTIES("打底裤", ARG)
+		LOCALS = 打底裤
+	ELSEIF CHECK_PANTIES("衬裙", ARG)
+		LOCALS = 衬裙
+	ELSEIF CHECK_PANTIES("Ｃ字裤", ARG)
+		LOCALS = Ｃ字裤
+	;ELSEIF CHECK_PANTIES("前貼り", ARG)
+	;	LOCALS = 前貼り
+	;ELSEIF CHECK_PANTIES("创可贴", ARG)
+	;	LOCALS = 创可贴
+	ELSE
+		LOCALS = 胖次
+	ENDIF
+ENDSELECT
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之胖次之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_PANTIES(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_PANTIES(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;bit值に应じて角色ARG之穿いている胖次之名前をリネーム
+;主にＨな胖次用
+;-------------------------------------------------
+@RENAME_PANTIES, ARG
+SIF ARG < 0
+	RETURN 0
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:胖次 == 0
+	RETURN 0
+
+VARSET LOCALS
+IF CHECK_PANTIES("蕾丝", ARG)
+	SELECTCASE TEXTS("衣装之色", EQUIP:ARG:胖次)
+	CASE "黒", "紫"
+		LOCALS = %TEXTS("衣装之色", EQUIP:ARG:胖次)%蕾丝胖次
+	CASEELSE
+		LOCALS = 蕾丝胖次
+	ENDSELECT
+ELSEIF CHECK_PANTIES("丝绸", ARG)
+	LOCALS = 丝绸内衣
+ELSEIF CHECK_PANTIES("超细", ARG)
+	LOCALS = 超细胖次
+ELSEIF CHECK_PANTIES("Ｇ字裤", ARG)
+	LOCALS = Ｇ字裤
+ELSEIF CHECK_PANTIES("T字短裤", ARG)
+	LOCALS = T字短裤
+ELSEIF CHECK_PANTIES("紐", ARG)
+	IF CHECK_PANTIES("高叉", ARG)
+		LOCALS = 高叉系绳胖次
+	ELSEIF CHECK_PANTIES("丁字裤", ARG)
+		LOCALS = 丁字系绳胖次
+	ELSEIF CHECK_PANTIES("低叉", ARG)
+		LOCALS = 低叉系绳胖次
+	ELSE
+		LOCALS = 系绳胖次
+	ENDIF
+ELSEIF CHECK_PANTIES("高叉", ARG)
+	LOCALS = 高叉
+ELSEIF CHECK_PANTIES("丁字裤", ARG)
+	LOCALS = 丁字裤
+ELSEIF CHECK_PANTIES("低叉", ARG)
+	LOCALS = 低叉
+ELSEIF CHECK_PANTIES("低腰", ARG)
+	LOCALS = 低腰
+ELSEIF CHECK_PANTIES("透视", ARG)
+	LOCALS = 透视胖次
+ENDIF
+
+SIF CHECK_PANTIES("透视", ARG) && LOCALS != "透视胖次"
+	LOCALS = %LOCALS%(透)
+
+SIF STRLENS(LOCALS)
+	CSTR:ARG:40 = %LOCALS%
+
+;-------------------------------------------------
+;ARG番之胖次之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_PANTIES(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+IF ARG:1 > 0 && COND("脚之使用", ARG:1) == 0
+	SIF ARG:2 > 0
+		EQUIP:(ARG:1):胖次 = LOCAL
+	RETURNF LOCALS
+ENDIF
+
+SELECTCASE ARG
+CASE 1
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 淫魔比基尼
+		LOCAL = SETFLAG_PANTIES("泳装", "Ｇ字裤", "紐", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 淫魔比基尼
+		LOCAL = SETFLAG_PANTIES("泳装", "Ｇ字裤", "紐", "黒")
+	ELSE
+		LOCALS = 淫魔比基尼
+		LOCAL = SETFLAG_PANTIES("泳装", "Ｇ字裤", "紐", "紫")
+	ENDIF
+CASE 4
+	IF CFLAG:(ARG:1):8 == 3
+		LOCALS = 衬裙
+		LOCAL = SETFLAG_PANTIES("衬裙", "荷叶边", "紫")
+	ELSE
+		LOCALS = 衬裙
+		LOCAL = SETFLAG_PANTIES("衬裙", "荷叶边", "纯白")
+	ENDIF
+CASE 6
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 魔猫之胖次
+		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "青")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 魔猫之胖次
+		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 魔猫之胖次
+		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "黄")
+	ELSE
+		LOCALS = 魔猫之胖次
+		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮")
+	ENDIF
+CASE 7
+	; IF TALENT:(ARG:1):四足歩行 == 0
+	; 	LOCALS = 人狼之皮质胖次
+	; 	LOCAL = SETFLAG_PANTIES("T字短裤", "皮质", "黒")
+	; ENDIF
+CASE 8, 9, 32, 45, 52, 56, 59, 96
+	LOCALS = 胖次
+	LOCAL = SETFLAG_PANTIES("娴淑")
+CASE 11
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 系绳胖次
+		LOCAL = SETFLAG_PANTIES("紐", "丝绸", "纯白")
+	ENDIF
+CASE 18
+	LOCALS = 网眼胖次
+	LOCAL = SETFLAG_PANTIES("T字短裤", "蕾丝", "丝绸", "黒")
+CASE 20, 21
+	IF PENIS(ARG:1)
+		LOCALS = 胖次
+		LOCAL = SETFLAG_PANTIES("清纯")
+	ENDIF
+CASE 22
+	LOCALS = 兜裆布
+	LOCAL = SETFLAG_PANTIES("兜裆布")
+CASE 23, 58
+	LOCALS = 性感胖次
+	LOCAL = SETFLAG_PANTIES("高叉", "丁字裤", "荷叶边", "黒")
+CASE 24
+	LOCALS = 系绳胖次
+	LOCAL = SETFLAG_PANTIES("紐", "丝绸", "纯白")
+CASE 25
+	LOCALS = 丁字裤
+	LOCAL = SETFLAG_PANTIES("紐", "丁字裤", "透け", "丝绸", "赤")
+CASE 26
+	LOCALS = T字短裤
+	LOCAL = SETFLAG_PANTIES("T字短裤", "薄緑")
+CASE 31
+	LOCALS = 胖次
+	LOCAL = SETFLAG_PANTIES("低腰", "橙")
+CASE 33
+	IF CFLAG:(ARG:1):8 == 4
+		LOCALS = 黒胖次
+		LOCAL = SETFLAG_PANTIES("低腰", "荷叶边", "黒")
+	ELSE
+		LOCALS = 薄桃色之胖次
+		LOCAL = SETFLAG_PANTIES("低腰", "荷叶边", "薄桃")
+	ENDIF
+CASE 34
+	LOCALS = 群青之比基尼
+	LOCAL = SETFLAG_PANTIES("泳装", "Ｇ字裤", "紐", "薄青")
+CASE 35
+	LOCALS = 真紅之薄纱胖次
+	LOCAL = SETFLAG_PANTIES("低叉", "紐", "真紅")
+CASE 38
+	LOCALS = 新緑之比基尼
+	LOCAL = SETFLAG_PANTIES("泳装", "Ｇ字裤", "紐", "薄緑")
+CASE 39
+	LOCALS = 超细比基尼
+	LOCAL = SETFLAG_PANTIES("泳装", "超细", "紐", "青")
+CASE 40
+	LOCALS = 橙色之ボーイレッグ
+	LOCAL = SETFLAG_PANTIES("丝绸", "橙")
+CASE 47
+	LOCALS = Ｈな内衣
+	LOCAL = SETFLAG_PANTIES("Ｈ", "超Ｈ")
+CASE 49
+	LOCALS = 清纯胖次
+	LOCAL = SETFLAG_PANTIES("丝绸", "清纯")
+CASE 50
+	LOCALS = 黒胖次
+	LOCAL = SETFLAG_PANTIES("黒")
+CASE 54
+	LOCALS = 决胜内衣
+	LOCAL = SETFLAG_PANTIES("Ｈ", "超Ｈ")
+CASE 55
+	LOCALS = 衬裙
+	LOCAL = SETFLAG_PANTIES("衬裙", "纯白")
+CASE 57
+	LOCALS = 胖次
+	LOCAL = SETFLAG_PANTIES("有点H")
+CASE 61
+	LOCALS = 高叉
+	LOCAL = SETFLAG_PANTIES("高叉")
+CASE 94
+	LOCALS = 男用胖次
+	LOCAL = SETFLAG_PANTIES("男用胖次")
+CASE 100
+	LOCALS = 条纹胖次
+	LOCAL = SETFLAG_PANTIES("条纹", "条纹色")
+CASE 101
+	LOCALS = 黒蕾丝胖次
+	LOCAL = SETFLAG_PANTIES("蕾丝", "透视", "黒")
+CASE 102
+	LOCALS = 荷叶边胖次
+	LOCAL = SETFLAG_PANTIES("荷叶边", "娴淑之色")
+CASE 103
+	LOCALS = 系绳胖次
+	LOCAL = SETFLAG_PANTIES("紐", "清纯")
+CASE 104
+	LOCALS = 丁字裤
+	LOCAL = SETFLAG_PANTIES("丁字裤", "有点H")
+CASE 105
+	LOCALS = 低腰
+	LOCAL = SETFLAG_PANTIES("低腰", "娴淑之色")
+CASE 106
+	LOCALS = 透视胖次
+	LOCAL = SETFLAG_PANTIES("透视", "清纯")
+CASE 107
+	LOCALS = 高叉
+	LOCAL = SETFLAG_PANTIES("高叉", "有点H")
+CASE 108
+	LOCALS = 皮质胖次
+	LOCAL = SETFLAG_PANTIES("T字短裤", "皮质", "拉链")
+CASE 109
+	LOCALS = 低叉
+	LOCAL = SETFLAG_PANTIES("低叉", "娴淑之色")
+CASE 110
+	IF ITEM:比基尼
+		LOCALS = 比基尼
+		LOCAL = SETFLAG_PANTIES("泳装", "T字短裤", "紐")
+	ENDIF
+CASE 111
+	IF ITEM:比基尼
+		LOCALS = 短比基尼
+		LOCAL = SETFLAG_PANTIES("泳装", "超细", "紐")
+	ENDIF
+CASE 112
+	LOCALS = 蕾丝胖次
+	LOCAL = SETFLAG_PANTIES("蕾丝", "Ｖ后入", "清纯")
+CASE 113
+	LOCALS = 薄纱胖次
+	LOCAL = SETFLAG_PANTIES("超细")
+	SIF RAND:2
+		LOCAL += SETFLAG_PANTIES("紐")
+CASE 114
+	LOCALS = Ｃ字裤
+	LOCAL = SETFLAG_PANTIES("Ｃ字裤", "コキ不可")
+CASE 115
+	LOCALS = 兜裆布
+	LOCAL = SETFLAG_PANTIES("兜裆布")
+;以下は保留
+;CASE 116
+;	LOCALS = 前貼り
+;	LOCAL = SETFLAG_PANTIES("前貼り", "コキ不可")
+;CASE 117
+;	LOCALS = 创可贴
+;	LOCAL = SETFLAG_PANTIES("创可贴", "コキ不可")
+;CASE 118
+;	LOCALS = 贴身裙
+;	LOCAL = SETFLAG_PANTIES("贴身裙")
+
+CASE 120
+	LOCALS = 拳击短裤
+	LOCAL = SETFLAG_PANTIES("拳击短裤")
+CASE 121
+	LOCALS = 男用胖次
+	LOCAL = SETFLAG_PANTIES("男用胖次")
+CASE 122
+	LOCALS = 四角裤
+	LOCAL = SETFLAG_PANTIES("四角裤")
+
+CASE 130
+	LOCALS = Ｈな胖次
+	LOCAL = SETFLAG_PANTIES("Ｈ", "超Ｈ")
+
+;娴淑
+;CASE 131
+;	LOCAL = SETFLAG_PANTIES("娴淑")
+;清纯
+;CASE 132
+;	LOCAL = SETFLAG_PANTIES("清纯")
+;小孩子
+;CASE 134
+;少女
+;CASE 135
+;大姐姐
+;CASE 136
+;成熟
+;CASE 137
+
+;性别男
+;CASE 139
+
+CASE 140
+	LOCALS = 贞操带
+	LOCAL = SETFLAG_PANTIES("皮质", "贞操带", "通气性无")
+ENDSELECT
+
+SIF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):胖次 = LOCAL
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之胖次之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_PANTIES(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "紐"
+		SETBIT LOCAL, 0
+	CASE "高叉"
+		SETBIT LOCAL, 1
+	CASE "丁字裤", "Tフロント"
+		SETBIT LOCAL, 2
+	CASE "Ｖ后入", "V后入"
+		SETBIT LOCAL, 3
+	CASE "丁字裤", "T后入"
+		SETBIT LOCAL, 4
+	CASE "低腰"
+		SETBIT LOCAL, 5
+	CASE "低叉"
+		SETBIT LOCAL, 6
+	CASE "打底裤"
+		SETBIT LOCAL, 7
+	CASE "衬裙"
+		SETBIT LOCAL, 8
+	CASE "兜裆布", "兜裆布", "兜裆布"
+		SETBIT LOCAL, 9
+	CASE "超Ｈ"
+		SETBIT LOCAL, 10
+	CASE "贞操带"
+		SETBIT LOCAL, 11
+		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可", "脱衣不可", "Ａ露出")
+	CASE "拳击短裤"
+		SETBIT LOCAL, 12
+		LOCAL |= SETFLAG_COMMON("ずれ不可")
+	CASE "男用胖次"
+		SETBIT LOCAL, 13
+		LOCAL |= SETFLAG_COMMON("ずれ不可")
+	CASE "四角裤"
+		SETBIT LOCAL, 14
+		LOCAL |= SETFLAG_COMMON("ずれ不可")
+	CASE "Ｃ字裤"
+		SETBIT LOCAL, 2
+		SETBIT LOCAL, 4
+		SETBIT LOCAL, 15
+		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可")
+	;高叉+Ｖ后入
+	CASE "T字短裤"
+		SETBIT LOCAL, 1
+		SETBIT LOCAL, 3
+	;高叉+丁字裤+低腰
+	CASE "Ｇ字裤", "G字裤", "Ｇスト", "Gスト"
+		SETBIT LOCAL, 1
+		SETBIT LOCAL, 4
+		SETBIT LOCAL, 5
+	;高叉+丁字裤+低叉
+	CASE "超细"
+		SETBIT LOCAL, 1
+		SETBIT LOCAL, 4
+		SETBIT LOCAL, 6
+	;オート胖次
+	CASE "娴淑"
+		SIF RAND:4 == 0
+			SETBIT LOCAL, 5
+		LOCAL |= SETFLAG_COMMON("娴淑之色")
+	CASE "清纯"
+		SIF RAND:3 == 0
+			SETBIT LOCAL, 0
+		SIF RAND:3 == 0
+			LOCAL |= SETFLAG_COMMON("荷叶边")
+		SIF RAND:3 == 0
+			LOCAL |= SETFLAG_COMMON("丝绸")
+		IF RAND:3
+			LOCAL |= SETFLAG_COMMON("纯白")
+		ELSE
+			LOCAL |= SETFLAG_COMMON("娴淑之色")
+		ENDIF
+	CASE "有点H"
+		SIF RAND:3
+			SETBIT LOCAL, 0
+		SIF RAND:3
+			SETBIT LOCAL, 1
+		SIF RAND:3
+			SETBIT LOCAL, 3+RAND:2
+		SIF RAND:3
+			SETBIT LOCAL, 6
+		LOCAL |= SETFLAG_COMMON("Ｈめ之色")
+	CASE "Ｈ"
+		SIF RAND:3
+			SETBIT LOCAL, 0
+		SIF RAND:4
+			SETBIT LOCAL, 1
+		SIF RAND:4 || GETBIT(LOCAL, 1) == 0
+			SETBIT LOCAL, 3+RAND:2
+		SIF RAND:4
+			SETBIT LOCAL, 5+RAND:2
+		SIF RAND:5 == 0
+			LOCAL |= SETFLAG_COMMON("丝绸")
+		SIF RAND:5 == 0
+			LOCAL |= SETFLAG_COMMON("蕾丝")
+		IF RAND:4 == 0
+			LOCAL |= SETFLAG_COMMON("透视")
+		ELSEIF RAND:2 || GETBITS(LOCAL, 1, 4) == 0
+			IF RAND:5 == 0
+				LOCAL |= SETFLAG_COMMON("拉链")
+			ELSEIF RAND:4 == 0
+				LOCAL |= SETFLAG_COMMON("缝隙")
+			ELSEIF RAND:3 == 0
+				LOCAL |= SETFLAG_COMMON("Ｖ露出")
+			ELSEIF RAND:2
+				LOCAL |= SETFLAG_COMMON("Ａ露出")
+				CLEARBIT LOCAL, 4
+			ELSE
+				LOCAL |= SETFLAG_COMMON("ＶＡ露出")
+				CLEARBIT LOCAL, 4
+			ENDIF
+		ENDIF
+		LOCAL |= SETFLAG_COMMON("Ｈめ之色")
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之胖次が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_PANTIES(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:胖次 == 0
+	RETURNF 0
+SELECTCASE ARGS
+;ずれ不可でなく、ずらしていない
+CASE "ずらし可", "能撥开"
+	;SIF SETFLAG_PANTIES("Ｖ露出")&EQUIP:ARG:胖次
+	;	RETURNF 0
+	IF SETFLAG_PANTIES("拉链")&EQUIP:ARG:胖次
+		SIF SETFLAG_PANTIES("拉链开")&EQUIP:ARG:胖次
+			RETURNF 0
+		SIF CHECK_PANTIES("拉链閉")
+			RETURNF 1
+	ENDIF
+	SIF SETFLAG_PANTIES("ずらした")&EQUIP:ARG:胖次
+		RETURNF 0
+	SIF SETFLAG_PANTIES("ずれ不可")&EQUIP:ARG:胖次
+		RETURNF 0
+	RETURNF 1
+;拉链があり、あけていない
+CASE "拉链閉"
+	SIF SETFLAG_PANTIES("拉链开")&EQUIP:ARG:胖次
+		RETURNF 0
+	SIF SETFLAG_PANTIES("拉链")&EQUIP:ARG:胖次
+		RETURNF 1
+CASE "露Ｖ胖次"
+	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "Ｖ露出", "缝隙")&EQUIP:ARG:胖次
+		RETURNF 0
+	RETURNF 1
+CASE "露Ａ胖次"
+	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "Ａ露出", "缝隙")&EQUIP:ARG:胖次
+		RETURNF 0
+	RETURNF 1
+CASE "紧勒"
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:胖次
+		RETURNF 0
+	SIF SETFLAG_PANTIES("高叉", "丁字裤")&EQUIP:ARG:胖次
+		RETURNF 1
+CASE "Ｈ"
+	SIF SETFLAG_PANTIES("透视", "高叉", "丁字裤", "拉链", "缝隙")&EQUIP:ARG:胖次
+		RETURNF 1
+CASE "超细"
+	SIF !(SETFLAG_PANTIES("高叉")&EQUIP:ARG:胖次)
+		RETURNF 0
+	SIF !(SETFLAG_PANTIES("丁字裤")&EQUIP:ARG:胖次)
+		RETURNF 0
+	SIF !(SETFLAG_PANTIES("低叉")&EQUIP:ARG:胖次)
+		RETURNF 0
+	RETURNF 1
+CASE "潮湿"
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:胖次
+		RETURNF 0
+	SIF CHECK_STAIN(STAIN:ARG:胖次, "潮湿")
+		RETURNF 1
+CASE "润湿"
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:胖次
+		RETURNF 0
+	SIF CHECK_STAIN(STAIN:ARG:胖次, "濡れ")
+		RETURNF 1
+CASE "男物"
+	SIF SETFLAG_PANTIES("拳击短裤", "男用胖次", "四角裤")&EQUIP:ARG:胖次
+		RETURNF 1
+CASEELSE
+	SIF (SETFLAG_PANTIES(ARGS)&EQUIP:ARG:胖次) == SETFLAG_PANTIES(ARGS)
+		RETURNF 1
+ENDSELECT
+RETURNF 0

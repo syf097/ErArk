@@ -1,0 +1,291 @@
+﻿;-------------------------------------------------
+;靴下之関数
+;指定番号によって名前がCSTR:46に代入される。
+;99番までは、そ之番号之梦魇之靴下。
+;EQUIP:靴下は靴下之特征标志。ビット管理する
+;-------------------------------------------------
+@SET_SOCKS, ARG, ARG:1
+;ARG之靴下をARG:1番之も之にする。ARG:1==0なら靴下を脱がす
+;汚れ＆ずれたりした标志等を初期化して新品にする
+STAIN:ARG:袜 = 0
+TCVAR:ARG:26 = 0
+
+IF ARG:1 == 0 || COND("脚之使用", ARG) == 0
+	EQUIP:ARG:靴下 = 0
+	CSTR:ARG:46 = 
+	RETURN 0
+ENDIF
+
+;名前記录
+CSTR:ARG:46 = %PALAM_SOCKS(ARG:1, ARG, 1)%
+
+SIF EQUIP:ARG:靴下 && EQUIP:ARG:外套 && CHECK_OUTER("连裤袜", ARG)
+	CALL SET_OUTER, ARG
+
+TCVAR:ARG:26 = 0
+RETURN ARG:1
+;-------------------------------------------------
+;ARG之穿いている靴下之名前。ARG:1==0なら正式名称 by CSTR。ARG:1==1なら短缩名称 by EQUIP。
+;-------------------------------------------------
+@SOCKS(ARG, ARG:1)
+#FUNCTIONS
+IF ARG:1 == 0
+	LOCALS = %CSTR:ARG:46%
+	SIF CONFIG("衣装之细かい色表示之禁止")
+		RETURNF LOCALS
+	IF CHECK_SOCKS("丝袜", ARG)
+		LOCALS:1 = %TEXTS("衣装之色", EQUIP:ARG:靴下)%
+		IF LOCALS:1 != "" && (SUBSTRING(CSTR:ARG:46, 0, 2) != SUBSTRING(LOCALS:1, 0, 2) )
+			SIF CHECK_SOCKS("袜圈", ARG)
+				LOCALS = 袜圈
+			LOCALS = %LOCALS%(%LOCALS:1%)
+		ENDIF
+	ENDIF
+ELSE
+	IF CHECK_SOCKS("足袋", ARG)
+		LOCALS = 足袋
+	ELSEIF CHECK_SOCKS("丝袜", ARG)
+		LOCALS = 丝袜
+	ELSEIF CHECK_SOCKS("及膝袜", ARG)
+		LOCALS = 及膝袜
+	ELSE
+		LOCALS = 靴下
+	ENDIF
+ENDIF
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之靴下之正式名称
+;ARG:1 > 0ならARG:1は角色编号として働く
+;-------------------------------------------------
+@NAME_SOCKS(ARG, ARG:1)
+#FUNCTIONS
+LOCALS = %PALAM_SOCKS(ARG, ARG:1)%
+RETURNF LOCALS
+
+;-------------------------------------------------
+;ARG番之靴下之详细パラ
+;ARG:1 > 0ならARG:1は角色编号として働き、ARG:1 > 0 && ARG:2 > 0ならEQUIPを定める
+;-------------------------------------------------
+@PALAM_SOCKS(ARG, ARG:1, ARG:2)
+#FUNCTIONS
+VARSET LOCAL
+VARSET LOCALS
+
+IF ARG:1 > 0 && COND("脚之使用", ARG:1) == 0
+	SIF ARG:2 > 0
+		EQUIP:(ARG:1):靴下 = LOCAL
+	RETURNF LOCALS
+ENDIF
+
+SELECTCASE ARG
+CASE 2
+	LOCALS = 小腿袜
+	LOCAL = SETFLAG_SOCKS("小腿袜")
+CASE 4
+	IF CFLAG:(ARG:1):8 == 3
+		LOCALS = 荷叶边及膝袜
+		LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "紫")
+	ELSE
+		LOCALS = 荷叶边及膝袜
+		LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "纯白")
+	ENDIF
+CASE 6
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 条纹猫袜
+		LOCAL = SETFLAG_SOCKS("小腿袜", "暖腿袜", "条纹", "毛皮", "青")
+	ELSEIF CFLAG:(ARG:1):8 == 3
+		LOCALS = 条纹猫袜
+		LOCAL = SETFLAG_SOCKS("小腿袜", "暖腿袜", "条纹", "毛皮", "黒")
+	ELSEIF CFLAG:(ARG:1):8 == 4
+		LOCALS = 条纹猫袜
+		LOCAL = SETFLAG_SOCKS("小腿袜", "暖腿袜", "条纹", "毛皮", "黄")
+	ELSE
+		LOCALS = 条纹猫袜
+		LOCAL = SETFLAG_SOCKS("小腿袜", "暖腿袜", "条纹", "毛皮", "赤")
+	ENDIF
+CASE 12
+	IF CFLAG:(ARG:1):8 == 3
+		LOCALS = 及膝袜
+		LOCAL = SETFLAG_SOCKS("及膝袜", "黒")
+	ELSEIF CFLAG:(ARG:1):8 != 2
+		LOCALS = 及膝袜
+		LOCAL = SETFLAG_SOCKS("及膝袜", "薄緑")
+	ENDIF
+CASE 16
+	IF CFLAG:(ARG:1):8 != 2
+		LOCALS = 足袋
+		LOCAL = SETFLAG_SOCKS("足袋", "纯白")
+	ENDIF
+CASE 17
+	IF CFLAG:(ARG:1):8 != 1
+		LOCALS = 黒暖腿袜
+		LOCAL = SETFLAG_SOCKS("小腿袜", "暖腿袜ー", "黒")
+	ENDIF
+CASE 18
+	LOCALS = 网袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "蕾丝", "黒", "足露出")
+CASE 22
+	IF CFLAG:(ARG:1):8 == 2
+		LOCALS = 脚絆
+		LOCAL = SETFLAG_SOCKS("及膝袜", "脚絆", "橙色", "足露出")
+	ELSE
+		LOCALS = 脚絆
+		LOCAL = SETFLAG_SOCKS("及膝袜", "脚絆", "薄緑", "足露出")
+	ENDIF
+CASE 26
+	LOCALS = 龙骑士袜带
+	LOCAL = SETFLAG_SOCKS("袜圈", "丝袜", "铠甲", "赤")
+CASE 31
+	LOCALS = 暖腿袜
+	LOCAL = SETFLAG_SOCKS("暖腿袜")
+CASE 32
+	LOCALS = 及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "纯白")
+CASE 33
+	LOCALS = 及膝袜
+	IF CFLAG:(ARG:1):8 == 4
+		LOCAL = SETFLAG_SOCKS("及膝袜", "青")
+	ELSE
+		LOCAL = SETFLAG_SOCKS("及膝袜", "赤")
+	ENDIF
+CASE 34
+	LOCALS = 及膝丝袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "薄青")
+CASE 35
+	LOCALS = 荷叶边及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "条纹", "赤")
+CASE 42
+	IF CFLAG:(ARG:1):209 == 2
+		LOCALS = 过膝袜
+		LOCAL = SETFLAG_SOCKS("过膝袜","黒")
+	ENDIF
+CASE 44
+	LOCALS = 及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "黒")
+CASE 46
+	LOCALS = 荷叶边及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "纯白")
+CASE 48
+	LOCALS = 暗夜丝袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "荷叶边", "足露出")
+CASE 50
+	LOCALS = 条纹及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "条纹", "赤")
+CASE 52
+	LOCALS = 绑腿
+	LOCAL = SETFLAG_SOCKS("绑腿", "薄青")
+CASE 54
+	LOCALS = 露指丝袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "黒", "足露出")
+CASE 55
+	LOCALS = 荷叶边及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "纯白")
+CASE 60
+	LOCALS = 袜
+	LOCAL = SETFLAG_SOCKS("足首まで", "毛皮")
+CASE 100
+	LOCALS = 袜
+	LOCAL = SETFLAG_SOCKS("足首まで")
+CASE 101
+	LOCALS = 小腿袜
+	LOCAL = SETFLAG_SOCKS("小腿袜")
+CASE 102
+	LOCALS = 及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜")
+CASE 103
+	LOCALS = 过膝袜
+	LOCAL = SETFLAG_SOCKS("过膝袜")
+CASE 104
+	LOCALS = 丝袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "丝袜カラー")
+CASE 105
+	LOCALS = 网袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "蕾丝", "丝袜カラー")
+CASE 106
+	LOCALS = 吊带袜
+	LOCAL = SETFLAG_SOCKS("丝袜", "袜圈", "袜圈カラー")
+CASE 107
+	LOCALS = 足袋
+	LOCAL = SETFLAG_SOCKS("足袋", "白")
+CASE 108
+	LOCALS = 荷叶边及膝袜
+	LOCAL = SETFLAG_SOCKS("及膝袜", "荷叶边", "黒")
+ENDSELECT
+
+SIF ARG:1 > 0 && ARG:2 > 0
+	EQUIP:(ARG:1):靴下 = LOCAL
+
+RETURNF LOCALS
+
+;-------------------------------------------------
+;指示されたとおり之靴下之标志を設定するために使う
+;-------------------------------------------------
+@SETFLAG_SOCKS(ARGS:1, ARGS:2, ARGS:3, ARGS:4, ARGS:5, ARGS:6, ARGS:7, ARGS:8, ARGS:9, ARGS:10)
+#FUNCTION
+#DIM LCOUNT
+
+LOCAL = 0
+FOR LCOUNT, 1, 11
+	ARGS = %ARGS:LCOUNT%
+	SELECTCASE ARGS
+	CASE "足首まで"
+		SETBIT LOCAL, 0
+	CASE "小腿袜"
+		SETBIT LOCAL, 1
+	CASE "及膝袜", "及膝袜"
+		SETBIT LOCAL, 2
+	CASE "过膝袜"
+		SETBIT LOCAL, 3
+	CASE "绑腿"
+		SETBIT LOCAL, 4
+		LOCAL |= SETFLAG_COMMON("足露出")
+	CASE "暖腿袜"
+		SETBIT LOCAL, 5
+		LOCAL |= SETFLAG_COMMON("足露出")
+	CASE "和风"
+		SETBIT LOCAL, 6
+	CASE "足袋"
+		SETBIT LOCAL, 6
+		SETBIT LOCAL, 0
+	CASE "脚絆"
+		SETBIT LOCAL, 6
+		SETBIT LOCAL, 4
+	CASE "丝袜"
+		SETBIT LOCAL, 7
+	CASE "袜圈"
+		SETBIT LOCAL, 8
+	CASE "丝袜カラー"
+		IF RAND:2
+			LOCAL |= SETFLAG_COMMON("白")
+		ELSE
+			LOCAL |= SETFLAG_COMMON("黒")
+		ENDIF
+	CASE "袜圈カラー"
+		IF RAND:3 == 0
+			LOCAL |= SETFLAG_COMMON("纯白")
+		ELSE
+			LOCAL |= SETFLAG_COMMON("Ｈめ之色")
+		ENDIF
+	CASEELSE
+		SIF STRLENS(ARGS)
+			LOCAL |= SETFLAG_COMMON(ARGS)
+	ENDSELECT
+	SIF STRLENS(ARGS:(LCOUNT + 1) ) == 0
+		RETURNF LOCAL
+NEXT
+RETURNF LOCAL
+
+;-------------------------------------------------
+;ARG之靴下が条件ARGSを满たすか确认する
+;-------------------------------------------------
+@CHECK_SOCKS(ARGS, ARG)
+#FUNCTION
+SIF ARG == 0 && TARGET
+	ARG = TARGET
+SIF EQUIP:ARG:靴下 == 0
+	RETURNF 0
+SIF (SETFLAG_SOCKS(ARGS)&EQUIP:ARG:靴下) == SETFLAG_SOCKS(ARGS)
+	RETURNF 1
+RETURNF 0
+

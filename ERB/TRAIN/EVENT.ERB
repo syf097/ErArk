@@ -24,17 +24,17 @@ IF ABL:ARG:欲望
 	ENDSELECT
 ENDIF
 ;精液欲チェック
-IF ABL:ARG:精液成瘾 + TALENT:ARG:梦魇*2 + TALENT:ARG:上位梦魇*2 >= 3
-	CALL SETFLAG, "精液欲槽", ARG
-	SELECTCASE BASE:ARG:精液欲
-	CASE 0
-	;大满足
-	CASE IS >= MAXBASE:ARG:精液欲 * 2
-		SETBIT CFLAG:ARG:99, 4
-	CASE IS >= MAXBASE:ARG:精液欲
-		SETBIT CFLAG:ARG:99, 3
-	ENDSELECT
-ENDIF
+; IF ABL:ARG:精液成瘾 + TALENT:ARG:梦魇*2 + TALENT:ARG:上位梦魇*2 >= 3
+; 	CALL SETFLAG, "精液欲槽", ARG
+; 	SELECTCASE BASE:ARG:精液欲
+; 	CASE 0
+; 	;大满足
+; 	CASE IS >= MAXBASE:ARG:精液欲 * 2
+; 		SETBIT CFLAG:ARG:99, 4
+; 	CASE IS >= MAXBASE:ARG:精液欲
+; 		SETBIT CFLAG:ARG:99, 3
+; 	ENDSELECT
+; ENDIF
 
 ;百合成瘾チェック
 ;PLAYER绝顶チェック
@@ -150,7 +150,7 @@ SIF EXP:调教回数 == 0
 	RETURN 0
 
 MEMO_LINECOUNT = LINECOUNT
-;漏尿経験３０以上で漏尿癖がつく
+;漏尿经验３０以上で漏尿癖がつく
 CALL EVENT_MORASI
 
 ;事件は一つまで
@@ -211,19 +211,19 @@ ELSE
 ENDIF
 
 @EVENT_MORASI
-SIF TIME == 0 || TALENT:漏尿癖 || EXP:漏尿経験 < 30 + CFLAG:34
-	RETURN 0
-;おねしょ
-PRINTFORMW （这……这是怎么回事？）
-PRINTFORM %CALLNAME:TARGET%
-IF TALENT:幼稚
-	PRINTFORM 尿床
-ELSE
-	PRINTFORM 一疏忽就漏尿了
-ENDIF
-PRINTFORMW 已经只能这样…
-PRINTFORMW %CALLNAME:TARGET%获得了[漏尿癖]。
-TALENT:漏尿癖 = 1
+; SIF TIME == 0 || TALENT:漏尿癖 || EXP:漏尿经验 < 30 + CFLAG:34
+; 	RETURN 0
+; ;おねしょ
+; PRINTFORMW （这……这是怎么回事？）
+; PRINTFORM %CALLNAME:TARGET%
+; IF TALENT:幼稚
+; 	PRINTFORM 尿床
+; ELSE
+; 	PRINTFORM 一疏忽就漏尿了
+; ENDIF
+; PRINTFORMW 已经只能这样…
+; PRINTFORMW %CALLNAME:TARGET%获得了[漏尿癖]。
+; TALENT:漏尿癖 = 1
 
 @SELL_MILK
 LOCAL = TFLAG:35 * 10
@@ -232,8 +232,8 @@ IF LOCAL > 0
 	PRINTFORML 用搾乳器榨出了%CALLNAME:TARGET%的{LOCAL}cc之母乳。
 	SIF TALENT:处女 == 1
 		TIMES LOCAL:1 , 1.50
-	SIF TALENT:人气
-		TIMES LOCAL:1 , 1.50
+	; SIF TALENT:人气
+	; 	TIMES LOCAL:1 , 1.50
 	SIF TALENT:巨乳
 		TIMES LOCAL:1 , 1.50
 	LOCAL = MULTIPLY(LOCAL:1, 100 + (RAND:11 + RAND:11) * 10)
@@ -246,21 +246,21 @@ ENDIF
 ;助手之调教終了时特典（狐で媚药入手など）
 @AFTERTRA_BONUS_ASSI
 IF ASSI
-	IF TALENT:ASSI:史莱姆 && ITEM:润滑液 == 0
-		PRINTL 
-		PRINTFORMW %CALLNAME:ASSI%得到了润滑液。
-		ITEM:润滑液 = 1
-	ENDIF
-	IF TALENT:ASSI:妖狐 && ITEM:媚药 == 0
-		PRINTL 
-		PRINTFORMW %CALLNAME:ASSI%得到了媚药。
-		ITEM:媚药 = 1
-	ENDIF
-	IF BASE:ASSI:种族 == 3 && ITEM:茉莉香 == 0
-		PRINTL 
-		PRINTFORMW %CALLNAME:ASSI%得到了茉莉香。
-		ITEM:茉莉香 = 1
-	ENDIF
+	; IF TALENT:ASSI:史莱姆 && ITEM:润滑液 == 0
+	; 	PRINTL 
+	; 	PRINTFORMW %CALLNAME:ASSI%得到了润滑液。
+	; 	ITEM:润滑液 = 1
+	; ENDIF
+	; IF TALENT:ASSI:妖狐 && ITEM:媚药 == 0
+	; 	PRINTL 
+	; 	PRINTFORMW %CALLNAME:ASSI%得到了媚药。
+	; 	ITEM:媚药 = 1
+	; ENDIF
+	; IF BASE:ASSI:种族 == 3 && ITEM:茉莉香 == 0
+	; 	PRINTL 
+	; 	PRINTFORMW %CALLNAME:ASSI%得到了茉莉香。
+	; 	ITEM:茉莉香 = 1
+	; ENDIF
 
 ENDIF
 
@@ -268,7 +268,7 @@ ENDIF
 ;调教終了后それぞれ2/5之确率で体力・气力之最大值が上升
 ;ただし増加する值はそれぞれ＋30が限度に。
 
-;绝顶＆射精回数と高潮回数、精液経験で体力气力増加
+;绝顶＆射精回数と高潮回数、精液经验で体力气力増加
 LOCAL = EXP_GAIN(2) + EXP_GAIN(3) + EXP_GAIN(6)*2 + EXP_GAIN(20)/3
 LOCAL:100 = RAND:5
 SIF LOCAL:100 >= 3 || LOCAL <= RAND:20
@@ -284,8 +284,8 @@ CASE IS < 50
 CASEELSE
 	LOCAL:1 = 10 + RAND:20
 ENDSELECT
-SIF TALENT:魔王之碎片
-	LOCAL:1 += 2
+; SIF TALENT:魔王之碎片
+; 	LOCAL:1 += 2
 SIF !COND("成长済み")
 	LOCAL:1 += 3
 LOCAL:1 = MIN(LOCAL:1, 30)
@@ -383,7 +383,7 @@ FLAG:8 = 1
 ;------------------------------------------------------------------------
 @MEMORY_LOST, ARG
 FOR LOCAL, 0, 999
-	;名前(娘)、名前之长さ、梦魇之ランク、异常経験、経験值寄与、孕娠、家系や种族などは忘れない
+	;名前(娘)、名前之长さ、梦魇之ランク、异常经验、经验值寄与、孕娠、家系や种族などは忘れない
 	SIF (LOCAL >= 4 && LOCAL <= 16) || LOCAL == 33 || LOCAL == 209 || LOCAL == 468 || LOCAL == 469
 		CONTINUE
 
@@ -488,8 +488,8 @@ CASEELSE
 	;绝对变化(性格)
 	CASE "自慰しやすさ"
 		LOCAL = 60
-	CASE "献身"
-		LOCAL = 63
+	; CASE "献身"
+	; 	LOCAL = 63
 	CASE "容易成瘾"
 		LOCAL = 72
 	CASE "好色"

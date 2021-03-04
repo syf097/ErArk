@@ -34,7 +34,7 @@ IF CONFIG("脱处女过滤")
 	CASE 60 TO 69
 		IF TALENT:处女 == 1 && TEQUIP:逆推 == 0
 			PRINTFORM %CALLNAME:TARGET%的处女被
-			IF PENIS(PLAYER) && (CHECK_STAIN(STAIN:PLAYER:Ｐ, "A") || (PREVCOM >= 70 && PREVCOM <= 79) || INSERT("A插入") )
+			IF PENIS(PLAYER) && (CHECK_STAIN(STAIN:PLAYER:P, "A") || (PREVCOM >= 70 && PREVCOM <= 79) || INSERT("A插入") )
 				PRINTFORM 用肛门弄污秽的阴茎
 
 			ELSE
@@ -60,13 +60,13 @@ IF CONFIG("脱处女过滤")
 
 		ENDIF
 	CASE 83
-		IF EXP:尿道性交経験 == 0
-			IF PENIS(TARGET)
-				PRINTFORML %CALLNAME:TARGET%的阴茎的处女被%CALLNAME:PLAYER%的那个给夺走真的可以吗？
-			ELSE
+		; IF EXP:尿道性交经验 == 0
+		; 	IF PENIS(TARGET)
+		; 		PRINTFORML %CALLNAME:TARGET%的阴茎的处女被%CALLNAME:PLAYER%的那个给夺走真的可以吗？
+		; 	ELSE
 				PRINTFORML %CALLNAME:TARGET%的尿道的处女给夺走真的可以吗？
-			ENDIF
-		ENDIF
+		; 	ENDIF
+		; ENDIF
 	ENDSELECT
 
 	IF LINECOUNT > MEMO_LINECOUNT
@@ -106,16 +106,16 @@ IF TEQUIP:逆推 == 0
 	;助手之助言
 	IF ASSI && ABL:ASSI:助手 + TALENT:ASSI:聪慧 >= 3
 		IF CALCF("反抗刻印獲得", TARGET)
-			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@还太早\@ CALCF("反抗刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
+			LOCALS:1 = 「这个PLAY或许对%CALLNAME:TARGET%还太早\@ CALCF("反抗刻印獲得", TARGET) >= 2 ? 了一些 #  \@ 」
 		ELSEIF CALCF("苦痛刻印獲得", TARGET)
 			LOCALS:1 = 「这个PLAY或许会\@ CALCF("苦痛刻印獲得", TARGET) >= 2 ? 伴随着相当的苦痛 # 有些痛 \@」
 			SELECTCASE SELECTCOM
 			CASE 2, 33
 				SIF PALAM:A润 < 10000
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享用的话用一下润滑液或许会比较……」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享用的话用一下润滑液或许会比较……」
 			;V润が必要と助言
 			CASE 60 TO 79
-				SELECTCASE GET_PALAMLV(PALAM:V润 + PALAM:PLAYER:Ｐ润) - MAX(SIZE("阴茎", PLAYER) - ABL:V扩张, 0)
+				SELECTCASE GET_PALAMLV(PALAM:V润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:V扩张, 0)
 				CASE 1
 
 				CASE IS <= 0
@@ -123,11 +123,11 @@ IF TEQUIP:逆推 == 0
 				ENDSELECT
 			;A润が必要と助言
 			CASE 70 TO 79
-				SELECTCASE GET_PALAMLV(PALAM:A润 + PALAM:PLAYER:Ｐ润) - MAX(SIZE("阴茎", PLAYER) - ABL:A扩张, 0)
+				SELECTCASE GET_PALAMLV(PALAM:A润 + PALAM:PLAYER:P润) - MAX(SIZE("阴茎", PLAYER) - ABL:A扩张, 0)
 				CASE 1
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享乐的话、要用一下润滑液吗…」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享乐的话、要用一下润滑液吗…」
 				CASE IS <= 0
-					LOCALS:1 = 「%CALLNAME:TARGET%\@ TALENT:ASSI:魔导人偶 ? 酱 # \@的未熟的菊花要享乐的话用一下润滑液比较……」
+					LOCALS:1 = 「%CALLNAME:TARGET%的未熟的菊花要享乐的话用一下润滑液比较……」
 				ENDSELECT
 			ENDSELECT
 		ENDIF
@@ -213,7 +213,7 @@ CASE 83
 	CALL TEXT, "追加地之文：尿道插入后"
 ENDSELECT
 
-SIF LINECOUNT > MEMO_LINECOUNT || COND("３Ｐ")
+SIF LINECOUNT > MEMO_LINECOUNT || COND("３P")
 	RETURN 0
 
 ;追加自慰
@@ -221,7 +221,7 @@ IF SELECTCOM != PREVCOM && SELECTCOM >= 90 && SELECTCOM <= 119
 	CALL PLAY_ONANIE
 	CALL PLAY_ONANIE_2
 ;A感觉LV3+绝顶あり+连续A性爱
-ELSEIF SELECTCOM >= 70 && SELECTCOM <= 79 && SELECTCOM == PREVCOM && TEQUIP:逆推 == 0 && ABL:A感觉 >= 3 && EX:绝顶数合计 && INSERT("A插入") && COND("前Ｔ调教者") == PLAYER && TALENT:性别 != 1
+ELSEIF SELECTCOM >= 70 && SELECTCOM <= 79 && SELECTCOM == PREVCOM && TEQUIP:逆推 == 0 && ABL:A感觉 >= 3 && EX:绝顶数合计 && INSERT("A插入") && COND("前T调教者") == PLAYER && TALENT:性别 != 1
 	IF RAND:3 == 0
 		PRINTFORM 从因激烈的插抜而变形的%CALLNAME:TARGET%的那里、
 
@@ -248,7 +248,7 @@ ELSEIF SELECTCOM >= 70 && SELECTCOM <= 79 && SELECTCOM == PREVCOM && TEQUIP:逆�
 	PRINTFORMW 爱液…
 
 ;骑乘位之追加文本
-ELSEIF (SELECTCOM == 65 || SELECTCOM == 75 || SELECTCOM == 83) && (INSERT("插入") == 0 || COND("前Ｔ调教者") != PLAYER)
+ELSEIF (SELECTCOM == 65 || SELECTCOM == 75 || SELECTCOM == 83) && (INSERT("插入") == 0 || COND("前T调教者") != PLAYER)
 	CALL TEXT, "追加地之文：骑乘位"
 ;どちらかがそろそろ绝顶边缘な状态
 ;指令ごとに固有之追加台词などはここに书く
@@ -276,11 +276,11 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 60, 83
 		PRINTFORM %CALLNAME:TARGET%
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
-			ENDIF
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
+			; ENDIF
 			IF RAND:2
 				PRINTFORM 一边吸引着、
 
@@ -330,12 +330,12 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 70
 		PRINTFORM %CALLNAME:TARGET%は
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%吸引着视线的同时、
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%吸引着视线的同时、
 
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%卖弄着的同时、
-			ENDIF
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%卖弄着的同时、
+			; ENDIF
 			IF COND("视力") && RAND:2
 				PRINTFORMW 带着兴奋的神色凝视着%CALLNAME:PLAYER%…
 			ELSE
@@ -355,11 +355,11 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 	CASE 62, 72
 		PRINTFORM %CALLNAME:TARGET%は
 		IF RAND:2 && COND("指之使用") && CHECK_CLO("腋露出") && (COND("性癖：腋", PLAYER) || RAND:3 == 0)
-			IF RAND:2
-				PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
-			ELSE
-				PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
-			ENDIF
+			; IF RAND:2
+			; 	PRINTFORM 用手撩起头发%TEXTS("腋：视覚")%を
+			; ELSE
+			; 	PRINTFORM \@ TALENT:多手 ? 手 # 两手 \@を往头的后面编织%TEXTS("腋：视覚")%を
+			; ENDIF
 			IF RAND:2
 				PRINTFORM 一边吸引着、
 
@@ -373,7 +373,7 @@ ELSEIF SELECTCOM >= 60 && SELECTCOM <= 89 && COND("绝顶边缘") + COND("绝顶
 				PRINTFORMW 兴奋的呼吸着并接受着%CALLNAME:PLAYER%的突进…
 			ENDIF
 			CALL SETFLAG, "腋现せ标志", TARGET
-		ELSEIF RAND:2 && ABL:露阴癖 >= 3 && MARK:屈服刻印 >= 2 && COND("指之使用")
+		ELSEIF RAND:2  && MARK:屈服刻印 >= 2 && COND("指之使用")
 			PRINTFORMW 用自己的胳膊抱起双脚、積極的用羞耻的体位愉悦的享受着…
 
 		ELSE
@@ -434,8 +434,8 @@ ELSEIF RAND:3 == 0 && SELECTCOM >= 0 && SELECTCOM <= 19 && INSERT("插入") && (
 		SIF PENIS(TARGET) == 0 && ABL:C感觉 < 3
 			RETURN 0
 	CASE 15
-		SIF TALENT:尿道性感 == 0
-			RETURN 0
+		; SIF TALENT:尿道性感 == 0
+		; 	RETURN 0
 	ENDSELECT
 
 	IF RAND:4 == 0
@@ -544,10 +544,10 @@ IF NOWEX:绝顶数合计
 
 		CASE 83
 			IF TEQUIP:逆推
-				IF TALENT:尿道狂
-					PRINTFORM 从尿道奔涌而上的快乐让%TEXTR("头脑一阵空白", "流着口水", "沉迷的动起了腰")%
+				; IF TALENT:尿道狂
+				; 	PRINTFORM 从尿道奔涌而上的快乐让%TEXTR("头脑一阵空白", "流着口水", "沉迷的动起了腰")%
 
-				ELSEIF PENIS(TARGET)
+				IF PENIS(TARGET)
 					PRINTFORM 阴茎的内部被%CALLNAME:PLAYER%侵犯着
 				ELSE
 					PRINTFORM 被用尿道来sex的%CALLNAME:PLAYER%侵犯着
@@ -897,13 +897,13 @@ ELSEIF NOWEX:绝顶数合计
 		ELSE
 			PRINTFORM %LOCALS%干净、
 		ENDIF
-		IF TALENT:胆怯 + TALENT:清纯 && RANDIF(2, TALENT:好色, TALENT:开朗, TALENT:怕羞, TALENT:献身)
+		IF TALENT:胆怯  && RANDIF(2, TALENT:好色, TALENT:开朗, TALENT:怕羞)
 			PRINT 小心翼翼
 
-		ELSEIF TALENT:好色 && RANDIF(2, TALENT:开朗, TALENT:怕羞, TALENT:献身)
+		ELSEIF TALENT:好色 && RANDIF(2, TALENT:开朗, TALENT:怕羞)
 			PRINT 开心
 
-		ELSEIF TALENT:开朗 && RANDIF(2, TALENT:怕羞, TALENT:献身)
+		ELSEIF TALENT:开朗 && RANDIF(2, TALENT:怕羞)
 			IF LOCAL == 0
 				PRINT 娇羞
 
@@ -912,15 +912,15 @@ ELSEIF NOWEX:绝顶数合计
 				PRINT 侍奉般
 
 			ENDIF
-		ELSEIF TALENT:献身 && RANDIF(2, TALENT:怕羞)
+		ELSEIF RANDIF(2, TALENT:怕羞)
 			PRINT 温柔
 
 		ELSEIF TALENT:怕羞 && RAND:2
 			PRINT 害羞
 
 		ELSEIF MARK:屈服刻印 >= 2 && RAND:3 == 0
-			;口交経験丰富
-			IF LOCAL == 0 && ABL:欲望 >= 3 && INSERT("插入") && EXP:口交経験 >= 50 && PENIS(PLAYER) && RAND:3
+			;口交经验丰富
+			IF LOCAL == 0 && ABL:欲望 >= 3 && INSERT("插入") && EXP:口交经验 >= 50 && PENIS(PLAYER) && RAND:3
 				PRINT 带着兴奋的样子
 
 			ELSE
@@ -931,10 +931,10 @@ ELSEIF NOWEX:绝顶数合计
 			PRINT 老实
 
 		ELSE
-			IF TALENT:献身
-				PRINT 温柔
+			; IF TALENT:献身
+			; 	PRINT 温柔
 
-			ELSEIF TALENT:怕羞
+			IF TALENT:怕羞
 				PRINT 害羞
 
 			ELSE
@@ -964,8 +964,8 @@ ELSEIF NOWEX:绝顶数合计
 			IF CHECK_STAIN(STAIN:PLAYER:手, "精液")
 				PRINTL 附着的精液被漂亮地舔取了…
 
-				EXP:精液経験 += 1
-				PRINTFORML 精液経験+1
+				EXP:精液经验 += 1
+				PRINTFORML 精液经验+1
 			ELSE
 				PRINTL 将手指舔了和洗净…
 
@@ -981,8 +981,8 @@ ELSEIF NOWEX:绝顶数合计
 			PRINTL 眯起了眼睛…
 
 		ENDIF
-		;指ちゅぱ経験+1
-		EXP:吮指経験 += 1
+		;指ちゅぱ经验+1
+		EXP:吮指经验 += 1
 	ELSEIF NOWEX:绝顶数合计 && (NOWEX:绝顶数合计 >= 2 || BASE:性欲 >= MAXBASE:性欲)
 		PRINTFORM %CALLNAME:TARGET%
 		IF COND("指之使用") && TALENT:性别 != 1 && RAND:3 == 0
@@ -1024,7 +1024,7 @@ ELSEIF NOWEX:绝顶数合计
 				IF ABL:精液成瘾 >= 3 && NOWEX:射精 && COND("口之使用") && INSERT("屈曲位") && RAND:2
 					PRINT 一边张嘴娇喘着，一边快乐的榨取着精液
 
-					EXP:精液経験 += 1
+					EXP:精液经验 += 1
 					STAIN:M = SET_STAIN(STAIN:M, "精液")
 				ELSEIF RAND:2
 					PRINT 一边被阴茎玩弄着
@@ -1141,10 +1141,10 @@ ELSEIF NOWEX:绝顶数合计
 	ENDIF
 ENDIF
 
-IF NOWEX:绝顶数合计 + NOWEX:射精 >= RAND:3 + 1 && STATE("束缚术：Ｐ", PLAYER)
+IF NOWEX:绝顶数合计 + NOWEX:射精 >= RAND:3 + 1 && STATE("束缚术：P", PLAYER)
 	PRINTFORML …%CALLNAME:TARGET%因为多次的绝顶，对阴茎的束缚术慢慢松懈了
 
-	CALL SETFLAG, "Ｐ束缚术弱体标志", PLAYER
+	CALL SETFLAG, "P束缚术弱体标志", PLAYER
 ENDIF
 
 ;绝顶おもらし…利尿剂が无いと、まず漏尿はしない。漏尿癖があると、しやすくなる。
@@ -1362,11 +1362,11 @@ SIF CONFIG("EmueraTunes")
 @EVENT_OMORASHI, ARG
 IF ARG >= 2
 	PRINTFORML %EXPNAME:33%＋2
-	EXP:漏尿経験 += 2
+	EXP:漏尿经验 += 2
 	BASE:尿意 = 0
 ELSE
 	PRINTFORML %EXPNAME:33%＋1
-	EXP:漏尿経験 += 1
+	EXP:漏尿经验 += 1
 	BASE:尿意 = MAX(BASE:尿意 - 20000, 0)
 ENDIF
 TEQUIP:利尿剂 = 0
@@ -1483,15 +1483,15 @@ CASE "指令"
 		LOCAL = TCVAR:PLAYER:101
 
 		VARSET LOCALS
-		FOR LCOUNT, 0, NUM("弱点")
-			SIF GETBIT(TALENT:MASTER:弱点, LCOUNT) == 0 || GETBIT(WEEKNESS, LCOUNT) == 0
-				CONTINUE
-			LOCAL:1 += 1
-			SIF RAND:(LOCAL:1)
-				CONTINUE
-			LOCALS = %NAMES("弱点", LCOUNT)%
-			LOCAL += 1000 * LOCAL:1
-		NEXT
+		; FOR LCOUNT, 0, NUM("弱点")
+		; 	SIF GETBIT(TALENT:MASTER:弱点, LCOUNT) == 0 || GETBIT(WEEKNESS, LCOUNT) == 0
+		; 		CONTINUE
+		; 	LOCAL:1 += 1
+		; 	SIF RAND:(LOCAL:1)
+		; 		CONTINUE
+		; 	LOCALS = %NAMES("弱点", LCOUNT)%
+		; 	LOCAL += 1000 * LOCAL:1
+		; NEXT
 
 		SIF LOCALS == ""
 			RETURN 0
@@ -1500,18 +1500,18 @@ CASE "指令"
 		LOCAL = MULTIPLY(LOCAL, 100 + EXP_GAIN(74, PLAYER)*10)
 
 		;性癖合致度
-		FOR LCOUNT, 0, NUM("属性")
-			SIF GETBIT(BASE:属性, LCOUNT) && GETBIT(TALENT:PLAYER:性癖, LCOUNT)
-				LOCAL += LOCAL*20/100 + 1000
-		NEXT
+		; FOR LCOUNT, 0, NUM("属性")
+		; 	SIF GETBIT(BASE:属性, LCOUNT) && GETBIT(TALENT:PLAYER:性癖, LCOUNT)
+		; 		LOCAL += LOCAL*20/100 + 1000
+		; NEXT
 		;偏爱or相思相爱
-		IF PLAYER == MASTER
-			IF TALENT:相思相爱
-				LOCAL += LOCAL*30/100 + 2000
-			ELSEIF TALENT:偏爱
-				LOCAL += LOCAL*20/100 + 1000
-			ENDIF
-		ENDIF
+		; IF PLAYER == MASTER
+		; 	IF TALENT:相思相爱
+		; 		LOCAL += LOCAL*30/100 + 2000
+		; 	ELSEIF TALENT:偏爱
+		; 		LOCAL += LOCAL*20/100 + 1000
+		; 	ENDIF
+		; ENDIF
 
 		SIF LOCAL < 1000 || LOCAL + BASE:PLAYER:绝顶 < MAX(MAXBASE:PLAYER:绝顶/4, 5000) || RAND:3
 			RETURN 0
@@ -1619,7 +1619,7 @@ CASE "精液"
 		SIF EXP_GAIN(80) && RAND:3
 			RETURN 0
 		NOWEX:尿道绝顶 = 1
-		EX:尿道绝顶 += 1
+		; EX:尿道绝顶 += 1
 
 		TIMES CUP:V润, 2.00
 		TIMES CUP:欲情, 2.00
@@ -1666,7 +1666,7 @@ CASE "精液"
 
 		PRINTFORMW 绝顶了！
 	ELSEIF SHOOT("V中出")
-		IF BASE:胎内精子量 < 100 && NOWEX:V中出 == EX:V中出 && RAND:2
+		IF  NOWEX:V中出 == EX:V中出 && RAND:2
 			PRINTFORM 在饥饿的子宮里用精液款待了一番
 
 		ELSEIF RAND:2
@@ -1827,46 +1827,46 @@ LOCALS = %STR:100%
 
 SELECTCASE LOCALS
 CASE "指插れ", "按摩棒刺激", "自慰"
-	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:手交経験 += ABL:技巧/2 + 1
+	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "快乐强暴"
-	LOCAL += ABL:腰技 * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:V插入経験 += ABL:技巧/2 + 1
-	EXP:PLAYER:V性交経験 += ABL:TARGET:技巧/2 + 1
+	LOCAL += ABL:腰技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:V插入经验 += ABL:技巧/2 + 1
+	EXP:PLAYER:V性交经验 += ABL:TARGET:技巧/2 + 1
 	EXP:PLAYER:V经验 += ABL:TARGET:技巧/2 + 1
 CASE "舐阴"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:舐阴経験 += ABL:技巧/2 + 1
+	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:舐阴经验 += ABL:技巧/2 + 1
 CASE "口交"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐経験 + RAND:100 + RAND:10
-	EXP:口交経験 += ABL:技巧/2 + 1
+	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:100 + RAND:10
+	EXP:口交经验 += ABL:技巧/2 + 1
 CASE "乳交"
-	LOCAL += (ABL:舌技 + ABL:魔乳) * 1000 +  EXP:奉仕快乐経験 + RAND:10
-	EXP:乳交経験 += ABL:技巧/2 + 1
+	LOCAL += (ABL:舌技 + ABL:魔乳) * 1000 +  EXP:奉仕快乐经验 + RAND:10
+	EXP:乳交经验 += ABL:技巧/2 + 1
 CASE "手交", "飞机杯奉侍"
-	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:手交経験 += ABL:技巧/2 + 1
+	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "接吻"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:接吻経験 += ABL:技巧/2 + 1
-	EXP:PLAYER:接吻経験 += ABL:技巧/2 + 1
+	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:接吻经验 += ABL:技巧/2 + 1
+	EXP:PLAYER:接吻经验 += ABL:技巧/2 + 1
 CASE "胸爱抚", "搾乳PLAY"
-	LOCAL += (ABL:指技 + ABL:魔乳) * 1000 + EXP:奉仕快乐経験 + RAND:10
-	EXP:手交経験 += ABL:技巧/2 + 1
+	LOCAL += (ABL:指技 + ABL:魔乳) * 1000 + EXP:奉仕快乐经验 + RAND:10
+	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "尻尾阴茎刺激", "尻尾刺激"
-	LOCAL += ABL:技巧 * 1000 + MIN(EXP:奉仕快乐経験 + CFLAG:2, MAXBASE:PLAYER:绝顶) + RAND:1000
+	LOCAL += ABL:技巧 * 1000 + MIN(EXP:奉仕快乐经验 + CFLAG:2, MAXBASE:PLAYER:绝顶) + RAND:1000
 	LOCAL *= 9
-	EXP:嗜虐快乐経験 += ABL:技巧*9
+	EXP:嗜虐快乐经验 += ABL:技巧*9
 ENDSELECT
-;其他経験
+;其他经验
 IF TALENT:性别 == 0 && TALENT:PLAYER:性别 == 0
-	EXP:百合経験 += RAND:5 + 1
-	EXP:PLAYER:百合経験 += RAND:5 + 1
+	EXP:百合经验 += RAND:5 + 1
+	EXP:PLAYER:百合经验 += RAND:5 + 1
 ELSEIF TALENT:性别== 1 && TALENT:PLAYER:性别== 1
-	EXP:男同経験 += RAND:5 + 1
-	EXP:PLAYER:男同経験 += RAND:5 + 1
+	EXP:男同经验 += RAND:5 + 1
+	EXP:PLAYER:男同经验 += RAND:5 + 1
 ENDIF
-EXP:嗜虐快乐経験 += ABL:技巧
+EXP:嗜虐快乐经验 += ABL:技巧
 
 TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS
 
@@ -1896,13 +1896,13 @@ ELSE
 		TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS:1
 
 		;追击された场合は必殺
-		LOCAL = 100000 + EXP:奉仕快乐経験 + RAND:10000
+		LOCAL = 100000 + EXP:奉仕快乐经验 + RAND:10000
 		CALL TEXT, "绝顶计算", LOCAL
 		CALL BOUHATSU
 
 		;余力がある场合はさらに追击判定(CALL BOUHATUなどはこ之台词之中で行う)
 		IF BASE:PLAYER:精力 >= 10
-			LOCALS:1 = ＥＸ追击：%LOCALS%
+			LOCALS:1 = EＸ追击：%LOCALS%
 			TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS:1
 		ENDIF
 
