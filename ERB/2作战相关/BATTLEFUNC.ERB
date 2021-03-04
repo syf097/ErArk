@@ -1,6 +1,56 @@
 ﻿@ENEMY_ATTACK,ARGS,ARG:0,ARG:1,ARG:2  ;关卡名，位置X、Y,敌方单位序号
 CALLFORM RANGE_{ENEMY_DRANGE:(ARG:2)}(ARGS,ARG:0,ARG:1,ARG:2)
 
+;=================
+;config operator
+;=================
+@CONFOP,ARG:0,ARG:1,ARG:2
+PRINTL [0]撤退
+PRINTFORML [1]使用技能（\@BASE:(ARG:2):选择技能==0?无技能#技能{BASE:(ARG:2):选择技能}\@）
+PRINTL [999]返回
+INPUT
+SELECTCASE RESULT
+    CASE 0
+        BASE:(ARG:2):部署位置=-1
+        BASE:(ARG:2):剩余部署时间=BASE:(ARG:2):8 ;重置冷却
+    CASE 1
+        CALLFORM SKILL_{NO:(ARG:2)}(ARG:1,ARG:0,1)
+    CASE 999
+        RETURN
+ENDSELECT
+
+;=================
+;select operator
+;=================
+@SELECTOP,ARG=1
+PRINTLC 名称
+PRINTLC 阻挡数
+PRINTLC 费用
+PRINTLC 所选技能编号
+PRINTL
+DRAWLINE 
+FOR COUNT, 0, 11
+    IF SQUAD:COUNT!=0
+        IF BASE:(SQUAD:COUNT):部署位置==-1
+            IF BASE:(SQUAD:COUNT):剩余部署时间==0
+                PRINTFORMLC [{COUNT}]%CALLNAME:(SQUAD:COUNT)% 
+                PRINTFORMLC {BASE:(SQUAD:COUNT):阻挡数}     
+                PRINTFORMLC {BASE:(SQUAD:COUNT):部署费用}   
+                PRINTFORMLC \@BASE:(SQUAD:COUNT):选择技能==0?无#技能{BASE:(SQUAD:COUNT):选择技能}\@
+                PRINTL  
+            ELSE
+                PRINTFORML [冷却中]%CALLNAME:(SQUAD:COUNT)%
+            ENDIF
+        ENDIF
+    ENDIF
+NEXT
+DRAWLINE 
+PRINTL [999]返回
+INPUT
+SIF RESULT==999
+    RETURN 999
+RETURN SQUAD:RESULT
+
 @DEACTIVE_SKILL
 #DIM COUNT2
 FOR COUNT,2,CHARANUM
@@ -29,7 +79,7 @@ ELSE
     RETURN RESULT*(1000-ENEMY_DEFENCE:(ARG:2))/1000
 ENDIF
 
-@DAMAGE_法术,ARG:0,ARG:1,ARG:2,ARG:3=0  ;伤害量，目标是否为干员，目标
+@DAMAGE_法术,ARG:0,ARG:1,ARG:2,ARG:3=0  ;伤害量，目标是否为干员，目标，来源
 IF ARG:1
     RETURN ARG:0*(1000-BASE:(ARG:2):法术抗性)/1000
 ELSE
@@ -45,6 +95,8 @@ FOR COUNT2,0,100
     SELECTCASE BUFF:(ARG:0):COUNT2
         CASE "战术咏唱_阿米娅"
             BASE_DAM=BASE_DAM*15/10
+        CASE "迅捷打击"
+            BASE_DAM=BASE_DAM*13/10
     ENDSELECT
 NEXT
 RETURN BASE_DAM

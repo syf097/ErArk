@@ -12,22 +12,21 @@
 ;initialize
 ;=================
 ALIGNMENT CENTER
-PRINTW 关卡0-2
+PRINTW 关卡0-1
 PRINTL 教学关卡
 ALIGNMENT LEFT
 PRINTL 敌人每回合将会从左往右移动一个，部署干员阻挡他们
 PRINTW 请将夜刀部署至10号位
 FOR COUNT, 0, CHARANUM
-    BASE:COUNT:12=-1;
-    BASE:COUNT:15=BASE:COUNT:13
-    BASE:COUNT:14=0
-    BASE:COUNT:17=0
-    BASE:COUNT:18=0
+    BASE:COUNT:部署位置=-1;
+    BASE:COUNT:剩余生命值=BASE:COUNT:生命值
+    BASE:COUNT:剩余部署时间=0
+    BASE:COUNT:技能剩余时间=0
+    BASE:COUNT:技力=0
 NEXT
 FOR COUNT2,0,20
     FOR STACK,0,20
         FOR COUNT,0,20
-            ENEMYS:COUNT2:STACK= 
             ENEMY:COUNT2:COUNT:STACK=0
             ENEMYH:COUNT2:COUNT:STACK=0            
         NEXT
@@ -90,37 +89,39 @@ $INPUT_LOOP
 ;================
 CLEARLINE 100
 PRINTFORML 剩余生命值{HEALTH}剩余敌人数{ENEMYLEFT}部署费用{COST}
-DRAWLINE -
+DRAWLINE 
 FOR COUNT2,0,HEIGHT
     ;render operator
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B02(COUNT,COUNT2)                                                                  ;MODIFY
+        CALL GETOPERATOR_B02(COUNT,COUNT2)
         IF RESULT==-1
-            PRINTFORM [{COUNT+COUNT2*WEIGHT}]可部署           
+            PRINTFORMLC [{COUNT+COUNT2*WEIGHT}]可部署           
         ELSE
-            PRINTFORM [{COUNT+COUNT2*WEIGHT}]%CALLNAME:RESULT%%"("%{BASE:RESULT:15}%")"%       
+            PRINTFORMLC [{COUNT+COUNT2*WEIGHT}]%CALLNAME:RESULT%%"("%{BASE:RESULT:剩余生命值}%")"%
         ENDIF
     NEXT
-    PRINTFORM \n
+    PRINTL
     ;render enemies
     FOR STACK,0,20
         COUNT3=0
-        ENEMYS:COUNT2:STACK= 
-        FOR COUNT,0,WEIGHT
-            IF ENEMY:COUNT2:COUNT:STACK==0
-                ENEMYS:COUNT2:STACK+= " "*30      
-            ELSE
-                ENEMYS:COUNT2:STACK+=@"%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%{ENEMYH:COUNT2:COUNT:STACK}HP"  
-                COUNT3++
-            ENDIF
-        NEXT
-        SIF COUNT3>0||STACK==0
-        PRINTFORM %ENEMYS:COUNT2:STACK%\n
+        REPEAT WEIGHT
+        SIF ENEMY:COUNT2:COUNT:STACK
+            COUNT3++
+        REND
+        IF COUNT3>0||STACK==0
+            FOR COUNT,0,WEIGHT
+                IF ENEMY:COUNT2:COUNT:STACK==0
+                    PRINTLC    
+                ELSE
+                    PRINTFORMLC %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%{ENEMYH:COUNT2:COUNT:STACK}HP
+                ENDIF
+            NEXT 
+            PRINTL
+        ENDIF
     NEXT
-    PRINTFORM \n
-    DRAWLINE -
+    DRAWLINE 
 NEXT
-PRINTFORM \n
+PRINTL
 ;================
 ;drawmenu
 ;================
@@ -129,22 +130,22 @@ PRINT [900]下一步
 INPUT
 POINTER=RESULT
 IF RESULT<HEIGHT*WEIGHT
-    CALL GETOPERATOR_B02(RESULT%WEIGHT,RESULT/WEIGHT)                                       ;MODIFY                           
+    CALL GETOPERATOR_B02(POINTER%WEIGHT,POINTER/WEIGHT)
     IF RESULT==-1;
-        CALL SELECTOP_B02(1)
-        IF RESULT!=999                                                                      ;MODIFY
-        IF COST>BASE:RESULT:9
+        CALL SELECTOP(1)
+        IF RESULT!=999
+        IF COST>=BASE:RESULT:部署费用
             PRINTFORML %CALLNAME:RESULT%部署至{POINTER}
             PRINTW
-            BASE:RESULT:12=POINTER
-            BASE:RESULT:17=0
-            COST-=BASE:RESULT:9
+            BASE:RESULT:部署位置=POINTER
+            BASE:RESULT:技能剩余时间=0
+            COST-=BASE:RESULT:部署费用
         ELSE
             PRINTW 费用不足
         ENDIF
         ENDIF
     ELSE
-        CALL CONFOP_B02(POINTER%WEIGHT,POINTER/WEIGHT,RESULT)                                                             ;MODIFY
+        CALL CONFOP(POINTER%WEIGHT,POINTER/WEIGHT,RESULT)
     ENDIF
 ELSE
     SIF RESULT==900
@@ -158,14 +159,14 @@ $ROUNDCAL
 ;=================
 FOR COUNT2,0,HEIGHT
     FOR COUNT,0,WEIGHT
-        CALL GETOPERATOR_B02(COUNT,COUNT2)          ;MODIFY
+        CALL GETOPERATOR_B02(COUNT,COUNT2)
         LOCAL=RESULT
         IF LOCAL!=-1
-            BASE:LOCAL:18++
-            SIF BASE:LOCAL:17>0
-            BASE:LOCAL:17--            
+            BASE:LOCAL:技力++
+            SIF BASE:LOCAL:技能剩余时间>0
+            BASE:LOCAL:技能剩余时间--            
             LOCAL=NO:LOCAL
-            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT,"B02")   ;MODIFY
+            CALLFORM ATTACK_{LOCAL}(COUNT2,COUNT,"B02")   
             CALLFORM SKILL_{LOCAL}(COUNT2,COUNT,0)     
         ENDIF
     NEXT
@@ -188,28 +189,27 @@ FOR COUNT2,0,HEIGHT
                     CONTINUE
                 ENDIF 
                 ;attack
-                CALL ENEMY_ATTACK("B02",COUNT,COUNT2,ENEMY:COUNT2:COUNT:STACK)              ;MODIFY
-
-                FOR  COUNT3,2,CHARANUM
-                    SIF BASE:COUNT3:14>0
-                        BASE:COUNT3:14--                ;剩余部署时间减少
-                    IF BASE:COUNT3:15<=0
+                CALL ENEMY_ATTACK("B02",COUNT,COUNT2,ENEMY:COUNT2:COUNT:STACK)
+                FOR  COUNT3,1,CHARANUM
+                    SIF BASE:COUNT3:剩余部署时间>0
+                        BASE:COUNT3:剩余部署时间--                ;剩余部署时间减少
+                    IF BASE:COUNT3:剩余生命值<=0
                         PRINTFORMW %CALLNAME:COUNT3%倒下了
                         PRINTW
-                        BASE:COUNT3:14=BASE:COUNT3:8
-                        BASE:COUNT3:12=-1
-                        BASE:COUNT3:15=BASE:COUNT3:13
+                        BASE:COUNT3:剩余部署时间=BASE:COUNT3:再部署时间
+                        BASE:COUNT3:部署位置=-1
+                        BASE:COUNT3:剩余生命值=BASE:COUNT3:生命值
                         CALLFORM SKILL_{NO:COUNT3}(COUNT2,COUNT,2) ;DEACTIVE SKILL
                     ENDIF
                 NEXT
                 ;cal block number
-                CALL GETOPERATOR_B02(COUNT,COUNT2)                              ;MODIFY
+                CALL GETOPERATOR_B02(COUNT,COUNT2)
                 BLOCK=0
                 FOR COUNT3,0,20
                     SIF ENEMY:COUNT2:COUNT:COUNT3!=0
                     BLOCK++
                 NEXT
-                IF RESULT==-1||BASE:RESULT:10<BLOCK ;FORWARD
+                IF RESULT==-1||BASE:RESULT:阻挡数<BLOCK ;FORWARD
                     IF COUNT==0 ;LOSE ONE
                         PRINTFORML 一个%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%进入了蓝门
                         HEALTH-=1
@@ -269,65 +269,24 @@ ALIGNMENT CENTER
 PRINTW 作战成功
 MONEY+=750
 PRINTFORMW 获得龙门币750
-IF LEVEL_A==0
+IF LEVEL_A==1
     MONEY:1+=1
     PRINTW 获得源石1
 ENDIF
 ALIGNMENT LEFT
-SIF LEVEL_A<2                                   ;MODIFY
-LEVEL_A=2                                       ;MODIFY
-RESETCOLOR  
+SIF LEVEL_A<2
+LEVEL_A=2
+RESETCOLOR
 RETURN
 
-
-;=================
-;config operator
-;=================
-@CONFOP_B02,ARG:0,ARG:1,ARG:2                  ;MODIFY
-PRINTL [0]撤退
-PRINTFORML [1]使用技能（\@BASE:(ARG:2):16==0?无技能#技能{BASE:(ARG:2):16}\@）
-PRINTL [999]返回
-INPUT
-SELECTCASE RESULT
-    CASE 0
-        BASE:(ARG:2):12=-1
-        BASE:(ARG:2):14=BASE:(ARG:2):8 ;重置冷却
-    CASE 1
-        CALLFORM SKILL_{NO:(ARG:2)}(ARG:1,ARG:0,1)
-    CASE 999
-        RETURN
-ENDSELECT
-;=================
-;select operator
-;=================
-@SELECTOP_B02,ARG=1                             ;MODIFY
-DRAWLINE =
-FOR COUNT, 0, 11
-    IF SQUAD:COUNT!=0
-        IF BASE:(SQUAD:COUNT):12==-1
-            IF BASE:(SQUAD:COUNT):14==0
-                PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%   挡{BASE:(SQUAD:COUNT):10}     {BASE:(SQUAD:COUNT):9}费   \@BASE:(SQUAD:COUNT):16==0? #技能{BASE:(SQUAD:COUNT):16}\@  
-            ELSE
-                PRINTFORML [冷却中]%CALLNAME:(SQUAD:COUNT)%
-            ENDIF
-        ENDIF
-    ENDIF
-NEXT
-DRAWLINE =
-PRINTL [999]返回
-INPUT
-SIF RESULT==999
-    RETURN 999
-RETURN SQUAD:RESULT
-
-@GETOPERATOR_B02(ARG:0,ARG:1)               ;MODIFY
+@GETOPERATOR_B02(ARG:0,ARG:1)
 #DIM COUNT3
 #DIM POS 
 POS=ARG:0+ARG:1*7
 SIF POS<0
     RETURN -1
 FOR COUNT3, 0, CHARANUM
-    SIF BASE:COUNT3:12==POS
+    SIF BASE:COUNT3:部署位置==POS
         RETURN COUNT3
 NEXT
 RETURN -1

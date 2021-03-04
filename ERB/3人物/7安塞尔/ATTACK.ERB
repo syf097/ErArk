@@ -14,10 +14,10 @@ FOR COUNT3,0,RANGE
             CALLFORM GETOPERATOR_%ARGS%(ARG:1+COUNT3,ARG:0+COUNT4)
             IF RESULT!=-1&&BASE:RESULT:剩余生命值<BASE:RESULT:生命值
             IF BASE:RESULT:技能剩余时间>0
-               BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击 
-               PRINTFORMW 安塞尔恢复了%CALLNAME:RESULT%{BASE:LOCAL:攻击}生命值
+                BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击 
+                PRINTFORMW 安塞尔恢复了%CALLNAME:RESULT%{BASE:LOCAL:攻击}生命值
             ELSE
-               BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击*15/10
+                BASE:RESULT:剩余生命值+=BASE:LOCAL:攻击*15/10
             ENDIF           
             SIF BASE:RESULT:剩余生命值>BASE:RESULT:生命值
                 BASE:RESULT:剩余生命值=BASE:RESULT:生命值

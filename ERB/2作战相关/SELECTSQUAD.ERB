@@ -7,7 +7,7 @@ FOR COUNT,0,ARG
     IF SQUAD:COUNT==0
         PRINTFORML [{COUNT}]可选择
     ELSE
-        PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)%  {BASE:(SQUAD:COUNT):10}
+        PRINTFORML [{COUNT}]%CALLNAME:(SQUAD:COUNT)% 
     ENDIF
 NEXT
 IF ARG<10
@@ -22,23 +22,33 @@ LOCAL=RESULT
 IF RESULT<ARG
     CLEARLINE 100
     PRINTL □ 选择干员 □---------------------------------------------------------
-    FOR COUNT,2,CHARANUM
-        IF BASE:COUNT:40==0
-            IF BASE:COUNT:11==0 
-                PRINTFORML [{COUNT}]%CALLNAME:COUNT%    {BASE:COUNT:10}
+    PRINTLC 名称
+    PRINTLC 阻挡数
+    PRINTLC 费用
+    PRINTLC 所选技能编号
+    PRINTL
+    DRAWLINE
+    FOR COUNT,1,CHARANUM
+        IF BASE:COUNT:当前所属==0
+            IF BASE:COUNT:当前编队==0 
+                PRINTFORMLC [{COUNT}]%CALLNAME:COUNT%   
+                PRINTFORMLC {BASE:COUNT:阻挡数}     
+                PRINTFORMLC {BASE:COUNT:部署费用}   
+                PRINTFORMLC \@BASE:COUNT:选择技能==0?无#技能{BASE:COUNT:选择技能}\@ 
+                PRINTL
             ELSE
-                PRINTFORML [已在编队中]%CALLNAME:COUNT%    {BASE:COUNT:10}
+                PRINTFORML [已在编队中]%CALLNAME:COUNT%    {BASE:COUNT:部署费用}
             ENDIF
         ENDIF    
     NEXT
     PRINT [999]返回  [900]撤下
     INPUT
     IF RESULT<CHARANUM
+        BASE:(SQUAD:LOCAL):当前编队=0     
         SQUAD:LOCAL=RESULT
-        BASE:(SQUAD:LOCAL):11=0 
-        BASE:RESULT:11=1  
+        BASE:RESULT:当前编队=1  
     ELSEIF RESULT==900
-        BASE:(SQUAD:LOCAL):11=0       
+        BASE:(SQUAD:LOCAL):当前编队=0       
         SQUAD:LOCAL=0   
     ENDIF
     GOTO DRAWSQUAD
