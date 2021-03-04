@@ -1,0 +1,281 @@
+﻿;-------------------------------------------------
+;60番台,性爱系指令
+;-------------------------------------------------
+@COM_ABLE60
+;正常位实行判定
+SIF COMABLE_DEF(60)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE61
+;后背位实行判定
+SIF COMABLE_DEF(61)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE62
+;屈曲位实行判定
+SIF COMABLE_DEF(62)
+	RETURN 0
+;拉米亚、人鱼等、足が无い人はダメ
+SIF COND("脚が无い")
+	RETURN 0
+;体位が正常位か屈曲位か插入前でないとダメ（今后无くすかも）
+IF INSERT("插入") == 0 || INSERT("正常位") || INSERT("屈曲位")
+ELSE
+	RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE63
+;对面座位实行判定
+SIF COMABLE_DEF(63)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE64
+;背面座位实行判定
+SIF COMABLE_DEF(64)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE65
+;骑乘位实行判定
+SIF COMABLE_DEF(65)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;逆推中
+IF TEQUIP:逆推
+	;恋慕で无いなら、处女だとダメ
+	SIF TALENT:恋慕 == 0 && TALENT:处女
+		RETURN 0
+	;损伤中
+	SIF TALENT:V损伤
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM65, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE66
+;进攻Ｇ点实行判定
+SIF COMABLE_DEF(66)
+	RETURN 0
+SIF COND("前Ｔ调教者") != PLAYER || INSERT("V插入") == 0
+	RETURN 0
+;一时的に封印
+SIF COND("３Ｐ") || PREVCOM:2 >= 0
+	RETURN 0
+;技術的な問題
+IF TEQUIP:逆推
+	SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 || EXP:腰技经验 < 20
+		RETURN 0
+ELSE
+	SIF ABL:PLAYER:技巧 + ABL:PLAYER:腰技 <= 2
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE67
+;进攻子宮口实行判定
+SIF COMABLE_DEF(67)
+	RETURN 0
+SIF COND("前Ｔ调教者") != PLAYER || INSERT("V插入") == 0
+	RETURN 0
+;一时的に封印
+SIF COND("３Ｐ") || PREVCOM:2 >= 0
+	RETURN 0
+;技術的な問題
+IF TEQUIP:逆推
+	SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 || EXP:腰技经验 < 20
+		RETURN 0
+ELSE
+	SIF MIN(ABL:PLAYER:技巧, ABL:PLAYER:腰技) < 3
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE68
+SIF COMABLE_DEF(68)
+	RETURN 0
+;とりあえず进攻子宮口之条件を满たす之は必須
+;CALL COM_ABLE67
+;SIF RESULT == 0
+;	RETURN 0
+;一时的に封印
+SIF COND("３Ｐ") || PREVCOM:2 >= 0
+	RETURN 0
+;技術的な問題
+IF TEQUIP:逆推
+	SIF ABL:技巧 + ABL:腰技 <= 2 || ABL:V感觉 < 3 || EXP:V性交经验 < 20 || EXP:腰技经验 < 20
+		RETURN 0
+	SIF TALENT:子宮性感 == 0 || EXP:子宮经验 == 0
+		RETURN 0
+ELSE
+	SIF MIN(ABL:PLAYER:技巧, ABL:PLAYER:腰技) < 3
+		RETURN 0
+ENDIF
+;阴茎之大きさがある程度必要
+SIF COND("子宮口松弛度") < 2 && COND("不小心子宮插入标志") == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE69
+RETURN 0
+
+;-------------------------------------------------
+;70番台,A性爱系指令
+;-------------------------------------------------
+@COM_ABLE70
+;正常位A实行判定
+SIF COMABLE_DEF(70)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE71
+;A性爱(后背位A)实行判定
+SIF COMABLE_DEF(71)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE72
+;屈曲位A实行判定
+SIF COMABLE_DEF(72)
+	RETURN 0
+;拉米亚、人鱼等、足が无い人はダメ
+SIF COND("脚が无い")
+	RETURN 0
+;体位が正常位か屈曲位か插入前でないとダメ（今后无くすかも）
+IF INSERT("插入") == 0 || INSERT("正常位") || INSERT("屈曲位")
+ELSE
+	RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE73
+;对面座位A实行判定
+SIF COMABLE_DEF(73)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE74
+;背面座位A实行判定
+SIF COMABLE_DEF(74)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE75
+;骑乘位A实行判定
+SIF COMABLE_DEF(75)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;逆推时
+IF TEQUIP:逆推
+	;一定之A经验かA感觉か恋慕が必要
+	SIF EXP:A经验 < 50 && ABL:A感觉 < 3 && TALENT:恋慕 == 0
+		RETURN 0
+	;恋慕で无いなら、A性爱经验が必要
+	SIF TALENT:恋慕 == 0 && EXP:A性交经验 == 0
+		RETURN 0
+	;损伤中
+	SIF TALENT:A损伤
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM75, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE76
+RETURN 0
+
+@COM_ABLE77
+RETURN 0
+
+@COM_ABLE78
+RETURN 0
+
+@COM_ABLE79
+RETURN 0
+
+;-------------------------------------------------
+;80番台,特殊性爱系指令
+;-------------------------------------------------
+@COM_ABLE80
+;磨镜实行判定
+SIF COMABLE_DEF(80)
+	RETURN 0
+;V剥き出しにできないとダメ
+SIF !CHECK_CLO("V露出可")
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1 || TALENT:PLAYER:性别 == 1
+	RETURN 0
+;双头按摩棒以外之按摩棒插入中はダメ(PLAYERが双头按摩棒で处女丧失する之はどうなんだろ)
+IF TEQUIP:按摩棒
+	SIF COND("双头按摩棒") == 0
+		RETURN 0
+	IF TALENT:PLAYER:处女
+		IF TEQUIP:逆推
+			SIF ABL:S属性 < 3
+				RETURN 0
+		ELSE
+			SIF ABL:PLAYER:M属性 < 3
+				RETURN 0
+		ENDIF
+	ENDIF
+ENDIF
+;阴蒂夹使用中は不可
+SIF TEQUIP:阴蒂夹
+	RETURN 0
+RETURN 1
+
+@COM_ABLE81
+;两乳间抽插实行判定
+SIF COMABLE_DEF(81)
+	RETURN 0
+;胸を剥き出しにできるor胸露出でないとダメ
+SIF CHECK_CLO("谷间露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;[贫乳]はダメ
+SIF TALENT:贫乳 || TALENT:性别 == 1
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+SIF COND("指之使用", PLAYER) == 0
+	RETURN 0
+;妖精だとダメ
+RETURN 1
+
+@COM_ABLE82
+;乳头奸实行判定
+SIF COMABLE_DEF(82)
+	RETURN 0
+;胸を剥き出しにできるor乳首露出でないとダメ
+SIF CHECK_CLO("乳首露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;コンフィグで乳头奸可能＆巨乳＆[史莱姆or淫乳]でないとダメ
+SIF COND("乳头奸") == 0
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+RETURN 1
+;尿道
+@COM_ABLE83
+RETURN 0
+
+@COM_ABLE84
+RETURN 0

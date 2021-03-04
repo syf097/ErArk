@@ -784,7 +784,7 @@ ELSEIF RESULT >= 0 && RESULT < 50 && LOCAL:RESULT
 		PRINTFORMW 的比基尼身姿来了
 	ELSEIF CHECK_BODYS("学校泳装")
 		PRINTFORMW 紺色之学校泳装被穿上了
-	ELSEIF CHECK_BODYS("体操紧身服") && CHECK_BODYS("Ｖ露出")
+	ELSEIF CHECK_BODYS("体操紧身服") && CHECK_BODYS("V露出")
 		PRINTFORMW 只有股间和欧派没露出但却凸显曲线的体操紧身被换上了
 	ELSEIF CHECK_BODYS("紧缚衣")
 		PRINTFORMW 穿上了\@ PENIS(TARGET) == 0 ? 乳房全部露出 # \@股间有拉索的紧缚衣
@@ -930,12 +930,12 @@ IF EQUIP:胖次+EQUIP:ブラ
 		PRINTFORM [%PANTIES(TARGET)%
 		IF CHECK_PANTIES("拉链开")
 			PRINT (拉链露出)
-		ELSEIF CHECK_PANTIES("ＶＡ露出")
+		ELSEIF CHECK_PANTIES("VA露出")
 			PRINT (双穴露出)
-		ELSEIF CHECK_PANTIES("Ａ露出")
-			PRINT (Ａ穴露出)
-		ELSEIF CHECK_PANTIES("Ｖ露出")
-			PRINT (Ｖ穴露出)
+		ELSEIF CHECK_PANTIES("A露出")
+			PRINT (A穴露出)
+		ELSEIF CHECK_PANTIES("V露出")
+			PRINT (V穴露出)
 		ELSEIF CHECK_PANTIES("拉链閉")
 			PRINT (都不露出)
 		ELSEIF CHECK_PANTIES("缝隙")
@@ -1041,9 +1041,9 @@ ELSEIF RESULT == 30 && LOCAL:RESULT
 		PRINTFORM 布面积异常少的
 	ELSEIF CHECK_PANTIES("拉链")
 		PRINTFORM 股间有拉链
-	ELSEIF CHECK_PANTIES("Ｖ露出")
+	ELSEIF CHECK_PANTIES("V露出")
 		PRINTFORM 阴道部分没有布料的
-	ELSEIF CHECK_PANTIES("Ａ露出")
+	ELSEIF CHECK_PANTIES("A露出")
 		PRINTFORM 肛门部分没有布料的
 	ENDIF
 	;紐
@@ -1198,17 +1198,17 @@ ELSEIF RESULT >= 0 && RESULT < 50 && LOCAL:RESULT
 			CALL CALC, "胖次标志追加", SETFLAG_PANTIES("透视")
 			PRINTFORMW 因为那薄的透明的面料、透过图案看到%CALLNAME:TARGET%那重要的地方感觉很色情
 		ELSEIF RESULT == 1
-			CALL CALC, "胖次标志追加", SETFLAG_PANTIES("Ｖ露出")
+			CALL CALC, "胖次标志追加", SETFLAG_PANTIES("V露出")
 			PRINTFORMW 托穴口露出的福、与其说是内衣不如说是为了强调这里性器的样子
 		ENDIF
 	CASE 120
 		IF PENIS(TARGET)
-			PRINTFORMW 把\@ TALENT:性别男 ? # 男用的 \@%PANTIES(TARGET)%给穿上了
+			PRINTFORMW 把\@ TALENT:性别 == 1 ? # 男用的 \@%PANTIES(TARGET)%给穿上了
 		ELSE
 			PRINTFORMW ボーイッシュな可爱さ溢れる拳击短裤をはいてもらいました
 		ENDIF
 	CASE 121, 122
-		PRINTFORMW 把\@ TALENT:性别男 ? # 男用的 \@%PANTIES(TARGET)%给穿上了
+		PRINTFORMW 把\@ TALENT:性别 == 1 ? # 男用的 \@%PANTIES(TARGET)%给穿上了
 	CASEELSE
 		PRINTFORMW 把%PANTIES(TARGET)%给穿上了
 	ENDSELECT
@@ -1238,7 +1238,7 @@ ELSEIF RESULT >= 50 && RESULT <= 80 && LOCAL:RESULT
 	CASE 106
 		PRINTFORMW 大胆乳头处透明的胸罩被穿了
 	CASE 107
-		PRINTFORMW \@ TALENT:性别男 ? 露出一小半胸部的 # 强调胸间的沟壑的 \@胸罩穿上了
+		PRINTFORMW \@ TALENT:性别 == 1 ? 露出一小半胸部的 # 强调胸间的沟壑的 \@胸罩穿上了
 	CASE 108
 		PRINTFORMW 有着性变态气氛的、皮质胸罩
 	CASE 109
@@ -1364,7 +1364,7 @@ IF EQUIP:迷你裙 && EQUIP:胖次 && TALENT:开朗 + TALENT:恋慕 + TALENT:小
 		SIF RAND:2 == 0
 			PRINT 高兴
 		PRINT 微笑着
-	;プライド高いor淫乱or抖Ｓ
+	;プライド高いor淫乱or抖S
 	ELSEIF TALENT:傲慢 + TALENT:淫乱 + TALENT:抖S && RAND:2 == 0
 		PRINT 女皇式的高傲笑容
 	;小恶魔
@@ -1397,7 +1397,7 @@ RESTART
 
 ;途中
 @SHOW_PUBICHAIR
-;Ｖ穴开きで之分岐はとりあえず无
+;V穴开きで之分岐はとりあえず无
 ;放任生长
 SELECTCASE COND("阴毛")
 CASE 7
@@ -1509,11 +1509,11 @@ SIF TALENT:ARG:性别 == 1 && COND("男孩子？", ARG) == 0
 ;拉米亚、人鱼は胖次はけない
 SIF COND("脚が无い", ARG)
 	RETURN 0
-;外套などがＶorＡ穴开きなら胖次ははかない
-IF EQUIP:ARG:紧身衣 && (CHECK_BODYS("Ｖ露出", ARG) || CHECK_BODYS("Ａ露出", ARG) )
+;外套などがVorA穴开きなら胖次ははかない
+IF EQUIP:ARG:紧身衣 && (CHECK_BODYS("V露出", ARG) || CHECK_BODYS("A露出", ARG) )
 	CALL SET_PANTIES, ARG
 	RETURN 0
-ELSEIF EQUIP:ARG:外套 && (CHECK_OUTER("Ｖ露出", ARG) || CHECK_OUTER("Ａ露出", ARG) )
+ELSEIF EQUIP:ARG:外套 && (CHECK_OUTER("V露出", ARG) || CHECK_OUTER("A露出", ARG) )
 	CALL SET_PANTIES, ARG
 	RETURN 0
 ENDIF
@@ -1731,8 +1731,8 @@ ELSEIF RESULT >= 0 && RESULT <= 20 && LOCAL:RESULT
 						PRINTFORMW 下摆处隐约露出的%OUTER(TARGET, 1)%将%CALLNAME:MASTER%的视线吸引了…
 					ELSEIF CHECK_CLO("胖次露出")
 						PRINTFORMW 下摆处隐约露出的%PANTIES(TARGET, 1)%将%CALLNAME:MASTER%的视线吸引了…
-					;Ｖ丸现えor连裤袜之み
-					ELSEIF CHECK_CLO("Ｖ露出")
+					;V丸现えor连裤袜之み
+					ELSEIF CHECK_CLO("V露出")
 						PRINTFORM 下摆处隐约露出的
 						IF COND("阴毛") >= 5
 							PRINT 茂盛的阴毛
@@ -2213,17 +2213,17 @@ IF EQUIP:ARG:上着
 			PRINT (开)
 		ELSEIF CHECK_OUTER("缝隙", ARG)
 			PRINT (缝隙)
-		ELSEIF CHECK_OUTER("ＶＡ露出", ARG)
+		ELSEIF CHECK_OUTER("VA露出", ARG)
 			PRINT (穴开き)
-		ELSEIF CHECK_OUTER("Ａ露出", ARG)
-			PRINT (Ａ穴开き)
-		ELSEIF CHECK_OUTER("Ｖ露出", ARG)
-			PRINT (Ｖ穴开き)
+		ELSEIF CHECK_OUTER("A露出", ARG)
+			PRINT (A穴开き)
+		ELSEIF CHECK_OUTER("V露出", ARG)
+			PRINT (V穴开き)
 		ELSE
 			SIF CHECK_CLO("外套直穿き", ARG)
 				PRINT (直穿き)
 			;汚れ
-			IF !CHECK_CLO("Ｖ露出", ARG)
+			IF !CHECK_CLO("V露出", ARG)
 				IF CHECK_STAIN(STAIN:ARG:外套, "尿")
 					PRINT <尿>
 				ELSEIF CHECK_STAIN(STAIN:ARG:外套, "濡れ")
@@ -2245,12 +2245,12 @@ IF EQUIP:ARG:紧身衣
 		PRINT (ずれ)
 	ELSEIF CHECK_BODYS("拉链开", ARG)
 		PRINT (开)
-	ELSEIF CHECK_BODYS("ＶＡ露出", ARG)
+	ELSEIF CHECK_BODYS("VA露出", ARG)
 		PRINT (穴开き)
-	ELSEIF CHECK_BODYS("Ａ露出", ARG)
-		PRINT (Ａ穴开き)
-	ELSEIF CHECK_BODYS("Ｖ露出", ARG)
-		PRINT (Ｖ穴开き)
+	ELSEIF CHECK_BODYS("A露出", ARG)
+		PRINT (A穴开き)
+	ELSEIF CHECK_BODYS("V露出", ARG)
+		PRINT (V穴开き)
 	;汚れ
 	ELSE
 		IF CHECK_STAIN(STAIN:ARG:连身衣（下）, "尿")
@@ -2284,17 +2284,17 @@ IF EQUIP:ARG:外套 && CHECK_OUTER("つなぎ") == 0
 		PRINT (开)
 	ELSEIF CHECK_OUTER("缝隙", ARG)
 		PRINT (缝隙)
-	ELSEIF CHECK_OUTER("ＶＡ露出", ARG)
+	ELSEIF CHECK_OUTER("VA露出", ARG)
 		PRINT (穴开き)
-	ELSEIF CHECK_OUTER("Ａ露出", ARG)
-		PRINT (Ａ穴开き)
-	ELSEIF CHECK_OUTER("Ｖ露出", ARG)
-		PRINT (Ｖ穴开き)
+	ELSEIF CHECK_OUTER("A露出", ARG)
+		PRINT (A穴开き)
+	ELSEIF CHECK_OUTER("V露出", ARG)
+		PRINT (V穴开き)
 	ELSE
 		SIF CHECK_CLO("外套直穿き", ARG)
 			PRINT (直穿き)
 		;汚れ
-		IF !CHECK_CLO("Ｖ露出", ARG)
+		IF !CHECK_CLO("V露出", ARG)
 			IF CHECK_STAIN(STAIN:ARG:外套, "尿")
 				PRINT <尿>
 			ELSEIF CHECK_STAIN(STAIN:ARG:外套, "濡れ")
@@ -2316,12 +2316,12 @@ ELSEIF EQUIP:ARG:胖次
 		PRINT (ずれ)
 	ELSEIF CHECK_PANTIES("拉链开", ARG)
 		PRINT (开)
-	ELSEIF CHECK_PANTIES("ＶＡ露出", ARG)
+	ELSEIF CHECK_PANTIES("VA露出", ARG)
 		PRINT (穴开き)
-	ELSEIF CHECK_PANTIES("Ａ露出", ARG)
-		PRINT (Ａ穴开き)
-	ELSEIF CHECK_PANTIES("Ｖ露出", ARG)
-		PRINT (Ｖ穴开き)
+	ELSEIF CHECK_PANTIES("A露出", ARG)
+		PRINT (A穴开き)
+	ELSEIF CHECK_PANTIES("V露出", ARG)
+		PRINT (V穴开き)
 	ELSE
 		IF CHECK_STAIN(STAIN:ARG:胖次, "尿")
 			PRINT <尿>
@@ -2412,11 +2412,11 @@ CASE 230 TO 279, 300 TO 302, 304, 305, 309
 	RETURN 0
 ENDSELECT
 
-;强硬、好奇心、贞操无定、喜欢受人注目、不知耻、好色、淫乱でＢＯＮＵＳ
+;强硬、好奇心、贞操无定、喜欢受人注目、不知耻、好色、淫乱でＢＯＮＵS
 LOCAL += TALENT:强硬*10 + TALENT:好奇心*2 + TALENT:贞操无定*2 + TALENT:喜欢受人注目*3 + TALENT:不知耻*4 + TALENT:好色*5 + TALENT:淫乱*5
 ;胆怯、自制心、保守、看重贞操、怕羞でペナルティ
 LOCAL -= TALENT:胆怯*3 + TALENT:冷静*2 + TALENT:保守*2 + TALENT:怕羞*3
-;欲望、露阴癖、V润、欲情でＢＯＮＵＳ
+;欲望、露阴癖、V润、欲情でＢＯＮＵS
 LOCAL += (ABL:欲望 + 1)/2 + (ABL:露阴癖 + 1)/2 + GET_PALAMLV(PALAM:V润 + PALAM:欲情)
 ;媚药
 SIF TEQUIP:媚药
@@ -2461,7 +2461,7 @@ ENDIF
 
 ;服装による、脱いでくる条件之补正
 ;插入系が選べない服装だと脱いできやすい
-SIF CHECK_CLO("Ｖ露出可") == 0 && CHECK_CLO("Ａ露出可") == 0
+SIF CHECK_CLO("V露出可") == 0 && CHECK_CLO("A露出可") == 0
 	LOCAL += 10
 
 ;Ｈ氛围が低いと脱いでこない
@@ -2485,7 +2485,7 @@ ELSEIF LOCAL >= 30 && RAND:3 == 0
 ENDIF
 
 ;既に股间が露出している
-SIF CHECK_CLO("Ｖ露出") || CHECK_CLO("Ａ露出")
+SIF CHECK_CLO("V露出") || CHECK_CLO("A露出")
 	RETURN 0
 
 IF CHECK_CLO("紧身衣露出")
@@ -2493,9 +2493,9 @@ IF CHECK_CLO("紧身衣露出")
 		PRINTL 
 		PRINTFORM %CALLNAME:TARGET%将双腿轻轻地分开、%BODYS(TARGET, 1)%的股间部分隐藏着的拉链给拉下了
 		CALL CALC, "紧身衣标志追加", SETFLAG_OUTER("拉链开")
-		IF (TALENT:恋慕 || TALENT:不知耻) && TALENT:性别 != 1 && CHECK_CLO("Ｖ露出")
+		IF (TALENT:恋慕 || TALENT:不知耻) && TALENT:性别 != 1 && CHECK_CLO("V露出")
 			PRINTW 。
-			PRINTFORMW 用手指张开了开口的部分后、%TEXTS("Ｖ：视覚")%正被窥视着…
+			PRINTFORMW 用手指张开了开口的部分后、%TEXTS("V：视覚")%正被窥视着…
 		ELSE
 			PRINTFORMW …
 		ENDIF
@@ -2507,8 +2507,8 @@ ELSEIF CHECK_CLO("连裤袜露出")
 		PRINTL 
 		PRINTFORM %CALLNAME:TARGET%は%OUTER(TARGET, 1)%を破いて
 		CALL CALC, "外套标志追加", SETFLAG_OUTER("可撕")
-		IF CHECK_CLO("Ｖ露出")
-			PRINTFORMW \@ PENIS(TARGET) ? 股间 # Ｖ \@给裸露了出来
+		IF CHECK_CLO("V露出")
+			PRINTFORMW \@ PENIS(TARGET) ? 股间 # V \@给裸露了出来
 		ELSE
 			PRINTFORMW 展现着胖次…
 		ENDIF
@@ -2522,9 +2522,9 @@ ELSEIF CHECK_CLO("外套露出")
 			PRINTL 
 			PRINTFORM %CALLNAME:TARGET%将双腿轻轻地分开、%OUTER(TARGET, 1)%的股间部分隐藏着的拉链给拉下了
 			CALL CALC, "外套标志追加", SETFLAG_OUTER("拉链开")
-			IF (TALENT:恋慕 || TALENT:不知耻) && TALENT:性别 != 1 && CHECK_CLO("Ｖ露出")
+			IF (TALENT:恋慕 || TALENT:不知耻) && TALENT:性别 != 1 && CHECK_CLO("V露出")
 				PRINTW 。
-				PRINTFORMW 用手指张开了开口的部分后、%TEXTS("Ｖ：视覚")%可以被清晰地窥见…
+				PRINTFORMW 用手指张开了开口的部分后、%TEXTS("V：视覚")%可以被清晰地窥见…
 			ELSE
 				PRINTFORMW …
 			ENDIF
@@ -2556,9 +2556,9 @@ ELSEIF CHECK_CLO("胖次露出")
 		PRINTL 
 		PRINTFORM %CALLNAME:TARGET%将露阴胖次的拉链给拉下了
 		CALL CALC, "胖次标志追加", SETFLAG_PANTIES("拉链开")
-		IF TALENT:性别 != 1 && (TALENT:恋慕 || TALENT:不知耻) && CHECK_CLO("Ｖ露出")
+		IF TALENT:性别 != 1 && (TALENT:恋慕 || TALENT:不知耻) && CHECK_CLO("V露出")
 			PRINTW 。
-			PRINTFORMW 用手指张开了开口的部分后、%TEXTS("Ｖ：视覚")%可以被清晰地窥见…
+			PRINTFORMW 用手指张开了开口的部分后、%TEXTS("V：视覚")%可以被清晰地窥见…
 		ELSE
 			PRINTFORMW …
 		ENDIF
@@ -2580,7 +2580,7 @@ ELSEIF CHECK_CLO("胖次露出")
 				PRINTFORMW 往%CALLNAME:PLAYER%的脸上坐了下去…
 			ENDIF
 			IF TALENT:性别 != 1 && PALAM:V润 >= 3000 && PALAM:欲情 >= 3000 && RAND:3 == 0
-				IF RAND:2 && CHECK_CLO("Ｖ露出") == 0
+				IF RAND:2 && CHECK_CLO("V露出") == 0
 					PRINTFORMW 将十分肮脏的部分\@ CHECK_CLO("紧勒") ? 陷进去 # 触摸着 \@，从胯间的布料里中间溢出来的%TEXTR("黏黏的", "淫乱的")%液体的颜色也开始发生变化了…
 				ELSE
 					PRINTFORMW %CALLNAME:PLAYER%的鼻腔被%CALLNAME:TARGET%的强烈的气味不停地刺激着…

@@ -1,0 +1,406 @@
+﻿;-------------------------------------------------
+;90～119番,侍奉系指令
+;-------------------------------------------------
+@COM_ABLE90
+;手交实行判定
+SIF COMABLE_DEF(90)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM90, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE91
+;口交实行判定
+SIF COMABLE_DEF(91)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷 == 1
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM91, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE92
+;乳交实行判定
+SIF COMABLE_DEF(92)
+	RETURN 0
+;胸を剥き出しにできるor胸露出でないとダメ
+SIF CHECK_CLO("谷间露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+;[巨乳]でなければ技巧2以上、[贫乳]だと技巧3以上必要
+SIF (TALENT:贫乳 && ABL:技巧 < 3) || (TALENT:巨乳 == 0 && TALENT:贫乳 == 0 && ABL:技巧 < 2)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM92, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE93
+;素股实行判定
+SIF COMABLE_DEF(93)
+	RETURN 0
+;V剥き出しにできないとダメ
+SIF !CHECK_CLO("V露出可")
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+;按摩棒插入中はダメ
+SIF TEQUIP:按摩棒
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM93, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE94
+;洗浴服务实行判定
+SIF COMABLE_DEF(94)
+	RETURN 0
+;裸露でないとダメ
+SIF !CHECK_CLO("裸露")
+	RETURN 0
+;浴室PLAY中で地垫が无いとダメ
+SIF TEQUIP:浴室PLAY == 0
+	RETURN 0
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;Ｗ逆推中なら性别女でないとダメ
+SIF TEQUIP:Ｗ逆推 && TALENT:性别 == 1
+	RETURN 0
+;淋浴中はダメ
+SIF TEQUIP:淋浴
+	RETURN 0
+;按摩棒插入中はダメ
+SIF TEQUIP:按摩棒
+	RETURN 0
+;肛用按摩棒插入中はダメ
+SIF TEQUIP:肛用按摩棒
+	RETURN 0
+;阴蒂夹使用中は不可
+SIF TEQUIP:阴蒂夹
+	RETURN 0
+;阴蒂ップ跳蛋使用中は不可
+SIF TEQUIP:乳头夹
+	RETURN 0
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷
+	RETURN 0
+;眼罩使用中は不可
+SIF TEQUIP:眼罩
+	RETURN 0
+;灌肠使用中は不可
+SIF TEQUIP:灌肠
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM94, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE95
+;足交实行判定
+SIF COMABLE_DEF(95)
+	RETURN 0
+;拉米亚、人鱼等、足が无い人や脚が使えない状況だとダメ
+SIF COND("脚之使用") == 0
+	RETURN 0
+;眼罩使用中は不可
+SIF TEQUIP:眼罩
+	RETURN 0
+IF TEQUIP:逆推
+	;S属性が必要
+	SIF ABL:S属性 == 0
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM95, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE96
+;舐肛奉侍实行判定
+SIF COMABLE_DEF(96)
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM96, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE97
+;摩擦胖次实行判定
+SIF COMABLE_DEF(97)
+	RETURN 0
+;摩擦胖次できる胖次じゃないとダメ
+SIF CHECK_CLO("摩擦胖次") == 0
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;哈比はダメ
+;SIF TALENT:哈比
+;	RETURN 0
+;拉米亚、人鱼等、足が无い人はダメ
+SIF COND("脚が无い")
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM97, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE98
+;舐阴奉侍实行判定
+SIF COMABLE_DEF(98)
+	RETURN 0
+;调教者が性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM98, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE99
+;六九式实行判定
+SIF COMABLE_DEF(99)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:六九式
+	RETURN 1
+CALL COM_ABLE91
+IF RESULT == 0
+	CALL COM_ABLE98
+	SIF RESULT == 0
+		RETURN 0
+ENDIF
+CALL COM_ABLE1
+IF RESULT == 0
+	CALL COM_ABLE4
+	SIF RESULT == 0
+		RETURN 0
+ENDIF
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+SIF ITEM:地垫 == 0 && NOITEM == 0
+	RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM99, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE100
+;摩擦学校泳装实行判定
+SIF COMABLE_DEF(100)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;学校泳装を着ていないとダメ
+SIF !CHECK_BODYS("学校泳装")
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM100, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE101
+RETURN 0
+
+@COM_ABLE102
+RETURN 0
+
+@COM_ABLE103
+RETURN 0
+
+@COM_ABLE104
+;两乳夹头实行判定
+SIF COMABLE_DEF(104)
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+SIF CHECK_CLO("谷间露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM104, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE105
+;飞机杯奉侍实行判定
+SIF COMABLE_DEF(105)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:飞机杯 == 0 && NOITEM == 0
+	RETURN 0
+;逆推中は技巧LV3必須
+SIF TEQUIP:逆推 && ABL:技巧 < 3
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM105, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE106
+;逆按摩棒实行判定
+SIF COMABLE_DEF(106)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:按摩棒 == 0 && NOITEM == 0
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;手が使えないとダメ
+SIF COND("指之使用") == 0
+	RETURN 0
+;眼罩使用中は不可
+SIF TEQUIP:眼罩
+	RETURN 0
+;处女之时はM属性が必要
+IF TALENT:PLAYER:处女
+	SIF ABL:M属性 < 3 && TALENT:PLAYER:抖S == 0
+		RETURN 0
+ENDIF
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM106, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE107
+;逆肛用按摩棒实行判定
+SIF COMABLE_DEF(107)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:肛用按摩棒 == 0 && NOITEM == 0
+	RETURN 0
+;手が使えないとダメ
+SIF COND("指之使用") == 0
+	RETURN 0
+;眼罩使用中は不可
+SIF TEQUIP:眼罩
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM107, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE108
+RETURN 0
+
+@COM_ABLE109
+RETURN 0
+
+@COM_ABLE110
+RETURN 0
+
+@COM_ABLE111
+RETURN 0
+
+@COM_ABLE112
+RETURN 0
+
+@COM_ABLE113
+RETURN 0
+
+@COM_ABLE114
+RETURN 0
+
+
+

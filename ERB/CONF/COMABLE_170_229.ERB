@@ -1,0 +1,403 @@
+﻿;-------------------------------------------------
+;170～199番,～PLAY等舞台作成指令
+;-------------------------------------------------
+@COM_ABLE170
+;录像摄影实行判定
+SIF COMABLE_DEF(170)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:摄像机
+	RETURN 1
+;逆推之时には解除之み可能
+SIF TEQUIP:逆推 && TEQUIP:摄像机 == 0
+	RETURN 0
+;一回に付き一本まで
+SIF CSTR:81 != ""
+	RETURN 0
+;カメラとテープ之道具を持っているか、道具なし設定でないとダメ
+SIF ( ITEM:摄像机 == 0 || ITEM:录像带 == 0 ) && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE171
+;野外PLAY实行判定
+SIF COMABLE_DEF(171)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:野外PLAY
+	RETURN 1
+;道具｢项圈｣を持っているか、道具なし設定、もしくは屈服刻印3LVか恋慕でないとダメ
+SIF ITEM:项圈 == 0 && NOITEM == 0 && TALENT:恋慕 == 0 && MARK:屈服刻印 < 3
+	RETURN 0
+;顺从かM属性が3以上ないとダメ
+SIF ABL:顺从 <= 2 && ABL:M属性 <= 2
+	RETURN 0
+;对象か助手が吸血鬼で、时间が昼だとダメ。夜之阳傘があるならＯＫ
+IF TIME == 0 && ITEM:夜之阳傘 == 0
+	SIF TALENT:吸血鬼 || (ASSI && TALENT:ASSI:吸血鬼)
+		RETURN 0
+ENDIF
+;灌肠使用中は按摩棒がなければ不可
+SIF TEQUIP:灌肠 && COND("肛塞") == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE172
+;浴室PLAY实行判定
+SIF COMABLE_DEF(172)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:浴室PLAY
+	RETURN 1
+;对象が兽耳で、顺从が3未满だとダメ
+SIF TALENT:兽耳 && ABL:顺从 < 3
+	RETURN 0
+;羞恥PLAY中はダメ
+SIF TEQUIP:羞恥PLAY
+	RETURN 0
+RETURN 1
+
+@COM_ABLE173
+;新婚PLAY实行判定
+SIF COMABLE_DEF(173)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:新婚PLAY
+	RETURN 1
+;道具｢围裙｣を持っているか、道具なし設定でないとダメ
+SIF ITEM:围裙 == 0 && NOITEM == 0
+	RETURN 0
+;助手じゃダメ
+SIF ASSIPLAY
+	RETURN 0
+;顺从が3以上ないとダメ
+SIF ABL:顺从 < 3
+	RETURN 0
+;羞恥PLAY中はダメ
+SIF TEQUIP:羞恥PLAY
+	RETURN 0
+RETURN 1
+
+@COM_ABLE174
+;屋内露出PLAY
+SIF COMABLE_DEF(174)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:屋内露出PLAY
+	RETURN 1
+;顺从かM属性が3以上ないとダメ
+SIF ABL:顺从 <= 2 && ABL:M属性 <= 2
+	RETURN 0
+;羞恥PLAY中はダメ
+SIF TEQUIP:羞恥PLAY
+	RETURN 0
+RETURN 1
+
+@COM_ABLE175
+;换装实行判定
+SIF COMABLE_DEF(175)
+	RETURN 0
+;恍惚状态だとダメ
+SIF STATE("恍惚", PLAYER)
+	RETURN 0
+IF TEQUIP:逆推
+	SIF CHECK_CLO("裸露")
+		RETURN 0
+;绳使用中は脱光こと之み可能
+
+ELSEIF TEQUIP:拘束
+	SIF CHECK_CLO("裸露")
+		RETURN 0
+ENDIF
+;野外PLAYor屋内露出PLAY中は、露阴癖3Lvか顺从4Lvが无いとダメ
+SIF (TEQUIP:屋内露出PLAY || TEQUIP:野外PLAY) && ABL:顺从 < 4 && ABL:露阴癖 < 3
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM175, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE176
+;逆推指令实行判定
+SIF COMABLE_DEF(176)
+	RETURN 0
+;气力が无いと侍奉精神がないとダメ
+SIF BASE:气力 == 0 && ABL:侍奉精神 < 3
+	RETURN 0
+;高潮管理中はダメ
+SIF TEQUIP:高潮管理
+	RETURN 0
+;按摩棒插入中はダメ
+SIF TEQUIP:按摩棒 || TEQUIP:肛用按摩棒
+	RETURN 0
+;跳蛋插入中はダメ
+SIF TEQUIP:跳蛋插入
+	RETURN 0
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM176, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE177
+;爱之圈套指令实行判定
+SIF COMABLE_DEF(177)
+	RETURN 0
+;调教者が性别男か扶她じゃないとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM177, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE178
+;双人逆推指令实行判定
+SIF COMABLE_DEF(178)
+	RETURN 0
+;MASTER调教中で无いとダメ
+SIF ASSIPLAY
+	RETURN 0
+;气力が无いとダメ
+SIF BASE:气力 == 0
+	RETURN 0
+;高潮管理中はダメ
+SIF TEQUIP:高潮管理
+	RETURN 0
+;按摩棒插入中はダメ
+SIF TEQUIP:按摩棒 || TEQUIP:肛用按摩棒
+	RETURN 0
+;跳蛋插入中はダメ
+SIF TEQUIP:跳蛋插入
+	RETURN 0
+;演奏中はダメ
+SIF TEQUIP:演奏中
+	RETURN 0
+;以下、助手之条件など
+IF ASSI
+	;妖精だとダメ（调教者が小根术ならＯＫ）
+	;SIF TALENT:ASSI:妖精
+	;	RETURN 0
+	;恋慕、淫乱、誓約、相思相爱状态ならＯＫとする
+	IF TALENT:ASSI:恋慕 || TALENT:ASSI:淫乱 || TALENT:ASSI:誓約 || TALENT:ASSI:相思相爱
+	;除此以外なら、助手とTARGETが仲良くないとダメ。
+	ELSE
+		SIF RELATION:(NO:ASSI) < 120
+			RETURN 0
+	ENDIF
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM178, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE179
+;羞恥PLAY实行判定
+SIF COMABLE_DEF(179)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:羞恥PLAY
+	RETURN 1
+;屋内露出PLAY中はダメ
+SIF TEQUIP:屋内露出PLAY
+	RETURN 0
+;道具｢大鏡｣を持っているか、道具なし設定でないとダメ
+SIF ITEM:大鏡 == 0 && NOITEM == 0
+	RETURN 0
+;眼罩をつけているとダメ
+SIF TEQUIP:眼罩
+	RETURN 0
+RETURN 1
+
+@COM_ABLE180
+;3P实行判定
+RETURN 0
+SIF COMABLE_DEF(180)
+	RETURN 0
+;MASTER调教中で无いとダメ
+SIF PLAYER != MASTER
+	RETURN 0
+;演奏中はダメ
+SIF TEQUIP:演奏中
+	RETURN 0
+;逆推中は駄目
+SIF TEQUIP:逆推
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE181
+RETURN 0
+
+@COM_ABLE182
+RETURN 0
+
+@COM_ABLE183
+RETURN 0
+
+@COM_ABLE184
+RETURN 0
+
+@COM_ABLE185
+RETURN 0
+
+;-------------------------------------------------
+;200～229番,触手系指令
+;-------------------------------------------------
+@COM_ABLE200
+;触手召唤实行判定
+SIF COMABLE_DEF(200)
+	RETURN 0
+;MASTERでないとダメ
+SIF PLAYER != MASTER
+	RETURN 0
+;高潮管理中はダメ
+SIF TEQUIP:高潮管理
+	RETURN 0
+;调教者が禁断之知识をもっていないとダメ
+SIF TALENT:PLAYER:禁断之知识 == 0
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:触手使役術 == 0 && NOITEM == 0
+	RETURN 0
+;道具使用中はダメ
+SIF TEQUIP:触手 == 0 && (TEQUIP:按摩棒 || TEQUIP:肛用按摩棒 || TEQUIP:阴蒂夹 || TEQUIP:乳头夹 || TEQUIP:搾乳机 || TEQUIP:飞机杯 || TEQUIP:跳蛋插入 || TEQUIP:拘束 || TEQUIP:灌肠 ||TEQUIP:扩张扩张气囊)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE201
+;触手插入
+SIF COMABLE_DEF(201)
+	RETURN 0
+;V使用判定
+SIF USE_V(TARGET, 11) == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE202
+;触手插肛
+SIF COMABLE_DEF(202)
+	RETURN 0
+;A使用判定
+SIF USE_A(TARGET, 13) == 0
+	RETURN 0
+;触手灌肠中は不可
+SIF TEQUIP:灌肠
+	RETURN 0
+RETURN 1
+
+@COM_ABLE203
+;触手揉阴
+SIF COMABLE_DEF(203)
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+RETURN 1
+
+@COM_ABLE204
+;触手蹂躏乳头
+SIF COMABLE_DEF(204)
+	RETURN 0
+;乳首を剥き出しにできないとダメ
+SIF CHECK_CLO("乳首露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;触手搾乳中は不可
+SIF TEQUIP:搾乳机
+	RETURN 0
+RETURN 1
+
+@COM_ABLE205
+;触手搾乳
+SIF COMABLE_DEF(205)
+	RETURN 0
+;乳首を剥き出しにできないとダメ
+SIF CHECK_CLO("乳首露出") + CHECK_CLO("可裸露") == 0
+	RETURN 0
+;触手蹂躏乳头中は不可
+SIF TEQUIP:乳头夹
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+RETURN 1
+
+@COM_ABLE206
+;触手紧縛
+SIF COMABLE_DEF(206)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE207
+;触手灌肠
+SIF COMABLE_DEF(207)
+	RETURN 0
+;A使用判定
+SIF USE_A(TARGET, 46) == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE208
+;触手口辱
+SIF COMABLE_DEF(208)
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷 == 1
+	RETURN 0
+RETURN 1
+
+@COM_ABLE209
+;触手蹂躏阴茎
+SIF COMABLE_DEF(209)
+	RETURN 0
+;性别男か扶她じゃないとダメ
+SIF PENIS(TARGET) == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE210
+;触手活塞运动
+SIF COMABLE_DEF(210)
+	RETURN 0
+;口かVA之どれかに插入中
+SIF TEQUIP:按摩棒 || TEQUIP:肛用按摩棒 || TEQUIP:触手口辱
+	RETURN 1
+RETURN 0
+
+@COM_ABLE211
+;触手乳头奸
+SIF COMABLE_DEF(211)
+	RETURN 0
+;乳首を剥き出しにできないとダメ
+SIF !CHECK_CLO("乳首露出or可裸露")
+	RETURN 0
+;触手蹂躏乳头中は不可
+SIF TEQUIP:乳头夹
+	RETURN 0
+;性别男だとダメ
+SIF TALENT:性别 == 1
+	RETURN 0
+RETURN 1
+
+@COM_ABLE212
+RETURN 0
+
+@COM_ABLE213
+RETURN 0
+
+@COM_ABLE214
+RETURN 0
+

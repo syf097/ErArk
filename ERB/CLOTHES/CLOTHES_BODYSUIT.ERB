@@ -29,9 +29,9 @@ SIF EQUIP:ARG:外套
 SIF EQUIP:ARG:ブラ
 	CALL SET_BRA, ARG
 IF EQUIP:ARG:紧身衣 && EQUIP:ARG:胖次
-	SIF CHECK_BODYS("紧勒", ARG) && !CHECK_PANTIES("紧勒", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+	SIF CHECK_BODYS("紧勒", ARG) && !CHECK_PANTIES("紧勒", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("V后入", ARG)
 		CALL SET_PANTIES, ARG
-	SIF CHECK_BODYS("泳装", ARG) || CHECK_BODYS("拉链", ARG) || CHECK_BODYS("Ｖ露出", ARG) || CHECK_BODYS("Ａ露出", ARG)
+	SIF CHECK_BODYS("泳装", ARG) || CHECK_BODYS("拉链", ARG) || CHECK_BODYS("V露出", ARG) || CHECK_BODYS("A露出", ARG)
 		CALL SET_PANTIES, ARG
 ENDIF
 
@@ -119,15 +119,15 @@ CASE 11
 CASE 12
 	IF CFLAG:(ARG:1):8 == 4
 		LOCALS = 体操紧身服
-		LOCAL = SETFLAG_BODYS("ズリ不可", "Ｖ后入", "体操紧身服", "黒")
+		LOCAL = SETFLAG_BODYS("ズリ不可", "V后入", "体操紧身服", "黒")
 	ELSEIF CFLAG:(ARG:1):8 != 2
 		LOCALS = 体操紧身服
-		LOCAL = SETFLAG_BODYS("ズリ不可", "Ｖ后入", "体操紧身服", "薄緑")
+		LOCAL = SETFLAG_BODYS("ズリ不可", "V后入", "体操紧身服", "薄緑")
 	ENDIF
 CASE 17
 	IF CFLAG:(ARG:1):8 == 1
 		LOCALS = 釉光体操紧身服
-		LOCAL = SETFLAG_BODYS("Ｖ后入", "体操紧身服", "釉光", "黒", "谷间露出")
+		LOCAL = SETFLAG_BODYS("V后入", "体操紧身服", "釉光", "黒", "谷间露出")
 	ENDIF
 CASE 29
 	LOCALS = 史莱姆衣服
@@ -153,19 +153,19 @@ CASE 100
 	LOCAL = SETFLAG_BODYS("ズリ不可", "体操紧身服")
 CASE 101
 	LOCALS = 性感体操紧身服
-	LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "体操紧身服", "谷间露出")
+	LOCAL = SETFLAG_BODYS("高叉", "V后入", "体操紧身服", "谷间露出")
 CASE 102
 	LOCALS = 釉光体操紧身服
 	LOCAL = SETFLAG_BODYS("高叉", "丁字裤", "体操紧身服", "釉光", "拉链", "谷间露出")
 CASE 103
 	IF ITEM:糟糕体操紧身服
 		LOCALS = 糟糕体操紧身服
-		LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "糟糕体操紧身服", "ＶＡ露出", "谷间露出", "乳首露出")
+		LOCAL = SETFLAG_BODYS("高叉", "V后入", "糟糕体操紧身服", "VA露出", "谷间露出", "乳首露出")
 	ENDIF
 CASE 104
 	IF ITEM:兔女郎装
 		LOCALS = 兔女郎装
-		LOCAL = SETFLAG_BODYS("Ｖ后入", "兔女郎装", "兔女郎")
+		LOCAL = SETFLAG_BODYS("V后入", "兔女郎装", "兔女郎")
 	ENDIF
 CASE 105
 	IF ITEM:兔女郎装
@@ -200,7 +200,7 @@ CASE 109
 CASE 110
 	IF ITEM:连身泳装
 		LOCALS = 竞技泳装
-		LOCAL = SETFLAG_BODYS("高叉", "Ｖ后入", "ズリ不可", "竞技泳装")
+		LOCAL = SETFLAG_BODYS("高叉", "V后入", "ズリ不可", "竞技泳装")
 		IF RAND:2
 			LOCAL += SETFLAG_BODYS("紺")
 		ELSE
@@ -231,7 +231,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 1
 	CASE "丁字裤", "Tフロント"
 		SETBIT LOCAL, 2
-	CASE "Ｖ后入", "V后入"
+	CASE "V后入", "V后入"
 		SETBIT LOCAL, 3
 	CASE "丁字裤", "T后入"
 		SETBIT LOCAL, 4
@@ -289,7 +289,7 @@ CASE "可裸露"
 	RETURNF 1
 ;ずれ不可でなく、ずらしていない
 CASE "ずらし可", "能撥开"
-	SIF SETFLAG_BODYS("Ｖ露出")&EQUIP:ARG:紧身衣
+	SIF SETFLAG_BODYS("V露出")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	IF SETFLAG_BODYS("拉链")&EQUIP:ARG:紧身衣
 		SIF SETFLAG_BODYS("拉链开")&EQUIP:ARG:紧身衣
@@ -308,26 +308,26 @@ CASE "拉链閉"
 		RETURNF 0
 	SIF SETFLAG_BODYS("拉链")&EQUIP:ARG:紧身衣
 		RETURNF 1
-CASE "露Ｖ胖次"
-	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "Ｖ露出", "缝隙")&EQUIP:ARG:紧身衣
+CASE "露V胖次"
+	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "V露出", "缝隙")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	RETURNF 1
-CASE "露Ａ胖次"
-	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "Ａ露出", "缝隙")&EQUIP:ARG:紧身衣
+CASE "露A胖次"
+	SIF SETFLAG_BODYS("拉链开", "ずらした", "可撕", "A露出", "缝隙")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	RETURNF 1
 CASE "紧勒"
-	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	SIF SETFLAG_BODYS("高叉", "丁字裤")&EQUIP:ARG:紧身衣
 		RETURNF 1
 CASE "潮湿"
-	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:连身衣（下）, "潮湿")
 		RETURNF 1
 CASE "润湿"
-	SIF SETFLAG_BODYS("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:紧身衣
+	SIF SETFLAG_BODYS("ずらした", "拉链开", "V露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:紧身衣
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:连身衣（下）, "濡れ")
 		RETURNF 1

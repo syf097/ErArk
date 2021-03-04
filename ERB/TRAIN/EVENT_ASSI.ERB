@@ -1,37 +1,6 @@
 ﻿@EVENTCHECK_A
 SIF ASSI <= 0
 	RETURN 0
-
-;-------------------------------------------------------------------------------------------------
-;技能之成长
-;-------------------------------------------------------------------------------------------------
-CALL EX_ABLUP, ASSI
-
-;助手之LVUP
-SELECTCASE ABL:ASSI:助手
-CASE 0
-	SIF EXP:ASSI:助手经验 < 50
-		RETURN 0
-CASE 1
-	SIF EXP:ASSI:助手经验 < 200
-		RETURN 0
-CASE 2
-	SIF EXP:ASSI:助手经验 < 500
-		RETURN 0
-CASE 3
-	SIF EXP:ASSI:助手经验 < 1000
-		RETURN 0
-CASE 4
-	SIF EXP:ASSI:助手经验 < 2000
-		RETURN 0
-CASEELSE
-	RETURN 0
-ENDSELECT
-
-ABL:ASSI:助手 += 1
-PRINTL 
-PRINTFORML %CALLNAME:ASSI%对助手职责的理解加深了
-PRINTFORMW %CALLNAME:ASSI%的%ABLNAME:20%LV提升为{ABL:ASSI:助手}！
 ;助手へ之指示呼び出し
 CALL ASSI_CHANGE_INDICATE, ASSI
 
@@ -534,42 +503,6 @@ ENDIF
 ; SIF ARGS != "调教开始" && TFLAG:6
 	RETURN 0
 
-;平稳之歌
-; IF GETBIT(CFLAG:ASSI:35, 30) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
-; 	;开始时にはTARGETが疲れていない限り歌わない
-; 	IF ARGS == "调教开始" && MAXBASE:体力 - BASE:体力 < 300
-; 	ELSE
-; 		PRINTFORML ＜平稳之歌＞
-; 		PRINTFORML %CALLNAME:ASSI%唱起了沉静温柔的曲调…
-; 		TEQUIP:演奏中 = 1
-; 		TEQUIP:ASSI:演奏中 = 10
-; 		TFLAG:6 = 1
-; 		IF ARGS != "调教开始"
-; 			PRINTL 
-; 			RETURN 1
-; 		ENDIF
-; 	ENDIF
-; ENDIF
-; ;罗曼司曲
-; IF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 31) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
-; 	PRINTFORML ＜罗曼司曲＞
-; 	PRINTFORML %CALLNAME:ASSI%唱起了美丽的歌谣。
-; 	PRINTFORML 气氛变得浪漫而淫靡…
-
-; 	TEQUIP:演奏中 = 2
-; 	TEQUIP:ASSI:演奏中 = 10
-; 	TFLAG:6 = 1
-; ;雨后轮舞曲
-; ELSEIF ARGS == "调教开始" && GETBIT(CFLAG:ASSI:35, 32) && TALENT:ASSI:歌唱技能 && TEQUIP:演奏中 == 0
-; 	PRINTFORML ＜雨后轮舞曲＞
-; 	PRINTFORML %CALLNAME:ASSI%开始了演奏！
-; 	PRINTFORML 四周流淌着美好的旋律…
-
-; 	TEQUIP:演奏中 = 3
-; 	TEQUIP:ASSI:演奏中 = 10
-; 	TFLAG:6 = 1
-; ENDIF
-
 @ASSI_CHANGE_INDICATE, ARG
 ; #DIM MEMO_LINECOUNT
 ; MEMO_LINECOUNT = LINECOUNT
@@ -757,12 +690,6 @@ SIF TALENT:ARG:解放
 	PRINT 解放 
 SIF TALENT:ARG:无视脏污
 	PRINT 无视脏污 
-; SIF TALENT:ARG:百发百中
-; 	PRINT 百发百中 
-; SIF TALENT:ARG:召唤之天才
-; 	PRINT 召唤之天才 
-; SIF TALENT:ARG:召唤之天災
-; 	PRINT 召唤之天災 
 SIF TALENT:ARG:通吃
 	PRINT 通吃 
 SIF TALENT:ARG:抖S
@@ -781,15 +708,3 @@ SIF TALENT:ARG:性别 == 1
 	PRINT ♂ 
 SIF TALENT:ARG:禁断之知识
 	PRINT 禁断之知识 
-
-
-; SIF TALENT:ARG:魔法使
-; 	PRINT 魔法 
-; SIF TALENT:ARG:调教知识
-; 	PRINTFORM %CONDS("调教知识", ARG)% 
-; SIF TALENT:ARG:甜言蜜语
-; 	PRINT 甜言蜜语 
-; SIF TALENT:ARG:高潮管理
-; 	PRINT 高潮管理
-; SIF TALENT:ARG:歌唱技能
-; 	PRINT 歌唱 

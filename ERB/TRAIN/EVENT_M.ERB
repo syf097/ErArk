@@ -1814,7 +1814,7 @@ ENDIF
 ;-------------------------------------------------
 ;快乐调教関数
 ;任凭摆布から之逆调教で使用
-;奉仕系メイン
+;侍奉系メイン
 ;-------------------------------------------------
 @EVENT_EXPLAY
 PRINTFORML 
@@ -1827,34 +1827,34 @@ LOCALS = %STR:100%
 
 SELECTCASE LOCALS
 CASE "指插れ", "按摩棒刺激", "自慰"
-	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += ABL:指技 * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "快乐强暴"
-	LOCAL += ABL:腰技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += ABL:腰技 * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:V插入经验 += ABL:技巧/2 + 1
 	EXP:PLAYER:V性交经验 += ABL:TARGET:技巧/2 + 1
 	EXP:PLAYER:V经验 += ABL:TARGET:技巧/2 + 1
 CASE "舐阴"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += ABL:舌技 * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:舐阴经验 += ABL:技巧/2 + 1
 CASE "口交"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:100 + RAND:10
+	LOCAL += ABL:舌技 * 1000 + EXP:侍奉快乐经验 + RAND:100 + RAND:10
 	EXP:口交经验 += ABL:技巧/2 + 1
 CASE "乳交"
-	LOCAL += (ABL:舌技 + ABL:魔乳) * 1000 +  EXP:奉仕快乐经验 + RAND:10
+	LOCAL += (ABL:舌技 + ABL:魔乳) * 1000 +  EXP:侍奉快乐经验 + RAND:10
 	EXP:乳交经验 += ABL:技巧/2 + 1
 CASE "手交", "飞机杯奉侍"
-	LOCAL += ABL:指技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += ABL:指技 * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "接吻"
-	LOCAL += ABL:舌技 * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += ABL:舌技 * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:接吻经验 += ABL:技巧/2 + 1
 	EXP:PLAYER:接吻经验 += ABL:技巧/2 + 1
 CASE "胸爱抚", "搾乳PLAY"
-	LOCAL += (ABL:指技 + ABL:魔乳) * 1000 + EXP:奉仕快乐经验 + RAND:10
+	LOCAL += (ABL:指技 + ABL:魔乳) * 1000 + EXP:侍奉快乐经验 + RAND:10
 	EXP:手交经验 += ABL:技巧/2 + 1
 CASE "尻尾阴茎刺激", "尻尾刺激"
-	LOCAL += ABL:技巧 * 1000 + MIN(EXP:奉仕快乐经验 + CFLAG:2, MAXBASE:PLAYER:绝顶) + RAND:1000
+	LOCAL += ABL:技巧 * 1000 + MIN(EXP:侍奉快乐经验 + CFLAG:2, MAXBASE:PLAYER:绝顶) + RAND:1000
 	LOCAL *= 9
 	EXP:嗜虐快乐经验 += ABL:技巧*9
 ENDSELECT
@@ -1896,7 +1896,7 @@ ELSE
 		TRYCALLFORM KOJO_EVENT_EXPLAY_{NO:TARGET}_{CFLAG:209}, LOCALS:1
 
 		;追击された场合は必殺
-		LOCAL = 100000 + EXP:奉仕快乐经验 + RAND:10000
+		LOCAL = 100000 + EXP:侍奉快乐经验 + RAND:10000
 		CALL TEXT, "绝顶计算", LOCAL
 		CALL BOUHATSU
 

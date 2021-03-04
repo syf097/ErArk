@@ -71,7 +71,7 @@ TARGET = ARG
 ;COMABLEで实行条件を判定するため之FLAGをセット
 FLAG:10 = 1
 
-;奉仕系之种别では、对应する得意技能之意味が强
+;侍奉系之种别では、对应する得意技能之意味が强
 VARSET I
 
 SELECTCASE ABL:侍奉精神 - ABL:欲望 - TEQUIP:媚药/100
@@ -570,7 +570,7 @@ CASE 70 TO 79
 ;爱抚と道具
 CASE 0 TO 2, 4 TO 59
 	TFLAG:90 = 3
-;奉仕
+;侍奉
 CASE 90 TO 119
 	TFLAG:90 = 4
 ;SM
@@ -665,7 +665,7 @@ CASE "爱抚"
 	CASEELSE
 		PRINTFORMW %CALLNAME:TARGET%无从反抗%CALLNAME:PLAYER%的蹂躏……
 	ENDSELECT
-CASE "奉仕"
+CASE "侍奉"
 	IF PENIS(PLAYER) == 0 || RAND:2
 		SELECTCASE CONDS("反击：强度")
 		CASE "必殺"

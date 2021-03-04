@@ -1,0 +1,544 @@
+﻿;-------------------------------------------------
+;500番台,派生指令(コメントアウト解除禁止)
+;-------------------------------------------------
+@COM_ABLE500
+
+;秘法使用实行判定
+FOR LOCAL, 230, 260
+	TRYCALLFORM COM_ABLE{LOCAL}_2
+	SIF RESULT == 1
+		RETURN 1
+NEXT
+RETURN 0
+
+@COM_ABLE501
+
+;道具使用实行判定
+FOR LOCAL, 260, 280
+	TRYCALLFORM COM_ABLE{LOCAL}_2
+	SIF RESULT == 1
+		RETURN 1
+NEXT
+RETURN 0
+
+;-------------------------------------------------
+;全部之@COMABLEを一斉に管理する时に使用する式中関数
+;逆推など、登场頻度が非常に多いも之について之み扱う
+;按摩棒など之装备品が解除できるかどうか之判定は、こ之判定よりも优先度が高いことに注意
+;なお、NEXTCOM之时には@COM_ABLEを通らない。
+;-------------------------------------------------
+@COMABLE_DEF(ARG)
+#FUNCTION
+;一括OFF、个别設定指令过滤
+SIF FLAG:238
+	RETURNF 1
+;指令禁止过滤
+SIF CONFIG("调教配置模式") == 0
+	RETURNF 1
+
+;V调教过滤
+IF TALENT:处女 && CONFIG("V调教过滤")
+	SELECTCASE ARG
+	CASE 304
+		SIF TEQUIP:逆推 == 0
+			RETURNF 1
+	CASEELSE
+		SIF TRAIN_GENRE("V调教", ARG)
+			RETURNF 1
+	ENDSELECT
+ENDIF
+;助手之指令へ之V调教过滤
+IF CONFIG("V调教过滤") && (ARG == 160 || ARG == 161)
+	SIF ASSI && TALENT:ASSI:处女
+		RETURNF 1
+ENDIF
+;A调教过滤(扩张扩张气囊だけ特殊)
+IF CONFIG("A调教过滤")
+	SIF TRAIN_GENRE("A调教", ARG)
+		RETURNF 1
+
+ENDIF
+
+;脱童贞过滤
+IF CONFIG("脱童贞过滤")
+	IF TALENT:PLAYER:童贞
+		SELECTCASE ARG
+		CASE 60 TO 69, 160, 177
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF TALENT:童贞
+		SELECTCASE ARG
+		CASE 120 TO 124, 161
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+ENDIF
+;运命检閲
+IF TEQUIP:运命检閲
+	IF COND("运命检閲：爱抚")
+		SELECTCASE ARG
+		CASE 0, 2, 3, 5, 7
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF COND("运命检閲：V")
+		SELECTCASE ARG
+		CASE 0, 1, 7, 30, 32, 34, 80, 98, 203
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF COND("运命检閲：胸")
+		SELECTCASE ARG
+		CASE 0, 3, 5, 35, 36, 81, 82, 92, 104, 204, 205
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF COND("运命检閲：接吻")
+		SELECTCASE ARG
+		CASE 0, 6, 311
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF COND("运命检閲：A")
+		SELECTCASE ARG
+		CASE 2, 9, 96
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	IF COND("运命检閲：咏唱")
+		SELECTCASE ARG
+		CASE 230 TO 259
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+ENDIF
+
+;PLAY之限制
+;受け手が限制されている
+IF PLAYER != MASTER && COND("外观：性行为之限制")
+	SELECTCASE ARG
+	CASE 60 TO 69, 177
+		SIF COND("外观：V独占")
+			RETURNF 1
+	CASE 70 TO 79
+		SIF COND("外观：A独占")
+			RETURNF 1
+	CASE 90, 96, 98, 99, 140, 150
+		SIF COND("外观：口独占")
+			RETURNF 1
+	CASE 6, 311
+		SIF COND("外观：接吻独占")
+			RETURNF 1
+	CASE 120 TO 129
+		SIF PENIS(TARGET) && COND("外观：Ｐ独占")
+			RETURNF 1
+	ENDSELECT
+ENDIF
+;攻め手が限制されている
+IF COND("外观：性行为之限制", PLAYER)
+	SELECTCASE ARG
+	CASE 120 TO 124
+		SIF COND("外观：V独占", PLAYER)
+			RETURNF 1
+	CASE 125 TO 129
+		SIF COND("外观：A独占", PLAYER)
+			RETURNF 1
+	CASE 1, 4, 9
+		SIF COND("外观：口独占", PLAYER)
+			RETURNF 1
+	CASE 6, 311
+		SIF COND("外观：接吻独占", PLAYER)
+			RETURNF 1
+	CASE 60 TO 79, 81, 82, 83, 140, 150, 177
+		SIF PENIS(TARGET) && COND("外观：Ｐ独占", PLAYER)
+			RETURNF 1
+	ENDSELECT
+ENDIF
+
+;妖精之扩张LV関连など、插入系指令之一括处理や汚れなどによるPLAY之限制
+SELECTCASE ARG
+CASE 1, 4, 6, 9, 10, 11, 99
+	;女王大人PLAYor逆推なら汚れで文句は言えない
+	IF TEQUIP:女王大人PLAY == 0 && TEQUIP:逆推 == 0
+		IF TALENT:PLAYER:气味钝感 || TALENT:PLAYER:无视脏污
+		ELSEIF PLAYER == ASSI && ABL:ASSI:顺从 >= 4
+		ELSE
+			LOCAL = 0
+			SELECTCASE ARG
+			CASE 1
+				LOCAL = STAIN:V
+			CASE 4, 10, 11
+				LOCAL = STAIN:P
+			CASE 6
+				LOCAL = STAIN:M
+			CASE 9
+				LOCAL = STAIN:A
+			CASE 99
+				SIF TALENT:性别 != 1
+					LOCAL |= STAIN:V
+				SIF PENIS(TARGET)
+					LOCAL |= STAIN:P
+			ENDSELECT
+
+			SIF CHECK_STAIN(LOCAL, "破瓜之血")
+				RETURNF 1
+			IF CHECK_STAIN(LOCAL, "A")
+				SIF TEQUIP:浴室上り == 0 || ARG != 9
+					RETURNF 1
+			ENDIF
+			IF ABL:PLAYER:精液成瘾 == 0 && CHECK_STAIN(LOCAL, "精液")
+				RETURNF 1
+			ENDIF
+		ENDIF
+	ENDIF
+;V插入指令
+CASE 60 TO 69, 177
+	SIF USE_V(TARGET) == 0 || TEQUIP:PLAYER:导尿管
+		RETURNF 1
+	;调教者が阴茎あり、もしくは假阴茎がないとダメ
+	SIF PENIS(PLAYER) == 0 && COND("假阴茎", PLAYER) == 0
+		RETURNF 1
+	SIF TEQUIP:浴室PLAY && ITEM:地垫 == 0 && NOITEM == 0
+		RETURNF 1
+;A插入指令
+CASE 70 TO 79
+	SIF USE_A(TARGET) == 0 || TEQUIP:PLAYER:导尿管
+		RETURNF 1
+	;液剂很多之灌肠中
+	;SIF COND("液体灌肠") >= 2
+	;	RETURNF 1
+	;调教者が阴茎あり、もしくは假阴茎がないとダメ
+	SIF PENIS(PLAYER) == 0 && COND("假阴茎", PLAYER) == 0
+		RETURNF 1
+	;浴室PLAY中は地垫が无いとダメ
+	SIF TEQUIP:浴室PLAY && ITEM:地垫 == 0 && NOITEM == 0
+		RETURNF 1
+;尿道插入
+CASE 83
+	;浴室PLAY中は地垫が无いとダメ
+	SIF TEQUIP:浴室PLAY && ITEM:地垫 == 0 && NOITEM == 0
+		RETURNF 1
+;特殊插入
+CASE 80 TO 89
+	;浴室PLAY中は地垫が无いとダメ
+	SIF TEQUIP:浴室PLAY && ITEM:地垫 == 0 && NOITEM == 0
+		RETURNF 1
+;逆插入
+CASE 120 TO 129
+	;调教对象が阴茎あり、もしくは假阴茎がないとダメ
+	SIF PENIS(TARGET) == 0 && COND("假阴茎") == 0
+		RETURNF 1
+	SIF TEQUIP:导尿管
+		RETURNF 1
+;拳交
+CASE 141 TO 143
+	;手が使えないとダメ
+	SIF COND("指之使用", PLAYER) == 0
+		RETURNF 1
+	IF ARG == 141
+		SIF USE_V(TARGET) == 0
+			RETURNF 1
+		;处女はダメ
+		SIF TALENT:处女 == 1
+			RETURNF 1
+	ELSEIF ARG == 142
+		SIF USE_A(TARGET) == 0
+			RETURNF 1
+		;液剂很多之灌肠中
+		SIF COND("液体灌肠") >= 2
+			RETURNF 1
+	ELSEIF ARG == 143
+		SIF USE_V(TARGET) == 0
+			RETURNF 1
+		SIF TALENT:处女 == 1
+			RETURNF 1
+		SIF USE_A(TARGET) == 0
+			RETURNF 1
+		;液剂很多之灌肠中
+		SIF COND("液体灌肠") >= 2
+			RETURNF 1
+	ENDIF
+;助手が必須之指令は、助手が居なかったりダウンしてたらダメ
+CASE 160 TO 169, 178, 180, 302
+	SIF ASSI <= 0 || STATE("击沈", ASSI) || TEQUIP:摄像机
+		RETURNF 1
+;触手
+CASE 201 TO 229
+	SIF TEQUIP:触手 == 0
+		RETURNF 1
+ENDSELECT
+
+;服装による限制
+SELECTCASE ARG
+CASE 5, 81, 92
+	SIF CHECK_SHIRT("铠甲") && CHECK_CLO("谷间露出") + CHECK_CLO("乳首露出") + CHECK_CLO("可裸露") == 0
+	RETURNF 1
+ENDSELECT
+
+;拘束
+IF TEQUIP:拘束
+	;手が拘束されている
+	IF GETBIT(TEQUIP:拘束, 20)
+		SELECTCASE ARG
+		CASE 175
+			SIF TEQUIP:逆推
+				RETURNF 1
+		CASE 13, 14, 90, 92, 94, 97, 100, 104 TO 110, 172 TO 173, 176 TO 178
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+	;足が拘束されている
+	IF GETBIT(TEQUIP:拘束, 21)
+		SELECTCASE ARG
+		CASE 94, 95, 120 TO 129, 171 TO 174, 176 TO 178
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+ENDIF
+
+;秘法は以下之状況でＯＫ
+SIF ARG >= 230 && ARG <= 259 && COND("主导権无") == 0
+	RETURNF 0
+
+IF TEQUIP:逆推
+	;HARDモード
+	IF COND("主导権无")
+		SELECTCASE ARG
+		CASE 178, 280, 281
+		CASEELSE
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+
+	SELECTCASE ARG
+	;解除之みは可能
+	CASE 31, 33 TO 39
+		SIF CHECK_TEQUIP(ARG) == 0
+			RETURNF 1
+	;实行可能な指令
+	CASE 0, 1, 4 ,6, 9 ,11, 16, 65 TO 69, 75, 80, 82, 83, 90 TO 99, 101 TO 105, 120, 126, 144, 145, 150, 170, 175, 178, 181, 261, 280 TO 282, 304 TO 306, 312
+
+	CASEELSE
+		RETURNF 1
+	ENDSELECT
+	;Ｗ逆推
+	IF TEQUIP:Ｗ逆推
+		SELECTCASE ARG
+		CASE 0, 10 TO 12, 80, 82, 99, 105, 144, 145, 150, 175, 178, 261, 282, 304, 305
+			RETURNF 1
+		ENDSELECT
+	ENDIF
+ENDIF
+
+;野外指令など
+IF TEQUIP:野外PLAY
+	SELECTCASE ARG
+	;通常は实行不可なグループ之中で例外的に实行可能な指令
+	CASE 130, 133 TO 135, 140 TO 144, 150
+	;解除之みは可能
+	CASE 31, 33 TO 39, 136, 137, 149
+		SIF CHECK_TEQUIP(ARG) == 0
+			RETURNF 1
+	;实行不可能な指令
+	CASE 30 TO 59, 130 TO 159, 172 TO 174, 179, 200 TO 229
+		RETURNF 1
+	ENDSELECT
+ENDIF
+IF TEQUIP:浴室PLAY
+	SELECTCASE ARG
+	;通常は实行不可なグループ之中で例外的に实行可能な指令
+	CASE 38, 130, 133 TO 145, 149, 150
+	;解除之みは可能
+	CASE 31, 33 TO 39
+		SIF CHECK_TEQUIP(ARG) == 0
+			RETURNF 1
+	;实行不可能な指令
+	CASE 30 TO 59, 130 TO 159, 171, 173, 174, 179, 200 TO 229
+		RETURNF 1
+	ENDSELECT
+ENDIF
+IF TEQUIP:屋内露出PLAY
+	SELECTCASE ARG
+	;通常は实行不可なグループ之中で例外的に实行可能な指令
+	CASE 30 TO 33, 130, 131, 133 TO 135, 140 TO 144, 150
+	;解除之みは可能
+	CASE 31, 33 TO 39, 136, 137, 149
+		SIF CHECK_TEQUIP(ARG) == 0
+			RETURNF 1
+	;实行不可能な指令
+	CASE 30 TO 59, 130 TO 159, 171 TO 173, 179, 200 TO 229
+		RETURNF 1
+	ENDSELECT
+ENDIF
+
+;女王大人PLAY(大幅な变更之予定あり)
+IF TEQUIP:女王大人PLAY
+	;实行可能な指令
+	SELECTCASE ARG
+	CASE 1, 4, 9, 31, 33, 130
+	;LV2指令(龙奸はちょっと封印)
+	CASE 90, 95, 121, 126, 141 TO 145, 148
+		SIF TEQUIP:女王大人PLAY < 2
+			RETURNF 1
+	;LV3指令
+	CASE 60 TO 89
+		SIF TEQUIP:女王大人PLAY < 3
+			RETURNF 1
+	CASEELSE
+		RETURNF 1
+	ENDSELECT
+ENDIF
+
+IF TEQUIP:新婚PLAY
+	;实行不可な指令
+	SELECTCASE ARG
+	;CASE 36, 37, 131, 132, 135, 140 TO 143, 146, 147, 160 TO 169, 171, 172, 174, 178, 200, 303 TO 305
+	CASE 160 TO 169, 171, 174, 178, 200, 303
+		RETURNF 1
+	ENDSELECT
+ENDIF
+
+;复数参加指令之体制的な可否(主に、助手を自动で动かす时に用いる)
+
+IF TEQUIP:Ｗ逆推 && ASSI
+	SELECTCASE ARG
+	CASE 1
+		SIF FORBIDCOM(ASSI, "Ｐ顔", "ＴV")
+			RETURNF 1
+	CASE 4
+		SIF FORBIDCOM(ASSI, "Ｐ顔", "Ｔ阴茎")
+			RETURNF 1
+	CASE 5
+		SIF FORBIDCOM(ASSI, "Ｔ胸") || TEQUIP:逆推
+			RETURNF 1
+	CASE 6
+		SIF FORBIDCOM(ASSI, "Ｐ顔", "Ｔ顔")
+			RETURNF 1
+	CASE 9
+		SIF FORBIDCOM(ASSI, "Ｐ顔", "ＴA")
+			RETURNF 1
+	CASE 60, 62, 63
+		SIF FORBIDCOM(ASSI, "性爱", "ＴV", "Ｔ前面")
+			RETURNF 1
+	CASE 61
+		SIF FORBIDCOM(ASSI, "性爱", "ＴV", "Ｔ后面")
+			RETURNF 1
+	CASE 64
+		SIF FORBIDCOM(ASSI, "性爱", "Ｔ下半身", "Ｔ后面")
+			RETURNF 1
+	CASE 65
+		SIF FORBIDCOM(ASSI, "性爱", "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+	CASE 66 TO 69
+		SIF FORBIDCOM(ASSI, "性爱", "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+
+	CASE 70, 72, 73
+		SIF FORBIDCOM(ASSI, "性爱", "ＴA", "Ｔ前面")
+			RETURNF 1
+	CASE 71
+		SIF FORBIDCOM(ASSI, "性爱", "ＴA", "Ｔ后面")
+			RETURNF 1
+	CASE 74
+		SIF FORBIDCOM(ASSI, "性爱", "Ｔ下半身", "Ｔ后面")
+			RETURNF 1
+	CASE 75
+		SIF FORBIDCOM(ASSI, "性爱", "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+	CASE 76 TO 79
+		SIF FORBIDCOM(ASSI, "性爱", "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+	;貝合わせ
+	CASE 80
+		SIF FORBIDCOM(ASSI, "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+	;尿道骑乘位
+	CASE 83
+		SIF FORBIDCOM(ASSI, "性爱", "Ｐ下半身", "Ｔ下半身")
+			RETURNF 1
+	;手交などPLAYER之阴茎を手とかで刺激る
+	CASE 90
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "手交")
+			RETURNF 1
+	CASE 91
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "口交")
+			RETURNF 1
+	CASE 92
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "乳交")
+			RETURNF 1
+	CASE 93
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "素股")
+			RETURNF 1
+	CASE 94
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "洗浴服务")
+			RETURNF 1
+	CASE 95
+		IF PENIS(MASTER)
+			SIF FORBIDCOM(ASSI, "Ｐ阴茎", "足交")
+				RETURNF 1
+		ELSE
+			SIF FORBIDCOM(ASSI, "ＰV", "足交")
+				RETURNF 1
+		ENDIF
+	CASE 96
+		;现状封印
+		SIF FORBIDCOM(ASSI, "ＰA", "Ｐ后面")
+			RETURNF 1
+	CASE 97
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "摩擦胖次")
+			RETURNF 1
+	CASE 98
+		SIF FORBIDCOM(ASSI, "ＰV", "Ｐ前面", "Ｔ顔")
+			RETURNF 1
+	CASE 104
+		SIF FORBIDCOM(ASSI, "Ｐ顔")
+			RETURNF 1
+	;逆肛交
+	CASE 125 TO 129
+		SIF FORBIDCOM(ASSI, "Ｐ下半身", "Ｐ后面")
+			RETURNF 1
+	;逆强暴などPLAYER之Vを刺激る
+	CASE 120 TO 124
+		SIF FORBIDCOM(ASSI, "Ｐ下半身", "Ｐ前面")
+			RETURNF 1
+	CASE 140, 150
+		SIF FORBIDCOM(ASSI, "Ｐ阴茎", "口交")
+			RETURNF 1
+	CASE 141
+		SIF FORBIDCOM(ASSI, "Ｐ指", "ＴV")
+			RETURNF 1
+	CASE 142
+		SIF FORBIDCOM(ASSI, "Ｐ指", "ＴA")
+			RETURNF 1
+	CASE 143
+		SIF FORBIDCOM(ASSI, "Ｐ指", "ＴV", "ＴA")
+			RETURNF 1
+	ENDSELECT
+ENDIF
+
+;触手调教
+IF TEQUIP:触手
+	;实行可能な指令
+	SELECTCASE ARG
+	CASE 0, 2, 5, 133, 135, 170, 200 TO 229, 261, 262
+	CASEELSE
+		RETURNF 1
+	ENDSELECT
+ENDIF
+
+RETURNF 0
+
+@NO_SELECTCOM, ARG
+#DIM LCOUNT
+LOCAL = -1
+FOR LCOUNT, 0, 600
+	SIF STRLENS(TRAINNAME:LCOUNT) == 0
+		CONTINUE
+
+	LOCAL += 1
+	SIF ARG == LOCAL
+		RETURN LCOUNT
+NEXT
+RETURN 999
+

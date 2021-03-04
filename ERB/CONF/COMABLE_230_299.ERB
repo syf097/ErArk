@@ -1,0 +1,277 @@
+﻿;-------------------------------------------------
+;230～259番,秘法咏唱系指令
+;-------------------------------------------------
+
+@COM_ABLE244
+RETURN 0
+
+
+
+;-------------------------------------------------
+;260～279番,消費道具指令
+;-------------------------------------------------
+@COM_ABLE260
+;润滑液实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 0)
+	RETURN 0
+CALL COM_ABLE260_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE260_2
+;润滑液实行判定
+SIF COMABLE_DEF(260)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:润滑液 == 0 && NOITEM == 0
+	RETURN 0
+;淋浴中はダメ
+SIF TEQUIP:淋浴
+	RETURN 0
+RETURN 1
+
+@COM_ABLE261
+;媚药实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 1)
+	RETURN 0
+CALL COM_ABLE261_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE261_2
+;媚药实行判定
+SIF COMABLE_DEF(261)
+	RETURN 0
+;道具を持っているか、道具なし設定か触手调教中でないとダメ
+SIF ITEM:媚药 == 0 && NOITEM == 0 && TEQUIP:触手 == 0
+	RETURN 0
+;逆推ている
+IF TEQUIP:逆推
+
+	;PLAYERかTARGETに效く状态じゃないとダメ
+	SIF TEQUIP:媚药 && TEQUIP:PLAYER:媚药
+		RETURN 0
+	;技巧3LVか调合知识が无いとダメ
+	SIF ABL:技巧 < 3 && TALENT:调合知识 == 0
+		RETURN 0
+ELSE
+	;TARGETに效く状态じゃないとダメ
+	SIF TEQUIP:媚药
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE262
+;利尿剂实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 2)
+	RETURN 0
+CALL COM_ABLE262_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE262_2
+;利尿剂实行判定
+SIF COMABLE_DEF(262)
+	RETURN 0
+;道具を持っているか、道具なし設定か触手调教中でないとダメ
+SIF ITEM:利尿剂 == 0 && NOITEM == 0 && TEQUIP:触手 == 0
+	RETURN 0
+;药毒耐性之场合、直接注入以外ダメ
+SIF TALENT:药毒耐性 && TEQUIP:触手 == 0
+	RETURN 0
+;重ねて之使用はダメ
+SIF TEQUIP:利尿剂
+	RETURN 0
+RETURN 1
+
+@COM_ABLE263
+;镇静剂实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 3)
+	RETURN 0
+CALL COM_ABLE263_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE263_2
+;镇静剂实行判定
+SIF COMABLE_DEF(263)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:镇静剂 == 0 && NOITEM == 0
+	RETURN 0
+;使用中だとダメ
+SIF GETBIT(TEQUIP:PLAYER:药品, 0)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE264
+;排卵诱发剂实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 4)
+	RETURN 0
+CALL COM_ABLE264_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE264_2
+;排卵诱发剂实行判定
+SIF COMABLE_DEF(264)
+	RETURN 0
+;孕娠补丁がONで无いとダメ
+SIF CONFIG("孕娠补丁") == 0
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:排卵诱发剂 == 0 && NOITEM == 0
+	RETURN 0
+SIF USEABLE_ITEM56(TARGET) + USEABLE_ITEM56(PLAYER) == 0
+	RETURN 0
+RETURN 1
+
+@USEABLE_ITEM56(ARG)
+#FUNCTION
+;药毒耐性之场合ダメ
+SIF TALENT:ARG:药毒耐性
+	RETURNF 0
+;性别男だとダメ
+SIF TALENT:ARG:性别 == 1
+	RETURNF 0
+RETURNF 1
+
+@COM_ABLE265
+;薫香实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 5)
+	RETURN 0
+CALL COM_ABLE265_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE265_2
+;薫香实行判定
+SIF COMABLE_DEF(265)
+	RETURN 0
+;薫香を持っていないとダメ
+SIF NUM("所持薫香") == 0
+	RETURN 0
+;薫香效果发揮中だとダメ
+SIF TEQUIP:MASTER:薫香
+	RETURN 0
+RETURN 1
+
+@COM_ABLE266
+;沐浴剂实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 6)
+	RETURN 0
+CALL COM_ABLE266_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE266_2
+;沐浴剂实行判定
+SIF COMABLE_DEF(266)
+	RETURN 0
+;浴室でないとダメ
+SIF TEQUIP:浴室PLAY == 0
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:沐浴剂 == 0 && NOITEM == 0
+	RETURN 0
+;沐浴剂使用中はダメ
+SIF TEQUIP:MASTER:沐浴剂
+	RETURN 0
+RETURN 1
+
+@COM_ABLE267
+;肌肉松弛剂实行判定
+;过滤がオフになってないとダメ
+SIF GETBIT(FLAG:215, 7)
+	RETURN 0
+CALL COM_ABLE267_2
+SIF RESULT == 1
+	RETURN 1
+RETURN 0
+
+@COM_ABLE267_2
+;肌肉松弛剂实行判定
+SIF COMABLE_DEF(267)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:肌肉松弛剂 == 0 && NOITEM == 0
+	RETURN 0
+;用法用量は的确に
+SIF TEQUIP:肌肉松弛剂
+	RETURN 0
+RETURN 1
+
+@COM_ABLE268
+RETURN 0
+
+@COM_ABLE269
+RETURN 0
+
+
+
+;-------------------------------------------------
+;280～299番,SQ独自(?)之调教指令
+;-------------------------------------------------
+@COM_ABLE280
+;挣脱实行判定
+SIF COMABLE_DEF(280)
+	RETURN 0
+;逆推ていないとダメ
+SIF TEQUIP:逆推 + TEQUIP:爱之圈套 == 0
+	RETURN 0
+;恍惚状态だとだめ
+SIF STATE("恍惚", PLAYER)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE281
+;任凭摆布实行判定
+SIF COMABLE_DEF(281)
+	RETURN 0
+;逆推ていないとダメ
+SIF TEQUIP:逆推 + TEQUIP:爱之圈套 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE282
+RETURN 0
+;自慰实行判定
+SIF COMABLE_DEF(282)
+	RETURN 0
+;恍惚状态だとだめ
+SIF STATE("恍惚", PLAYER)
+	RETURN 0
+;绳・拘束中で手が使えない时はダメ
+SIF GETBIT(TEQUIP:PLAYER:拘束, 20) || STATE("束缚术：手", PLAYER)
+	RETURN 0
+;特定指令之次之回合、ないし特定之状況化じゃないとダメということにしておく
+SELECTCASE PREVCOM
+;舐阴, 自慰, 调教者口交, 舐肛, 展示阴道, 展示肛门
+CASE 1, 3, 4, 9, 13, 14, 282
+	RETURN 1
+CASEELSE
+	SIF TEQUIP:顔面骑乘 || TEQUIP:自慰
+		RETURN 1
+ENDSELECT
+RETURN 0
+
+@COM_ABLE283
+RETURN 0
+
+@COM_ABLE284
+RETURN 0
+

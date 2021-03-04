@@ -653,9 +653,9 @@ CASE "射精＆绝顶事件标志"
 
 	SIF LOCALS != ""
 		CALL SET_EV, TARGET, LOCALS
-CASE "奉仕嗜虐判定"
-	;TCVAR:29之值によって奉仕or嗜虐快乐を決める
-	;0bit弱奉仕, 1bit奉仕, 2bit弱嗜虐, 3bit嗜虐
+CASE "侍奉嗜虐判定"
+	;TCVAR:29之值によって侍奉or嗜虐快乐を決める
+	;0bit弱侍奉, 1bit侍奉, 2bit弱嗜虐, 3bit嗜虐
 	SELECTCASE ARG
 	CASE 6, 177
 		SETBIT TCVAR:29, 0
@@ -1462,14 +1462,11 @@ CASE "射精槽"
 	;镇静剂
 	SIF GETBIT(TEQUIP:ARG:药品, 0)
 		LOCAL += MAX(MULTIPLY(LOCAL, 40), 10000)
-	SIF STATE("高敏术", ARG)
-		LOCAL = MIN(LOCAL/2, 10000)
 
 	;射精槽決定
 	MAXBASE:ARG:绝顶 = LOCAL
 	;装饰品效果（EP）
-	MAXBASE:ARG:绝顶 = MULTIPLY(MAXBASE:ARG:绝顶, 100 + TALENT:ARG:EP强化)
-
+	MAXBASE:ARG:绝顶 = MULTIPLY(MAXBASE:ARG:绝顶, 100)
 
 	;射精量之決定基准…高敏术状态等でない限りはだいたい１万orMAXBASE:绝顶。射精槽が増えると勿論増えていく。
 	LOCAL = MAX(MULTIPLY(MAXBASE:ARG:绝顶, 70), 10000)
@@ -1504,7 +1501,7 @@ CASE "体勢戻し"
 	;顔面骑乘管理
 	SELECTCASE SELECTCOM
 	CASE 1, 9, 99, 144, 282
-	;奉仕系指令は实行值依存
+	;侍奉系指令は实行值依存
 	CASE 90 TO 92, 97, 105
 		SIF TALENT:性别 == 1 || (TCVAR:28 < 30 && ABL:欲望 + ABL:S属性 < 5)
 			TEQUIP:顔面骑乘 = 0
@@ -1645,7 +1642,7 @@ CASE "今回调教指令"
 		ELSEIF SELECTCOM:1 >= 90 && SELECTCOM:1 <= 119 && SELECTCOM == SELECTCOM:1
 			STR:0 = Ｗ%TRAINNAME:(SELECTCOM:1)%
 		ELSEIF SELECTCOM:1 == 98
-			STR:0 = %STR:0% ＆ V奉仕
+			STR:0 = %STR:0% ＆ V侍奉
 		ELSEIF (SELECTCOM:1 == 126 && SELECTCOM == 120) || (SELECTCOM:1 == 120 && SELECTCOM == 126)
 			STR:0 = 二穴插入
 		;助手之行动は記述しない
@@ -1705,7 +1702,7 @@ CASE "打扫舐阴标志"
 	SETBIT TCVAR:ARG:10, 7
 CASE "子宮刺激标志"
 	SETBIT TCVAR:ARG:10, 8
-CASE "A奉仕标志"
+CASE "A侍奉标志"
 	SETBIT TCVAR:ARG:10, 9
 CASE "针术标志"
 	SETBIT TCVAR:ARG:10, 10
@@ -3983,7 +3980,7 @@ CASE "调教补正值"
 		TCVAR:ARG:630 -= 20
 		TCVAR:ARG:631 -= 20
 	ENDIF
-	;奉仕指令之やる气补正
+	;侍奉指令之やる气补正
 	IF TCVAR:ARG:28
 		TCVAR:ARG:627 += TCVAR:ARG:28
 		TCVAR:ARG:628 -= TCVAR:ARG:28
@@ -4142,7 +4139,7 @@ CASE "中意的体位"
 		RETURN 0
 	ENDIF
 	;bitで管理する
-	;0正常位, 1后背位, 2屈曲位, 3对面座位, 4背面座位, 5奉仕骑乘位, 6逆推骑乘位, 9特になし
+	;0正常位, 1后背位, 2屈曲位, 3对面座位, 4背面座位, 5侍奉骑乘位, 6逆推骑乘位, 9特になし
 	;10～16はA体位, 19黒桃A, 20～26は尿道体位
 
 	VARSET LOCAL
@@ -4230,7 +4227,7 @@ CASE "中意的体位"
 		;PRINTFORML LOCAL:30 = {LOCAL:30}, LOCAL:40 = {LOCAL:40}, LOCAL:41 = {LOCAL:41}, 
 		;10以上、今まで之中意的体位之ポイント之最大值を上回っていると中意的体位が变化する
 		IF LOCAL:(LOCAL:40) - 10 >= LOCAL:30
-			;(正常位～奉仕骑乘位)、逆推骑乘位、(A正常位～A奉仕骑乘位)、逆推A骑乘位、磨镜 之中から上位二つを選ぶ
+			;(正常位～侍奉骑乘位)、逆推骑乘位、(A正常位～A侍奉骑乘位)、逆推A骑乘位、磨镜 之中から上位二つを選ぶ
 			TALENT:ARG:中意的体位 = 0
 			SETBIT TALENT:ARG:中意的体位, LOCAL:40
 
@@ -5123,8 +5120,8 @@ CASE "快乐补正"
 	;PALAM:欲情
 	ARG = MULTIPLY(ARG, LIMIT(80 + GET_PALAMLV(PALAM:欲情)*10, 100, 150) )
 
-	;ABL:侍奉精神とEXP:奉仕快乐经验
-	LOCAL:1 = MIN(ABL:侍奉精神*10 + EXP:奉仕快乐经验/20 , 100)
+	;ABL:侍奉精神とEXP:侍奉快乐经验
+	LOCAL:1 = MIN(ABL:侍奉精神*10 + EXP:侍奉快乐经验/20 , 100)
 	SELECTCASE SELECTCOM
 	CASE 6, 140
 		ARG = MULTIPLY(ARG, 100 + LOCAL:1)
@@ -5231,10 +5228,10 @@ CASE "基礎补正"
 	ARG = MULTIPLY(ARG, 100 + TALENT:PLAYER:得到的快感)
 	RETURNF ARG
 CASE "实行值による欲情追加"
-	;TCVAR:29之值によって奉仕or嗜虐快乐が決められている
-	;0bit弱奉仕, 1bit奉仕, 2bit弱嗜虐, 3bit嗜虐
+	;TCVAR:29之值によって侍奉or嗜虐快乐が決められている
+	;0bit弱侍奉, 1bit侍奉, 2bit弱嗜虐, 3bit嗜虐
 
-	;奉仕中心
+	;侍奉中心
 	IF GETBIT(TCVAR:29, 1)
 		LOCALS = 侍奉精神
 	;嗜虐中心
@@ -5265,14 +5262,14 @@ CASE "实行值による欲情追加"
 	CASEELSE
 		LOCAL = 750
 	ENDSELECT
-	;弱奉仕or弱嗜虐なら25％
+	;弱侍奉or弱嗜虐なら25％
 	SIF GETBIT(TCVAR:29, 1) == 0 && GETBIT(TCVAR:29, 3) == 0
 		TIMES LOCAL, 0.25
 
 	;TARGETとPLAYER之性别により参照するABLが变わる。PLAYERに阴茎ありなら精液成瘾。
 	IF PENIS(PLAYER)
 		LOCALS:1 = 精液成瘾
-	;女性に男が奉仕なら抖Mッ气
+	;女性に男が侍奉なら抖Mッ气
 	ELSEIF TALENT:性别 == 1
 		LOCALS:1 = M属性
 	;女同士なら百合ッ气
@@ -5527,7 +5524,7 @@ CASE "自由な手"
 	SIF GETBIT(TEQUIP:拘束, 20)
 		RETURNF 0
 	;自慰に使える手之数。多手なら、そ之分追加。
-	LOCAL = 2 + TALENT:多手
+	LOCAL = 2
 	;ARGでSELECTCOMを管理。ARGに入力が无いなら、SELECTCOMが代入される。
 	SIF ARG == 0
 		ARG = SELECTCOM

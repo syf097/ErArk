@@ -205,7 +205,7 @@ IF FLAG:238 || CONFIG("调教配置模式")
 					SIF CONFIG("特殊性爱系非表示") == 0
 						CONTINUE
 				CASE 90 TO 119
-					SIF CONFIG("奉仕系非表示") == 0
+					SIF CONFIG("侍奉系非表示") == 0
 						CONTINUE
 				CASE 120 TO 129
 					SIF CONFIG("调教者に插入系非表示") == 0
@@ -289,9 +289,9 @@ IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：B") == 0 && CON
 		SETCOLOR DEF_COLOR("黄色")
 	PRINTC 特殊性爱系[304]
 	RESETCOLOR
-	SIF CONFIG("奉仕系非表示")
+	SIF CONFIG("侍奉系非表示")
 		SETCOLOR DEF_COLOR("黄色")
-	PRINTC 奉仕系[305]
+	PRINTC 侍奉系[305]
 	RESETCOLOR
 	PRINTL 
 
@@ -337,11 +337,6 @@ IF CONFIG("调教配置模式") || (CONFIG("项目表示过滤：B") == 0 && CON
 ENDIF
 
 IF CONFIG("调教配置模式") == 0
-	CALL COM_ABLE500
-	SIF RESULT == 0
-		SETCOLOR DEF_COLOR("灰色")
-	PRINTC 秘法一览[340]
-	RESETCOLOR
 
 	CALL COM_ABLE501
 	SIF RESULT == 0
@@ -369,13 +364,6 @@ IF CONFIG("调教配置模式") == 0
 
 		SIF TALENT:恋慕 == 0 || PLAYER != MASTER
 			SETCOLOR DEF_COLOR("灰色")
-		SIF CONFIG("ＨAＲＤ")
-				CFLAG:9 = 0
-		IF CFLAG:9
-			PRINTC 相亲相爱[420]
-		ELSE
-			PRINTC 尽情疼爱[420]
-		ENDIF
 		RESETCOLOR
 
 		PRINTL 

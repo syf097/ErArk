@@ -30,9 +30,9 @@ ENDIF
 SIF EQUIP:ARG:外套 && !CHECK_OUTER("连裤袜", ARG)
 	CALL SET_BODYS, ARG
 IF EQUIP:ARG:外套 && EQUIP:ARG:胖次
-	SIF CHECK_OUTER("紧勒", ARG) && !CHECK_PANTIES("紧勒", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+	SIF CHECK_OUTER("紧勒", ARG) && !CHECK_PANTIES("紧勒", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("V后入", ARG)
 		CALL SET_PANTIES, ARG
-	SIF CHECK_OUTER("拉链", ARG) || CHECK_OUTER("Ｖ露出", ARG) || CHECK_OUTER("Ａ露出", ARG)
+	SIF CHECK_OUTER("拉链", ARG) || CHECK_OUTER("V露出", ARG) || CHECK_OUTER("A露出", ARG)
 		CALL SET_PANTIES, ARG
 ENDIF
 SIF EQUIP:ARG:外套 && CHECK_OUTER("连裤袜", ARG)
@@ -128,7 +128,7 @@ CASE 100
 	LOCAL = SETFLAG_OUTER("运动短裤", "运动短裤カラー")
 CASE 101
 	LOCALS = 高叉运动短裤
-	LOCAL = SETFLAG_OUTER("高叉", "Ｖ后入", "运动短裤", "运动短裤カラー")
+	LOCAL = SETFLAG_OUTER("高叉", "V后入", "运动短裤", "运动短裤カラー")
 CASE 102
 	LOCALS = 打底裤
 	LOCAL = SETFLAG_OUTER("ずれ不可", "打底裤")
@@ -143,7 +143,7 @@ CASE 105
 	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "连裤袜", "蕾丝")
 CASE 106
 	LOCALS = 开洞连裤袜
-	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "连裤袜", "ＶＡ露出")
+	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "连裤袜", "VA露出")
 CASE 107
 	LOCALS = 紧身裤
 	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "紧身裤")
@@ -158,13 +158,13 @@ CASE 109
 
 CASE 120
 	LOCALS = 运动短裤
-	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "运动短裤", "ＶＡ露出", "运动短裤カラー")
+	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "运动短裤", "VA露出", "运动短裤カラー")
 CASE 125
 	LOCALS = 打底裤
-	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "打底裤", "ＶＡ露出")
+	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "打底裤", "VA露出")
 CASE 130
 	LOCALS = 热裤
-	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "热裤", "Ａ露出")
+	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "热裤", "A露出")
 CASE 135
 	LOCALS = 热裤
 	LOCAL = SETFLAG_OUTER("ずれ不可", "コキ不可", "热裤", "缝隙")
@@ -204,7 +204,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 4
 	CASE "丁字裤", "Tフロント"
 		SETBIT LOCAL, 5
-	CASE "Ｖ后入", "V后入"
+	CASE "V后入", "V后入"
 		SETBIT LOCAL, 6
 	CASE "丁字裤", "T后入"
 		SETBIT LOCAL, 7
@@ -247,7 +247,7 @@ SIF EQUIP:ARG:外套 == 0
 SELECTCASE ARGS
 ;ずれ不可でなく、ずらしていない
 CASE "ずらし可", "能撥开"
-	SIF SETFLAG_OUTER("Ｖ露出")&EQUIP:ARG:外套
+	SIF SETFLAG_OUTER("V露出")&EQUIP:ARG:外套
 		RETURNF 0
 	IF SETFLAG_OUTER("拉链")&EQUIP:ARG:外套
 		SIF SETFLAG_OUTER("拉链开")&EQUIP:ARG:外套
@@ -272,26 +272,26 @@ CASE "拉链閉"
 		RETURNF 0
 	SIF SETFLAG_OUTER("拉链")&EQUIP:ARG:外套
 		RETURNF 1
-CASE "露Ｖ胖次"
-	SIF SETFLAG_OUTER("拉链开", "ずらした", "可撕", "Ｖ露出", "缝隙")&EQUIP:ARG:外套
+CASE "露V胖次"
+	SIF SETFLAG_OUTER("拉链开", "ずらした", "可撕", "V露出", "缝隙")&EQUIP:ARG:外套
 		RETURNF 0
 	RETURNF 1
-CASE "露Ａ胖次"
-	SIF SETFLAG_OUTER("拉链开", "ずらした", "可撕", "Ａ露出", "缝隙")&EQUIP:ARG:外套
+CASE "露A胖次"
+	SIF SETFLAG_OUTER("拉链开", "ずらした", "可撕", "A露出", "缝隙")&EQUIP:ARG:外套
 		RETURNF 0
 	RETURNF 1
 CASE "紧勒"
-	SIF SETFLAG_OUTER("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:外套
+	SIF SETFLAG_OUTER("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:外套
 		RETURNF 0
 	SIF SETFLAG_OUTER("高叉", "丁字裤")&EQUIP:ARG:外套
 		RETURNF 1
 CASE "潮湿"
-	SIF SETFLAG_OUTER("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:外套
+	SIF SETFLAG_OUTER("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:外套
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:外套, "潮湿")
 		RETURNF 1
 CASE "润湿"
-	SIF SETFLAG_OUTER("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:外套
+	SIF SETFLAG_OUTER("ずらした", "拉链开", "V露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:外套
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:外套, "濡れ")
 		RETURNF 1

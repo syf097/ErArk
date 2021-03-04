@@ -1,0 +1,108 @@
+﻿;-------------------------------------------------
+;300～399番,角色、能力依存之特殊指令
+;-------------------------------------------------
+@COM_ABLE300
+;甜言蜜语实行判定
+SIF COMABLE_DEF(300)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE301
+;高潮管理指令实行判定
+SIF COMABLE_DEF(301)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE302
+;唱支歌
+SIF COMABLE_DEF(302)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE303
+;紧夹实行判定
+SIF COMABLE_DEF(303)
+	RETURN 0
+;[拉米亚]もちで、S属性4以上あるいは[抖S]之助手がいるとき之み使用可能
+IF ASSI
+	SIF ABL:ASSI:S属性 > 3
+		RETURN 1
+ENDIF
+RETURN 0
+
+@COM_ABLE304
+;龙奸
+RETURN 0
+
+@COM_ABLE305
+;肛门龙奸
+RETURN 0
+
+@COM_ABLE306
+;皮肤硬化实行判定
+SIF COMABLE_DEF(306)
+	RETURN 0
+;助手が斯图娜之时使える
+IF ASSI
+	SIF NO:ASSI == 34
+		RETURN 1
+ENDIF
+;MASTERが斯图娜之时も使える
+SIF NO:MASTER == 34
+	RETURN 1
+;TARGETが斯图娜で、屈服刻印2LVor恋慕ならＯＫ
+SIF (MARK:屈服刻印 >= 2 || TALENT:恋慕) && NO:TARGET == 34
+	RETURN 1
+RETURN 0
+
+@COM_ABLE307
+;噗噜噜插入实行判定
+SIF COMABLE_DEF(307)
+	RETURN 0
+;V使用判定
+SIF USE_V(TARGET) == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE308
+;肛门噗噜噜插入实行判定
+SIF COMABLE_DEF(308)
+	RETURN 0
+;A使用判定
+SIF USE_A(TARGET) == 0
+	RETURN 0
+;灌肠＋肛用按摩棒使用中はダメ
+SIF TEQUIP:灌肠
+	RETURN 0
+RETURN 1
+
+@COM_ABLE311
+;熔融之吻实行判定
+SIF COMABLE_DEF(311)
+	RETURN 0
+;梅罗娜でないと使えない
+SIF NO:PLAYER != 35
+	RETURN 0
+;技巧が0だとダメ（こんなことは无いだろうが）
+SIF ABL:PLAYER:技巧 + ABL:PLAYER:舌技 == 0
+	RETURN 0
+;すでに脱力だとダメ
+SIF STATE("脱力", TARGET)
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷
+	RETURN 0
+RETURN 1
+
+@COM_ABLE312
+;具现实行判定
+RETURN 0
+
+@COM_ABLE313
+RETURN 0
+
+@COM_ABLE314
+RETURN 0
+
+@COM_ABLE315
+RETURN 0

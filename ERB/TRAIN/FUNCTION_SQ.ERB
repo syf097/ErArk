@@ -1503,7 +1503,7 @@ CASE "性癖：气味癖"
 	RETURNF GETBIT(TALENT:ARG:性癖, 45)
 
 ;调教知识"
-CASE "爱抚・奉仕知识"
+CASE "爱抚・侍奉知识"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 0)
 CASE "好为人师"
 	RETURNF GETBIT(TALENT:ARG:调教知识, 1)
@@ -2040,12 +2040,12 @@ CASE "A性向"
 	SIF COND("ベテラン：A性爱", ARG) >= 3
 		RETURNF 1
 CASE "恋慕取得可能"
-	;好感觉が2500以上、顺从が3以上かつ奉仕快乐经验500以上で恋慕
+	;好感觉が2500以上、顺从が3以上かつ侍奉快乐经验500以上で恋慕
 	SIF ABL:ARG:顺从 < 3 || TALENT:ARG:恋慕 || MARK:ARG:反抗刻印
 		RETURNF 0
-	SIF CFLAG:ARG:2 >= 2500 && (CFLAG:ARG:2 - 2500)/5 + EXP:ARG:奉仕快乐经验 >= 500
+	SIF CFLAG:ARG:2 >= 2500 && (CFLAG:ARG:2 - 2500)/5 + EXP:ARG:侍奉快乐经验 >= 500
 		RETURNF 1
-	SIF CONFIG("EASY") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:奉仕快乐经验 >= 300
+	SIF CONFIG("EASY") && CFLAG:ARG:2 >= 2000 && (CFLAG:ARG:2 - 2000)/5 + EXP:ARG:侍奉快乐经验 >= 300
 		RETURNF 1
 CASE "淫乱取得可能"
 	;欲望が3以上、绝顶经验や精液经验など之合计が1000以上、自慰成瘾と精液成瘾之合计3以上、今回之绝顶数が10以上で淫乱
@@ -2177,7 +2177,7 @@ CASE "打扫舐阴标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 7)
 CASE "子宮刺激标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 8)
-CASE "A奉仕标志"
+CASE "A侍奉标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 9)
 CASE "针术标志"
 	RETURNF GETBIT(TCVAR:ARG:10, 10)
@@ -3025,37 +3025,10 @@ CASE "一晩开放で之襲击属性"
 	ELSE
 		LOCALS = 肉便器
 	ENDIF
-
-; CASE "尿道扩张度"
-; 	;どっち之尿道か
-; 	IF PENIS(ARG)
-; 		LOCALS = %CSTR:ARG:4%
-; 	ELSE
-; 		LOCALS = %CSTR:ARG:3%
-; 	ENDIF
-; CASE "V尿道之初期扩张度"
-; 	LOCALS = 10/10/10/10/10/10/10/10/10/10/
-; 	SIF TALENT:ARG:妖精
-; 		LOCALS = %ADDNUM_STR(LOCALS, -5)%
-; 	SIF TALENT:ARG:魔导人偶
-; 		LOCALS = %ADDNUM_STR(LOCALS, 2)%
-; 	SIF TALENT:ARG:史莱姆
-; 		LOCALS = %ADDNUM_STR(LOCALS, 10)%
-
-; CASE "P尿道之初期扩张度"
-; 	LOCALS = 5/5/5/5/5/5/5/5/5/5/
-; 	SIF TALENT:ARG:妖精
-; 		LOCALS = %ADDNUM_STR(LOCALS, -2)%
-; 	SIF TALENT:ARG:魔导人偶
-; 		LOCALS = %ADDNUM_STR(LOCALS, 1)%
-; 	SIF TALENT:ARG:史莱姆
-; 		LOCALS = %ADDNUM_STR(LOCALS, 5)%
-
-
 CASE "调教知识"
 	SELECTCASE TALENT:ARG:调教知识
 	CASE 1p0
-		LOCALS = 爱抚・奉仕知识
+		LOCALS = 爱抚・侍奉知识
 	CASE 1p1
 		LOCALS = 好为人师
 	CASE 1p2
@@ -3464,7 +3437,7 @@ CASE "反击"
 	CASE 3
 		LOCALS = 爱抚
 	CASE 4
-		LOCALS = 奉仕
+		LOCALS = 侍奉
 	CASE 5
 		LOCALS = SM
 	CASE 9
@@ -4372,7 +4345,7 @@ CASE 167
 CASE 185
 	SELECTCASE ARG:1
 	CASE 1p0
-		LOCALS = %LOCALS%(爱抚・奉仕)
+		LOCALS = %LOCALS%(爱抚・侍奉)
 	CASE 1p1
 		LOCALS = %LOCALS%(好为人师)
 	CASE 1p2

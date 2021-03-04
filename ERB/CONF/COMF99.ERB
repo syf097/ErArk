@@ -182,12 +182,12 @@ ELSE
 			IF TEQUIP:六九式 == 91
 				PRINTFORM そそり立つ阴茎をしゃぶらせ同时、
 			ELSE
-				PRINTFORM Ｖを舐めさせ同时、
+				PRINTFORM Vを舐めさせ同时、
 			ENDIF
 			IF TEQUIP:PLAYER:六九式 == 4
 				PRINTFORMW 目之前にぶら下がっている肉棒を味わった…
 			ELSE
-				PRINTFORMW Hな%TEXTS("气味")%をさせているＶに舌を這わせた…
+				PRINTFORMW Hな%TEXTS("气味")%をさせているVに舌を這わせた…
 			ENDIF
 		ENDIF
 	ENDIF
@@ -280,7 +280,7 @@ SELECTCASE ARG
 ;PLAYER之行动　六九式に移行する股间弄り指令
 CASE 1, 4
 	RETURNF 1
-;TARGET之行动　六九式に移行する奉仕指令
+;TARGET之行动　六九式に移行する侍奉指令
 CASE 91, 98, 150
 	RETURNF 2
 ;PLAYER之行动　六九式体勢で可能な爱抚系之股间弄り指令
@@ -289,7 +289,7 @@ CASE 0 TO 2, 4, 7 TO 10, 15
 ;PLAYER之行动　道具指令や打屁股、拳交
 CASE 30 TO 34, 39, 130, 141 TO 143
 	RETURNF 3
-;TARGET之行动　六九式体勢で可能な奉仕指令
+;TARGET之行动　六九式体勢で可能な侍奉指令
 CASE 90 TO 92, 97, 98, 105
 	RETURNF 4
 ;六九式も可能な指令(TEQUIP:六九式は变更させない)
@@ -370,7 +370,7 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 	LOCAL = 50
 	IF TEQUIP:逆推
 		IF SELECTCOM == 1
-			IF CHECK_CLO("Ｖ露出")
+			IF CHECK_CLO("V露出")
 				PRINT 用脸磨蹭着阴户、
 			ELSE
 				PRINT 用脸一边压住阴户一边磨蹭、
@@ -577,12 +577,12 @@ IF CHECK_COM("打扫口交", 91) + CHECK_COM("打扫舐阴", 98) && CHECK_COM("�
 	IF CHECK_COM("打扫口交", 91)
 		LOCAL:1 = COM_ORDER_STAIN("Ｐ", "Ｍ")
 	ELSE
-		LOCAL:1 = COM_ORDER_STAIN("Ｖ", "Ｍ")
+		LOCAL:1 = COM_ORDER_STAIN("V", "Ｍ")
 	ENDIF
 ELSEIF PENIS(PLAYER)
 	LOCAL:1 = COM_ORDER_STAIN("Ｐ", "Ｍ")
 ELSE
-	LOCAL:1 = COM_ORDER_STAIN("Ｖ", "Ｍ")
+	LOCAL:1 = COM_ORDER_STAIN("V", "Ｍ")
 ENDIF
 
 ;汚れあり

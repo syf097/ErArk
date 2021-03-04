@@ -258,7 +258,7 @@ CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 		VARSET LOCAL
 	SIF PENIS(MASTER) && CANTRAIN("逆推骑乘位", TARGET:1) && TALENT:(TARGET:1):处女 == 0 && TALENT:PLAYER:童贞 == 0
 		LOCAL = 65
-	SIF PENIS(MASTER) == 0 && CANTRAIN("逆推正常位奉仕", TARGET:1) && TALENT:(TARGET:1):童贞 == 0 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
+	SIF PENIS(MASTER) == 0 && CANTRAIN("逆推正常位侍奉", TARGET:1) && TALENT:(TARGET:1):童贞 == 0 && TALENT:MASTER:处女 == 0 && TALENT:MASTER:孕娠 == 0
 		LOCAL = 120
 	IF LOCAL == 65
 
@@ -283,8 +283,6 @@ CASE "主动夜袭A骑乘位", "主动夜袭骑乘位", "旁边陪着睡"
 						ELSE
 							PRINTFORM 一边轻声耳语「如果看到母狗在这种地方被侵犯%CALLNAME:TARGET%会怎么想
 						ENDIF
-					; 	SELECTCASE BASE:(TARGET:1):种族思考
-					; 	;猫又系
 					; CASE 6
 					; 		PRINTFORM 喵～？」
 					; 	;葛叶系

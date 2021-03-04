@@ -299,7 +299,7 @@ CASE "朝骑乘位"
 CASE "朝接吻"
 	LOCAL = LIMIT(LOCAL/2 + (ABL:顺从 + ABL:侍奉精神)/5, 1, 1 + TALENT:相思相爱 + TALENT:荡唇)
 
-	;奉仕レベルが高いと、先に起きている确率が高い
+	;侍奉レベルが高いと、先に起きている确率が高い
 	IF ABL:侍奉精神 >= 3 && RANDFIX(2)
 		PRINTFORML 早上、在%CALLNAME:TARGET%\@ LOCAL >= 3 ? 香甜 # \@的吻中醒了过来
 

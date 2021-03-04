@@ -478,7 +478,7 @@ SIF COND("调教中") == 0
 ;自慰成瘾0LV、苦痛あり、性欲满足、Ｗ逆推中、手が余ってない
 SIF ABL:自慰成瘾 == 0 || TEQUIP:Ｗ逆推 || CUP:苦痛 > PALAM_LV(ABL:M属性) || BASE:性欲 >= MAXBASE:性欲 || CALCF("自由な手") <= 0
 	RETURN 0
-;TARGETが插入奉仕している側
+;TARGETが插入侍奉している側
 SIF INSERT("插入中")
 	RETURN 0
 ;欲望、顺从、侍奉精神も判定に使用
@@ -577,8 +577,8 @@ CASE 2
 		PRINTW 做着淫靡的事情，不停发出淫靡的声音
 		CALL EQ_STAIN, TARGET, TARGET, 1, 3
 	ENDIF
-	EXP:V経験 += 1
-	PRINTFORML V経験＋1
+	EXP:V经验 += 1
+	PRINTFORML V经验＋1
 CASE 4
 	PRINTFORM 在%LOCALS%的股间
 	IF TEQUIP:肛用按摩棒
@@ -587,8 +587,8 @@ CASE 4
 		PRINTW 玩弄着柔软的屁股上的尻穴…
 		CALL EQ_STAIN, TARGET, TARGET, 1, 4
 	ENDIF
-	EXP:A経験 += 1
-	PRINTFORML A経験＋1
+	EXP:A经验 += 1
+	PRINTFORML A经验＋1
 CASEELSE
 	IF TALENT:巨乳
 		IF RAND:2

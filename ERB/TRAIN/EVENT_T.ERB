@@ -343,7 +343,7 @@ CASE "追加地之文：V插入后"
 		RETURN 0
 	ELSE
 		LOCALS:1 = %LOCALS:1%
-		;Ｖに肌肉松弛剂
+		;Vに肌肉松弛剂
 		IF GETBIT(TEQUIP:肌肉松弛剂, 2) && ABL:V名器度 < 20
 			PRINTFORM 在药的作用下失去了紧致的
 		;全天插棒插入指示
@@ -1797,7 +1797,7 @@ CASE "饮用母乳"
 			ENDIF
 		ENDIF
 	CASE 90, 97, 104
-		SIF CHECK_COM("Ｗ奉仕")
+		SIF CHECK_COM("Ｗ侍奉")
 			RETURN 0
 		SIF TALENT:泌乳体质 == 0 || BASE:喷乳 < MULTIPLY(MAXBASE:喷乳, 70)
 			RETURN 0
@@ -3074,7 +3074,7 @@ CASE "六九式"
 		ARG = TARGET
 	SELECTCASE SELECTCOM
 
-	;奉仕系
+	;侍奉系
 	CASE 90 TO 98, 105, 150
 		IF RAND:3 == 0
 			IF TALENT:性别 ==2 && RAND:2

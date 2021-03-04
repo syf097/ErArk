@@ -1,0 +1,698 @@
+﻿;-------------------------------------------------
+;120番台,调教者性爱系指令
+;-------------------------------------------------
+@COM_ABLE120
+;正常位侍奉
+SIF COMABLE_DEF(120)
+	RETURN 0
+;调教者が性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+IF TEQUIP:逆推
+	;S属性が必要
+	SIF ABL:S属性 == 0
+		RETURN 0
+	SIF TALENT:PLAYER:处女 && ABL:S属性 < 3
+		RETURN 0
+ELSE
+	;实行值过滤
+
+	IF CONFIG("实行值过滤") || FLAG:10
+		CALL COM_ORDER_COM120, 1
+		RETURN LIMIT(RESULT, 0, 1)
+	ENDIF
+ENDIF
+RETURN 1
+
+@COM_ABLE121
+;后背位侍奉
+SIF COMABLE_DEF(121)
+	RETURN 0
+SIF TEQUIP:逆推
+	RETURN 0
+;调教者が性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM121, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE122
+;骑乘位逆奸
+SIF COMABLE_DEF(122)
+	RETURN 0
+SIF TEQUIP:逆推
+	RETURN 0
+;调教者が性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+SIF ABL:PLAYER:S属性 == 0 || ABL:PLAYER:V扩张 < SIZE("阴茎", TARGET) || EXP:PLAYER:V经验 < 50 || EXP:PLAYER:V性交经验 < 20
+	RETURN 0
+RETURN 1
+
+@COM_ABLE123
+RETURN 0
+
+@COM_ABLE124
+RETURN 0
+
+@COM_ABLE125
+;A正常位侍奉实行判定
+SIF COMABLE_DEF(125)
+	RETURN 0
+SIF TEQUIP:逆推
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM125, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE126
+;A后背位侍奉实行判定
+SIF COMABLE_DEF(126)
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+IF TEQUIP:逆推
+	;S属性が必要
+	SIF ABL:S属性 == 0
+		RETURN 0
+	SIF TALENT:PLAYER:A处女 && ABL:S属性 < 3
+		RETURN 0
+ELSE
+	;实行值过滤
+
+	IF CONFIG("实行值过滤") || FLAG:10
+		CALL COM_ORDER_COM126, 1
+		RETURN LIMIT(RESULT, 0, 1)
+	ENDIF
+ENDIF
+RETURN 1
+
+@COM_ABLE127
+;A骑乘位逆奸实行判定
+SIF COMABLE_DEF(127)
+	RETURN 0
+SIF TEQUIP:逆推
+	RETURN 0
+;阴茎あり
+IF PENIS(TARGET)
+	;阴茎を使う时には股间が露出できないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+;阴茎なし
+ELSE
+	;假阴茎がないとダメ
+	SIF COND("假阴茎") == 0
+		RETURN 0
+ENDIF
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+SIF ABL:PLAYER:S属性 == 0 || ABL:PLAYER:A扩张 < SIZE("阴茎", TARGET) || EXP:PLAYER:A经验 < 50 || EXP:PLAYER:A性交经验 < 20
+	RETURN 0
+RETURN 1
+
+@COM_ABLE128
+RETURN 0
+
+@COM_ABLE129
+RETURN 0
+
+
+;-------------------------------------------------
+;130～159番,SM系orハードな指令
+;-------------------------------------------------
+@COM_ABLE130
+;打屁股实行判定
+SIF COMABLE_DEF(130)
+	RETURN 0
+RETURN 1
+
+@COM_ABLE131
+;鞭实行判定
+SIF COMABLE_DEF(131)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:鞭 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE132
+;针实行判定
+SIF COMABLE_DEF(132)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:针 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE133
+;眼罩实行判定
+SIF COMABLE_DEF(133)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:眼罩
+	RETURN 1
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:眼罩 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE134
+;绳实行判定
+SIF COMABLE_DEF(134)
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:拘束
+	RETURN 1
+;道具を持っているか、道具なし設定で无いとダメ
+SIF ITEM:拘束工具 == 0 && NOITEM == 0
+	RETURN 0
+;助手は技巧5でないとダメ
+IF ASSIPLAY
+	SIF ABL:ASSI:技巧 <= 4
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE135
+;口枷实行判定
+SIF COMABLE_DEF(135)
+	RETURN 0
+;触手口辱中だとダメ
+SIF TEQUIP:触手口辱
+	RETURN 0
+;解除はいつでも可能
+SIF TEQUIP:口枷
+	RETURN 1
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:口塞套件 == 0 && NOITEM == 0
+	RETURN 0
+;ASSI之场合、技巧3以上じゃないと使えない。
+IF ASSIPLAY
+	SIF ABL:ASSI:技巧 < 3
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE136
+;灌肠实行判定
+SIF COMABLE_DEF(136)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:灌肠器＋肛塞 == 0 && NOITEM == 0
+	RETURN 0
+;解除、追加はいつでも可能
+IF TEQUIP:灌肠 && COND("肛塞")
+	SIF COND("精液灌肠")
+		RETURN 0
+	RETURN 1
+ELSE
+	SIF COND("空气灌肠") || COND("液体灌肠") >= 4
+		RETURN 0
+ENDIF
+;A使用判定
+SIF USE_A(TARGET, 46) == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE137
+;扩张扩张气囊实行判定
+SIF COMABLE_DEF(137)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:扩张扩张气囊 == 0 && NOITEM == 0
+	RETURN 0
+LOCAL = 0
+;V＆A使用判定
+SIF USE_V(TARGET, 48) && TALENT:处女 == 0 && TALENT:V损伤 == 0 && ABL:V扩张
+	LOCAL = 1
+SIF USE_A(TARGET, 48) && TALENT:A损伤 == 0 && ABL:A扩张 && !(FLAG:209&2)
+	LOCAL = 1
+SIF LOCAL == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE138
+;尿浴实行判定（とはいえ今之ところは口か膣か肠内へ之放尿之み）
+SIF COMABLE_DEF(138)
+	RETURN 0
+;PLAYヤー之S属性が3LV必須
+SIF ABL:PLAYER:S属性 < 3 && TALENT:PLAYER:抖S == 0
+	RETURN 0
+;尿意が溜まってる？
+SIF BASE:PLAYER:尿意 < 10000
+	RETURN 0
+;膣内放尿が可能かつ前回子宮插入なら子宮内放尿になる
+SIF CHECK_COM("口内放尿", 138) || CHECK_COM("膣内放尿", 138) || CHECK_COM("温泉灌肠", 138) || CHECK_COM("乳内放尿", 138) || CHECK_COM("膀胱内放尿", 138)
+	RETURN 1
+RETURN 0
+
+@COM_ABLE139
+;什么也不做实行判定
+SIF COMABLE_DEF(139)
+	RETURN 0
+;主人以外は不可にすべきかどうか
+;SIF PLAYER != MASTER
+;	RETURN 0
+;连续实行は无理
+SIF PREVCOM == 139
+	RETURN 0
+;３Ｐ中はとりあえず封印
+SIF COND("３Ｐ")
+	RETURN 0
+;录像中も封印
+SIF TEQUIP:摄像机
+	RETURN 0
+RETURN 1
+
+@COM_ABLE140
+;口奸实行判定
+SIF COMABLE_DEF(140)
+	RETURN 0
+;调教者が性别男か扶她or假阴茎がないとダメ
+SIF PENIS(PLAYER) == 0 && COND("假阴茎", PLAYER) == 0
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷 == 1
+	RETURN 0
+;调教者がS属性あり、顺从+欲望が6以上、环形口枷装着、喉LVが高いでないとダメ
+SIF ABL:PLAYER:S属性 == 0 && ABL:顺从 + ABL:欲望 < 6 && TEQUIP:口枷 != 2 && CHECK("喉奸") < 2
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM140, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE141
+;拳交
+SIF COMABLE_DEF(141)
+	RETURN 0
+;V扩张LVが拳之サイズに匹敵していないと实行できない。抖Sは补正あり
+SIF SIZE("片手拳交", PLAYER) - ABL:V扩张 - TALENT:PLAYER:抖S * 2 >= 2
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE142
+;肛门拳交
+SIF COMABLE_DEF(142)
+	RETURN 0
+;A扩张LVが拳之サイズに匹敵していないと实行できない。抖Sは补正あり
+SIF SIZE("片手拳交", PLAYER) - ABL:A扩张 - TALENT:PLAYER:抖S * 2 >= 2
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE143
+;两穴拳交
+SIF COMABLE_DEF(143)
+	RETURN 0
+;VA拳交が出来ないとダメ
+CALL COM_ABLE141
+SIF RESULT == 0
+	RETURN 0
+CALL COM_ABLE142
+SIF RESULT == 0
+	RETURN 0
+;V扩张LVが拳之サイズに匹敵していないと实行できない。抖Sは补正あり
+SIF SIZE("Ｗ拳交", PLAYER) - ABL:V扩张 - TALENT:PLAYER:抖S * 2 >= 2
+	RETURN 0
+;A扩张LVが拳之サイズに匹敵していないと实行できない。抖Sは补正あり
+SIF SIZE("Ｗ拳交", PLAYER) - ABL:A扩张 - TALENT:PLAYER:抖S * 2 >= 2
+	RETURN 0
+RETURN 1
+
+@COM_ABLE144
+;放尿实行判定
+SIF COMABLE_DEF(144)
+	RETURN 0
+;尿意槽が5000以上でないとダメ
+SIF BASE:尿意 < 5000
+	RETURN 0
+;V扩张扩张气囊
+SIF TEQUIP:扩张扩张气囊 == 1
+	RETURN 0
+;对象が阴茎持ちだと强制放尿は无理
+SIF PENIS(TARGET) && CHECK_COM("强制放尿", 144)
+	RETURN 0
+;逆推之时には圣水PLAYになる（とりあえず性别女之み）
+
+IF TEQUIP:逆推
+	SIF TEQUIP:顔面骑乘 == 0 || PENIS(TARGET) || TEQUIP:Ｗ逆推
+		RETURN 0
+	SIF ABL:S属性 == 0 || ABL:露阴癖 == 0 || ABL:欲望 < 3
+		RETURN 0
+	SIF ABL:S属性 < 2 && TALENT:性变态 == 0
+		RETURN 0
+	SIF ABL:S属性 + ABL:PLAYER:M属性 < 5
+		RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM144, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE145
+;剃毛实行判定
+SIF COMABLE_DEF(145)
+	RETURN 0
+;逆推ている时or女王大人PLAY之时にはPLAYER之阴毛を剃ります！
+IF TEQUIP:逆推 || TEQUIP:女王大人PLAY
+	;按摩棒、阴蒂夹はダメ
+	SIF TEQUIP:PLAYER:按摩棒 || TEQUIP:PLAYER:阴蒂夹
+		RETURN 0
+	;技巧2LV、S属性 >= 3、PLAYERに毛が生えていないとダメ
+	SIF COND("阴毛", PLAYER) <= 3 || ABL:技巧 < 2 || ABL:S属性 + ABL:PLAYER:M属性 < 5
+		RETURN 0
+ELSE
+	;按摩棒、阴蒂夹はダメ
+	SIF TEQUIP:按摩棒 || TEQUIP:阴蒂夹
+		RETURN 0
+	;毛が生えていないとダメ
+	SIF COND("阴毛") <= 3
+		RETURN 0
+	;V剥き出しにできないとダメ
+	SIF !CHECK_CLO("V露出可")
+		RETURN 0
+	;实行值过滤
+
+	IF CONFIG("实行值过滤") || FLAG:10
+		CALL COM_ORDER_COM145, 1
+		RETURN LIMIT(RESULT, 0, 1)
+	ENDIF
+ENDIF
+RETURN 1
+
+@COM_ABLE146
+;各调教で一度だけ
+SIF CHOSECOM(146)
+	RETURN 0
+;装具管理实行判定
+SIF COMABLE_DEF(146)
+	RETURN 0
+
+;何か指示できる状态でないとダメ
+IF TALENT:性别 != 1 || PENIS(TARGET) == 0
+ELSEIF ABL:顺从 + TALENT:恋慕 + TALENT:相思相爱 >= 4
+ELSEIF CONFIG("阴毛") && COND("阴毛") >= 2
+ELSEIF CONFIG("腋毛") && COND("腋毛") >= 2
+ELSEIF ABL:V扩张 >= 1 && TALENT:性别 != 1
+ELSEIF ABL:A扩张 >= 1
+ELSEIF ABL:A扩张 >= 1 && (EXP:灌肠经验 || EXP:A经验 >= 100 || EXP:A性交经验 >= 20)
+ELSEIF PENIS(TARGET) && COND("真性包茎") == 0
+ELSE
+	RETURN 0
+ENDIF
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM146, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE147
+;饮精实行判定
+SIF COMABLE_DEF(147)
+	RETURN 0
+;球形口枷しているとダメ
+SIF TEQUIP:口枷 == 1
+	RETURN 0
+;ある程度兴奋していないとダメ
+SIF PALAM:欲情 < 3000
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM147, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE148
+;穿刺实行判定
+SIF COMABLE_DEF(148)
+	RETURN 0
+;道具がないとダメ
+SIF ITEM:穿环套件 == 0
+	RETURN 0
+;PLAYERが抖S、针术、狂气、TARGETが淫乱、性变态、抖Ｍ、狂气、露阴癖、M属性等之综合值で正否を判断
+SIF TALENT:PLAYER:抖S*10 + TALENT:PLAYER:针术*2 + TALENT:PLAYER:狂气 + TALENT:淫乱*5 + TALENT:性变态*5 + TALENT:抖M*7 + TALENT:狂气 + ABL:露阴癖 + ABL:M属性*2 < 10
+	RETURN 0
+RETURN 1
+
+@COM_ABLE149
+;导尿管实行判定
+SIF COMABLE_DEF(149)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:导尿管 == 0 && NOITEM == 0
+	RETURN 0
+;V剥き出しにできないとダメ
+SIF !CHECK_CLO("V露出可") || TEQUIP:飞机杯
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM149, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE150
+;深喉口交实行判定
+SIF COMABLE_DEF(150)
+	RETURN 0
+;解除させる之はいつでも
+SIF TEQUIP:深喉口交
+	RETURN 1
+;调教者にちんこが无いとダメ
+SIF PENIS(PLAYER) == 0
+	RETURN 0
+;球形口枷使用中は不可
+SIF TEQUIP:口枷 == 1
+	RETURN 0
+;阴茎が小さいとダメ
+SIF SIZE("阴茎", PLAYER) == 0
+	RETURN 0
+;喉奸可能で无いとダメ（今后变えるかも）
+SIF CHECK("喉奸") == 0
+	RETURN 0
+;实行值过滤
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM150, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE151
+;尿道ブジー实行判定
+SIF COMABLE_DEF(151)
+	RETURN 0
+;道具を持っているか、道具なし設定でないとダメ
+SIF ITEM:导尿管 == 0 && NOITEM == 0
+	RETURN 0
+;V剥き出しにできないとダメ
+SIF !CHECK_CLO("V露出可") || TEQUIP:飞机杯
+	RETURN 0
+;导尿管使用中はダメ
+SIF TEQUIP:导尿管
+	RETURN 0
+;实行值过滤
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM151, 1
+	RETURN LIMIT(RESULT, 0, 1)
+ENDIF
+RETURN 1
+
+@COM_ABLE152
+RETURN 0
+
+@COM_ABLE153
+RETURN 0
+
+@COM_ABLE154
+RETURN 0
+
+;-------------------------------------------------
+;160番台,助手による汎用指令
+;-------------------------------------------------
+@COM_ABLE160
+;助手性交实行判定
+SIF COMABLE_DEF(160)
+	RETURN 0
+;屋内露出PLAY中はダメ
+SIF TEQUIP:屋内露出PLAY
+	RETURN 0
+;野外PLAY中はダメ
+SIF TEQUIP:野外PLAY
+	RETURN 0
+;主人じゃないとダメ
+SIF ASSIPLAY
+	RETURN 0
+;助手が性别男だとダメ
+SIF TALENT:ASSI:性别 == 1
+	RETURN 0
+;主人が性别男、扶她、もしくは假阴茎がないとダメ
+SIF PENIS(MASTER) == 0 && COND("假阴茎", MASTER) == 0
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+;对象と助手之相性が良くないとダメ
+SIF RELATION:(NO:ASSI) < 120
+	RETURN 0
+RETURN 1
+
+@COM_ABLE161
+;插入助手实行判定
+SIF COMABLE_DEF(161)
+	RETURN 0
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+;助手が性别男だとダメ
+SIF TALENT:PLAYER:性别 == 1
+	RETURN 0
+;性别男、半人半妖、扶她、もしくは假阴茎がないとダメ
+SIF PENIS(TARGET) == 0 && COND("假阴茎") == 0
+	RETURN 0
+;飞机杯装着中はダメ
+SIF TEQUIP:飞机杯
+	RETURN 0
+;浴室PLAY中は地垫が无いとダメ
+IF TEQUIP:浴室PLAY
+	SIF ITEM:地垫 == 0 && NOITEM == 0
+		RETURN 0
+ENDIF
+
+IF CONFIG("实行值过滤") || FLAG:10
+	CALL COM_ORDER_COM161, 1
+	RETURN LIMIT(RESULT, 0, 1)
+
+ENDIF
+RETURN 1
+
+@COM_ABLE162
+;助手口交实行判定
+SIF COMABLE_DEF(162)
+	RETURN 0
+;屋内露出PLAY中はダメ
+SIF TEQUIP:屋内露出PLAY
+	RETURN 0
+;野外PLAY中はダメ
+SIF TEQUIP:野外PLAY
+	RETURN 0
+;助手が歌っているとダメ
+SIF TEQUIP:ASSI:演奏中
+	RETURN 0
+;主人じゃないとダメ
+SIF ASSIPLAY
+	RETURN 0
+;主人が性别男、扶她、もしくは假阴茎がないとダメ
+SIF PENIS(MASTER) == 0
+	RETURN 0
+;气味敏感でA之汚れがある时には、恋慕か顺从+A感觉+侍奉精神+百合属性＞12が必要
+SIF TALENT:ASSI:气味敏感 && CHECK_STAIN(STAIN:PLAYER:P, "A") && TALENT:ASSI:恋慕 == 0 && ABL:ASSI:顺从+ABL:ASSI:A感觉+ABL:ASSI:侍奉精神+ABL:ASSI:百合属性 < 13
+	RETURN 0
+RETURN 1
+
+@COM_ABLE163
+RETURN 0
+
+@COM_ABLE164
+RETURN 0

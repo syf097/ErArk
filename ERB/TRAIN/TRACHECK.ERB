@@ -103,7 +103,7 @@ NEXT
 
 ;调教知识による补正
 SELECTCASE TALENT_NAME(185, TALENT:PLAYER:调教知识, PLAYER)
-CASE "调教知识(爱抚・奉仕)"
+CASE "调教知识(爱抚・侍奉)"
 	SELECTCASE ARGS
 	CASE "调教指令", "試算"
 		SELECTCASE SELECTCOM
@@ -130,7 +130,7 @@ CASE "调教知识(好为人师)"
 	CASE "调教指令", "試算"
 		IF TEQUIP:逆推 == 0
 			SELECTCASE SELECTCOM
-			;对象がPLAYヤーに奉仕
+			;对象がPLAYヤーに侍奉
 			CASE 24, 65, 75, 90 TO 119, 120, 121, 125, 126
 				TIMES CUP:习得, 1.50
 				TIMES CUP:恐怖, 0.50
@@ -1001,7 +1001,7 @@ IF MARK:苦痛刻印 > MEMO_MARK:1
 	ENDIF
 ENDIF
 ;-------------------------------------------------
-;反抗刻印（逆推ている时や奉仕标志があるときには獲得しない）
+;反抗刻印（逆推ている时や侍奉标志があるときには獲得しない）
 ;MARK:反抗刻印之取得履历は反抗刻印之取得履历　NOWEX:处女丧失 & 2は恋慕状态之普通之性爱でMASTERに处女を捧げた标志
 ;他之刻印之取得状況によって、取得しにくくなる
 ;------------------------------------------------- 
@@ -1077,7 +1077,7 @@ RESETCOLOR
 FORCEWAIT
 
 ;-------------------------------------------------
-;奉仕快乐经验、嗜虐快乐经验、羞恥快乐经验、被虐快乐经验之チェック
+;侍奉快乐经验、嗜虐快乐经验、羞恥快乐经验、被虐快乐经验之チェック
 ;LOCALを计算に技巧、LOCAL:1～LOCAL:4がそれぞれに对应している
 ;-------------------------------------------------
 @EXP_GOT_CHECK
@@ -1097,7 +1097,7 @@ CASEELSE
 	TIMES LOCAL, 2.00
 ENDSELECT
 
-;奉仕系である、奉仕快乐之チェック
+;侍奉系である、侍奉快乐之チェック
 SELECTCASE LOCAL
 CASE IS >= 20000
 	LOCAL = 4
@@ -1195,7 +1195,7 @@ IF GETBIT(TCVAR:29, 2) || GETBIT(TCVAR:29, 3)
 			LOCAL:2 += 1
 	ENDIF
 
-	;幾つか之指令(现状では足交以外之奉仕)では、少し轻减
+	;幾つか之指令(现状では足交以外之侍奉)では、少し轻减
 	SIF GETBIT(TCVAR:29, 3) == 0
 		TIMES LOCAL:2, 0.30
 	SIF GETBIT(TCVAR:29, 1)
@@ -1309,8 +1309,8 @@ SIF LOCAL:1 + LOCAL:2 + LOCAL:3 + LOCAL:4 > 0 && FLAG:8
 
 IF LOCAL:1 > 0
 	SIF FLAG:8
-		PRINTFORML 奉仕快乐经验+{LOCAL:1}
-	EXP:奉仕快乐经验 += LOCAL:1
+		PRINTFORML 侍奉快乐经验+{LOCAL:1}
+	EXP:侍奉快乐经验 += LOCAL:1
 	TFLAG:26 = LOCAL:1
 ENDIF
 IF LOCAL:2 > 0

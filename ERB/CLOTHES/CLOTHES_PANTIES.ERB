@@ -64,7 +64,7 @@ IF EQUIP:ARG:胖次 && EQUIP:ARG:紧身衣
 		CALL SET_BODYS, ARG
 	ELSEIF CHECK_BODYS("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
 		CALL SET_BODYS, ARG
-	ELSEIF CHECK_BODYS("Ｖ后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+	ELSEIF CHECK_BODYS("V后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("V后入", ARG)
 		CALL SET_BODYS, ARG
 	ENDIF
 ENDIF
@@ -76,7 +76,7 @@ IF EQUIP:ARG:胖次 && EQUIP:ARG:外套
 		CALL SET_OUTER, ARG
 	ELSEIF CHECK_OUTER("丁字裤", ARG) && !CHECK_PANTIES("丁字裤", ARG)
 		CALL SET_OUTER, ARG
-	ELSEIF CHECK_OUTER("Ｖ后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("Ｖ后入", ARG)
+	ELSEIF CHECK_OUTER("V后入", ARG) && !CHECK_PANTIES("丁字裤", ARG) && !CHECK_PANTIES("V后入", ARG)
 		CALL SET_OUTER, ARG
 	ENDIF
 ENDIF
@@ -226,16 +226,16 @@ CASE 4
 CASE 6
 	IF CFLAG:(ARG:1):8 == 2
 		LOCALS = 魔猫之胖次
-		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "青")
+		LOCAL = SETFLAG_PANTIES("V后入", "低腰", "毛皮", "青")
 	ELSEIF CFLAG:(ARG:1):8 == 3
 		LOCALS = 魔猫之胖次
-		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "黒")
+		LOCAL = SETFLAG_PANTIES("V后入", "低腰", "毛皮", "黒")
 	ELSEIF CFLAG:(ARG:1):8 == 4
 		LOCALS = 魔猫之胖次
-		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮", "黄")
+		LOCAL = SETFLAG_PANTIES("V后入", "低腰", "毛皮", "黄")
 	ELSE
 		LOCALS = 魔猫之胖次
-		LOCAL = SETFLAG_PANTIES("Ｖ后入", "低腰", "毛皮")
+		LOCAL = SETFLAG_PANTIES("V后入", "低腰", "毛皮")
 	ENDIF
 CASE 7
 	; IF TALENT:(ARG:1):四足歩行 == 0
@@ -365,7 +365,7 @@ CASE 111
 	ENDIF
 CASE 112
 	LOCALS = 蕾丝胖次
-	LOCAL = SETFLAG_PANTIES("蕾丝", "Ｖ后入", "清纯")
+	LOCAL = SETFLAG_PANTIES("蕾丝", "V后入", "清纯")
 CASE 113
 	LOCALS = 薄纱胖次
 	LOCAL = SETFLAG_PANTIES("超细")
@@ -447,7 +447,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 1
 	CASE "丁字裤", "Tフロント"
 		SETBIT LOCAL, 2
-	CASE "Ｖ后入", "V后入"
+	CASE "V后入", "V后入"
 		SETBIT LOCAL, 3
 	CASE "丁字裤", "T后入"
 		SETBIT LOCAL, 4
@@ -465,7 +465,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 10
 	CASE "贞操带"
 		SETBIT LOCAL, 11
-		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可", "脱衣不可", "Ａ露出")
+		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可", "脱衣不可", "A露出")
 	CASE "拳击短裤"
 		SETBIT LOCAL, 12
 		LOCAL |= SETFLAG_COMMON("ずれ不可")
@@ -480,7 +480,7 @@ FOR LCOUNT, 1, 11
 		SETBIT LOCAL, 4
 		SETBIT LOCAL, 15
 		LOCAL |= SETFLAG_COMMON("ずれ不可", "コキ不可")
-	;高叉+Ｖ后入
+	;高叉+V后入
 	CASE "T字短裤"
 		SETBIT LOCAL, 1
 		SETBIT LOCAL, 3
@@ -542,12 +542,12 @@ FOR LCOUNT, 1, 11
 			ELSEIF RAND:4 == 0
 				LOCAL |= SETFLAG_COMMON("缝隙")
 			ELSEIF RAND:3 == 0
-				LOCAL |= SETFLAG_COMMON("Ｖ露出")
+				LOCAL |= SETFLAG_COMMON("V露出")
 			ELSEIF RAND:2
-				LOCAL |= SETFLAG_COMMON("Ａ露出")
+				LOCAL |= SETFLAG_COMMON("A露出")
 				CLEARBIT LOCAL, 4
 			ELSE
-				LOCAL |= SETFLAG_COMMON("ＶＡ露出")
+				LOCAL |= SETFLAG_COMMON("VA露出")
 				CLEARBIT LOCAL, 4
 			ENDIF
 		ENDIF
@@ -573,7 +573,7 @@ SIF EQUIP:ARG:胖次 == 0
 SELECTCASE ARGS
 ;ずれ不可でなく、ずらしていない
 CASE "ずらし可", "能撥开"
-	;SIF SETFLAG_PANTIES("Ｖ露出")&EQUIP:ARG:胖次
+	;SIF SETFLAG_PANTIES("V露出")&EQUIP:ARG:胖次
 	;	RETURNF 0
 	IF SETFLAG_PANTIES("拉链")&EQUIP:ARG:胖次
 		SIF SETFLAG_PANTIES("拉链开")&EQUIP:ARG:胖次
@@ -592,16 +592,16 @@ CASE "拉链閉"
 		RETURNF 0
 	SIF SETFLAG_PANTIES("拉链")&EQUIP:ARG:胖次
 		RETURNF 1
-CASE "露Ｖ胖次"
-	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "Ｖ露出", "缝隙")&EQUIP:ARG:胖次
+CASE "露V胖次"
+	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "V露出", "缝隙")&EQUIP:ARG:胖次
 		RETURNF 0
 	RETURNF 1
-CASE "露Ａ胖次"
-	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "Ａ露出", "缝隙")&EQUIP:ARG:胖次
+CASE "露A胖次"
+	SIF SETFLAG_PANTIES("拉链开", "ずらした", "可撕", "A露出", "缝隙")&EQUIP:ARG:胖次
 		RETURNF 0
 	RETURNF 1
 CASE "紧勒"
-	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:胖次
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:胖次
 		RETURNF 0
 	SIF SETFLAG_PANTIES("高叉", "丁字裤")&EQUIP:ARG:胖次
 		RETURNF 1
@@ -617,12 +617,12 @@ CASE "超细"
 		RETURNF 0
 	RETURNF 1
 CASE "潮湿"
-	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕")&EQUIP:ARG:胖次
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "V露出", "缝隙", "可撕")&EQUIP:ARG:胖次
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:胖次, "潮湿")
 		RETURNF 1
 CASE "润湿"
-	SIF SETFLAG_PANTIES("ずらした", "拉链开", "Ｖ露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:胖次
+	SIF SETFLAG_PANTIES("ずらした", "拉链开", "V露出", "缝隙", "可撕", "通气性无")&EQUIP:ARG:胖次
 		RETURNF 0
 	SIF CHECK_STAIN(STAIN:ARG:胖次, "濡れ")
 		RETURNF 1
