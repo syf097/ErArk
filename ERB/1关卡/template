@@ -12,11 +12,11 @@
 ;initialize
 ;=================
 ALIGNMENT CENTER
-PRINTW 关卡0-2
-PRINTL 教学关卡2
+PRINTW 关卡0-1
+PRINTL 教学关卡
 ALIGNMENT LEFT
-PRINTL 敌人派来了更多士兵，请部署重装干员阻挡他们
-PRINTW 提示：翎羽撤离可以恢复费用，芬可以自动恢复费用
+PRINTL 敌人每回合将会从左往右移动一个，部署干员阻挡他们
+PRINTW 请将夜刀部署至10号位
 FOR COUNT, 0, CHARANUM
     BASE:COUNT:部署位置=-1;
     BASE:COUNT:剩余生命值=BASE:COUNT:生命值
@@ -274,13 +274,9 @@ IF LEVEL_A==1
     PRINTW 获得源石1
 ENDIF
 ALIGNMENT LEFT
-RESETCOLOR
 SIF LEVEL_A<2
 LEVEL_A=2
-IF FINDCHARA(NO,7) <0
-    PRINTW 获得干员安塞尔
-    ADDCHARA 7
-ENDIF
+RESETCOLOR
 RETURN
 
 @GETOPERATOR_B02(ARG:0,ARG:1)

@@ -12,7 +12,10 @@ INPUT
 SELECTCASE RESULT
     CASE 0
         BASE:(ARG:2):部署位置=-1
-        BASE:(ARG:2):剩余部署时间=BASE:(ARG:2):8 ;重置冷却
+        BASE:(ARG:2):剩余部署时间=BASE:(ARG:2):再部署时间 ;重置冷却
+        CALLFORM SKILL_{NO:(ARG:2)}(ARG:1,ARG:0,2) ;DEACTIVE SKILL
+        SIF CALLNAME:(ARG:2)=="翎羽"
+            COST += BASE:(ARG:2):部署费用
     CASE 1
         CALLFORM SKILL_{NO:(ARG:2)}(ARG:1,ARG:0,1)
     CASE 999

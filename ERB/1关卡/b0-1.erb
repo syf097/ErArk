@@ -11,12 +11,24 @@
 ;=================
 ;initialize
 ;=================
+PRINTW “博士...手...抓紧...抓紧我的手”
+PRINTW 听到熟悉的声音，你不由得伸出了自己的手，突然觉得这一幕似曾相识，黑暗的记忆如潮水般涌来...
+PRINTW ………
+PRINTW ……
+PRINTW …
+PRINTW 
+PRINTL …
+PRINTL ……
+PRINTL ………
+PRINTL 现在你又回到了罗德岛的神经连接中，整合运动依然在切尔诺伯格城区中屠杀平民
+PRINTW 你依然要指挥你的干员击败他们，挫败黑蛇的阴谋
+PRINTW 只不过有了记忆的你暗暗发誓，这一次，一定会有不一样的结局
 ALIGNMENT CENTER
 PRINTW 关卡0-1
 PRINTL 教学关卡
 ALIGNMENT LEFT
-PRINTL 敌人每回合将会从左往右移动一个，部署干员阻挡他们
-PRINTW 请将夜刀部署至10号位
+PRINTL 敌人每回合将会从右往左移动一格，部署干员阻挡他们
+PRINTW 提示：请将夜刀部署至10号位
 FOR COUNT, 0, CHARANUM
     BASE:COUNT:部署位置=-1;
     BASE:COUNT:剩余生命值=BASE:COUNT:生命值
@@ -93,7 +105,7 @@ FOR COUNT2,0,HEIGHT
                 IF ENEMY:COUNT2:COUNT:STACK==0
                     PRINTLC    
                 ELSE
-                    PRINTFORMLC %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%{ENEMYH:COUNT2:COUNT:STACK}HP
+                    PRINTFORMLC %ENEMY_NAME:(ENEMY:COUNT2:COUNT:STACK)%{ENEMYH:COUNT2:COUNT:STACK}HP
                 ENDIF
             NEXT 
             PRINTL
@@ -161,7 +173,7 @@ FOR COUNT2,0,HEIGHT
             IF ENEMY:COUNT2:COUNT:STACK!=0
                 ;health
                 IF ENEMYH:COUNT2:COUNT:STACK<=0
-                    PRINTFORML %CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%倒下了
+                    PRINTFORML %ENEMY_NAME:(ENEMY:COUNT2:COUNT:STACK)%倒下了
                     PRINTW
                     ENEMYLEFT--            
                     ENEMY:COUNT2:COUNT:STACK=0
@@ -191,11 +203,11 @@ FOR COUNT2,0,HEIGHT
                 NEXT
                 IF RESULT==-1||BASE:RESULT:阻挡数<BLOCK ;FORWARD
                     IF COUNT==0 ;LOSE ONE
-                        PRINTFORML 一个%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%进入了蓝门
+                        PRINTFORML 一个%ENEMY_NAME:(ENEMY:COUNT2:COUNT:STACK)%进入了蓝门
                         HEALTH-=1
                         ENEMYLEFT--
                         IF HEALTH>0
-                            PRINTFORML 你手撕了%CSTRNAME:(ENEMY:COUNT2:COUNT:STACK)%，你还能手撕{HEALTH}次
+                            PRINTFORML 你手撕了%ENEMY_NAME:(ENEMY:COUNT2:COUNT:STACK)%，你还能手撕{HEALTH}次
                             ENEMY:COUNT2:COUNT:STACK=0
                             ENEMYH:COUNT2:COUNT:STACK=0
                             IF ENEMY:COUNT2:COUNT:(STACK+1)!=0
@@ -254,9 +266,17 @@ IF LEVEL_A==0
     PRINTW 获得源石1
 ENDIF
 ALIGNMENT LEFT
+RESETCOLOR
 SIF LEVEL_A<1
 LEVEL_A=1
-RESETCOLOR
+IF FINDCHARA(NO,8) <0
+    PRINTW 获得干员翎羽
+    ADDCHARA 8
+ENDIF
+IF FINDCHARA(NO,9) <0
+    PRINTW 获得干员芬
+    ADDCHARA 9
+ENDIF
 RETURN
 
 @GETOPERATOR_B01(ARG:0,ARG:1)
