@@ -86,8 +86,8 @@ LOCAL:12 = 1400
 LOCAL:13 = 1300
 LOCAL:14 = 800
 
-;ABL:奉仕精神をみる
-SELECTCASE ABL:奉仕精神
+;ABL:侍奉精神をみる
+SELECTCASE ABL:侍奉精神
 CASE 0
 	LOCAL:4 = 20
 	LOCAL:5 = 150
@@ -309,8 +309,6 @@ SIF TEQUIP:六九式
 SIF GETBITS(TEQUIP:拘束, 21, 22)
 	RETURN 0
 ;妖精だとダメ
-SIF TALENT:妖精
-	RETURN 0
 ;浴室PLAY中は地垫が无いとダメ
 IF TEQUIP:浴室PLAY
 SIF ITEM:地垫 == 0 && NOITEM == 0
@@ -394,16 +392,16 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 		IF NOWEX:绝顶数合计 && RAND:(1 + NOWEX:绝顶数合计)
 			PRINTL 极其强烈的感觉，如同在脑子里面搅动一样，没有一点反抗心余地…
 			LOCAL = 10
-		ELSEIF SOURCE:痛 > MAX(PALAM_LV(ABL:Ｍ属性), 500) && RAND:3
+		ELSEIF SOURCE:疼痛 > MAX(PALAM_LV(ABL:M属性), 500) && RAND:3
 			PRINT 带来
-			SIF SOURCE:痛 >= 3000
+			SIF SOURCE:疼痛 >= 3000
 				PRINT 激烈的
 			PRINTL 疼痛的感觉涌上大脑，顺着神经反馈到身子上出现了麻痹症状，做不出反抗心动作…
 			LOCAL = 10
-		ELSEIF MAX(CUP:快Ｃ, CUP:快Ｖ, CUP:快Ａ, CUP:快Ｂ, CUP:快Ｍ) >= 4000 && RAND:3
+		ELSEIF MAX(CUP:快C, CUP:快V, CUP:快A, CUP:快B, CUP:快M) >= 4000 && RAND:3
 			PRINT 身体不停扭动、
 			LOCAL = 30
-		ELSEIF (MAX(CUP:快Ｃ, CUP:快Ｖ, CUP:快Ａ, CUP:快Ｂ, CUP:快Ｍ) >= 1000 && RAND:3) || SOURCE:痛 >= 500
+		ELSEIF (MAX(CUP:快C, CUP:快V, CUP:快A, CUP:快B, CUP:快M) >= 1000 && RAND:3) || SOURCE:疼痛 >= 500
 			PRINT 尽力忍受着、
 			LOCAL = 50
 		ELSE
@@ -420,9 +418,9 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 			PRINTFORM 对%CALLNAME:PLAYER%的肉棒
 			IF ABL:技巧 >= 3 && RAND:3 == 0
 				PRINTFORML 用各种技巧控制着拤的速度…
-			ELSEIF ABL:Ｓ属性 && RAND:3 == 0
+			ELSEIF ABL:S属性 && RAND:3 == 0
 				PRINTFORML 戏谑地玩弄着…
-			ELSEIF ABL:欲望 + ABL:奉仕精神 >= 3 && RAND:2 == 0
+			ELSEIF ABL:欲望 + ABL:侍奉精神 >= 3 && RAND:2 == 0
 				PRINTFORML 忘我的拤着…
 			ELSE
 				PRINTFORML 不停拤…
@@ -430,28 +428,28 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 		CASE 91, 150
 			PRINTFORM %CALLNAME:PLAYER%的肉棒
 			IF TEQUIP:深喉口交
-				;技巧４かつ奉仕精神３
-				IF ABL:技巧 >= 4 && ABL:奉仕精神 >= 3 && RAND:3 == 0
+				;技巧４かつ侍奉精神３
+				IF ABL:技巧 >= 4 && ABL:侍奉精神 >= 3 && RAND:3 == 0
 					PRINTFORML 被食道挤压着，使咽喉中阵阵噗噗的呻吟，…
-				;奉仕精神3以上か欲情4以上
-				ELSEIF (ABL:奉仕精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+				;侍奉精神3以上か欲情4以上
+				ELSEIF (ABL:侍奉精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
 					PRINTFORML 迷恋上这种美妙的快感…
 				ELSEIF  RAND:2 == 0
 					PRINTFORML 被激烈的吮吸着…
 				ELSE
 					PRINTFORML 被深深地吸入咽喉中吮吸着…
 				ENDIF
-			ELSEIF TALENT:妖精 || ABL:顺从 <= 1 || ABL:奉仕精神 <= 1
+			ELSEIF ABL:顺从 <= 1 || ABL:侍奉精神 <= 1
 				;小只で追加
 				SIF TALENT:小只
 					PRINT 娇小的身躯
 				PRINTFORML 用舌尖舔舐着…
-			ELSEIF (ABL:顺从 >= 4 || ABL:奉仕精神 >= 3 || ABL:Ｍ属性 >= 3) && ABL:技巧 >= 3 && EXP:口交経験 >= 100 && RAND:3 == 0
-				;技巧４かつ奉仕精神３
-				IF ABL:技巧 >= 4 && ABL:奉仕精神 >= 3 && RAND:3 == 0
+			ELSEIF (ABL:顺从 >= 4 || ABL:侍奉精神 >= 3 || ABL:M属性 >= 3) && ABL:技巧 >= 3 && EXP:口交经验 >= 100 && RAND:3 == 0
+				;技巧４かつ侍奉精神３
+				IF ABL:技巧 >= 4 && ABL:侍奉精神 >= 3 && RAND:3 == 0
 					PRINTFORML 被食道挤压着，使咽喉中阵阵噗噗的呻吟，…
-				;奉仕精神3以上か欲情4以上
-				ELSEIF (ABL:奉仕精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
+				;侍奉精神3以上か欲情4以上
+				ELSEIF (ABL:侍奉精神 >= 3 || PALAM:欲情 >= PALAMLV:4) && RAND:2 == 0
 					PRINTFORML 迷恋上这种美妙的快感…
 				ELSEIF  RAND:2 == 0
 					PRINTFORML 被激烈的吮吸着…
@@ -459,8 +457,8 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 					PRINTFORML 被深深地吸入咽喉中吮吸着…
 				ENDIF
 			ELSE
-				;奉仕精神3以上か欲情4以上
-				IF  (ABL:奉仕精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:3 >= 1
+				;侍奉精神3以上か欲情4以上
+				IF  (ABL:侍奉精神 >= 3  || PALAM:欲情 >= PALAMLV:4) && RAND:3 >= 1
 					PRINTFORML 被激烈的吮吸着…
 				ELSEIF  RAND:2 == 0
 					PRINTFORML 被深深地吸入咽喉中吮吸着…
@@ -472,9 +470,9 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 			PRINTFORM 对%CALLNAME:PLAYER%的肉棒
 			IF ABL:技巧 >= 3 && RAND:3 == 0
 				PRINTFORM 用各种技巧控制着拤的速度…
-			ELSEIF ABL:Ｓ属性 && RAND:3 == 0
+			ELSEIF ABL:S属性 && RAND:3 == 0
 				PRINTFORM 戏谑地玩弄着…
-			ELSEIF ABL:欲望 + ABL:奉仕精神 >= 3 && RAND:2 == 0
+			ELSEIF ABL:欲望 + ABL:侍奉精神 >= 3 && RAND:2 == 0
 				PRINTFORM 深深迷恋着
 			ENDIF
 			IF TALENT:贫乳
@@ -502,7 +500,7 @@ CASE 0 TO 2, 4, 7 TO 10, 15, 30 TO 34, 39, 130, 141 TO 143, 150
 			PRINTFORML 入迷的品尝%CALLNAME:PLAYER%的肉穴…
 		CASE 105
 			PRINTFORM %CALLNAME:PLAYER%肉棒上的飞机杯
-			IF ABL:Ｓ属性 >= 3 && RAND:3 == 0
+			IF ABL:S属性 >= 3 && RAND:3 == 0
 				PRINTFORM 被用力地捏住然后
 			ELSEIF TALENT:好奇心 && RAND:3 == 0
 				PRINTFORM 被认真打量着然后
@@ -542,10 +540,10 @@ CALL COM_ORDER, ARG
 
 LOCAL = RESULT
 
-;ABL:奉仕精神
-IF ABL:奉仕精神
-	LOCAL += ABL:奉仕精神 * 4
-	LOCALS = %LOCALS% + %ABLNAME:6%LV{ABL:奉仕精神}({ABL:奉仕精神 * 4})
+;ABL:侍奉精神
+IF ABL:侍奉精神
+	LOCAL += ABL:侍奉精神 * 4
+	LOCALS = %LOCALS% + %ABLNAME:6%LV{ABL:侍奉精神}({ABL:侍奉精神 * 4})
 ENDIF
 ;怕羞
 IF TALENT:怕羞

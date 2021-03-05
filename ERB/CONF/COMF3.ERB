@@ -190,15 +190,15 @@ IF ABL:指技
 	LOCAL:30 += ABL:指技 * 10
 ENDIF
 
-;自慰経験
-SELECTCASE EXP:自慰経験
+;自慰经验
+SELECTCASE EXP:自慰经验
 CASE IS < 5
 	LOCAL:30 -= 20
 CASE IS < 20
 	LOCAL:30 -= 10
 CASE IS < 50
 CASEELSE
-	LOCAL:30 += EXP:自慰経験/5
+	LOCAL:30 += EXP:自慰经验/5
 ENDSELECT
 
 ;最低でも10％
@@ -227,7 +227,7 @@ SIF GETBIT(CHECK_ONANIE(SELECTCOM), 1)
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 2)
 	LOCAL:2 = ABL:A感觉 + TALENT:尻穴狂 + 1
 SIF GETBIT(CHECK_ONANIE(SELECTCOM), 3)
-	LOCAL:3 = ABL:Ｂ感觉 + TALENT:淫乳 + 1
+	LOCAL:3 = ABL:B感觉 + TALENT:淫乳 + 1
 
 ;eratohoから引用
 IF PREVCOM != SELECTCOM
@@ -379,17 +379,17 @@ IF PREVCOM != SELECTCOM
 	ENDIF
 	PRINTW 享受着快感从欲望深处传来的快感
 ELSE
-	IF TEQUIP:按摩棒 && TEQUIP:肛用按摩棒 && ABL:V感觉 >= 5 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	IF TEQUIP:按摩棒 && TEQUIP:肛用按摩棒 && ABL:V感觉 >= 5 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:B感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML %CALLNAME:TARGET%嘴角不停流着淫丝，身体一边战战兢兢不停痉挛着，一边因为猛烈的快感而不停呻吟着
 		PRINTFORMW 在猛烈的刺激下达到了顶峰不停着高潮着，爱液如同洪水一般不停的从蜜穴中喷涌而出，…
-	ELSEIF TEQUIP:按摩棒 && ABL:V感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	ELSEIF TEQUIP:按摩棒 && ABL:V感觉 >= 5 && ABL:C感觉 >= 5 && ABL:B感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML 在振动棒的抽插震动的刺激下，%CALLNAME:TARGET%的爱液不停飞溅着
 		PRINTFORMW %CALLNAME:TARGET%不停的高潮着，身体渐渐失去了力气，连一个手指头都无法动弹
-	ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:Ｂ感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
+	ELSEIF TEQUIP:肛用按摩棒 && COND("肛珠") == 0 && ABL:A感觉 >= 5 && ABL:C感觉 >= 5 && ABL:B感觉 >= 5 && PALAM:欲情 >= PALAMLV:4
 		PRINTFORML %CALLNAME:TARGET%的身体因为插入肛门中的震动棒不停震动着而不停抽动着
 		PRINTFORMW 震动棒不停刮扫上褶皱的肠壁，都能引起一次次高潮
 	ELSEIF ABL:自慰成瘾 >= 3
-		IF TALENT:性别 == 1 || (TALENT:扶她 && RAND:2 == 0)
+		IF TALENT:性别 == 1 || (TALENT:性别 ==2 && RAND:2 == 0)
 			PRINTFORML %CALLNAME:TARGET%粗暴地撸动着炙热坚硬的肉棒
 		ELSE
 			PRINTFORML %CALLNAME:TARGET%一边呻吟着一边用手抽插着蜜穴
@@ -481,11 +481,11 @@ SIF ABL:自慰成瘾 == 0 || TEQUIP:Ｗ逆推 || CUP:苦痛 > PALAM_LV(ABL:M属�
 ;TARGETが插入奉仕している側
 SIF INSERT("插入中")
 	RETURN 0
-;欲望、顺从、奉仕精神も判定に使用
+;欲望、顺从、侍奉精神も判定に使用
 ;前之回合に自慰しているorこ之回合に什么也不做なら高确率で自慰しちゃう
 IF PREVCOM == 3 && ABL:自慰成瘾 >= RAND:4
 ELSEIF SELECTCOM == 139 && ABL:自慰成瘾 >= RAND:5
-ELSEIF ABL:自慰成瘾 <= RAND:8 || ABL:自慰成瘾*3 + ABL:欲望 + RAND:5 < ABL:顺从 + ABL:奉仕精神*2
+ELSEIF ABL:自慰成瘾 <= RAND:8 || ABL:自慰成瘾*3 + ABL:欲望 + RAND:5 < ABL:顺从 + ABL:侍奉精神*2
 	RETURN 0
 ENDIF
 ;SOURCE之増加
@@ -601,7 +601,7 @@ CASEELSE
 	ENDIF
 	PRINTFORM 在%LOCALS%胸部、
 	IF RAND:2 == 0 && TALENT:巨乳
-		SIF ABL:Ｂ感觉 >= 4 && TALENT:哈比 == 0 && RAND:2
+		SIF ABL:B感觉 >= 4 && RAND:2
 			PRINTFORM 在手指刺激，不停沦陷
 		PRINTW 不停揉捏乳房
 	ELSE
@@ -632,8 +632,8 @@ CASEELSE
 	CALL EQ_STAIN, TARGET, TARGET, 1, 5
 ENDSELECT
 
-EXP:自慰経験 += 1
-PRINTFORML 自慰経験＋1
+EXP:自慰经验 += 1
+PRINTFORML 自慰经验＋1
 
 
 @COM_ORDER_COM3, ARG
